@@ -4,15 +4,14 @@
 	{
 		protected override async ETTask Run(EventType.EnterMapFinish args)
 		{
-			// 加载场景资源
-			await ResourcesComponent.Instance.LoadBundleAsync("map.unity3d");
-			// 切换到map场景
-			using (SceneChangeComponent sceneChangeComponent = Game.Scene.AddComponent<SceneChangeComponent>())
-			{
-				await sceneChangeComponent.ChangeSceneAsync("Map");
-			}
-            args.ZoneScene.AddComponent<OperaComponent>();
-            await UIHelper.Remove(args.ZoneScene, UIType.UILobby);
-		}
+            UIManagerComponent.Instance.CloseWindow<UILobbyView>();
+            Scene zoneScene = args.ZoneScene;
+            await SceneManagerComponent.Instance.SwitchScene<MapScene>(SceneConfig.GetSceneConfigByName("Map"));
+            var container = zoneScene.AddComponent<SceneContainer>();
+            container.AddComponent<OperaComponent>();
+            //container.AddComponent<CameraComponent>();
+            UIManagerComponent.Instance.DestroyWindow<UILoadingView>();
+
+        }
 	}
 }

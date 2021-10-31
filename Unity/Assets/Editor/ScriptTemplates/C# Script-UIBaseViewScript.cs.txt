@@ -1,0 +1,30 @@
+using UnityEngine;
+using UnityEngine.UI;
+
+namespace ET
+{
+	public class #NAME# : UIBaseView
+	{
+		public override string PrefabPath => ;
+		
+        public override void OnCreate()
+        {
+			base.OnCreate();
+		}
+
+        public override void OnEnable()
+        {
+			base.OnEnable();
+		}
+
+        public override void OnDisable()
+        {
+			base.OnDisable();
+		}
+		
+        public override void Dispose()
+        {
+			base.OnDisable();
+        }
+    }
+}

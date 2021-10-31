@@ -1,7 +1,7 @@
-﻿using System;
-using System.IO;
+﻿using AssetBundles;
+using System;
+using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Threading;
 using UnityEngine;
 
@@ -14,64 +14,47 @@ namespace ET
 		void LateUpdate();
 		void OnApplicationQuit();
 	}
-	
-	public class Init: MonoBehaviour
+
+	public class Init : MonoBehaviour
 	{
 		private IEntry entry;
-		
+
 		private void Awake()
 		{
-			SynchronizationContext.SetSynchronizationContext(ThreadSynchronizationContext.Instance);
-			
+			System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+			//先初始化AssetBundleMgr, 必须在Addressable系统初始化之前
+			sw.Start();
+			AssetBundleMgr.GetInstance().InitBuildInAssetBundleHashInfo();
+			sw.Stop();
+			Debug.Log(string.Format("InitBuildInAssetBundleHashInfo use {0}ms", sw.ElapsedMilliseconds));
+			sw.Reset();
+
+			sw.Start();
+			AssetBundleConfig.Instance.SyncLoadGlobalAssetBundle();
+			sw.Stop();
+			Debug.Log(string.Format("SyncLoadGlobalAssetBundle use {0}ms", sw.ElapsedMilliseconds));
+			sw.Reset();
+
+			//先设置remote_cdn_url 
+			sw.Start();
+			AssetBundleMgr.GetInstance().SetAddressableRemoteResCdnUrl(AssetBundleConfig.Instance.remote_cdn_url);
+			sw.Stop();
+			Debug.Log(string.Format("SetAddressableRemoteResCdnUrl use {0}ms", sw.ElapsedMilliseconds));
+			sw.Reset();
+
+			InitUnitySetting();
 			DontDestroyOnLoad(gameObject);
 
 			Assembly modelAssembly = null;
-
-			if (Define.IsEditor)
+			foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
 			{
-				UnityEngine.Debug.Log("unity editor mode!");
-				foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
+				string assemblyName = assembly.FullName;
+				if (!assemblyName.Contains("Unity.ModelView"))
 				{
-					string assemblyName = $"{assembly.GetName().Name}.dll";
-					if (assemblyName != "Unity.ModelView.dll")
-					{
-						continue;
-					}
-
-					modelAssembly = assembly;
-					break;
+					continue;
 				}
-			}
-			else
-			{
-				UnityEngine.Debug.Log("unity standalone mode!");
-				foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
-				{
-					string assemblyName = $"{assembly.GetName().Name}.dll";
-					if (assemblyName != "Unity.ModelView.dll")
-					{
-						continue;
-					}
-
-					modelAssembly = assembly;
-					break;
-				}
-				
-				/*
-				byte[] log = new byte[1024];
-				Interpreter.InterpreterSetLog((buff, n) =>
-				{
-					Marshal.Copy(buff, log, 0, n);
-					UnityEngine.Debug.Log(log.Utf8ToStr(0, n));
-				});
-				Interpreter.InterpreterInit(@"E:\ET\Unity\UnityScript\", "Unity.Script.dll");
-				
-				
-				UnityEngine.Debug.Log("unity script mode!");
-				byte[] dllBytes = File.ReadAllBytes("./Temp/Bin/Debug/Unity.Script.dll");
-				byte[] pdbBytes = File.ReadAllBytes("./Temp/Bin/Debug/Unity.Script.pdb");
-				modelAssembly = Assembly.Load(dllBytes, pdbBytes);
-				*/
+				modelAssembly = assembly;
+				break;
 			}
 
 			Type initType = modelAssembly.GetType("ET.Entry");
@@ -96,6 +79,15 @@ namespace ET
 		private void OnApplicationQuit()
 		{
 			this.entry.OnApplicationQuit();
+		}
+
+		// 一些unity的设置项目
+		void InitUnitySetting()
+		{
+			Input.multiTouchEnabled = false;
+			//设置帧率
+			QualitySettings.vSyncCount = 0;
+			Application.targetFrameRate = 60;
 		}
 	}
 }

@@ -95,12 +95,12 @@ namespace ET
 		{
 			EditorGUILayout.LabelField("打包平台:");
 			this.platformType = (PlatformType)EditorGUILayout.EnumPopup(platformType);
-			this.clearFolder = EditorGUILayout.Toggle("清理资源文件夹: ", clearFolder);
-			this.isBuildExe = EditorGUILayout.Toggle("是否打包EXE: ", this.isBuildExe);
-			this.isContainAB = EditorGUILayout.Toggle("是否同将资源打进EXE: ", this.isContainAB);
+            this.clearFolder = EditorGUILayout.Toggle("清理资源文件夹: ", clearFolder);
+            this.isBuildExe = EditorGUILayout.Toggle("是否打包EXE: ", this.isBuildExe);
+			//this.isContainAB = EditorGUILayout.Toggle("是否同将资源打进EXE: ", this.isContainAB);
 			this.buildType = (BuildType)EditorGUILayout.EnumPopup("BuildType: ", this.buildType);
-			EditorGUILayout.LabelField("BuildAssetBundleOptions(可多选):");
-			this.buildAssetBundleOptions = (BuildAssetBundleOptions)EditorGUILayout.EnumFlagsField(this.buildAssetBundleOptions);
+			//EditorGUILayout.LabelField("BuildAssetBundleOptions(可多选):");
+			//this.buildAssetBundleOptions = (BuildAssetBundleOptions)EditorGUILayout.EnumFlagsField(this.buildAssetBundleOptions);
 			
 			switch (buildType)
 			{
@@ -135,7 +135,7 @@ namespace ET
 							break;
                     }
                 }
-				BuildHelper.Build(this.platformType, this.buildAssetBundleOptions, this.buildOptions, this.isBuildExe, this.isContainAB, this.clearFolder);
+				BuildHelper.Build(this.platformType, this.buildOptions, this.isBuildExe,this.clearFolder);
 			}
 
 			GUILayout.Space(5);

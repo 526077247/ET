@@ -1,32 +1,45 @@
+using UnityEngine;
+
 namespace ET
 {
-    public class AppStart_Init: AEvent<EventType.AppStart>
+    public class AppStart_Init : AEvent<EventType.AppStart>
     {
         protected override async ETTask Run(EventType.AppStart args)
         {
             Game.Scene.AddComponent<TimerComponent>();
             Game.Scene.AddComponent<CoroutineLockComponent>();
-
-            // 加载配置
+            Game.Scene.AddComponent<ServerConfigManagerComponent>();
             Game.Scene.AddComponent<ResourcesComponent>();
-            ResourcesComponent.Instance.LoadBundle("config.unity3d");
-            Game.Scene.AddComponent<ConfigComponent>();
-            await ConfigComponent.Instance.LoadAsync();
-            ResourcesComponent.Instance.UnloadBundle("config.unity3d");
+
+#if UNITY_EDITOR
+            // 热修复
+            Game.Scene.AddComponent<HotFixComponent>();
+            await HotFixComponent.Instance.HotFix();
+#endif
+
+            Game.Scene.AddComponent<MaterialComponent>();
+            Game.Scene.AddComponent<ImageLoaderComponent>();
+            Game.Scene.AddComponent<ImageOnlineComponent>();
+            Game.Scene.AddComponent<GameObjectPoolComponent>();
+            Game.Scene.AddComponent<UIManagerComponent>();
+            Game.Scene.AddComponent<CameraManagerComponent>();
+            Game.Scene.AddComponent<SceneManagerComponent>();
+            Game.Scene.AddComponent<ToastComponent>();
             
+            // 加载配置
+            Game.Scene.AddComponent<ConfigComponent>();
+            ConfigComponent.GetAllConfigBytes = await LoadConfigHelper.LoadAllConfigBytes();
+            await ConfigComponent.Instance.LoadAsync();
+            Game.Scene.AddComponent<I18nComponent>();
             Game.Scene.AddComponent<OpcodeTypeComponent>();
             Game.Scene.AddComponent<MessageDispatcherComponent>();
-            
+
             Game.Scene.AddComponent<NetThreadComponent>();
-            Game.Scene.AddComponent<SessionStreamDispatcher>();
 
             Game.Scene.AddComponent<ZoneSceneManagerComponent>();
-            
+
             Game.Scene.AddComponent<GlobalComponent>();
-
             Game.Scene.AddComponent<AIDispatcherComponent>();
-
-            ResourcesComponent.Instance.LoadBundle("unit.unity3d");
 
             Scene zoneScene = await SceneFactory.CreateZoneScene(1, "Game", Game.Scene);
 

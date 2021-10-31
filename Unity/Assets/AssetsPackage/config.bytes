@@ -1,0 +1,5 @@
+{
+	"EngineVer" : "100",
+	"ResVer" : "1.0.0",
+	"remote_cdn_url" : "http://172.22.213.58:8081/cdn"
+}
