@@ -11,7 +11,7 @@ namespace ET
             Game.Scene.AddComponent<ServerConfigManagerComponent>();
             Game.Scene.AddComponent<ResourcesComponent>();
 
-#if UNITY_EDITOR
+#if !UNITY_EDITOR
             // 热修复
             Game.Scene.AddComponent<HotFixComponent>();
             await HotFixComponent.Instance.HotFix();
@@ -35,6 +35,7 @@ namespace ET
             Game.Scene.AddComponent<MessageDispatcherComponent>();
 
             Game.Scene.AddComponent<NetThreadComponent>();
+            Game.Scene.AddComponent<SessionStreamDispatcher>();
 
             Game.Scene.AddComponent<ZoneSceneManagerComponent>();
 
