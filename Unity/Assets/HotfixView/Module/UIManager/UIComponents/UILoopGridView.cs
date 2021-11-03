@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 
 namespace ET
 {
-    public class UILoopGridView : UIBaseContainer
+    public class UILoopGridView : UIBaseComponent
     {
         LoopGridView __unity_uiloopgridview;
         LoopGridView unity_uiloopgridview
@@ -16,7 +16,7 @@ namespace ET
             {
                 if(__unity_uiloopgridview == null)
                 {
-                    __unity_uiloopgridview = transform.GetComponent<LoopGridView>();
+                    __unity_uiloopgridview = this.gameObject.GetComponent<LoopGridView>();
                 }
                 return __unity_uiloopgridview;
             }
@@ -31,17 +31,17 @@ namespace ET
         }
 
         //item是Unity侧的item对象，在这里创建相应的UI对象
-        public void AddItemViewComponent<T>(LoopGridViewItem item) where T : UIBaseContainer
+        public void AddItemViewComponent<T>(LoopGridViewItem item) where T : UIBaseComponent
         {
             //保证名字不能相同 不然没法cache
             item.gameObject.name = item.gameObject.name + item.ItemId;
-            AddComponent<T>(item.gameObject);
+            this.AddComponent<T>(item.gameObject);
         }
 
         //根据Unity侧item获取UI侧的item
-        public T GetUIItemView<T>(LoopGridViewItem item) where T : UIBaseContainer
+        public T GetUIItemView<T>(LoopGridViewItem item) where T : UIBaseComponent
         {
-            return GetComponent<T>(item.gameObject.name);
+            return this.GetComponent<T>(item.gameObject.name);
         }
         //itemCount重设item的数量，resetPos是否刷新当前显示的位置
         public void SetListItemCount(int itemCount, bool resetPos = true)

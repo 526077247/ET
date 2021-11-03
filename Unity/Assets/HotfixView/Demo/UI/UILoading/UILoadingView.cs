@@ -15,18 +15,18 @@ namespace ET
 				SceneManagerComponent.DestroyWindowExceptNames.Add(typeof(UILoadingView).Name);
 			}
 		}
-		Slider slider;
+		UISlider slider;
 
         public override void OnCreate()
         {
 			base.OnCreate();
 			Instance = this;
-			slider = transform.Find("Loadingscreen/Slider").GetComponent<Slider>();
+			slider = this.AddComponent<UISlider>("Loadingscreen/Slider");
 		}
 
 		public void SetSlidValue(float pro)
         {
-			slider.value = pro;
+			slider.SetValue(pro);
 		}
 		
         public override void Dispose()

@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 namespace ET
 {
-    public class UIButton : UIBaseContainer
+    public class UIButton : UIBaseComponent
     {
         UnityAction __onclick;
         Button __unity_uibutton;
@@ -23,7 +23,7 @@ namespace ET
             {
                 if (__unity_uibutton == null)
                 {
-                    __unity_uibutton = gameObject.GetComponent<Button>();
+                    __unity_uibutton = this.gameObject.GetComponent<Button>();
                 }
                 return __unity_uibutton;
             }
@@ -34,7 +34,7 @@ namespace ET
             {
                 if (__unity_uiimage == null)
                 {
-                    __unity_uiimage = gameObject.GetComponent<Image>();
+                    __unity_uiimage = this.gameObject.GetComponent<Image>();
                 }
                 return __unity_uiimage;
             }

@@ -6,20 +6,20 @@ using UnityEngine.UI;
 
 namespace ET
 {
-    public class UIToast : UIBaseContainer
+    public class UIToast : UIBaseComponent
 	{
-		public TextMeshProUGUI Text;
+		public UITextmesh Text;
 
 		public override void OnCreate()
         {
             base.OnCreate();
-            Text = transform.Find("Content").GetComponent<TextMeshProUGUI>();
+            Text = this.AddComponent<UITextmesh>("Content");
 		}
 
         public override void OnEnable<T>(T param1)
         {
             base.OnEnable();
-            Text.text = param1 as string;
+            Text.SetText(param1 as string);
         }
     }
 }

@@ -154,7 +154,7 @@ namespace ET
             {
                 Log.Info("不需要更新，直接进入游戏");
                 await UIManagerComponent.Instance.OpenWindow<UILoginView, Scene>(scene);
-                CloseSelf();
+                this.CloseSelf();
             }
         }
 

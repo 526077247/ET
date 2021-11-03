@@ -12,11 +12,11 @@ namespace ET
         {
 		
 		}
-		public Button loginBtn;
+		public UIButton loginBtn;
 		public InputField password;
 		public InputField account;
 		public TMP_InputField ipaddr;
-		public Button registerBtn;
+		public UIButton registerBtn;
 		public List<Button> btns;
 		Scene scene;
 
@@ -25,9 +25,9 @@ namespace ET
         public override void OnCreate()
         {
 			base.OnCreate();
-			loginBtn = transform.Find("Panel/LoginBtn").GetComponent<Button>();
-			registerBtn = transform.Find("Panel/RegisterBtn").GetComponent<Button>();
-			loginBtn.onClick.AddListener(OnLogin);
+			loginBtn = this.AddComponent<UIButton>("Panel/LoginBtn");
+			registerBtn = this.AddComponent<UIButton>("Panel/RegisterBtn");
+			loginBtn.SetOnClick(OnLogin);
 			account = transform.Find("Panel/Account").GetComponent<InputField>();
 			password = transform.Find("Panel/Password").GetComponent<InputField>();
 			ipaddr = transform.Find("Panel/GM/InputField").GetComponent<TMP_InputField>();
@@ -54,12 +54,12 @@ namespace ET
 		}
 		public async void OnLogin()
 		{
-			loginBtn.interactable = false;
+			loginBtn.SetInteractable(false);
 			GlobalComponent.Instance.Account = account.text;
 			PlayerPrefs.SetString(CacheKeys.Account, account.text);
 			PlayerPrefs.SetString(CacheKeys.Password, password.text);
 			await LoginHelper.Login(scene, ipaddr.text, account.text, password.text);
-			loginBtn.interactable = true;
+			loginBtn.SetInteractable(true);
 		}
 		public void OnBtnClick(string name)
         {

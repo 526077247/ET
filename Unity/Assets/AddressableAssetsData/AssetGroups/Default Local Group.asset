@@ -16,13 +16,7 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: 2cae785edf9e8644a9fc1150ddf15d44
-  m_SerializeEntries:
-  - m_GUID: d8d87e53d93e234448658c9a801a9967
-    m_Address: UI/UILobby/Prefabs/UILobbyView.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    m_MainAsset: {fileID: 0}
-    m_TargetAsset: {fileID: 0}
+  m_SerializeEntries: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: dd1f300d6062fee48bf00a13907517b6, type: 2}
   m_SchemaSet:

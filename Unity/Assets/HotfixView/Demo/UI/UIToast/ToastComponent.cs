@@ -23,7 +23,7 @@ namespace ET
         public void Awake()
         {
             Instance = this;
-            root = UIManagerComponent.Instance.GetLayer(UILayerNames.TipLayer.ToString()).transform;
+            root = UIManagerComponent.Instance.GetLayer(UILayerNames.TipLayer).transform;
         }
 
         public override void Dispose()

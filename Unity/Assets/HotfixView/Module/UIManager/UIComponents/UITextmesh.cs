@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace ET
 {
-    public class UITextmesh:UIBaseContainer
+    public class UITextmesh: UIBaseComponent
     {
         TMPro.TMP_Text __unity_uitextmesh;
         TMPro.TMP_Text unity_uitextmesh
@@ -16,10 +16,10 @@ namespace ET
             {
                 if (__unity_uitextmesh == null)
                 {
-                    __unity_uitextmesh = gameObject.GetComponent<TMPro.TMP_Text>();
+                    __unity_uitextmesh = this.gameObject.GetComponent<TMPro.TMP_Text>();
                     if (__unity_uitextmesh == null)
-                        Log.Error($"添加UI侧组件UITextmesh时，物体{gameObject.name}上没有找到TMPro.TMP_Text组件");
-                    unity_i18ncomp_touched = gameObject.GetComponent<I18nTextComponent>();
+                        Log.Error($"添加UI侧组件UITextmesh时，物体{this.gameObject.name}上没有找到TMPro.TMP_Text组件");
+                    unity_i18ncomp_touched = this.gameObject.GetComponent<I18nTextComponent>();
                 }
                 return __unity_uitextmesh;
             }
@@ -43,7 +43,7 @@ namespace ET
             {
                 unity_i18ncomp_touched.enabled = enable;
                 if(!enable)
-                    Log.Warning($"组件{transform.name}, text在Lua层进行了修改，所以应该去掉去预设里面的I18N组件，否则会被覆盖");
+                    Log.Warning($"组件{this.gameObject.name}, text在Lua层进行了修改，所以应该去掉去预设里面的I18N组件，否则会被覆盖");
             }
         }
 

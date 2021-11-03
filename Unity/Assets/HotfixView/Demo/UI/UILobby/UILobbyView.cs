@@ -12,7 +12,7 @@ namespace ET
         public override void OnCreate()
         {
             base.OnCreate();
-            EnterBtn = AddComponent<UIButton>("Panel/EnterMap");
+            EnterBtn = this.AddComponent<UIButton>("Panel/EnterMap");
             EnterBtn.SetOnClick(OnEnterBtnClick);
         }
         public override void OnEnable<T>(T t)

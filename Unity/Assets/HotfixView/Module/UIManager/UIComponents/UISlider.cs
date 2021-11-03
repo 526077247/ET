@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace ET
 {
-    public class UISlider:UIBaseContainer
+    public class UISlider: UIBaseComponent
     {
         Slider __unity_uislider;
         Slider unity_uislider
@@ -17,9 +17,9 @@ namespace ET
             {
                 if (__unity_uislider == null)
                 {
-                    __unity_uislider = transform.GetComponent<Slider>();
+                    __unity_uislider = this.gameObject.GetComponent<Slider>();
                     if (__unity_uislider == null)
-                        Log.Error($"添加UI侧组件UISlider时，物体{gameObject.name}上没有找到Slider组件");
+                        Log.Error($"添加UI侧组件UISlider时，物体{this.gameObject.name}上没有找到Slider组件");
                 }
                 return __unity_uislider;
             }

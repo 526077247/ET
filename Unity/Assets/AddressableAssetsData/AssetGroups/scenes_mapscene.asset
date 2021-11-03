@@ -24,6 +24,34 @@ MonoBehaviour:
     - default
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
+  - m_GUID: 1ba6771e5d8abc6449e944314b0c77df
+    m_Address: Scenes/MapScene/Map/LightingData.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: ab3027117b6819848bae7b1746588d06
+    m_Address: Scenes/MapScene/Map/Lightmap-0_comp_light.exr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 02bc6af578f699249a101b704d189b5a
+    m_Address: Scenes/MapScene/Map/ReflectionProbe-0.exr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 254de00ad84d26d40adba1bed3fb7c32
+    m_Address: Scenes/MapScene/MapSettings.lighting
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: dd1f300d6062fee48bf00a13907517b6, type: 2}
   m_SchemaSet:

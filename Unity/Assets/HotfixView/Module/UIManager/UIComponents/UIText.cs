@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace ET
 {
-    public class UIText : UIBaseContainer
+    public class UIText : UIBaseComponent
     {
         Text __unity_uitext;
         Text unity_uitext
@@ -17,10 +17,10 @@ namespace ET
             {
                 if (__unity_uitext == null)
                 {
-                    __unity_uitext = gameObject.GetComponent<Text>();
+                    __unity_uitext = this.gameObject.GetComponent<Text>();
                     if (__unity_uitext == null)
-                        Log.Error($"添加UI侧组件UITextmesh时，物体{gameObject.name}上没有找到Text组件");
-                    unity_i18ncomp_touched = gameObject.GetComponent<I18nTextComponent>();
+                        Log.Error($"添加UI侧组件UITextmesh时，物体{this.gameObject.name}上没有找到Text组件");
+                    unity_i18ncomp_touched = this.gameObject.GetComponent<I18nTextComponent>();
                 }
                 return __unity_uitext;
             }
@@ -44,7 +44,7 @@ namespace ET
             {
                 unity_i18ncomp_touched.enabled = enable;
                 if (!enable)
-                    Log.Warning($"组件{transform.name}, text在Lua层进行了修改，所以应该去掉去预设里面的I18N组件，否则会被覆盖");
+                    Log.Warning($"组件{this.gameObject.name}, text在Lua层进行了修改，所以应该去掉去预设里面的I18N组件，否则会被覆盖");
             }
         }
 
