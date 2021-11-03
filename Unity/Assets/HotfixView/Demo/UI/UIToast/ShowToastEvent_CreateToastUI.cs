@@ -15,11 +15,10 @@ namespace ET
         {
             GameObject gameObject = await GameObjectPoolComponent.Instance.GetGameObjectAsync("UI/UIToast/Prefabs/UIToast.prefab");
             UIToast ui = ToastComponent.Instance.AddChild<UIToast, GameObject>(gameObject);
-            ui.AddComponent<UIBaseComponent, GameObject>("",gameObject);
-            gameObject.transform.SetParent(ToastComponent.Instance.root);
-            gameObject.transform.localPosition = Vector3.zero;
-            gameObject.transform.localRotation = Quaternion.identity;
-            gameObject.transform.localScale = new Vector3(1, 1, 1);
+            ui.transform.SetParent(ToastComponent.Instance.root);
+            ui.transform.localPosition = Vector3.zero;
+            ui.transform.localRotation = Quaternion.identity;
+            ui.transform.localScale = new Vector3(1, 1, 1);
             ui.OnCreate();
             ui.OnEnable(Content);
             await TimerComponent.Instance.WaitAsync(seconds*1000);

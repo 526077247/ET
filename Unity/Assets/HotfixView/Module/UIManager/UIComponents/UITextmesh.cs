@@ -18,7 +18,10 @@ namespace ET
                 {
                     __unity_uitextmesh = this.gameObject.GetComponent<TMPro.TMP_Text>();
                     if (__unity_uitextmesh == null)
-                        Log.Error($"添加UI侧组件UITextmesh时，物体{this.gameObject.name}上没有找到TMPro.TMP_Text组件");
+                    {
+                        __unity_uitextmesh = this.gameObject.AddComponent<TMPro.TMP_Text>();
+                        Log.Info($"添加UI侧组件UITextmesh时，物体{this.gameObject.name}上没有找到TMPro.TMP_Text组件");
+                    }
                     unity_i18ncomp_touched = this.gameObject.GetComponent<I18nTextComponent>();
                 }
                 return __unity_uitextmesh;

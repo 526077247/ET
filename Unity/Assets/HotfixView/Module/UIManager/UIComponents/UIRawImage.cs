@@ -20,7 +20,10 @@ namespace ET
                 {
                     __unity_uiimage = this.gameObject.GetComponent<RawImage>();
                     if (__unity_uiimage == null)
-                        Log.Error($"添加UI侧组件UIRawImage时，物体{this.gameObject.name}上没有找到RawImage组件");
+                    {
+                        __unity_uiimage = this.gameObject.AddComponent<RawImage>();
+                        Log.Info($"添加UI侧组件UIRawImage时，物体{this.gameObject.name}上没有找到RawImage组件");
+                    }
                 }
                 return __unity_uiimage;
             }

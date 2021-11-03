@@ -17,6 +17,11 @@ namespace ET
                 if(__unity_uiloopgridview == null)
                 {
                     __unity_uiloopgridview = this.gameObject.GetComponent<LoopGridView>();
+                    if (__unity_uiloopgridview == null)
+                    {
+                        //__unity_uiloopgridview = this.gameObject.AddComponent<LoopGridView>();
+                        Log.Error($"添加UI侧组件UILoopGridView时，物体{this.gameObject.name}上没有找到LoopGridView组件");
+                    }
                 }
                 return __unity_uiloopgridview;
             }

@@ -3,24 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using UnityEngine.UI;
+using TMPro;
 
 namespace ET
 {
-    public class UIInput: UIBaseComponent
+    public class UIInputTextmesh:UIBaseComponent
     {
-        InputField __unity_uiinput;
-        InputField unity_uiinput
+        TMP_InputField __unity_uiinput;
+        TMP_InputField unity_uiinput
         {
             get
             {
                 if (__unity_uiinput == null)
                 {
-                    __unity_uiinput = this.gameObject.GetComponent<InputField>();
+                    __unity_uiinput = this.gameObject.GetComponent<TMP_InputField>();
                     if (__unity_uiinput == null)
                     {
-                        __unity_uiinput = this.gameObject.AddComponent<InputField>();
-                        Log.Info($"添加UI侧组件UIInput时，物体{this.gameObject.name}上没有找到InputField组件");
+                        __unity_uiinput = this.gameObject.AddComponent<TMP_InputField>();
+                        Log.Info($"添加UI侧组件UIInputTextmesh时，物体{this.gameObject.name}上没有找到TMP_InputField组件");
                     }
                 }
                 return __unity_uiinput;

@@ -19,7 +19,10 @@ namespace ET
                 {
                     __unity_uitext = this.gameObject.GetComponent<Text>();
                     if (__unity_uitext == null)
-                        Log.Error($"添加UI侧组件UITextmesh时，物体{this.gameObject.name}上没有找到Text组件");
+                    {
+                        __unity_uitext = this.gameObject.AddComponent<Text>();
+                        Log.Info($"添加UI侧组件UITextmesh时，物体{this.gameObject.name}上没有找到Text组件");
+                    }
                     unity_i18ncomp_touched = this.gameObject.GetComponent<I18nTextComponent>();
                 }
                 return __unity_uitext;

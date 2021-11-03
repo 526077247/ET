@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 namespace ET
@@ -13,11 +12,11 @@ namespace ET
 		
 		}
 		public UIButton loginBtn;
-		public InputField password;
-		public InputField account;
-		public TMP_InputField ipaddr;
+		public UIInput password;
+		public UIInput account;
+		public UIInputTextmesh ipaddr;
 		public UIButton registerBtn;
-		public List<Button> btns;
+		public List<UIButton> btns;
 		Scene scene;
 
         public override string PrefabPath => "UI/UILogin/Prefabs/UILoginView.prefab";
@@ -28,18 +27,17 @@ namespace ET
 			loginBtn = this.AddComponent<UIButton>("Panel/LoginBtn");
 			registerBtn = this.AddComponent<UIButton>("Panel/RegisterBtn");
 			loginBtn.SetOnClick(OnLogin);
-			account = transform.Find("Panel/Account").GetComponent<InputField>();
-			password = transform.Find("Panel/Password").GetComponent<InputField>();
-			ipaddr = transform.Find("Panel/GM/InputField").GetComponent<TMP_InputField>();
+			account = AddComponent<UIInput>("Panel/Account");
+			password = AddComponent<UIInput>("Panel/Password");
+			ipaddr = AddComponent<UIInputTextmesh>("Panel/GM/InputField");
 			
-			Transform settings = transform.Find("Panel/GM/Setting");
-			btns = new List<Button>();
-            for (int i = 0; i < settings.childCount; i++)
+			var settings = AddComponent<UIBaseComponent>("Panel/GM/Setting");
+			btns = new List<UIButton>();
+            for (int i = 0; i < settings.transform.childCount; i++)
             {
-				var trans = settings.GetChild(i);
-				btns.Add(trans.GetComponent<Button>());
-				btns[i].onClick.AddListener(()=> {
-					OnBtnClick(trans.name);
+				btns.Add(settings.AddComponent<UIButton>(i));
+				btns[i].SetOnClick(()=> {
+					OnBtnClick(btns[i].transform.name);
 				});
 			}
 		}
@@ -48,22 +46,22 @@ namespace ET
 		{
 			base.OnEnable();
 			this.scene = scene as Scene;
-			ipaddr.text = ServerConfigManagerComponent.Instance.GetCurConfig().iplist[0];
-			account.text = PlayerPrefs.GetString(CacheKeys.Account, "");
-			password.text = PlayerPrefs.GetString(CacheKeys.Password,"" );
+			ipaddr.SetText(ServerConfigManagerComponent.Instance.GetCurConfig().iplist[0]);
+			account.SetText(PlayerPrefs.GetString(CacheKeys.Account, ""));
+			password.SetText(PlayerPrefs.GetString(CacheKeys.Password,"" ));
 		}
 		public async void OnLogin()
 		{
 			loginBtn.SetInteractable(false);
-			GlobalComponent.Instance.Account = account.text;
-			PlayerPrefs.SetString(CacheKeys.Account, account.text);
-			PlayerPrefs.SetString(CacheKeys.Password, password.text);
-			await LoginHelper.Login(scene, ipaddr.text, account.text, password.text);
+			GlobalComponent.Instance.Account = account.GetText();
+			PlayerPrefs.SetString(CacheKeys.Account, account.GetText());
+			PlayerPrefs.SetString(CacheKeys.Password, password.GetText());
+			await LoginHelper.Login(scene, ipaddr.GetText(), account.GetText(), password.GetText());
 			loginBtn.SetInteractable(true);
 		}
 		public void OnBtnClick(string name)
         {
-			ipaddr.text = ServerConfigManagerComponent.Instance.ChangeEnv(name.ToLower()).iplist[0];
+			ipaddr.SetText(ServerConfigManagerComponent.Instance.ChangeEnv(name.ToLower()).iplist[0]);
 		}
 	}
 }

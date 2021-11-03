@@ -24,6 +24,11 @@ namespace ET
                 if (__unity_uibutton == null)
                 {
                     __unity_uibutton = this.gameObject.GetComponent<Button>();
+                    if (__unity_uibutton == null)
+                    {
+                        __unity_uibutton = this.gameObject.AddComponent<Button>();
+                        Log.Info($"添加UI侧组件UIButton时，物体{this.gameObject.name}上没有找到Button组件");
+                    }
                 }
                 return __unity_uibutton;
             }

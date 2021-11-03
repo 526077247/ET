@@ -19,7 +19,10 @@ namespace ET
                 {
                     __unity_uislider = this.gameObject.GetComponent<Slider>();
                     if (__unity_uislider == null)
-                        Log.Error($"添加UI侧组件UISlider时，物体{this.gameObject.name}上没有找到Slider组件");
+                    {
+                        __unity_uislider = this.gameObject.AddComponent<Slider>();
+                        Log.Info($"添加UI侧组件UISlider时，物体{this.gameObject.name}上没有找到Slider组件");
+                    }
                 }
                 return __unity_uislider;
             }

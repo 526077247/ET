@@ -30,13 +30,13 @@ namespace ET
         const int BTN_CANCEL = 1;
         const int BTN_CONFIRM = 2;
 
-        Slider m_slider;
+        UISlider m_slider;
         GameObject m_msgBoxView;
-        Text m_msgBoxViewText;
-        Button m_msgBoxViewBtnCancel;
-        Text m_msgBoxViewBtnCancelText;
-        Button m_msgBoxViewBtnConfirm;
-        Text m_msgBoxViewBtnConfirmText;
+        UIText m_msgBoxViewText;
+        UIButton m_msgBoxViewBtnCancel;
+        UIText m_msgBoxViewBtnCancelText;
+        UIButton m_msgBoxViewBtnConfirm;
+        UIText m_msgBoxViewBtnConfirmText;
 
         List<DownLoadInfo> m_needdownloadinfo = null;
         string m_rescdn_url;
@@ -52,13 +52,13 @@ namespace ET
         public override void OnCreate()
         {
             base.OnCreate();
-            m_slider = transform.Find("Loadingscreen/Slider").GetComponent<Slider>();
+            m_slider = AddComponent<UISlider>("Loadingscreen/Slider");
             m_msgBoxView = transform.Find("msgbox_view").gameObject;
-            m_msgBoxViewText = transform.Find("msgbox_view/Text").GetComponent<Text>();
-            m_msgBoxViewBtnCancel = transform.Find("msgbox_view/btn_cancel").GetComponent<Button>();
-            m_msgBoxViewBtnCancelText = transform.Find("msgbox_view/btn_cancel/Text").GetComponent<Text>();
-            m_msgBoxViewBtnConfirm = transform.Find("msgbox_view/btn_confirm").GetComponent<Button>();
-            m_msgBoxViewBtnConfirmText = transform.Find("msgbox_view/btn_confirm/Text").GetComponent<Text>();
+            m_msgBoxViewText = AddComponent<UIText>("msgbox_view/Text");
+            m_msgBoxViewBtnCancel = AddComponent<UIButton>("msgbox_view/btn_cancel");
+            m_msgBoxViewBtnCancelText = AddComponent<UIText>("msgbox_view/btn_cancel/Text");
+            m_msgBoxViewBtnConfirm = AddComponent<UIButton>("msgbox_view/btn_confirm");
+            m_msgBoxViewBtnConfirmText = AddComponent<UIText>("msgbox_view/btn_confirm/Text");
             m_msgBoxView.SetActive(false);
         }
 
@@ -85,13 +85,13 @@ namespace ET
         {
             base.OnEnable();
             this.scene = scene as Scene;
-            m_slider.value = 0;
+            m_slider.SetValue(0);
             StartCheckUpdate().Coroutine();
         }
 
         public void SetSlidValue(float pro)
         {
-            m_slider.value = pro;
+            m_slider.SetValue(pro);
         }
 
         void HideMsgBoxView()
@@ -115,16 +115,16 @@ namespace ET
                 btnState = BTN_CANCEL;
             };
             m_msgBoxView.SetActive(true);
-            m_msgBoxViewText.text = content;
+            m_msgBoxViewText.SetText(content);
 
-            m_msgBoxViewBtnConfirm.onClick.AddListener(confirmBtnFunc);
-            m_msgBoxViewBtnConfirmText.text = confirmBtnText;
+            m_msgBoxViewBtnConfirm.SetOnClick(confirmBtnFunc);
+            m_msgBoxViewBtnConfirmText.SetText(confirmBtnText);
 
             if (!string.IsNullOrEmpty(cancelBtnText))
             {
                 m_msgBoxViewBtnCancel.gameObject.SetActive(true);
-                m_msgBoxViewBtnCancel.onClick.AddListener(cancelBtnFunc);
-                m_msgBoxViewBtnCancelText.text = cancelBtnText;
+                m_msgBoxViewBtnCancel.SetOnClick(cancelBtnFunc);
+                m_msgBoxViewBtnCancelText.SetText(cancelBtnText);
             }
             else
             {
@@ -177,8 +177,8 @@ namespace ET
                     {
                         BootConfig.Instance.SetWhiteMode(true);
                     }
-                    m_msgBoxViewBtnConfirm.onClick.RemoveAllListeners();
-                    m_msgBoxViewBtnCancel.onClick.RemoveAllListeners();
+                    m_msgBoxViewBtnConfirm.RemoveOnClick();
+                    m_msgBoxViewBtnCancel.RemoveOnClick();
                 }
                 return;
             }
@@ -250,8 +250,8 @@ namespace ET
             var cancelBtnText = force_update ? "退出游戏" : "进入游戏";
             var content_updata = force_update ? "當前版本過低，請重新下載客戶端" : "當前版本較低，建議下載最新客戶端";
             var btnState = await ShowMsgBoxView(content_updata, "确认", cancelBtnText);
-            m_msgBoxViewBtnConfirm.onClick.RemoveAllListeners();
-            m_msgBoxViewBtnCancel.onClick.RemoveAllListeners();
+            m_msgBoxViewBtnConfirm.RemoveOnClick();
+            m_msgBoxViewBtnCancel.RemoveOnClick();
 
             if (btnState == BTN_CONFIRM)
             {
@@ -329,8 +329,8 @@ namespace ET
 
             var ct = "檢測到資源更新\n更新包大小：<color=#DB744C>{0}</color> MB\n是否立即下載？".Fmt(size_mb.ToString("0.00"));
             var btnState = await ShowMsgBoxView(ct, "确认", "退出游戏");
-            m_msgBoxViewBtnConfirm.onClick.RemoveAllListeners();
-            m_msgBoxViewBtnCancel.onClick.RemoveAllListeners();
+            m_msgBoxViewBtnConfirm.RemoveOnClick();
+            m_msgBoxViewBtnCancel.RemoveOnClick();
             if (btnState == BTN_CANCEL)
             {
                 GameUtility.Quit();
@@ -338,7 +338,7 @@ namespace ET
             }
 
             //开始进行更新
-            m_slider.value = 0;
+            m_slider.SetValue(0);
             //2、更新资源
 
             var merge_mode_union = 1;
@@ -400,8 +400,8 @@ namespace ET
             {
                 Log.Info("CoGetDownloadSize Get Download Size Async Faild");
                 var btnState = await ShowMsgBoxView("獲取更新失敗，請檢查網路", "重試", "退出遊戲");
-                m_msgBoxViewBtnConfirm.onClick.RemoveAllListeners();
-                m_msgBoxViewBtnCancel.onClick.RemoveAllListeners();
+                m_msgBoxViewBtnConfirm.RemoveOnClick();
+                m_msgBoxViewBtnCancel.RemoveOnClick();
                 if (btnState == BTN_CONFIRM)
                     return await GetDownloadSize();
                 else
@@ -423,8 +423,8 @@ namespace ET
             {
                 Log.Info("CheckCatalogUpdates Check CataLog Failed");
                 var btnState = await ShowMsgBoxView("獲取更新失敗，請檢查網路", "重試", "退出遊戲");
-                m_msgBoxViewBtnConfirm.onClick.RemoveAllListeners();
-                m_msgBoxViewBtnCancel.onClick.RemoveAllListeners();
+                m_msgBoxViewBtnConfirm.RemoveOnClick();
+                m_msgBoxViewBtnCancel.RemoveOnClick();
                 if (btnState == BTN_CONFIRM)
                     return await CheckCatalogUpdates();
                 else
@@ -458,8 +458,8 @@ namespace ET
             {
                 Log.Info("CoUpdateCatalogs Update Catalog Failed");
                 var btnState = await ShowMsgBoxView("獲取更新失敗，請檢查網路", "重試", "退出游戏");
-                m_msgBoxViewBtnConfirm.onClick.RemoveAllListeners();
-                m_msgBoxViewBtnCancel.onClick.RemoveAllListeners();
+                m_msgBoxViewBtnConfirm.RemoveOnClick();
+                m_msgBoxViewBtnCancel.RemoveOnClick();
                 if (btnState == BTN_CONFIRM)
                     return await UpdateCatalogs(catalog);
                 else
@@ -477,7 +477,7 @@ namespace ET
             var info = await HttpManager.Instance.HttpGetResult(url);
             if (!string.IsNullOrEmpty(info))
             {
-                await DownloadAllAssetBundle((progress) => { m_slider.value = progress; });
+                await DownloadAllAssetBundle((progress) => { m_slider.SetValue(progress); });
                 if(CheckNeedContinueDownload())
                 {
                     Log.Info("DownloadContent DownloadDependenciesAsync retry");
@@ -490,8 +490,8 @@ namespace ET
             {
                 Log.Info("DownloadContent Begin DownloadDependenciesAsync failed");
                 var btnState = await ShowMsgBoxView("獲取更新失敗，請檢查網路", "重試", "退出遊戲");
-                m_msgBoxViewBtnConfirm.onClick.RemoveAllListeners();
-                m_msgBoxViewBtnCancel.onClick.RemoveAllListeners();
+                m_msgBoxViewBtnConfirm.RemoveOnClick();
+                m_msgBoxViewBtnCancel.RemoveOnClick();
                 if (btnState == BTN_CONFIRM)
                     return await DownloadContent();
                 else

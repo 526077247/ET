@@ -117,30 +117,7 @@ namespace ET
         {
 			return self.need_turn;
 		}
-		/// <summary>
-		/// 获取UI窗口
-		/// </summary>
-		/// <param name="ui_name"></param>
-		/// <param name="active">1打开，-1关闭,0不做限制</param>
-		/// <param name="view_active">1打开，-1关闭,0不做限制</param>
-		/// <returns></returns>
-		public static UIWindow GetWindow(this UIManagerComponent self,string ui_name,int active =0, int view_active=0)
-        {
-			if(self.windows.TryGetValue(ui_name,out var target))
-            {
-                if (active == 0 || active== (target.Active?1:-1))
-                {
-					if (view_active == 0 || view_active == ((target.GetComponent(target.ViewType) as UIBaseView).IsActiveSelf() ? 1 : -1))
-					{
-						return target;
-					}
-					Debug.Log("Not view_active");
-					return null;
-				}
-				return null;
-            }
-			return null;
-		}
+		
 
 		public static UIBaseView GetView(this UIManagerComponent self,string ui_name)
 		{
@@ -177,7 +154,7 @@ namespace ET
 
 		}
 
-		public static void CloseWindowByLayer(this UIManagerComponent self,UILayerDefine layer, string[] except_ui_names = null)
+		public static void CloseWindowByLayer(this UIManagerComponent self,UILayerNames layer, string[] except_ui_names = null)
 		{
 			Dictionary<string, bool> dict_ui_names= null;
 			if (except_ui_names != null)
@@ -188,7 +165,7 @@ namespace ET
 
             foreach (var item in self.windows)
             {
-				if (item.Value.Layer == layer.Name && dict_ui_names!=null&&!dict_ui_names.ContainsKey(item.Key))
+				if (item.Value.Layer == layer && dict_ui_names!=null&&!dict_ui_names.ContainsKey(item.Key))
                 {
 					self.CloseWindow(item.Key);
 				}
@@ -309,13 +286,11 @@ namespace ET
 		static async ETTask<T> __InnerOpenWindow<T>(this UIManagerComponent self, UIWindow target,Action<T> callback) where T: UIBaseView
 		{
 			target.Active = true;
-			T res;
-			var view = target.GetComponent(target.ViewType) as UIBaseView;
-			var need_load = view.gameObject == null;
+			T res = target.GetComponent(target.ViewType) as T;
+			var need_load = res.gameObject == null;
 			if (!need_load)
 			{
 				self.__AddWindowToStack(target);
-				res = view as T;
 				callback?.Invoke(res);
 				return res;
 			}
@@ -329,7 +304,6 @@ namespace ET
 						await TimerComponent.Instance.WaitAsync(1);
 					}
 					self.__AddWindowToStack(target);
-					res = view as T;
 					callback?.Invoke(res);
 					return res;
 				}
@@ -337,7 +311,6 @@ namespace ET
 				await self.__CoLoadDependency(target);
 				var go = await GameObjectPoolComponent.Instance.GetGameObjectAsync(target.PrefabPath);
 				self.OnLoadGameObjectDone(target, go);
-				res = view as T;
 				callback?.Invoke(res);
 				return res;
 			}
@@ -345,13 +318,11 @@ namespace ET
 		static async ETTask<T> __InnerOpenWindow<T,P1>(this UIManagerComponent self, UIWindow target, P1 p1, Action<T> callback) where T : UIBaseView
 		{
 			target.Active = true;
-			T res;
-			var view = target.GetComponent(target.ViewType) as UIBaseView;
-			var need_load = view.gameObject == null;
+			T res = target.GetComponent(target.ViewType) as T;
+			var need_load = res.gameObject == null;
 			if (!need_load)
 			{
 				self.__AddWindowToStack(target,p1);
-				res = view as T;
 				callback?.Invoke(res);
 				return res;
 			}
@@ -365,7 +336,6 @@ namespace ET
 						await TimerComponent.Instance.WaitAsync(1);
 					}
 					self.__AddWindowToStack(target, p1);
-					res = view as T;
 					callback?.Invoke(res);
 					return res;
 				}
@@ -373,7 +343,6 @@ namespace ET
 				await self.__CoLoadDependency(target);
 				var go = await GameObjectPoolComponent.Instance.GetGameObjectAsync(target.PrefabPath);
 				self.OnLoadGameObjectDone(target, go,p1);
-				res = view as T;
 				callback?.Invoke(res);
 				return res;
 			}
@@ -381,13 +350,11 @@ namespace ET
 		static async ETTask<T> __InnerOpenWindow<T,P1,P2>(this UIManagerComponent self, UIWindow target, P1 p1, P2 p2, Action<T> callback) where T : UIBaseView
 		{
 			target.Active = true;
-			T res;
-			var view = target.GetComponent(target.ViewType) as UIBaseView;
-			var need_load = view.gameObject == null;
+			T res = target.GetComponent(target.ViewType) as T;
+			var need_load = res.gameObject == null;
 			if (!need_load)
 			{
 				self.__AddWindowToStack(target, p1,p2);
-				res = view as T;
 				callback?.Invoke(res);
 				return res;
 			}
@@ -401,7 +368,6 @@ namespace ET
 						await TimerComponent.Instance.WaitAsync(1);
 					}
 					self.__AddWindowToStack(target, p1, p2);
-					res = view as T;
 					callback?.Invoke(res);
 					return res;
 				}
@@ -409,7 +375,6 @@ namespace ET
 				await self.__CoLoadDependency(target);
 				var go = await GameObjectPoolComponent.Instance.GetGameObjectAsync(target.PrefabPath);
 				self.OnLoadGameObjectDone(target, go, p1, p2);
-				res = view as T;
 				callback?.Invoke(res);
 				return res;
 			}
@@ -417,13 +382,11 @@ namespace ET
 		static async ETTask<T> __InnerOpenWindow<T,P1,P2,P3>(this UIManagerComponent self, UIWindow target, P1 p1, P2 p2, P3 p3, Action<T> callback) where T : UIBaseView
 		{
 			target.Active = true;
-			T res;
-			var view = target.GetComponent(target.ViewType) as UIBaseView;
-			var need_load = view.gameObject == null;
+			T res = target.GetComponent(target.ViewType) as T;
+			var need_load = res.gameObject == null;
 			if (!need_load)
 			{
 				self.__AddWindowToStack(target, p1,p2,p3);
-				res = view as T;
 				callback?.Invoke(res);
 				return res;
 			}
@@ -437,7 +400,6 @@ namespace ET
 						await TimerComponent.Instance.WaitAsync(1);
 					}
 					self.__AddWindowToStack(target, p1, p2, p3);
-					res = view as T;
 					callback?.Invoke(res);
 					return res;
 				}
@@ -445,7 +407,6 @@ namespace ET
 				await self.__CoLoadDependency(target);
 				var go = await GameObjectPoolComponent.Instance.GetGameObjectAsync(target.PrefabPath);
 				self.OnLoadGameObjectDone(target, go, p1, p2, p3);
-				res = view as T;
 				callback?.Invoke(res);
 				return res;
 			}
@@ -687,15 +648,15 @@ namespace ET
 		}
 		public static void SetCanvasScaleEditorPortrait(this UIManagerComponent self, bool flag)
         {
-			self.layers[UILayers.GameLayer.Name].SetCanvasScaleEditorPortrait(flag);
-			self.layers[UILayers.TipLayer.Name].SetCanvasScaleEditorPortrait(flag);
-			self.layers[UILayers.TopLayer.Name].SetCanvasScaleEditorPortrait(flag);
-			self.layers[UILayers.GameBackgroudLayer.Name].SetCanvasScaleEditorPortrait(flag);
+			self.layers[UILayerNames.GameLayer].SetCanvasScaleEditorPortrait(flag);
+			self.layers[UILayerNames.TipLayer].SetCanvasScaleEditorPortrait(flag);
+			self.layers[UILayerNames.TopLayer].SetCanvasScaleEditorPortrait(flag);
+			self.layers[UILayerNames.GameBackgroudLayer].SetCanvasScaleEditorPortrait(flag);
 		}
 		static void __AddWindowToStack(this UIManagerComponent self, UIWindow target)
         {
 			var ui_name = target.Name;
-			var layer_name = self.layers[target.Layer].Name;
+			var layer_name = target.Layer;
 			bool isFirst = false;
             if (self.window_stack[layer_name].Contains(ui_name))
             {
@@ -709,13 +670,13 @@ namespace ET
 				view.transform.SetAsLastSibling();
 				self.__ActivateWindow(target);
 			}
-			if(isFirst && layer_name == UILayers.BackgroudLayer.Name || layer_name == UILayers.GameBackgroudLayer.Name)
+			if(isFirst && layer_name == UILayerNames.BackgroudLayer || layer_name == UILayerNames.GameBackgroudLayer)
             {
 				//如果是背景layer，则销毁所有的normal层|BackgroudLayer
-				self.CloseWindowByLayer(UILayers.NormalLayer);
-				self.CloseWindowByLayer(UILayers.GameLayer);
-				self.CloseWindowByLayer(UILayers.BackgroudLayer, new string[]{ ui_name});
-				self.CloseWindowByLayer(UILayers.GameBackgroudLayer, new string[] { ui_name});
+				self.CloseWindowByLayer(UILayerNames.NormalLayer);
+				self.CloseWindowByLayer(UILayerNames.GameLayer);
+				self.CloseWindowByLayer(UILayerNames.BackgroudLayer, new string[]{ ui_name});
+				self.CloseWindowByLayer(UILayerNames.GameBackgroudLayer, new string[] { ui_name});
 			}
 		}
 		static void __AddWindowToStack<P1>(this UIManagerComponent self, UIWindow target,P1 p1)
@@ -735,13 +696,13 @@ namespace ET
 				view.transform.SetAsLastSibling();
 				self.__ActivateWindow(target, p1);
 			}
-			if (isFirst && layer_name == UILayers.BackgroudLayer.Name || layer_name == UILayers.GameBackgroudLayer.Name)
+			if (isFirst && layer_name == UILayerNames.BackgroudLayer || layer_name == UILayerNames.GameBackgroudLayer)
 			{
 				//如果是背景layer，则销毁所有的normal层|BackgroudLayer
-				self.CloseWindowByLayer(UILayers.NormalLayer);
-				self.CloseWindowByLayer(UILayers.GameLayer);
-				self.CloseWindowByLayer(UILayers.BackgroudLayer, new string[] { ui_name });
-				self.CloseWindowByLayer(UILayers.GameBackgroudLayer, new string[] { ui_name });
+				self.CloseWindowByLayer(UILayerNames.NormalLayer);
+				self.CloseWindowByLayer(UILayerNames.GameLayer);
+				self.CloseWindowByLayer(UILayerNames.BackgroudLayer, new string[] { ui_name });
+				self.CloseWindowByLayer(UILayerNames.GameBackgroudLayer, new string[] { ui_name });
 			}
 		}
 		static void __AddWindowToStack<P1, P2>(this UIManagerComponent self, UIWindow target, P1 p1, P2 p2)
@@ -761,13 +722,13 @@ namespace ET
 				view.transform.SetAsLastSibling();
 				self.__ActivateWindow(target, p1,p2);
 			}
-			if (isFirst && layer_name == UILayers.BackgroudLayer.Name || layer_name == UILayers.GameBackgroudLayer.Name)
+			if (isFirst && layer_name == UILayerNames.BackgroudLayer || layer_name == UILayerNames.GameBackgroudLayer)
 			{
 				//如果是背景layer，则销毁所有的normal层|BackgroudLayer
-				self.CloseWindowByLayer(UILayers.NormalLayer);
-				self.CloseWindowByLayer(UILayers.GameLayer);
-				self.CloseWindowByLayer(UILayers.BackgroudLayer, new string[] { ui_name });
-				self.CloseWindowByLayer(UILayers.GameBackgroudLayer, new string[] { ui_name });
+				self.CloseWindowByLayer(UILayerNames.NormalLayer);
+				self.CloseWindowByLayer(UILayerNames.GameLayer);
+				self.CloseWindowByLayer(UILayerNames.BackgroudLayer, new string[] { ui_name });
+				self.CloseWindowByLayer(UILayerNames.GameBackgroudLayer, new string[] { ui_name });
 			}
 		}
 		static void __AddWindowToStack<P1, P2,P3>(this UIManagerComponent self, UIWindow target, P1 p1, P2 p2,P3 p3)
@@ -787,28 +748,16 @@ namespace ET
 				view.transform.SetAsLastSibling();
 				self.__ActivateWindow(target, p1,p2,p3);
 			}
-			if (isFirst && layer_name == UILayers.BackgroudLayer.Name || layer_name == UILayers.GameBackgroudLayer.Name)
+			if (isFirst && layer_name == UILayerNames.BackgroudLayer || layer_name == UILayerNames.GameBackgroudLayer)
 			{
 				//如果是背景layer，则销毁所有的normal层|BackgroudLayer
-				self.CloseWindowByLayer(UILayers.NormalLayer);
-				self.CloseWindowByLayer(UILayers.GameLayer);
-				self.CloseWindowByLayer(UILayers.BackgroudLayer, new string[] { ui_name });
-				self.CloseWindowByLayer(UILayers.GameBackgroudLayer, new string[] { ui_name });
+				self.CloseWindowByLayer(UILayerNames.NormalLayer);
+				self.CloseWindowByLayer(UILayerNames.GameLayer);
+				self.CloseWindowByLayer(UILayerNames.BackgroudLayer, new string[] { ui_name });
+				self.CloseWindowByLayer(UILayerNames.GameBackgroudLayer, new string[] { ui_name });
 			}
 		}
-		static void __RemoveFromStack(this UIManagerComponent self, UIWindow target)
-		{
-			var ui_name = target.Name;
-			var layer_name = self.layers[target.Layer].Name;
-			if (self.window_stack.ContainsKey(layer_name))
-			{
-				self.window_stack[layer_name].Remove(ui_name);
-			}
-            else
-            {
-				Log.Error("not layer, name :" + layer_name);
-            }
-		}
+
 		//销毁指定窗口所有窗口
 		public static void DestroyWindowExceptNames(this UIManagerComponent self, string[] type_names = null)
 		{
@@ -830,24 +779,24 @@ namespace ET
 			}
 		}
 		//销毁指定层级外层级所有窗口
-		public static void DestroyWindowExceptLayer(this UIManagerComponent self, UILayerDefine layer)
+		public static void DestroyWindowExceptLayer(this UIManagerComponent self, UILayerNames layer)
         {
 			var keys = self.windows.Keys.ToArray();
 			for (int i = self.windows.Count-1; i >= 0; i--)
             {
-				if (self.windows[keys[i]].Layer != layer.Name)
+				if (self.windows[keys[i]].Layer != layer)
 				{
 					self.DestroyWindow(keys[i]);
 				}
 			}
         }
 		//销毁层级所有窗口
-		public static void DestroyWindowByLayer(this UIManagerComponent self, UILayerDefine layer)
+		public static void DestroyWindowByLayer(this UIManagerComponent self, UILayerNames layer)
 		{
 			var keys = self.windows.Keys.ToArray();
 			for (int i = self.windows.Count - 1; i >= 0; i--)
 			{
-				if (self.windows[keys[i]].Layer == layer.Name)
+				if (self.windows[keys[i]].Layer == layer)
 				{
 					self.DestroyWindow(self.windows[keys[i]].Name);
 				}
