@@ -68,7 +68,7 @@ namespace ET
 
             //清理UI
             Log.Info("CoInnerSwitchScene Clean UI");
-            await Game.EventSystem.Publish(new EventType.DestroyWindowExceptNames() { names = DestroyWindowExceptNames.ToArray()  });
+            UIManagerComponent.Instance.DestroyWindowExceptNames(DestroyWindowExceptNames.ToArray());
             
             slid_value += 0.01f;
             Game.EventSystem.Publish(new EventType.LoadingProgress { Progress = slid_value }).Coroutine();

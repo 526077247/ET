@@ -25,6 +25,10 @@ namespace ET
 		{
 			Instance = this;
 			ServerConfig.config.TryGetValue(PlayerPrefs.GetString(ServerKey, ServerConfig.default_key),out cur_config);
+            if (cur_config == null)
+            {
+				ServerConfig.config.TryGetValue(ServerConfig.default_key, out cur_config);
+			}
 		}
 
 		public ServerConfig GetCurConfig()

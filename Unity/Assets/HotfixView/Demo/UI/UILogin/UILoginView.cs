@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 namespace ET
 {
@@ -35,10 +36,13 @@ namespace ET
 			btns = new List<UIButton>();
             for (int i = 0; i < 2; i++)
             {
-				btns.Add(settings.AddComponent<UIButton>("Setting"+(i+1)));
-				btns[i].SetOnClick(()=> {
-					OnBtnClick("Setting" + (i + 1));
+				string name = "Setting" + (i + 1);
+				var btn = settings.AddComponent<UIButton>(name);
+				btn.SetOnClick(() =>
+				{
+					OnBtnClick(name);
 				});
+				btns.Add(btn);
 			}
 		}
 
@@ -61,6 +65,7 @@ namespace ET
 		}
 		public void OnBtnClick(string name)
         {
+			Log.Debug(name);
 			ipaddr.SetText(ServerConfigManagerComponent.Instance.ChangeEnv(name.ToLower()).iplist[0]);
 		}
 	}

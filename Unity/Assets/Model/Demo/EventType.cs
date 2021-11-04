@@ -63,10 +63,6 @@
         }
 
         #region UI
-        public struct DestroyWindowExceptNames
-        {
-            public string[] names;
-        }
 
         //加载界面
         public struct LoadingBegin

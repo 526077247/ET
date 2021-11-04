@@ -234,7 +234,51 @@ namespace ET
             length++;
             return component_inst;
         }
+        public virtual void SetActive(bool active)
+        {
+            if (active)
+            {
+                OnEnable();
+            }
+            else
+            {
+                OnDisable();
+            }
+        }
 
+        public virtual void SetActive<T>(bool active, T param1)
+        {
+            if (active)
+            {
+                OnEnable(param1);
+            }
+            else
+            {
+                OnDisable(param1);
+            }
+        }
+        public virtual void SetActive<T, P>(bool active, T param1, P param2)
+        {
+            if (active)
+            {
+                OnEnable(param1, param2);
+            }
+            else
+            {
+                OnDisable(param1, param2);
+            }
+        }
+        public virtual void SetActive<T, P, K>(bool active, T param1, P param2, K param3)
+        {
+            if (active)
+            {
+                OnEnable(param1, param2, param3);
+            }
+            else
+            {
+                OnDisable(param1, param2, param3);
+            }
+        }
         /// <summary>
         /// 获取组件
         /// </summary>

@@ -6,6 +6,12 @@ using System.Threading.Tasks;
 
 namespace ET
 {
+	public enum UIWindowLoadingState:byte
+    {
+		NotStart, // 未开始
+		Loading, //加载中
+		LoadOver, //加载完成
+    }
 	public class UIWindow : Entity
 	{
 		/// <summary>
@@ -19,7 +25,7 @@ namespace ET
 		/// <summary>
 		/// 是否正在加载
 		/// </summary>
-		public bool IsLoading;
+		public UIWindowLoadingState LoadingState;
 		/// <summary>
 		/// 预制体路径
 		/// </summary>

@@ -2,7 +2,6 @@ using UnityEngine;
 using System.IO;
 
 /// <summary>
-/// added by wsh @ 2017.12.25
 /// 功能： Assetbundle相关的通用静态函数，提供运行时，或者Editor中使用到的有关Assetbundle操作和路径处理的函数
 /// TODO：
 /// 1、做路径处理时是否考虑引入BetterStringBuilder消除GC问题

@@ -66,57 +66,57 @@ namespace ET
             }
         }
         
-        public void SetActive(bool active)
+        public override void SetActive(bool active)
         {
             if (active)
             {
                 gameObject.SetActive(active);
-                OnEnable();
+                base.SetActive(active);
             }
             else
             {
-                OnDisable();
+                base.SetActive(active);
                 gameObject.SetActive(active);
             }
         }
 
-        public void SetActive<T>(bool active, T param1)
+        public override void SetActive<T>(bool active, T param1)
         {
             if (active)
             {
                 gameObject.SetActive(active);
-                OnEnable(param1);
+                base.SetActive(active,param1);
             }
             else
             {
+                base.SetActive(active, param1);
                 gameObject.SetActive(active);
-                OnDisable(param1);
             }
         }
-        public void SetActive<T, P>(bool active, T param1, P param2)
+        public override void SetActive<T, P>(bool active, T param1, P param2)
         {
             if (active)
             {
                 gameObject.SetActive(active);
-                OnEnable(param1, param2);
+                base.SetActive(active, param1, param2);
             }
             else
             {
+                base.SetActive(active, param1, param2);
                 gameObject.SetActive(active);
-                OnDisable(param1, param2);
             }
         }
-        public void SetActive<T, P, K>(bool active, T param1, P param2, K param3)
+        public override void SetActive<T, P, K>(bool active, T param1, P param2, K param3)
         {
             if (active)
             {
                 gameObject.SetActive(active);
-                OnEnable(param1, param2, param3);
+                base.SetActive(active, param1, param2,param3);
             }
             else
             {
+                base.SetActive(active, param1, param2, param3);
                 gameObject.SetActive(active);
-                OnDisable(param1, param2, param3);
             }
         }
         /// <summary>

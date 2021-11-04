@@ -10,6 +10,7 @@ namespace ET
         DB,
         Resources,
         ResourcesLoader,
+        UIManager,
 
         Max, // 这个必须在最后
     }

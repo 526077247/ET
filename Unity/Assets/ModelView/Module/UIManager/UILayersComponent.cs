@@ -8,10 +8,8 @@ using UnityEngine;
 namespace ET
 {
 	
-	public class UIManagerComponent:UIWindowComponent
+	public class UILayersComponent : Entity
     {
-
-		public static UIManagerComponent Instance;
 		public string UIRootPath;//UIRoot路径
 		public string EventSystemPath;// EventSystem路径
 		public string UICameraPath;// UICamera路径
@@ -22,9 +20,6 @@ namespace ET
 		public bool need_turn;
 		public Camera UICamera;
 		public Vector2 Resolution;
-		public int MaxOderPerWindow = 10;
-		public float ScreenSizeflag;
-
 
 		public GameObject gameObject;
 	}
