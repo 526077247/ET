@@ -21,15 +21,15 @@ public class I18nTextComponent : MonoBehaviour
     private void OnEnable()
     {
         OnSwitchLanguage();
-        Messager.Instance.AddListener<Action>(MessagerId.OnLanguageChange, OnSwitchLanguage);
+        Messager.Instance.AddListener(MessagerId.OnLanguageChange, OnSwitchLanguage);
     }
 
     private void OnDisable()
     {
-        Messager.Instance.RemoveListener<Action>(MessagerId.OnLanguageChange, OnSwitchLanguage);
+        Messager.Instance.RemoveListener(MessagerId.OnLanguageChange, OnSwitchLanguage);
     }
 
-    private void OnSwitchLanguage()
+    private void OnSwitchLanguage(object sender=null,EventArgs args= null)
     {
         if (m_Text != null)
             m_Text.text = I18nBridge.Instance.GetText(langID);

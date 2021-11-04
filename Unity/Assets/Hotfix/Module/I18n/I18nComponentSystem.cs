@@ -126,7 +126,7 @@ namespace ET
             //修改当前语言
             PlayerPrefs.SetInt(CacheKeys.CurLangType, (int)langType);
             self.curLangType = langType;
-            Messager.Instance.Broadcast<Action>(MessagerId.OnLanguageChange);
+            Messager.Instance.Broadcast(MessagerId.OnLanguageChange);
         }
     }
 }

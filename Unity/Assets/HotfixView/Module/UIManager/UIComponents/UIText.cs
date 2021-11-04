@@ -101,9 +101,9 @@ namespace ET
             }
         }
 
-        public override void OnLanguageChange()
+        public override void OnLanguageChange(object sender = null,EventArgs args = null)
         {
-            base.OnLanguageChange();
+            base.OnLanguageChange(sender,args);
             if (__text_key != null)
                 I18nComponent.Instance.I18NGetParamText(__text_key, keyParams);
         }

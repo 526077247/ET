@@ -37,7 +37,7 @@ namespace ET
             {
 				btns.Add(settings.AddComponent<UIButton>("Setting"+(i+1)));
 				btns[i].SetOnClick(()=> {
-					OnBtnClick(btns[i].transform.name);
+					OnBtnClick("Setting" + (i + 1));
 				});
 			}
 		}

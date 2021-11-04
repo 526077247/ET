@@ -38,7 +38,7 @@ namespace ET
         void BeroreOnEnable()
         {
             if (HasI18N)
-                Messager.Instance.AddListener<Action>("OnLanguageChange", OnLanguageChange);
+                Messager.Instance.AddListener(MessagerId.OnLanguageChange, OnLanguageChange);
             Walk((component) =>
             {
                 component.OnEnable();
@@ -64,7 +64,7 @@ namespace ET
         void BeforeOnDisable()
         {
             if (HasI18N)
-                Messager.Instance.RemoveListener<Action>("OnLanguageChange", OnLanguageChange);
+                Messager.Instance.RemoveListener(MessagerId.OnLanguageChange, OnLanguageChange);
             Walk((component) =>
             {
                 component.OnDisable();
@@ -87,7 +87,7 @@ namespace ET
         {
             BeforeOnDisable();
         }
-        public virtual void OnLanguageChange()
+        public virtual void OnLanguageChange(object sender = null, EventArgs args = null)
         {
 
         }

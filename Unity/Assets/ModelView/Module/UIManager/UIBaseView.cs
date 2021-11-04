@@ -56,18 +56,18 @@ namespace ET
         public override void OnEnable()
         {
             base.OnEnable();
-            Messager.Instance.AddListener<Action>(MessagerId.OnLanguageChange, OnSwitchLanguage);
+            Messager.Instance.AddListener(MessagerId.OnLanguageChange, OnSwitchLanguage);
         }
 
         public override void OnDisable()
         {
             base.OnDisable();
-            Messager.Instance.RemoveListener<Action>(MessagerId.OnLanguageChange, OnSwitchLanguage);
+            Messager.Instance.RemoveListener(MessagerId.OnLanguageChange, OnSwitchLanguage);
         }
 
         #region 多语言相关
         //当语言改变时的回调,让子类自己实现
-        public virtual void OnSwitchLanguage() {
+        public virtual void OnSwitchLanguage(object sender,EventArgs args) {
         }
         #endregion
     }
