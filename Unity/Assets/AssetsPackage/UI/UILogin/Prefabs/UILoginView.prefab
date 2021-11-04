@@ -805,7 +805,7 @@ GameObject:
   - component: {fileID: 842263704108982403}
   - component: {fileID: 5603565398939071087}
   m_Layer: 5
-  m_Name: Local
+  m_Name: Setting2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2436,7 +2436,7 @@ GameObject:
   - component: {fileID: 7981148317346252682}
   - component: {fileID: 7006733222805903345}
   m_Layer: 5
-  m_Name: Inner
+  m_Name: Setting1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

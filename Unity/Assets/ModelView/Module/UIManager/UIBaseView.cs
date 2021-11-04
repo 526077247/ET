@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace ET
 {
@@ -27,8 +28,31 @@ namespace ET
         }
         string name;
         public abstract string PrefabPath { get; }
-        
 
+        public override GameObject gameObject
+        {
+            get
+            {
+                return _gameObject;
+            }
+            set
+            {
+                _gameObject = value;
+                _transform = _gameObject.transform;
+            }
+        }
+        public override Transform transform
+        {
+            get
+            {
+                return _transform;
+            }
+            set
+            {
+                _transform = value;
+                _gameObject = _transform.gameObject;
+            }
+        }
         public override void OnEnable()
         {
             base.OnEnable();

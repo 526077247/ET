@@ -17,7 +17,7 @@ namespace ET
         
         Action OnComponentDestroy;
         public virtual bool HasI18N => false;
-        
+        public string Path;
         public virtual void OnCreate()
         {
             
@@ -158,10 +158,11 @@ namespace ET
         /// </summary>
         /// <typeparam name="T">类型</typeparam>
         /// <param name="path">路径</param>
-        protected T InnerAddComponent<T>(string path) where T : UIBaseContainer
+        public T AddComponent<T>(string path) where T : UIBaseContainer
         {
             Type type = typeof(T);
             T component_inst = AddChild<T>();
+            component_inst.Path = path;
             component_inst.OnComponentDestroy = () =>
             {
                 __RemoveComponent<T>(path);
@@ -178,10 +179,11 @@ namespace ET
         /// </summary>
         /// <typeparam name="T">类型</typeparam>
         /// <param name="path">相对路径</param>
-        protected T InnerAddComponent<T, A>(string path, A a) where T : UIBaseContainer
+        public T AddComponent<T, A>(string path, A a) where T : UIBaseContainer
         {
             Type type = typeof(T);
             T component_inst = AddChild<T>();
+            component_inst.Path = path;
             component_inst.OnComponentDestroy = () =>
             {
                 __RemoveComponent<T>(path);
@@ -197,10 +199,11 @@ namespace ET
         /// </summary>
         /// <typeparam name="T">类型</typeparam>
         /// <param name="path">路径</param>
-        protected T InnerAddComponent<T, A, B>(string path, A a, B b) where T : UIBaseContainer
+        public T AddComponent<T, A, B>(string path, A a, B b) where T : UIBaseContainer
         {
             Type type = typeof(T);
             T component_inst = AddChild<T>();
+            component_inst.Path = path;
             component_inst.OnComponentDestroy = () =>
             {
                 __RemoveComponent<T>(path);
@@ -216,10 +219,11 @@ namespace ET
         /// </summary>
         /// <typeparam name="T">类型</typeparam>
         /// <param name="path">路径</param>
-        protected T InnerAddComponent<T, A, B, C>(string path, A a, B b, C c) where T : UIBaseContainer
+        public T AddComponent<T, A, B, C>(string path, A a, B b, C c) where T : UIBaseContainer
         {
             Type type = typeof(T);
             T component_inst = AddChild<T>();
+            component_inst.Path = path;
             component_inst.OnComponentDestroy = () =>
             {
                 __RemoveComponent<T>(path);

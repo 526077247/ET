@@ -19,7 +19,7 @@ namespace UnityEditor.AddressableAssets.Build
         [InitializeOnLoadMethod]
         static void Init()
         {
-            // EditorApplication.playModeStateChanged += OnEditorPlayModeChanged;
+            EditorApplication.playModeStateChanged += OnEditorPlayModeChanged;
         }
 
         static void OnEditorPlayModeChanged(PlayModeStateChange state)

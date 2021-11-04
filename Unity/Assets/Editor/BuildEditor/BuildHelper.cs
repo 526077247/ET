@@ -29,10 +29,10 @@ namespace ET
         };
         private static void KeystoreSetting()
         {
-            //PlayerSettings.Android.keystoreName = "Poker.keystore";
-            //PlayerSettings.Android.keyaliasName = "poker";
-            //PlayerSettings.keyaliasPass = "Poker@521";
-            //PlayerSettings.keystorePass = "Poker@521";
+            //PlayerSettings.Android.keystoreName = "ET.keystore";
+            //PlayerSettings.Android.keyaliasName = "et";
+            //PlayerSettings.keyaliasPass = "123456";
+            //PlayerSettings.keystorePass = "123456";
         }
         [MenuItem("Tools/web资源服务器")]
         public static void OpenFileServer()

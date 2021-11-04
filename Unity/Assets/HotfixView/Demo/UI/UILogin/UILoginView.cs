@@ -31,11 +31,11 @@ namespace ET
 			password = AddComponent<UIInput>("Panel/Password");
 			ipaddr = AddComponent<UIInputTextmesh>("Panel/GM/InputField");
 			
-			var settings = AddComponent<UIBaseComponent>("Panel/GM/Setting");
+			var settings = AddComponent<UIBaseContainer>("Panel/GM/Setting");
 			btns = new List<UIButton>();
-            for (int i = 0; i < settings.transform.childCount; i++)
+            for (int i = 0; i < 2; i++)
             {
-				btns.Add(settings.AddComponent<UIButton>(i));
+				btns.Add(settings.AddComponent<UIButton>("Setting"+(i+1)));
 				btns[i].SetOnClick(()=> {
 					OnBtnClick(btns[i].transform.name);
 				});
