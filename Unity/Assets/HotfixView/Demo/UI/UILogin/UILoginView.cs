@@ -65,7 +65,6 @@ namespace ET
 		}
 		public void OnBtnClick(string name)
         {
-			Log.Debug(name);
 			ipaddr.SetText(ServerConfigManagerComponent.Instance.ChangeEnv(name.ToLower()).iplist[0]);
 		}
 	}

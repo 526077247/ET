@@ -10,6 +10,7 @@ namespace ET
 	
 	public class UILayersComponent : Entity
     {
+		public static UILayersComponent Instance;
 		public string UIRootPath;//UIRoot路径
 		public string EventSystemPath;// EventSystem路径
 		public string UICameraPath;// UICamera路径

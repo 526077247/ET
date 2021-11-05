@@ -19,9 +19,9 @@ namespace ET
 
     public class UIManagerComponentDestroySystem : DestroySystem<UIManagerComponent>
     {
-        public override void Destroy(UIManagerComponent self)
+        public async override void Destroy(UIManagerComponent self)
         {
-            self.DestroyAllWindow();
+            await self.DestroyAllWindow();
             self.windows.Clear();
             self.windows = null;
             self.window_stack.Clear();
@@ -58,26 +58,6 @@ namespace ET
             }
             return null;
         }
-
-        /// <summary>
-        /// 移除
-        /// </summary>
-        /// <param name="self"></param>
-        /// <param name="target"></param>
-        public static void __RemoveFromStack(this UIManagerComponent self, UIWindow target)
-        {
-            var ui_name = target.Name;
-            var layer_name = target.Layer;
-            if (self.window_stack.ContainsKey(layer_name))
-            {
-                self.window_stack[layer_name].Remove(ui_name);
-            }
-            else
-            {
-                Log.Error("not layer, name :" + layer_name);
-            }
-        }
-
 
         public static async ETTask CloseWindow<T>(this UIManagerComponent self)
         {
@@ -133,9 +113,148 @@ namespace ET
                 target.Dispose();
             }
         }
+        //打开窗口
+        public static async ETTask<T> OpenWindow<T>(this UIManagerComponent self, UILayerNames layer_name = UILayerNames.NormalLayer) where T : UIBaseContainer, new()
+        {
+            string ui_name = typeof(T).Name;
+            var target = self.GetWindow(ui_name);
+            if (target == null)
+            {
+                target = await self.__InitWindow<T>(layer_name);
+                self.windows[ui_name] = target;
+            }
+            target.Layer = layer_name;
+            return await self.__InnerOpenWindow<T>(target);
 
+        }
+        //打开窗口
+        public static async ETTask<T> OpenWindow<T, P1>(this UIManagerComponent self, P1 p1, UILayerNames layer_name = UILayerNames.NormalLayer) where T : UIBaseContainer, new()
+        {
 
+            string ui_name = typeof(T).Name;
+            var target = self.GetWindow(ui_name);
+            if (target == null)
+            {
+                target = await self.__InitWindow<T>(layer_name);
+                self.windows[ui_name] = target;
+            }
+            target.Layer = layer_name;
+            return await self.__InnerOpenWindow<T, P1>(target, p1);
 
+        }
+        //打开窗口
+        public static async ETTask<T> OpenWindow<T, P1, P2>(this UIManagerComponent self, P1 p1, P2 p2, UILayerNames layer_name = UILayerNames.NormalLayer) where T : UIBaseContainer, new()
+        {
+
+            string ui_name = typeof(T).Name;
+            var target = self.GetWindow(ui_name);
+            if (target == null)
+            {
+                target = await self.__InitWindow<T>(layer_name);
+                self.windows[ui_name] = target;
+            }
+            target.Layer = layer_name;
+            return await self.__InnerOpenWindow<T, P1, P2>(target, p1, p2);
+
+        }
+        //打开窗口
+        public static async ETTask<T> OpenWindow<T, P1, P2, P3>(this UIManagerComponent self, P1 p1, P2 p2, P3 p3, UILayerNames layer_name = UILayerNames.NormalLayer) where T : UIBaseContainer, new()
+        {
+
+            string ui_name = typeof(T).Name;
+            var target = self.GetWindow(ui_name);
+            if (target == null)
+            {
+                target = await self.__InitWindow<T>(layer_name);
+                self.windows[ui_name] = target;
+            }
+            target.Layer = layer_name;
+            return await self.__InnerOpenWindow<T, P1, P2, P3>(target, p1, p2, p3);
+
+        }
+
+        //销毁指定窗口所有窗口
+        public static async ETTask DestroyWindowExceptNames(this UIManagerComponent self, string[] type_names = null)
+        {
+            Dictionary<string, bool> dict_ui_names = new Dictionary<string, bool>();
+            if (type_names != null)
+            {
+                for (int i = 0; i < type_names.Length; i++)
+                {
+                    dict_ui_names[type_names[i]] = true;
+                }
+            }
+            var keys = self.windows.Keys.ToArray();
+            using (ListComponent<ETTask> TaskScheduler = ListComponent<ETTask>.Create())
+            {
+                for (int i = self.windows.Count - 1; i >= 0; i--)
+                {
+                    if (!dict_ui_names.ContainsKey(keys[i]))
+                    {
+                        TaskScheduler.List.Add(self.DestroyWindow(keys[i]));
+                    }
+                }
+                await ETTaskHelper.WaitAll(TaskScheduler.List);
+            }
+        }
+        //销毁指定层级外层级所有窗口
+        public static async ETTask DestroyWindowExceptLayer(this UIManagerComponent self, UILayerNames layer)
+        {
+            var keys = self.windows.Keys.ToArray();
+            using (ListComponent<ETTask> TaskScheduler = ListComponent<ETTask>.Create())
+            {
+                for (int i = self.windows.Count - 1; i >= 0; i--)
+                {
+                    if (self.windows[keys[i]].Layer != layer)
+                    {
+                        TaskScheduler.List.Add(self.DestroyWindow(keys[i]));
+                    }
+
+                }
+                await ETTaskHelper.WaitAll(TaskScheduler.List);
+            }
+        }
+        //销毁层级所有窗口
+        public static async ETTask DestroyWindowByLayer(this UIManagerComponent self, UILayerNames layer)
+        {
+            var keys = self.windows.Keys.ToArray();
+            using (ListComponent<ETTask> TaskScheduler = ListComponent<ETTask>.Create())
+            {
+                for (int i = self.windows.Count - 1; i >= 0; i--)
+                {
+                    if (self.windows[keys[i]].Layer == layer)
+                    {
+                        TaskScheduler.List.Add(self.DestroyWindow(self.windows[keys[i]].Name));
+                    }
+                }
+                await ETTaskHelper.WaitAll(TaskScheduler.List);
+            }
+        }
+        public static async ETTask DestroyAllWindow(this UIManagerComponent self)
+        {
+            var keys = self.windows.Keys.ToArray();
+            using (ListComponent<ETTask> TaskScheduler = ListComponent<ETTask>.Create())
+            {
+                for (int i = self.windows.Count - 1; i >= 0; i--)
+                {
+                    TaskScheduler.List.Add(self.DestroyWindow(self.windows[keys[i]].Name));
+                }
+                await ETTaskHelper.WaitAll(TaskScheduler.List);
+            }
+        }
+
+        //判断窗口是否打开
+        public static bool IsActiveWindow<T>(this UIManagerComponent self) where T : UIBaseContainer
+        {
+            string ui_name = typeof(T).Name;
+            var target = self.GetWindow(ui_name);
+            if (target == null)
+            {
+                return false;
+            }
+            return target.Active;
+        }
+        #region 私有方法
         /// <summary>
         /// 初始化window
         /// </summary>
@@ -261,78 +380,6 @@ namespace ET
                 target.Active = false;
             }
         }
-        //判断窗口是否打开
-        static bool IsActiveWindow<T>(this UIManagerComponent self) where T : UIBaseContainer
-        {
-            string ui_name = typeof(T).Name;
-            var target = self.GetWindow(ui_name);
-            if (target == null)
-            {
-                return false;
-            }
-            return target.Active;
-        }
-
-        //打开窗口
-        public static async ETTask<T> OpenWindow<T>(this UIManagerComponent self, UILayerNames layer_name = UILayerNames.NormalLayer) where T : UIBaseContainer, new()
-        {
-            string ui_name = typeof(T).Name;
-            var target = self.GetWindow(ui_name);
-            if (target == null)
-            {
-                target = await self.__InitWindow<T>(layer_name);
-                self.windows[ui_name] = target;
-            }
-            target.Layer = layer_name;
-            return await self.__InnerOpenWindow<T>(target);
-
-        }
-        //打开窗口
-        public static async ETTask<T> OpenWindow<T, P1>(this UIManagerComponent self, P1 p1, UILayerNames layer_name = UILayerNames.NormalLayer) where T : UIBaseContainer, new()
-        {
-
-            string ui_name = typeof(T).Name;
-            var target = self.GetWindow(ui_name);
-            if (target == null)
-            {
-                target = await self.__InitWindow<T>(layer_name);
-                self.windows[ui_name] = target;
-            }
-            target.Layer = layer_name;
-            return await self.__InnerOpenWindow<T, P1>(target, p1);
-
-        }
-        //打开窗口
-        public static async ETTask<T> OpenWindow<T, P1, P2>(this UIManagerComponent self, P1 p1, P2 p2, UILayerNames layer_name = UILayerNames.NormalLayer) where T : UIBaseContainer, new()
-        {
-
-            string ui_name = typeof(T).Name;
-            var target = self.GetWindow(ui_name);
-            if (target == null)
-            {
-                target = await self.__InitWindow<T>(layer_name);
-                self.windows[ui_name] = target;
-            }
-            target.Layer = layer_name;
-            return await self.__InnerOpenWindow<T, P1, P2>(target, p1, p2);
-
-        }
-        //打开窗口
-        public static async ETTask<T> OpenWindow<T, P1, P2, P3>(this UIManagerComponent self, P1 p1, P2 p2, P3 p3, UILayerNames layer_name = UILayerNames.NormalLayer) where T : UIBaseContainer, new()
-        {
-
-            string ui_name = typeof(T).Name;
-            var target = self.GetWindow(ui_name);
-            if (target == null)
-            {
-                target = await self.__InitWindow<T>(layer_name);
-                self.windows[ui_name] = target;
-            }
-            target.Layer = layer_name;
-            return await self.__InnerOpenWindow<T, P1, P2, P3>(target, p1, p2, p3);
-
-        }
-
         static async ETTask __AddWindowToStack(this UIManagerComponent self, UIWindow target)
         {
             var ui_name = target.Name;
@@ -422,75 +469,24 @@ namespace ET
             }
         }
 
-        //销毁指定窗口所有窗口
-        public static async ETTask DestroyWindowExceptNames(this UIManagerComponent self, string[] type_names = null)
+        /// <summary>
+        /// 移除
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="target"></param>
+        static void __RemoveFromStack(this UIManagerComponent self, UIWindow target)
         {
-            Dictionary<string, bool> dict_ui_names = new Dictionary<string, bool>();
-            if (type_names != null)
+            var ui_name = target.Name;
+            var layer_name = target.Layer;
+            if (self.window_stack.ContainsKey(layer_name))
             {
-                for (int i = 0; i < type_names.Length; i++)
-                {
-                    dict_ui_names[type_names[i]] = true;
-                }
+                self.window_stack[layer_name].Remove(ui_name);
             }
-            var keys = self.windows.Keys.ToArray();
-            using (ListComponent<ETTask> TaskScheduler = ListComponent<ETTask>.Create())
+            else
             {
-                for (int i = self.windows.Count - 1; i >= 0; i--)
-                {
-                    if (!dict_ui_names.ContainsKey(keys[i]))
-                    {
-                        TaskScheduler.List.Add(self.DestroyWindow(keys[i]));
-                    }
-                }
-                await ETTaskHelper.WaitAll(TaskScheduler.List);
+                Log.Error("not layer, name :" + layer_name);
             }
         }
-        //销毁指定层级外层级所有窗口
-        public static async ETTask DestroyWindowExceptLayer(this UIManagerComponent self, UILayerNames layer)
-        {
-            var keys = self.windows.Keys.ToArray();
-            using (ListComponent<ETTask> TaskScheduler = ListComponent<ETTask>.Create())
-            {
-                for (int i = self.windows.Count - 1; i >= 0; i--)
-                {
-                    if (self.windows[keys[i]].Layer != layer)
-                    {
-                        TaskScheduler.List.Add(self.DestroyWindow(keys[i]));
-                    }
-
-                }
-                await ETTaskHelper.WaitAll(TaskScheduler.List);
-            }
-        }
-        //销毁层级所有窗口
-        public static async ETTask DestroyWindowByLayer(this UIManagerComponent self, UILayerNames layer)
-        {
-            var keys = self.windows.Keys.ToArray();
-            using (ListComponent<ETTask> TaskScheduler = ListComponent<ETTask>.Create())
-            {
-                for (int i = self.windows.Count - 1; i >= 0; i--)
-                {
-                    if (self.windows[keys[i]].Layer == layer)
-                    {
-                        TaskScheduler.List.Add(self.DestroyWindow(self.windows[keys[i]].Name));
-                    }
-                }
-                await ETTaskHelper.WaitAll(TaskScheduler.List);
-            }
-        }
-        public static async ETTask DestroyAllWindow(this UIManagerComponent self)
-        {
-            var keys = self.windows.Keys.ToArray();
-            using (ListComponent<ETTask> TaskScheduler = ListComponent<ETTask>.Create())
-            {
-                for (int i = self.windows.Count - 1; i >= 0; i--)
-                {
-                    TaskScheduler.List.Add(self.DestroyWindow(self.windows[keys[i]].Name));
-                }
-                await ETTaskHelper.WaitAll(TaskScheduler.List);
-            }
-        }
-
+        #endregion
     }
 }

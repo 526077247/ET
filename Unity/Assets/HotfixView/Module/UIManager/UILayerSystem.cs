@@ -12,7 +12,6 @@ namespace ET
     {
         public override void Awake(UILayer self, UILayerDefine layer,GameObject gameObject)
         {
-            UILayersComponent layersComponent = UIManagerComponent.Instance.GetComponent<UILayersComponent>();
             self.Name = layer.Name;
             self.gameObject = gameObject;
             self.transform = gameObject.transform;
@@ -24,7 +23,7 @@ namespace ET
                 self.gameObject = self.unity_canvas.gameObject;
             }
             self.unity_canvas.renderMode = RenderMode.ScreenSpaceCamera;
-            self.unity_canvas.worldCamera = layersComponent.UICamera;
+            self.unity_canvas.worldCamera = UILayersComponent.Instance.UICamera;
             self.unity_canvas.planeDistance = layer.PlaneDistance;
             self.unity_canvas.sortingLayerName = SortingLayerNames.UI;
             self.unity_canvas.sortingOrder = layer.OrderInLayer;
@@ -36,7 +35,7 @@ namespace ET
             }
             self.unity_canvas_scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
             self.unity_canvas_scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
-            self.unity_canvas_scaler.referenceResolution = layersComponent.Resolution;
+            self.unity_canvas_scaler.referenceResolution = UILayersComponent.Instance.Resolution;
             if (Screen.width / Screen.height > Define.DesignScreen_Width / Define.DesignScreen_Height)
                 self.unity_canvas_scaler.matchWidthOrHeight = 1;
             else
