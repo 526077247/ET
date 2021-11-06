@@ -26,7 +26,6 @@ namespace ET
             self.windows = null;
             self.window_stack.Clear();
             self.window_stack = null;
-            self.RemoveAllComponent();
             UIManagerComponent.Instance = null;
             Log.Info("UIManagerComponent Dispose");
         }

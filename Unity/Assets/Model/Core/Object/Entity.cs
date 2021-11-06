@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Serialization;
 using MongoDB.Bson.Serialization.Attributes;
 
@@ -637,6 +638,18 @@ namespace ET
 
             RemoveFromComponents(c);
             c.Dispose();
+        }
+        public void RemoveAllComponent()
+        {
+            if (this.components == null)
+            {
+                return;
+            }
+            var keys = this.components.Keys.ToList();
+            foreach (var item in keys)
+            {
+                RemoveComponent(item);
+            }
         }
 
         public virtual K GetComponent<K>() where K : Entity

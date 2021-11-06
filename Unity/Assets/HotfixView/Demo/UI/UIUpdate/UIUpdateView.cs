@@ -73,7 +73,7 @@ namespace ET
             AddressablesManager.Instance.ClearAssetsCache();
 
             //预加载Lua
-            AddressablesManager.Instance.ReleaseLuas();
+            //AddressablesManager.Instance.ReleaseLuas();
 
             //重新加载配置
             AssetBundleConfig.Instance.SyncLoadGlobalAssetBundle();
