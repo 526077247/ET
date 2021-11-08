@@ -4,13 +4,12 @@
 	{
 		protected override async ETTask Run(EventType.EnterMapFinish args)
 		{
-            UIManagerComponent.Instance.CloseWindow<UILobbyView>();
             Scene zoneScene = args.ZoneScene;
-            await SceneManagerComponent.Instance.SwitchScene<MapScene>(SceneConfig.GetSceneConfigByName("Map"));
+            await SceneManagerComponent.Instance.SwitchScene<MapScene>(SceneConfig.GetSceneConfigByName(SceneNames.Map));
             var container = zoneScene.AddComponent<SceneContainer>();
             container.AddComponent<OperaComponent>();
             //container.AddComponent<CameraComponent>();
-            UIManagerComponent.Instance.DestroyWindow<UILoadingView>();
+            await UIManagerComponent.Instance.DestroyWindow<UILoadingView>();
 
         }
 	}

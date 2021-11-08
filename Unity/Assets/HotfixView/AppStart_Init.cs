@@ -42,9 +42,9 @@ namespace ET
             Game.Scene.AddComponent<GlobalComponent>();
             Game.Scene.AddComponent<AIDispatcherComponent>();
 
-            Scene zoneScene = await SceneFactory.CreateZoneScene(1, "Game", Game.Scene);
-
-            await Game.EventSystem.Publish(new EventType.AppStartInitFinish() { ZoneScene = zoneScene });
+            await SceneManagerComponent.Instance.SwitchScene<BaseScene>(SceneConfig.LoadingScene);
+            await UIManagerComponent.Instance.OpenWindow<UIUpdateView>();//下载热更资源
+            await UIManagerComponent.Instance.CloseWindow<UILoadingView>();
         }
     }
 }

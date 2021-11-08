@@ -32,11 +32,11 @@ namespace ET
         //是否忙
         bool busing = false;
         //场景对象
-        Dictionary<string, BaseScene> scenes;
+        Dictionary<SceneNames, BaseScene> scenes;
         public void Awake()
         {
             Instance = this;
-            scenes = new Dictionary<string, BaseScene>();
+            scenes = new Dictionary<SceneNames, BaseScene>(SceneNamesCompare.Instance);
         }
 
         //切换场景：内部使用协程
@@ -68,7 +68,7 @@ namespace ET
 
             //清理UI
             Log.Info("CoInnerSwitchScene Clean UI");
-            UIManagerComponent.Instance.DestroyWindowExceptNames(DestroyWindowExceptNames.ToArray());
+            await UIManagerComponent.Instance.DestroyWindowExceptNames(DestroyWindowExceptNames.ToArray());
             
             slid_value += 0.01f;
             Game.EventSystem.Publish(new EventType.LoadingProgress { Progress = slid_value }).Coroutine();
@@ -123,8 +123,7 @@ namespace ET
             //初始化目标场景
             if (!scenes.TryGetValue(scene_config.Name,out var logic_scene))
             {
-                logic_scene = new T();
-                logic_scene.Init(scene_config);
+                logic_scene = AddChild<T,SceneConfig>(scene_config);
                 scenes[scene_config.Name] = logic_scene;
             }
             logic_scene.OnEnter();
@@ -178,13 +177,13 @@ namespace ET
             return current_scene;
         }
 
-        public string GetCurrentSceneName()
+        public SceneNames GetCurrentSceneName()
         {
             if (current_scene != null)
             {
                 return current_scene.scene_config.Name;
             }
-            return "";
+            return SceneNames.None;
         }
 
         public bool IsInTargetScene(SceneConfig scene_config)
@@ -198,10 +197,7 @@ namespace ET
             {
                 return;
             }
-            foreach (var scene in scenes)
-            {
-                scene.Value.Dispose();
-            }
+            scenes.Clear();
             scenes = null;
             base.Dispose();
             

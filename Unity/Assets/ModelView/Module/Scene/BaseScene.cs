@@ -23,7 +23,7 @@ namespace ET
         //预加载的bank音频资源
         Dictionary<string, bool> preload_fmodbanks;
 
-        public virtual void Init(SceneConfig scene_config)
+        public virtual void Awake(SceneConfig scene_config)
         {
             this.scene_config = scene_config;
             preload_resources = new Dictionary<string, Type>();

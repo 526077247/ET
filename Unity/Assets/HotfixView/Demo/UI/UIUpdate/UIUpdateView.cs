@@ -45,7 +45,6 @@ namespace ET
         Dictionary<int, PoolConn> pool_conn = null;
         int finish_count = 0;
         float last_progress;
-        Scene scene;
 
         public override string PrefabPath => "UI/UIUpdate/Prefabs/UIUpdateView.prefab";
 
@@ -81,10 +80,9 @@ namespace ET
             Game.EventSystem.Publish(new EventType.AppStart()).Coroutine();
         }
 
-        public override void OnEnable<T>(T scene)
+        public override void OnEnable()
         {
             base.OnEnable();
-            this.scene = scene as Scene;
             m_slider.SetValue(0);
             StartCheckUpdate().Coroutine();
         }
@@ -153,7 +151,9 @@ namespace ET
             else
             {
                 Log.Info("不需要更新，直接进入游戏");
-                await UIManagerComponent.Instance.OpenWindow<UILoginView, Scene>(scene);
+                Scene zoneScene = await SceneFactory.CreateZoneScene(1, "Game", Game.Scene);
+
+                await Game.EventSystem.Publish(new EventType.AppStartInitFinish() { ZoneScene = zoneScene });
                 this.CloseSelf();
             }
         }

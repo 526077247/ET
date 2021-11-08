@@ -10,9 +10,9 @@ namespace ET
 {
     public class MapScene : BaseScene
     {
-        public override void Init(SceneConfig scene_config)
+        public override void Awake(SceneConfig scene_config)
         {
-            base.Init(scene_config);
+            base.Awake(scene_config);
             var role = UnitConfigCategory.Instance.GetAll();
             foreach (var item in role)
                 AddPreloadResource(item.Value.Perfab, typeof(GameObject), 1);
