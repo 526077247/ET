@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ET
 {
-	public class UILayerDefine
+	public struct UILayerDefine
 	{
 		public UILayerNames Name;
 		public int PlaneDistance;

@@ -7,10 +7,75 @@ using UnityEngine;
 
 namespace ET
 {
-
     public class UILayersComponentAwakeSystem : AwakeSystem<UILayersComponent>
     {
-        public override void Awake(UILayersComponent self)
+
+		UILayerDefine[] GetConfig()
+        {
+			UILayerDefine GameBackgroudLayer = new UILayerDefine
+			{
+				Name = UILayerNames.GameBackgroudLayer,
+				PlaneDistance = 1000,
+				OrderInLayer = 0,
+			};
+
+			//主界面、全屏的一些界面
+			UILayerDefine BackgroudLayer = new UILayerDefine
+			{
+				Name = UILayerNames.BackgroudLayer,
+				PlaneDistance = 900,
+				OrderInLayer = 1000,
+			};
+
+			//游戏内的View层
+			UILayerDefine GameLayer = new UILayerDefine
+			{
+				Name = UILayerNames.GameLayer,
+				PlaneDistance = 800,
+				OrderInLayer = 1800,
+			};
+			// 场景UI，如：点击建筑查看建筑信息---一般置于场景之上，界面UI之下
+			UILayerDefine SceneLayer = new UILayerDefine
+			{
+				Name = UILayerNames.SceneLayer,
+				PlaneDistance = 700,
+				OrderInLayer = 2000,
+			};
+			//普通UI，一级、二级、三级等窗口---一般由用户点击打开的多级窗口
+			UILayerDefine NormalLayer = new UILayerDefine
+			{
+				Name = UILayerNames.NormalLayer,
+				PlaneDistance = 600,
+				OrderInLayer = 3000,
+			};
+			//提示UI，如：错误弹窗，网络连接弹窗等
+			UILayerDefine TipLayer = new UILayerDefine
+			{
+				Name = UILayerNames.TipLayer,
+				PlaneDistance = 500,
+				OrderInLayer = 4000,
+			};
+			//顶层UI，如：场景加载
+			UILayerDefine TopLayer = new UILayerDefine
+			{
+				Name = UILayerNames.TopLayer,
+				PlaneDistance = 400,
+				OrderInLayer = 5000,
+			};
+
+			return new UILayerDefine[]
+			{
+				GameBackgroudLayer ,
+				BackgroudLayer,
+				GameLayer,
+				SceneLayer,
+				NormalLayer,
+				TipLayer,
+				TopLayer,
+			};
+		}
+
+		public override void Awake(UILayersComponent self)
         {
 			Log.Info("UILayersComponent Awake");
 			UILayersComponent.Instance = self;
@@ -25,10 +90,11 @@ namespace ET
 			GameObject.DontDestroyOnLoad(event_system);
 			self.Resolution = new Vector2(Define.DesignScreen_Width, Define.DesignScreen_Height);//分辨率
 			self.layers = new Dictionary<UILayerNames, UILayer>(UILayerNamesComparer.Instance);
-			UILayerDefine[] uILayers = UILayers.GetUILayers();
-			for (int i = 0; i < uILayers.Length; i++)
+
+			var UILayers = GetConfig();
+			for (int i = 0; i < UILayers.Length; i++)
 			{
-				var layer = uILayers[i];
+				var layer = UILayers[i];
 				var go = new GameObject(layer.Name.ToString())
 				{
 					layer = 5
