@@ -9,10 +9,10 @@ namespace ET
 		public override string PrefabPath => "UI/UILoading/Prefabs/UILoadingView.prefab";
 		public UILoadingView()
         {
-			if (!SceneManagerComponent.ScenesChangeIgnoreClean.Contains(PrefabPath))
+			if (!SceneManagerComponent.Instance.ScenesChangeIgnoreClean.Contains(PrefabPath))
 			{
-				SceneManagerComponent.ScenesChangeIgnoreClean.Add(PrefabPath);
-				SceneManagerComponent.DestroyWindowExceptNames.Add(typeof(UILoadingView).Name);
+				SceneManagerComponent.Instance.ScenesChangeIgnoreClean.Add(PrefabPath);
+				SceneManagerComponent.Instance.DestroyWindowExceptNames.Add(typeof(UILoadingView).Name);
 			}
 		}
 		UISlider slider;

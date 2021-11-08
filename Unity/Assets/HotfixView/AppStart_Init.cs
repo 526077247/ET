@@ -42,7 +42,7 @@ namespace ET
             Game.Scene.AddComponent<GlobalComponent>();
             Game.Scene.AddComponent<AIDispatcherComponent>();
 
-            await SceneManagerComponent.Instance.SwitchScene<BaseScene>(SceneConfig.LoadingScene);
+            await SceneManagerComponent.Instance.SwitchScene<BaseScene>(SceneNames.Loading);
             await UIManagerComponent.Instance.OpenWindow<UIUpdateView>();//下载热更资源
             await UIManagerComponent.Instance.CloseWindow<UILoadingView>();
         }

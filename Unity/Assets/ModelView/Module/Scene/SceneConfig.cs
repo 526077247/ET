@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace ET
 {
-    //重新登录需要清除的组件放这里
-    public class SceneContainer:Entity
+    public partial class SceneConfig
     {
-
+        public string SceneAddress;
+        public SceneNames Name; 
     }
 }

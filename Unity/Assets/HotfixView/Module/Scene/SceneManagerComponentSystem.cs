@@ -11,9 +11,60 @@ namespace ET
     [ObjectSystem]
     public class SceneManagerComponentAwakeSystem : AwakeSystem<SceneManagerComponent>
     {
+        Dictionary<SceneNames,SceneConfig> GetSceneConfig()
+        {
+            SceneConfig InitScene = new SceneConfig
+            {
+                SceneAddress = "Scenes/InitScene/Init.unity",
+                Name = SceneNames.Init,
+            };
+            SceneConfig LoadingScene = new SceneConfig
+            {
+                SceneAddress = "Scenes/LoadingScene/Loading.unity",
+                Name = SceneNames.Loading,
+            };
+            SceneConfig LoginScene = new SceneConfig
+            {
+                SceneAddress = "Scenes/LoginScene/Login.unity",
+                Name = SceneNames.Login,
+            };
+            SceneConfig MapScene = new SceneConfig
+            {
+                SceneAddress = "Scenes/MapScene/Map.unity",
+                Name = SceneNames.Map,
+            };
+
+            var res = new Dictionary<SceneNames, SceneConfig>(SceneNamesCompare.Instance);
+            res.Add(InitScene.Name,InitScene);
+            res.Add(LoadingScene.Name, LoadingScene);
+            res.Add(MapScene.Name, MapScene);
+            res.Add(LoginScene.Name, LoginScene);
+            return res;
+        }
+
+        
         public override void Awake(SceneManagerComponent self)
         {
-            self.Awake();
+            self.ScenesChangeIgnoreClean = new List<string>();
+            self.DestroyWindowExceptNames = new List<string>();
+            SceneManagerComponent.Instance = self;
+            self.scenes = new Dictionary<SceneNames, BaseScene>(SceneNamesCompare.Instance);
+            self.SceneConfigs = GetSceneConfig();
+
+        }
+    }
+
+
+    public class SceneManagerComponentDestroySystem : DestroySystem<SceneManagerComponent>
+    {
+        public override void Destroy(SceneManagerComponent self)
+        {
+            self.scenes.Clear();
+            self.scenes = null;
+            self.ScenesChangeIgnoreClean = null;
+            self.DestroyWindowExceptNames = null;
+            self.SceneConfigs = null;
+            SceneManagerComponent.Instance = null;
         }
     }
     //--[[
@@ -22,28 +73,14 @@ namespace ET
     //-- 1、资源预加载放各个场景类中自行控制
     //-- 2、场景loading的UI窗口这里统一管理，由于这个窗口很简单，更新进度数据时直接写Model层
     //--]]
-    public class SceneManagerComponent:Entity
+    public static class SceneManagerComponentSystem
     {
-        public static List<string> ScenesChangeIgnoreClean = new List<string>();
-        public static List<string> DestroyWindowExceptNames = new List<string>();
-        public static SceneManagerComponent Instance { get; set; }
-        //当前场景
-        BaseScene current_scene;
-        //是否忙
-        bool busing = false;
-        //场景对象
-        Dictionary<SceneNames, BaseScene> scenes;
-        public void Awake()
-        {
-            Instance = this;
-            scenes = new Dictionary<SceneNames, BaseScene>(SceneNamesCompare.Instance);
-        }
-
-        //切换场景：内部使用协程
-        async ETTask CoInnerSwitchScene<T>(SceneConfig scene_config,bool needclean = false) where T: BaseScene,new()
+        
+        //切换场景
+        async static ETTask InnerSwitchScene<T>(this SceneManagerComponent self,SceneConfig scene_config,bool needclean = false) where T: BaseScene,new()
         {
             float slid_value = 0;
-            Log.Info("CoInnerSwitchScene start open uiloading");
+            Log.Info("InnerSwitchScene start open uiloading");
             //打开loading界面
             await Game.EventSystem.Publish(new EventType.LoadingBegin());
             Game.EventSystem.Publish(new EventType.LoadingProgress { Progress = slid_value }).Coroutine();
@@ -51,15 +88,15 @@ namespace ET
             CameraManagerComponent.Instance.SetCameraStackAtLoadingStart();
 
             //等待资源管理器加载任务结束，否则很多Unity版本在切场景时会有异常，甚至在真机上crash
-            Log.Info("CoInnerSwitchScene ProsessRunning Done ");
+            Log.Info("InnerSwitchScene ProsessRunning Done ");
             while (ResourcesComponent.Instance.IsProsessRunning())
             {
                 await TimerComponent.Instance.WaitAsync(1);
             }
             //清理旧场景
-            if (current_scene!=null)
+            if (self.current_scene!=null)
             {
-                current_scene.CoOnLeave();
+                self.current_scene.CoOnLeave();
             }
             
             slid_value += 0.01f;
@@ -67,17 +104,17 @@ namespace ET
             await TimerComponent.Instance.WaitAsync(1);
 
             //清理UI
-            Log.Info("CoInnerSwitchScene Clean UI");
-            await UIManagerComponent.Instance.DestroyWindowExceptNames(DestroyWindowExceptNames.ToArray());
+            Log.Info("InnerSwitchScene Clean UI");
+            await UIManagerComponent.Instance.DestroyWindowExceptNames(self.DestroyWindowExceptNames.ToArray());
             
             slid_value += 0.01f;
             Game.EventSystem.Publish(new EventType.LoadingProgress { Progress = slid_value }).Coroutine();
             //清除ImageLoaderManager里的资源缓存 这里考虑到我们是单场景
-            Log.Info("CoInnerSwitchScene ImageLoaderManager Cleanup");
+            Log.Info("InnerSwitchScene ImageLoaderManager Cleanup");
             ImageLoaderComponent.Instance.Clear();
             //清除预设以及其创建出来的gameobject, 这里不能清除loading的资源
-            Log.Info("CoInnerSwitchScene GameObjectPool Cleanup");
-            string[] cleanup_besides_path = ScenesChangeIgnoreClean.ToArray();
+            Log.Info("InnerSwitchScene GameObjectPool Cleanup");
+            string[] cleanup_besides_path = self.ScenesChangeIgnoreClean.ToArray();
             if (needclean)
             {
                 GameObjectPoolComponent.Instance.Cleanup(true, cleanup_besides_path);
@@ -94,7 +131,7 @@ namespace ET
                             gos.List.Add(go);
                         }
                     }
-                    Log.Info("CoInnerSwitchScene ResourcesManager ClearAssetsCache excludeAssetLen = " + gos.List.Count);
+                    Log.Info("InnerSwitchScene ResourcesManager ClearAssetsCache excludeAssetLen = " + gos.List.Count);
                     ResourcesComponent.Instance.ClearAssetsCache(gos.List.ToArray());
                 }
                 slid_value += 0.01f;
@@ -105,7 +142,7 @@ namespace ET
                 slid_value += 0.02f;
                 Game.EventSystem.Publish(new EventType.LoadingProgress { Progress = slid_value }).Coroutine();
             }
-            await ResourcesComponent.Instance.LoadSceneAsync(SceneConfig.LoadingScene.SceneAddress, false);
+            await ResourcesComponent.Instance.LoadSceneAsync(self.GetSceneConfigByName(SceneNames.Loading).SceneAddress, false);
             slid_value += 0.01f;
             Game.EventSystem.Publish(new EventType.LoadingProgress { Progress = slid_value }).Coroutine();
             //GC：交替重复2次，清干净一点
@@ -121,10 +158,10 @@ namespace ET
             slid_value += 0.1f;
             Game.EventSystem.Publish(new EventType.LoadingProgress { Progress = slid_value }).Coroutine();
             //初始化目标场景
-            if (!scenes.TryGetValue(scene_config.Name,out var logic_scene))
+            if (!self.scenes.TryGetValue(scene_config.Name,out var logic_scene))
             {
-                logic_scene = AddChild<T,SceneConfig>(scene_config);
-                scenes[scene_config.Name] = logic_scene;
+                logic_scene = self.AddChild<T,SceneConfig>(scene_config);
+                self.scenes[scene_config.Name] = logic_scene;
             }
             logic_scene.OnEnter();
 
@@ -149,7 +186,7 @@ namespace ET
             slid_value += 0.15f;
             Game.EventSystem.Publish(new EventType.LoadingProgress { Progress = slid_value }).Coroutine();
             CameraManagerComponent.Instance.SetCameraStackAtLoadingDone();
-            current_scene = logic_scene;
+            self.current_scene = logic_scene;
             logic_scene.CoOnComplete();
             slid_value = 1;
             Game.EventSystem.Publish(new EventType.LoadingProgress { Progress = slid_value }).Coroutine();
@@ -158,50 +195,78 @@ namespace ET
             await Game.EventSystem.Publish(new EventType.LoadingFinish());
             //释放loading界面引用的资源
             GameObjectPoolComponent.Instance.CleanupWithPathArray(true, cleanup_besides_path);
-            busing = false;
+            self.busing = false;
             logic_scene.OnSwitchSceneEnd();
         }
         //切换场景
-        public async ETTask SwitchScene<T>(SceneConfig scene_config,bool needclean = false) where T : BaseScene, new()
+        public static async ETTask SwitchScene<T>(this SceneManagerComponent self, SceneConfig scene_config,bool needclean = false) where T : BaseScene, new()
         {
-            if (busing) return;
+            if (self.busing) return;
             if (scene_config==null) return;
-            if (current_scene != null && current_scene.scene_config.Name == scene_config.Name)
+            if (self.current_scene != null && self.current_scene.scene_config.Name == scene_config.Name)
                 return;
-            busing = true;
-            await CoInnerSwitchScene<T>(scene_config,needclean);
+            self.busing = true;
+            await self.InnerSwitchScene<T>(scene_config,needclean);
+        }
+        //切换场景
+        public static async ETTask SwitchScene<T>(this SceneManagerComponent self, SceneNames scene_name, bool needclean = false) where T : BaseScene, new()
+        {
+            if (self.busing) return;
+            var scene_config = self.GetSceneConfigByName(scene_name);
+            if (scene_config == null) return;
+            if (self.current_scene != null && self.current_scene.scene_config.Name == scene_config.Name)
+                return;
+            self.busing = true;
+            await self.InnerSwitchScene<T>(scene_config, needclean);
+        }
+        //切换场景
+        public static async ETTask SwitchScene<T>(this SceneManagerComponent self, int scene_id, bool needclean = false) where T : BaseScene, new()
+        {
+            if (self.busing) return;
+            var scene_config = self.GetSceneConfigById(scene_id);
+            if (scene_config == null) return;
+            if (self.current_scene != null && self.current_scene.scene_config.Name == scene_config.Name)
+                return;
+            self.busing = true;
+            await self.InnerSwitchScene<T>(scene_config, needclean);
         }
         //获取当前场景
-        public BaseScene GetCurrentScene()
+        public static BaseScene GetCurrentScene(this SceneManagerComponent self)
         {
-            return current_scene;
+            return self.current_scene;
         }
 
-        public SceneNames GetCurrentSceneName()
+        public static SceneNames GetCurrentSceneName(this SceneManagerComponent self)
         {
-            if (current_scene != null)
+            if (self.current_scene != null)
             {
-                return current_scene.scene_config.Name;
+                return self.current_scene.scene_config.Name;
             }
             return SceneNames.None;
         }
 
-        public bool IsInTargetScene(SceneConfig scene_config)
+        public static bool IsInTargetScene(this SceneManagerComponent self,SceneConfig scene_config)
         {
-            return current_scene != null && current_scene.scene_config.Name == scene_config.Name;
+            return self.current_scene != null && self.current_scene.scene_config.Name == scene_config.Name;
         }
 
-        public override void Dispose()
+        public static SceneConfig GetSceneConfigByName(this SceneManagerComponent self, SceneNames name)
         {
-            if (this.IsDisposed)
+            if (self.SceneConfigs.TryGetValue(name, out var res))
             {
-                return;
+                return res;
             }
-            scenes.Clear();
-            scenes = null;
-            base.Dispose();
-            
-            Instance = null;
+            return null;
+        }
+
+        public static SceneConfig GetSceneConfigById(this SceneManagerComponent self, int id)
+        {
+            SceneNames name = (SceneNames)id;
+            if (self.SceneConfigs.TryGetValue(name, out var res))
+            {
+                return res;
+            }
+            return null;
         }
     }
 }
