@@ -7,13 +7,13 @@ using UnityEngine;
 
 namespace ET
 {
-    public class I18nComponentAwakeSystem : AwakeSystem<I18nComponent>
+    public class I18NComponentAwakeSystem : AwakeSystem<I18NComponent>
     {
-        public override void Awake(I18nComponent self)
+        public override void Awake(I18NComponent self)
         {
-            I18nComponent.Instance = self;
-            var res = I18nTextCategory.Instance.GetAll();
-            self.curLangType = (I18nComponent.LangType)PlayerPrefs.GetInt(CacheKeys.CurLangType, 0);
+            I18NComponent.Instance = self;
+            var res = I18NConfigCategory.Instance.GetAll();
+            self.curLangType = (I18NComponent.LangType)PlayerPrefs.GetInt(CacheKeys.CurLangType, 0);
             self.i18nTextDic.Clear();
             self.i18nTextKeyDic.Clear();
             foreach (var item in res)
@@ -21,13 +21,13 @@ namespace ET
                 self.i18nTextDic.Add(item.Key, item.Value);
                 self.i18nTextKeyDic.Add(item.Value.Key, item.Value);
             }
-            I18nBridge.Instance.GetValueById = self.I18NGetText;
-            I18nBridge.Instance.GetValueByKey = self.I18NGetText;
+            I18NBridge.Instance.GetValueById = self.I18NGetText;
+            I18NBridge.Instance.GetValueByKey = self.I18NGetText;
         }
     }
     public static class I18nComponentSystem
     {
-        public static string I18NGetText(this I18nComponent self, string key)
+        public static string I18NGetText(this I18NComponent self, string key)
         {
             if (!self.i18nTextKeyDic.TryGetValue(key, out var value))
             {
@@ -35,16 +35,16 @@ namespace ET
             }
             switch (self.curLangType)
             {
-                case I18nComponent.LangType.Chinese:
+                case I18NComponent.LangType.Chinese:
                     return value.Chinese;
-                case I18nComponent.LangType.English:
+                case I18NComponent.LangType.English:
                     return value.English;
                 default:
                     return value.Chinese;
             }
         }
 
-        public static string I18NGetText(this I18nComponent self, int id)
+        public static string I18NGetText(this I18NComponent self, int id)
         {
             if (!self.i18nTextDic.TryGetValue(id, out var value))
             {
@@ -52,9 +52,9 @@ namespace ET
             }
             switch (self.curLangType)
             {
-                case I18nComponent.LangType.Chinese:
+                case I18NComponent.LangType.Chinese:
                     return value.Chinese;
-                case I18nComponent.LangType.English:
+                case I18NComponent.LangType.English:
                     return value.English;
                 default:
                     return value.Chinese;
@@ -67,7 +67,7 @@ namespace ET
         /// <param name="key"></param>
         /// <param name="paras"></param>
         /// <returns></returns>
-        public static string I18NGetParamText(this I18nComponent self, string key, params object[] paras)
+        public static string I18NGetParamText(this I18NComponent self, string key, params object[] paras)
         {
             if (!self.i18nTextKeyDic.TryGetValue(key, out var value))
             {
@@ -76,10 +76,10 @@ namespace ET
             string val;
             switch (self.curLangType)
             {
-                case I18nComponent.LangType.Chinese:
+                case I18NComponent.LangType.Chinese:
                     val = value.Chinese;
                     break;
-                case I18nComponent.LangType.English:
+                case I18NComponent.LangType.English:
                     val = value.English;
                     break;
                 default:
@@ -97,7 +97,7 @@ namespace ET
         /// <param name="self"></param>
         /// <param name="key"></param>
         /// <returns></returns>
-        public static bool I18NTryGetText(this I18nComponent self, string key, out string result)
+        public static bool I18NTryGetText(this I18NComponent self, string key, out string result)
         {
             if (!self.i18nTextKeyDic.TryGetValue(key, out var value))
             {
@@ -106,10 +106,10 @@ namespace ET
             }
             switch (self.curLangType)
             {
-                case I18nComponent.LangType.Chinese:
+                case I18NComponent.LangType.Chinese:
                     result = value.Chinese;
                     return true;
-                case I18nComponent.LangType.English:
+                case I18NComponent.LangType.English:
                     result = value.English;
                     return true;
                 default:
@@ -121,7 +121,7 @@ namespace ET
         /// 切换语言,外部接口
         /// </summary>
         /// <param name="langType"></param>
-        public static void SwitchLanguage(this I18nComponent self, I18nComponent.LangType langType)
+        public static void SwitchLanguage(this I18NComponent self, I18NComponent.LangType langType)
         {
             //修改当前语言
             PlayerPrefs.SetInt(CacheKeys.CurLangType, (int)langType);

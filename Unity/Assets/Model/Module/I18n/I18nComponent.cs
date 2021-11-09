@@ -5,9 +5,9 @@ using UnityEngine;
 
 namespace ET
 {
-    public class I18nComponent : Entity
+    public class I18NComponent : Entity
     {
-        public static I18nComponent Instance;
+        public static I18NComponent Instance;
         //”Ô—‘¿‡–Õ√∂æŸ
         public enum LangType
         {
@@ -15,8 +15,8 @@ namespace ET
             English,
         }
         public LangType curLangType;
-        public readonly Dictionary<int, I18nText> i18nTextDic = new Dictionary<int, I18nText>();
-        public readonly Dictionary<string, I18nText> i18nTextKeyDic = new Dictionary<string, I18nText>();
+        public readonly Dictionary<int, I18NConfig> i18nTextDic = new Dictionary<int, I18NConfig>();
+        public readonly Dictionary<string, I18NConfig> i18nTextKeyDic = new Dictionary<string, I18NConfig>();
     }
 
 }

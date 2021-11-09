@@ -30,7 +30,7 @@ namespace ET
             Game.Scene.AddComponent<ConfigComponent>();
             ConfigComponent.GetAllConfigBytes = await LoadConfigHelper.LoadAllConfigBytes();
             await ConfigComponent.Instance.LoadAsync();
-            Game.Scene.AddComponent<I18nComponent>();
+            Game.Scene.AddComponent<I18NComponent>();
             Game.Scene.AddComponent<OpcodeTypeComponent>();
             Game.Scene.AddComponent<MessageDispatcherComponent>();
 

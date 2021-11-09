@@ -23,12 +23,12 @@ namespace ET
                         __unity_uitext = this.gameObject.AddComponent<Text>();
                         Log.Info($"添加UI侧组件UITextmesh时，物体{this.gameObject.name}上没有找到Text组件");
                     }
-                    unity_i18ncomp_touched = this.gameObject.GetComponent<I18nTextComponent>();
+                    unity_i18ncomp_touched = this.gameObject.GetComponent<I18NText>();
                 }
                 return __unity_uitext;
             }
         }
-        I18nTextComponent unity_i18ncomp_touched;
+        I18NText unity_i18ncomp_touched;
         string __text_key;
         object[] keyParams;
         public override bool HasI18N => true;
@@ -95,7 +95,7 @@ namespace ET
             {
                 __DisableI18Component();
                 keyParams = paras;
-                if (I18nComponent.Instance.I18NTryGetText(__text_key, out var text) && paras != null)
+                if (I18NComponent.Instance.I18NTryGetText(__text_key, out var text) && paras != null)
                     text = string.Format(text, paras);
                 unity_uitext.text = text;
             }
@@ -105,7 +105,7 @@ namespace ET
         {
             base.OnLanguageChange(sender,args);
             if (__text_key != null)
-                I18nComponent.Instance.I18NGetParamText(__text_key, keyParams);
+                I18NComponent.Instance.I18NGetParamText(__text_key, keyParams);
         }
 
         public void SetTextColor(Color color)

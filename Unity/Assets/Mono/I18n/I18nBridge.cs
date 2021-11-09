@@ -1,9 +1,9 @@
 ﻿using System;
 
-public class I18nBridge
+public class I18NBridge
 {
 
-    public static I18nBridge Instance { get; private set; } = new I18nBridge();
+    public static I18NBridge Instance { get; private set; } = new I18NBridge();
 
     public Func<string, string> GetValueByKey;
 

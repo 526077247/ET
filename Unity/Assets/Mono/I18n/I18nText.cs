@@ -4,7 +4,7 @@ using TMPro;
 using ET;
 using System;
 
-public class I18nText : MonoBehaviour
+public class I18NText : MonoBehaviour
 {
     [Tooltip("多语言Text组件")]
     public string key;
@@ -24,15 +24,15 @@ public class I18nText : MonoBehaviour
 
     private void OnDisable()
     {
-        Messager.Instance.RemoveListener(MessagerId.OnLanguageChange, OnSwitchLanguage);
+        Messager.Instance?.RemoveListener(MessagerId.OnLanguageChange, OnSwitchLanguage);
     }
 
     private void OnSwitchLanguage(object sender = null, EventArgs args = null)
     {
         if (m_Text != null)
-            m_Text.text = I18nBridge.Instance.GetText(key);
+            m_Text.text = I18NBridge.Instance.GetText(key);
         if (m_MeshText != null)
-            m_MeshText.text = I18nBridge.Instance.GetText(key);
+            m_MeshText.text = I18NBridge.Instance.GetText(key);
     }
 }
 

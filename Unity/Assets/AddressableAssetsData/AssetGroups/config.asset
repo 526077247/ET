@@ -31,18 +31,17 @@ MonoBehaviour:
     - default
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
-  - m_GUID: 87388f12946ca2b4eb2ca96fead448d4
-    m_Address: Config/I18nTextCategory.bytes
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - default
-    m_MainAsset: {fileID: 0}
-    m_TargetAsset: {fileID: 0}
   - m_GUID: 04a40c5f1bc0d1c499a771145463654a
     m_Address: Config/UnitConfigCategory.bytes
     m_ReadOnly: 0
     m_SerializedLabels:
     - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: bb9e5b84bed69df4481948c33e1e14b4
+    m_Address: Config/I18NConfigCategory.bytes
+    m_ReadOnly: 0
+    m_SerializedLabels: []
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
   m_ReadOnly: 0
