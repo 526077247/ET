@@ -443,7 +443,7 @@ namespace UnityEditor.AddressableAssets.Settings
                 int i = path.LastIndexOf(".unity");
                 if (i > 0)
                     path = path.Substring(0, i);
-                i = path.ToLower().IndexOf("assets/");
+                i = path.IndexOf("assets/", System.StringComparison.OrdinalIgnoreCase);
                 if (i == 0)
                     path = path.Substring("assets/".Length);
                 return path;
@@ -453,7 +453,7 @@ namespace UnityEditor.AddressableAssets.Settings
         static string GetResourcesPath(string path)
         {
             path = path.Replace('\\', '/');
-            int ri = path.ToLower().LastIndexOf("/resources/");
+            int ri = path.LastIndexOf("/resources/",System.StringComparison.OrdinalIgnoreCase);
             if (ri >= 0)
                 path = path.Substring(ri + "/resources/".Length);
             int i = path.LastIndexOf('.');

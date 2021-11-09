@@ -12,7 +12,7 @@ namespace ET
 
         public static string BuildFolder = "../Release/{0}/StreamingAssets/";
 
-        static Dictionary<PlatformType, BuildTarget> buildmap = new Dictionary<PlatformType, BuildTarget>()
+        static Dictionary<PlatformType, BuildTarget> buildmap = new Dictionary<PlatformType, BuildTarget>(PlatformTypeComparer.Instance)
         {
             { PlatformType.Android , BuildTarget.Android },
             { PlatformType.PC , BuildTarget.StandaloneWindows64 },
@@ -20,7 +20,7 @@ namespace ET
             { PlatformType.MacOS , BuildTarget.StandaloneOSX },
         };
 
-        static Dictionary<PlatformType, BuildTargetGroup> buildGroupmap = new Dictionary<PlatformType, BuildTargetGroup>()
+        static Dictionary<PlatformType, BuildTargetGroup> buildGroupmap = new Dictionary<PlatformType, BuildTargetGroup>(PlatformTypeComparer.Instance)
         {
             { PlatformType.Android , BuildTargetGroup.Android },
             { PlatformType.PC , BuildTargetGroup.Standalone },

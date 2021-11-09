@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ET
 {
-	public enum MotionType
+	public enum MotionType:byte
 	{
 		None,
 		Idle,

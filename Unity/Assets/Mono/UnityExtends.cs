@@ -310,7 +310,7 @@ public class UnityExtends
         if (caseSensitive)
             return str.Contains(param);
         else
-            return str.ToLower().Contains(param.ToLower());
+            return str.IndexOf(param, StringComparison.OrdinalIgnoreCase)>=0;
     }
     /// <summary>
     /// 删除字符串中的中文

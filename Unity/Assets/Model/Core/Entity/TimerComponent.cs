@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    public enum TimerClass
+    public enum TimerClass:byte
     {
         None,
         OnceWaitTimer,

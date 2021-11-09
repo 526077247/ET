@@ -17,7 +17,7 @@ namespace ET
         public const byte MSG = 4;
     }
 
-    public enum ServiceType
+    public enum ServiceType:byte
     {
         Outer,
         Inner,

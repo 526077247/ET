@@ -9,7 +9,7 @@ namespace ET
     {
         public static I18NComponent Instance;
         //”Ô—‘¿‡–Õ√∂æŸ
-        public enum LangType
+        public enum LangType:byte
         {
             Chinese,
             English,

@@ -18,7 +18,7 @@ namespace UnityEditor.AddressableAssets.Settings
     {
         internal static bool IsInResources(string path)
         {
-            return path.Replace('\\', '/').ToLower().Contains("/resources/");
+            return path.Replace('\\', '/').IndexOf("/resources/", System.StringComparison.OrdinalIgnoreCase)>=0;
         }
 
         internal static bool GetPathAndGUIDFromTarget(Object target, out string path, out string guid, out Type mainAssetType)

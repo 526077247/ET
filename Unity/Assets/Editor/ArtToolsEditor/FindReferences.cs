@@ -76,7 +76,7 @@ public class FindReferences : EditorWindow
                     string[] fileStrs = Directory.GetFiles(Path.GetFullPath(assetPath), "*.*", SearchOption.AllDirectories);
                     foreach(var fileItem in fileStrs)
                     {
-                        if (Path.GetExtension(fileItem).ToLower() != ".meta")
+                        if (!string.Equals(Path.GetExtension(fileItem), ".meta",System.StringComparison.OrdinalIgnoreCase))
                         {
                             checkAssetPaths.Add(fileItem, 1);
                         }
@@ -84,7 +84,7 @@ public class FindReferences : EditorWindow
                 }
                 else
                 {
-                    if (Path.GetExtension(assetPath).ToLower() != ".meta")
+                    if (!string.Equals(Path.GetExtension(assetPath), ".meta",System.StringComparison.OrdinalIgnoreCase))
                     {
                         checkAssetPaths.Add(assetPath, 1);
                     }
@@ -193,7 +193,7 @@ public class FindReferences : EditorWindow
     static private void FindCSFileReferences(string[] allassetpaths, Dictionary<string, System.Collections.Generic.List<string>> refDic)
     {
         string[] csFiles = Directory.GetFiles(Application.dataPath, "*.cs", SearchOption.AllDirectories)
-            .Where(s => !s.ToLower().Contains("/editor/") ).ToArray();
+            .Where(s => s.IndexOf("/editor/", System.StringComparison.OrdinalIgnoreCase) <0 ).ToArray();
         MatchFileContents(allassetpaths,allassetpaths.Length,csFiles,refDic,2);
     }
 
@@ -382,7 +382,7 @@ public class FindReferences : EditorWindow
                         foreach (var fileName in item.Value)
                         {
                             // GUILayout.Label(fileName);
-                            if(Path.GetExtension(fileName).ToLower() == ".lua")
+                            if(string.Equals(Path.GetExtension(fileName), ".lua", System.StringComparison.OrdinalIgnoreCase))
                             {
                                 GUILayout.Label(fileName);
                             }

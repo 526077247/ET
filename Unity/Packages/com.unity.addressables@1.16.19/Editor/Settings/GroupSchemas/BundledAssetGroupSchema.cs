@@ -19,7 +19,7 @@ namespace UnityEditor.AddressableAssets.Settings.GroupSchemas
         /// <summary>
         /// Defines how bundles are created.
         /// </summary>
-        public enum BundlePackingMode
+        public enum BundlePackingMode : byte
         {
             /// <summary>
             /// Creates a bundle for all non-scene entries and another for all scenes entries.
@@ -38,7 +38,7 @@ namespace UnityEditor.AddressableAssets.Settings.GroupSchemas
         /// <summary>
         /// Options for compressing bundles in this group.
         /// </summary>
-        public enum BundleCompressionMode
+        public enum BundleCompressionMode : byte
         {
             /// <summary>
             /// Use to indicate that bundles will not be compressed.
@@ -75,7 +75,7 @@ namespace UnityEditor.AddressableAssets.Settings.GroupSchemas
         /// <summary>
         /// Options for internal id of assets in bundles.
         /// </summary>
-        internal enum AssetNamingMode
+        internal enum AssetNamingMode : byte
         {
             /// <summary>
             /// Use to identify assets by their full path.
@@ -531,7 +531,7 @@ namespace UnityEditor.AddressableAssets.Settings.GroupSchemas
         /// <summary>
         /// Used to determine how the final bundle name should look.
         /// </summary>
-        public enum BundleNamingStyle
+        public enum BundleNamingStyle : byte
         {
             /// <summary>
             /// Use to indicate that the hash should be appended to the bundle name.

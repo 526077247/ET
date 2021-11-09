@@ -450,9 +450,21 @@ namespace IFix.Editor
                 return type.FullName.Replace('+', '/');
             }
         }
+        public class PlatformComparer : IEqualityComparer<Platform>
+        {
+            public static PlatformComparer Instance = new PlatformComparer();
+            public bool Equals(Platform x, Platform y)
+            {
+                return x == y;          //x.Equals(y);  注意这里不要使用Equals方法，因为也会造成封箱操作
+            }
 
+            public int GetHashCode(Platform x)
+            {
+                return (int)x;
+            }
+        }
         //目前支持的平台编译
-        public enum Platform
+        public enum Platform:byte
         {
             android,
             ios,
@@ -460,7 +472,7 @@ namespace IFix.Editor
         }
 
         //缓存：解析好的编译参数
-        private static Dictionary<Platform, string> compileTemplates = new Dictionary<Platform, string>();
+        private static Dictionary<Platform, string> compileTemplates = new Dictionary<Platform, string>(PlatformComparer.Instance);
 
         //解析unity的编译参数
         private static string parseCompileTemplate(string path)
@@ -503,7 +515,7 @@ namespace IFix.Editor
                     continue;
                 }
                 //排除Assembly-CSharp-firstpass
-                if (file.Substring(file.Length - 3).ToLower() == ".cs")
+                if (string.Equals(file.Substring(file.Length - 3),".cs", System.StringComparison.OrdinalIgnoreCase))
                 {
                     if (file.StartsWith("Assets" + Path.DirectorySeparatorChar + "Plugins") ||
                         file.StartsWith("Assets" + Path.DirectorySeparatorChar + "Standard Assets") ||

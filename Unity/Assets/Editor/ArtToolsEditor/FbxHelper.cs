@@ -122,7 +122,7 @@ public class FbxHelperWindow : EditorWindow
             }
             else if (FileTools.IsExistFile(fileItem))
             {
-                if (fileItem.ToLower().EndsWith(".fbx"))
+                if (fileItem.EndsWith(".fbx", StringComparison.OrdinalIgnoreCase))
                 {
                     fbxFileInfo.Add(new FileInfo(fileItem));
                 }
@@ -161,7 +161,7 @@ public class FbxHelperWindow : EditorWindow
         }
         else
         {
-            if (source_path.ToLower().EndsWith(".fbx"))
+            if (source_path.EndsWith(".fbx", StringComparison.OrdinalIgnoreCase))
             {
                 filesInfos.Add(new FileInfo(source_path));
             }
@@ -187,7 +187,7 @@ public class FbxHelperWindow : EditorWindow
         }
         else
         {
-            if (source_path.ToLower().EndsWith(".anim"))
+            if (source_path.EndsWith(".anim", StringComparison.OrdinalIgnoreCase))
             {
                 filesInfos.Add(source_path);
             }
@@ -196,7 +196,7 @@ public class FbxHelperWindow : EditorWindow
         for (int i = 0; i < filesInfos.Count; i++)
         {
 
-            if (filesInfos[i].ToLower().EndsWith(".anim"))
+            if (filesInfos[i].EndsWith(".anim", StringComparison.OrdinalIgnoreCase))
             {
                 ReplaceAniClipAsset(filesInfos[i]);
             }
@@ -231,7 +231,7 @@ public class FbxHelperWindow : EditorWindow
             //kMI.animationType = ModelImporterAnimationType.Legacy;
 
             //过滤
-            if (fileInfo.Name.ToLower().IndexOf("_skin") > 0)
+            if (fileInfo.Name.IndexOf("_skin", StringComparison.OrdinalIgnoreCase) >= 0)
             {
                 continue;
             }
@@ -313,8 +313,7 @@ public class FbxHelperWindow : EditorWindow
         EditorCurveBinding[] bs = AnimationUtility.GetCurveBindings(clip);
         foreach (EditorCurveBinding theCurveBinding in bs)
         {
-            string name = theCurveBinding.propertyName.ToLower();
-            if (!name.Contains("scale"))
+            if (theCurveBinding.propertyName.IndexOf("scale", StringComparison.OrdinalIgnoreCase)<0)
             {
                 continue;
             }

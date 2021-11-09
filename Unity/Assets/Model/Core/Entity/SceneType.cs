@@ -1,6 +1,6 @@
 ﻿namespace ET
 {
-	public enum SceneType
+	public enum SceneType:byte
 	{
 		Process = 0,
 		Manager = 1,

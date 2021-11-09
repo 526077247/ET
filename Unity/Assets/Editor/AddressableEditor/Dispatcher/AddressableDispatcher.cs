@@ -13,7 +13,7 @@ using System.Collections.Generic;
 
 namespace AssetBundles
 {
-    public enum AddressableDispatcherFilterType
+    public enum AddressableDispatcherFilterType:byte
     {
         Root,
         Children,

@@ -344,7 +344,7 @@ public class AddressableTools
         }
         dir = dir.Substring(index + (Assets_Package + Path.DirectorySeparatorChar).Length);
         var isLuaFile = false;
-        if (dir.ToLower().Contains("LuaScript_Bytes_Content".ToLower()))
+        if (dir.IndexOf("LuaScript_Bytes_Content", StringComparison.OrdinalIgnoreCase) >= 0)
         {
             isLuaFile = true;
         }

@@ -64,7 +64,7 @@ namespace UnityEditor.AddressableAssets.Settings
         /// <summary>
         /// Options for labelling all the different generated events.
         /// </summary>
-        public enum ModificationEvent
+        public enum ModificationEvent : byte
         {
             /// <summary>
             /// Use to indicate that a group was added to the settings object.
@@ -1459,7 +1459,7 @@ namespace UnityEditor.AddressableAssets.Settings
                         e.IsInResources = false;
 
                     var newEntry = CreateOrMoveEntry(item.Key, targetParent, false, false);
-                    var index = oldPath.ToLower().LastIndexOf("resources/");
+                    var index = oldPath.LastIndexOf("resources/", System.StringComparison.OrdinalIgnoreCase);
                     if (index >= 0)
                     {
                         var newAddress = oldPath.Substring(index + 10);

@@ -15,7 +15,7 @@ using LicenseContext = OfficeOpenXml.LicenseContext;
 
 namespace ET
 {
-    public enum ConfigType
+    public enum ConfigType:byte
     {
         Client,
         Server,

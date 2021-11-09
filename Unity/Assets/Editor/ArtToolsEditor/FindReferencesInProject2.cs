@@ -269,7 +269,7 @@ public class FindReferencesInProject2 : EditorWindow
                         foreach (var fileName in item.Value)
                         {
                             // GUILayout.Label(fileName);
-                            if(Path.GetExtension(fileName).ToLower() == ".lua")
+                            if(string.Equals(Path.GetExtension(fileName), ".lua", System.StringComparison.OrdinalIgnoreCase))
                             {
                                 GUILayout.Label(fileName);
                             }

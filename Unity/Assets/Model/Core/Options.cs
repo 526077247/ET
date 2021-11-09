@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    public enum AppType
+    public enum AppType:byte
     {
         Server,
         Robot,

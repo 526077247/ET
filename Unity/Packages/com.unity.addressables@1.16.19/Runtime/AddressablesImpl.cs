@@ -1151,7 +1151,7 @@ namespace UnityEngine.AddressableAssets
         {
             for (var i = 0; i < m_ResourceLocators.Count; i++)
             {
-                if (m_ResourceLocators[i].Locator.LocatorId.ToLower() == "addressablesmaincontentcatalog")
+                if (m_ResourceLocators[i].Locator.LocatorId.Equals("addressablesmaincontentcatalog", System.StringComparison.OrdinalIgnoreCase))
                 {
                     var locationInfo = m_ResourceLocators[i] as ResourceLocatorInfo;
                     if (locationInfo.HashLocation != null) 

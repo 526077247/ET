@@ -21,7 +21,7 @@ namespace UnityEditor.AddressableAssets.GUI
         string m_FirstSelectedGroup;
         private readonly Dictionary<AssetEntryTreeViewItem, bool> m_SearchedEntries = new Dictionary<AssetEntryTreeViewItem, bool>();
 
-        enum ColumnId
+        enum ColumnId : byte
         {
             Id,
             Type,
@@ -909,7 +909,7 @@ namespace UnityEditor.AddressableAssets.GUI
                     col.Entries.Add(item.entry);
                     m_Editor.settings.RemoveAssetEntry(item.entry.guid, false);
                 }
-                path = path.Substring(path.ToLower().IndexOf("assets/"));
+                path = path.Substring(path.IndexOf("assets/", System.StringComparison.OrdinalIgnoreCase));
                 AssetDatabase.CreateAsset(col, path);
                 AssetDatabase.Refresh();
                 var guid = AssetDatabase.AssetPathToGUID(path);

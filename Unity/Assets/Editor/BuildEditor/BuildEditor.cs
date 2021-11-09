@@ -13,8 +13,20 @@ namespace ET
 	{
 		public List<string> ParentPaths = new List<string>();
 	}
+	public class PlatformTypeComparer : IEqualityComparer<PlatformType>
+	{
+		public static PlatformTypeComparer Instance = new PlatformTypeComparer();
+		public bool Equals(PlatformType x, PlatformType y)
+		{
+			return x == y;          //x.Equals(y);  注意这里不要使用Equals方法，因为也会造成封箱操作
+		}
 
-	public enum PlatformType
+		public int GetHashCode(PlatformType x)
+		{
+			return (int)x;
+		}
+	}
+	public enum PlatformType:byte
 	{
 		None,
 		Android,
@@ -23,7 +35,7 @@ namespace ET
 		MacOS,
 	}
 	
-	public enum BuildType
+	public enum BuildType:byte
 	{
 		Development,
 		Release,

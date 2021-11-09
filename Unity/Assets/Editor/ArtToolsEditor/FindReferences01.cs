@@ -186,7 +186,7 @@ public class FindReferences01 : EditorWindow
 
 
             string[] csFiles = Directory.GetFiles(Application.dataPath, "*.cs", SearchOption.AllDirectories)
-            .Where(s => !s.ToLower().Contains("/editor/")).ToArray();
+            .Where(s => s.IndexOf("/editor/", System.StringComparison.OrdinalIgnoreCase) <0).ToArray();
             for (int i = 0; i < csFiles.Length; i++)//添加要查找的CS文件
             {
                 int index = i % ThreadCount;
@@ -373,7 +373,7 @@ public class FindReferences01 : EditorWindow
                         foreach (var fileName in item.Value)
                         {
                             // GUILayout.Label(fileName);
-                            if (Path.GetExtension(fileName).ToLower() == ".lua")
+                            if (string.Equals(Path.GetExtension(fileName), ".lua",System.StringComparison.OrdinalIgnoreCase))
                             {
                                 GUILayout.Label(fileName);
                             }

@@ -156,7 +156,7 @@ namespace UnityEngine.AddressableAssets
         ///  - Intersection takes results of each key, and collects items that matched every key.
         ///  -- [4]
         /// </summary>
-        public enum MergeMode
+        public enum MergeMode : byte
         {
             /// <summary>
             /// Use to indicate that no merge should occur. The first set of results will be used.

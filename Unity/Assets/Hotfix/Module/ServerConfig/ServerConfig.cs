@@ -3,7 +3,7 @@
 
 namespace ET
 {
-    public enum ENV_ID
+    public enum ENV_ID:byte
     {
         DEVELOP = 1,//开发|测试服
         PUBLISH = 2, //预发布

@@ -13,7 +13,7 @@ namespace UnityEditor.AddressableAssets.Settings.GroupSchemas
     [DisplayName("Content Update Restriction")]
     public class ContentUpdateGroupSchema : AddressableAssetGroupSchema
     {
-        enum ContentType
+        enum ContentType : byte
         {
             CanChangePostRelease,
             CannotChangePostRelease

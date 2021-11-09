@@ -84,8 +84,8 @@ namespace UnityEditor.AddressableAssets.Build.AnalyzeRules
         protected bool IsValidPath(string path)
         {
             return AddressableAssetUtility.IsPathValidForEntry(path) &&
-                !path.ToLower().Contains("/resources/") &&
-                !path.ToLower().StartsWith("resources/");
+                path.IndexOf("/resources/", StringComparison.OrdinalIgnoreCase) <0 &&
+                !path.StartsWith("resources/", StringComparison.OrdinalIgnoreCase);
         }
 
         internal ReturnCode RefreshBuild(AddressableAssetsBuildContext buildContext)
