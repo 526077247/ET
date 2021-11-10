@@ -51,10 +51,6 @@ namespace AssetBundles
         }
 
         #region ==============> Addressable 相关接口提供的lua层
-        public void SetRemoteResCdnUrl(string cdnUrl)
-        {
-            AssetBundleMgr.GetInstance().SetAddressableRemoteResCdnUrl(cdnUrl);
-        }
 
         public AddressableUpdateAsyncOperation CheckForCatalogUpdates()
         {
@@ -197,63 +193,6 @@ namespace AssetBundles
                 Debug.LogError("ReleaseAsset Error " + go.name);
             }
         }
-        #endregion
-
-        #region ================> load lua
-
-        public TextAsset SyncGetLuaFileText(string fileName)
-        {
-            if (luaAssetBundle == null)
-            {
-                luaAssetBundle = SyncLoadAssetBundle("luascript_bytes_content_assets_all.bundle");
-            }
-            if (luaCaching == null)
-            {
-                luaCaching = new Dictionary<string, TextAsset>();
-            }
-
-            if (luaCaching.TryGetValue(fileName, out TextAsset asset))
-            {
-                return asset;
-            }
-
-            string assetPath = "Assets/AssetsPackage/LuaScript_Bytes_Content/" + fileName;
-            TextAsset luaAsset = (TextAsset)luaAssetBundle.LoadAsset(assetPath, typeof(TextAsset));
-
-            if (luaAsset != null)
-            {
-                luaCaching.Add(fileName, luaAsset);
-                return luaAsset;
-            }
-            else
-            {
-                Debug.Log("SyncGetLuaFileText Error " + fileName);
-                return null;
-            }
-        }
-
-        public TextAsset SynGetProtoFileText(string filepath)
-        {
-            return SyncGetLuaFileText(filepath);
-        }
-
-        public void ReleaseLuas()
-        {
-            if (luaCaching != null)
-            {
-                luaCaching.Clear();
-                luaCaching = null;
-            }
-
-            if (luaAssetBundle != null)
-            {
-                luaAssetBundle.Unload(true);
-                luaAssetBundle = null;
-            }
-        }
-
-
-
         #endregion
 
         public TextAsset LoadTextAsset(string addressPath)

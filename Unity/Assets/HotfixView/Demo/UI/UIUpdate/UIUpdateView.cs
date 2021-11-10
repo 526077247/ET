@@ -230,7 +230,7 @@ namespace ET
                 Log.Info("CheckAppUpdate maxVer is nil");
                 return false;
             }
-            var app_ver = UnityExtends.GetAppVersion();
+            var app_ver = Application.version;
             var flag = VersionCompare.Compare(app_ver, maxVer);
             Log.Info(string.Format("CoCheckAppUpdate AppVer:{0} maxVer:{1}", app_ver, maxVer));
             if (flag >= 0)
@@ -274,7 +274,7 @@ namespace ET
         public async ETTask<bool> CheckResUpdate()
         {
             var app_channel = PlatformUtil.GetAppChannel();
-            var engine_ver = UnityExtends.GetEngineVersion();
+            var engine_ver = AssetBundleConfig.Instance.EngineVer;
             var maxVer = BootConfig.Instance.FindMaxUpdateResVer(engine_ver, app_channel);
             if (string.IsNullOrEmpty(maxVer))
             {
@@ -282,7 +282,7 @@ namespace ET
                 return false;
             }
 
-            var res_ver = UnityExtends.GetResVersion();
+            var res_ver = AssetBundleConfig.Instance.ResVer;
             var flag = VersionCompare.Compare(res_ver, maxVer);
             Log.Info("CheckResUpdate ResVer:{0} maxVer:{1}", res_ver, maxVer);
             if (flag >= 0)
@@ -296,7 +296,7 @@ namespace ET
             var url = BootConfig.Instance.GetUpdateCdnResUrlByVersion(maxVer);
             m_rescdn_url = url;
             Log.Info("CheckResUpdate res_cdn_url is " + url);
-            AddressablesManager.Instance.SetRemoteResCdnUrl(url);
+            AssetBundleMgr.GetInstance().SetAddressableRemoteResCdnUrl(m_rescdn_url);
 
             //检查更新版本
             Log.Info("begin  CheckCatalogUpdates");

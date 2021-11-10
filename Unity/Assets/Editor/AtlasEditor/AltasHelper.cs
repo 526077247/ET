@@ -167,7 +167,6 @@ public class AltasHelper
                 Sprite sprite = AssetDatabase.LoadAssetAtPath<Sprite>(assetPath);
                 if (IsPackable(sprite))
                 {
-                    //setImageSettings(sprite, assetPath);
                     spts.Add(sprite);
                 }
             }
@@ -200,19 +199,6 @@ public class AltasHelper
                 folders.Add(o);
             }
 
-            //foreach (FileInfo pngFile in atlasDir.GetFiles("*.png", SearchOption.AllDirectories))
-            //{
-
-            //    string allPath = pngFile.FullName;
-            //    string filePath = allPath.Substring(allPath.IndexOf("Assets"));
-            //    Sprite sprite = AssetDatabase.LoadAssetAtPath<Sprite>(filePath);
-            //    if (IsPackable(sprite))
-            //    {
-            //        setImageSettings(sprite, filePath);
-            //        folders.Add(sprite);
-            //    }
-            //}
-
 
             string atlasName = AtlasName + "_" + atlasDir.Name + ".spriteatlas";
             CreateAtlas(dirInfo.FullName, atlasName);
@@ -234,11 +220,9 @@ public class AltasHelper
         /// <param name="_atlasPath"></param>
         private static void SetSpriteAtlas(SpriteAtlas atlas, string _atlasPath)
         {
-            TextureImporterCompression type = TextureImporterCompression.CompressedLQ;
             TextureImporterFormat _format = TextureImporterFormat.ASTC_6x6;
             if (_atlasPath.Contains("Uncompressed"))
             {
-                type = TextureImporterCompression.Uncompressed;
                 _format = TextureImporterFormat.RGBA32;
             }
             // 设置参数 可根据项目具体情况进行设置
@@ -282,35 +266,6 @@ public class AltasHelper
 
         }
 
-
-
-        /// <summary>
-        /// 处理小图压缩 问题
-        /// </summary>
-        /// <param name="sprite"></param>
-        /// <param name="filePath"></param>
-        private static void setImageSettings(Sprite sprite, string filePath)
-        {
-            var importer = AssetImporter.GetAtPath(filePath) as TextureImporter;
-            importer.mipmapEnabled = false;
-
-            TextureImporterPlatformSettings importSettingsAndroid = AltasImporterPlatformSettings.ImportSettingsAndroid;
-            TextureImporterPlatformSettings importSettingsIPhone = AltasImporterPlatformSettings.ImportSettingsIPhone;
-            //Logger.LogError("==========miagePath:" + filePath);
-            if (filePath.Contains("Uncompressed"))
-            {
-                importSettingsAndroid = AltasImporterPlatformSettings.Image2ImportSettingsAndroid;
-                importSettingsIPhone = AltasImporterPlatformSettings.Image2ImportSettingsIPhone;
-            }
-
-            importSettingsAndroid.maxTextureSize = 1024;
-            importSettingsIPhone.maxTextureSize = 1024;
-
-            importer.SetPlatformTextureSettings(importSettingsAndroid);
-            importer.SetPlatformTextureSettings(importSettingsIPhone);
-
-            AssetDatabase.WriteImportSettingsIfDirty(filePath);
-        }
 
 
         private static void AddPackAtlas(SpriteAtlas atlas, Object[] spt)

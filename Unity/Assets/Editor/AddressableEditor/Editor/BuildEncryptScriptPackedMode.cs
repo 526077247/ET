@@ -112,9 +112,6 @@ public class BuildEncryptScriptPackedMode : BuildScriptPackedMode
 
             //获取bundle的保存路径
             var targetPath = Path.Combine(path, outputBundles[i]);
-            //var srcPath = Path.Combine(assetGroup.Settings.buildSettings.bundleBuildPath, buildBundles[i]);
-            // bundleRenameMap.Add(buildBundles[i], outputBundles[i]);
-            //CopyFileWithTimestampIfDifferent(srcPath, targetPath);
 
             //判断目录是否存在
             if (!Directory.Exists(Path.GetDirectoryName(targetPath)))
@@ -212,33 +209,5 @@ public class BuildEncryptScriptPackedMode : BuildScriptPackedMode
         File.WriteAllLines(BuildInABHashInfoFilePath, buildInABHashLines);
 
         return opResult;
-    }
-
-    private string GetFormatSizeString(long size)
-    {
-        return GetFormatSizeString(size, 1024);
-    }
-
-    private string GetFormatSizeString(long size, int p)
-    {
-        return GetFormatSizeString(size, p, "#,##0.##");
-    }
-
-    private string GetFormatSizeString(long size, int p, string specifier)
-    {
-        var suffix = new[] { "", "K", "M", "G", "T", "P", "E", "Z", "Y" };
-        int index = 0;
-
-        while (size >= p)
-        {
-            size /= p;
-            index++;
-        }
-
-        return string.Format(
-            "{0}{1}B",
-            size.ToString(specifier),
-            index < suffix.Length ? suffix[index] : "-"
-        );
     }
 }

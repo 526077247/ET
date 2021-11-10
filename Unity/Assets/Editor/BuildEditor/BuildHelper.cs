@@ -29,15 +29,10 @@ namespace ET
         };
         private static void KeystoreSetting()
         {
-            //PlayerSettings.Android.keystoreName = "ET.keystore";
-            //PlayerSettings.Android.keyaliasName = "et";
-            //PlayerSettings.keyaliasPass = "123456";
-            //PlayerSettings.keystorePass = "123456";
-        }
-        [MenuItem("Tools/web资源服务器")]
-        public static void OpenFileServer()
-        {
-            ProcessHelper.Run("dotnet", "FileServer.dll", "../FileServer/");
+            PlayerSettings.Android.keystoreName = "ET.keystore";
+            PlayerSettings.Android.keyaliasName = "et";
+            PlayerSettings.keyaliasPass = "123456";
+            PlayerSettings.keystorePass = "123456";
         }
 
         public static void Build(PlatformType type, BuildOptions buildOptions, bool isBuildExe,bool clearFolder)
@@ -74,8 +69,7 @@ namespace ET
             //Inject
             IFixEditor.InjectAssemblys();
             //清除图集
-            //UIMVVMGen.ClearAllAtlas();
-
+            //AltasHelper.ClearAllAtlas();
 
             AASUtility.CleanPlayerContent();
 
@@ -83,15 +77,11 @@ namespace ET
             AssetDatabase.Refresh();
 
             //生成图集
-            //UIMVVMGen.GeneratingAtlas();
-
-            //UnityEditor.U2D.SpriteAtlasUtility.PackAllAtlases(EditorUserBuildSettings.activeBuildTarget);
-
+            // AltasHelper.GeneratingAtlas();
 
             //Marked AssetsPackage Addressable
             AddressableTools.RunCheckAssetBundle();
 
-            //AssetImportMgr.OnDataBuilderComplete();
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
 
@@ -139,17 +129,6 @@ namespace ET
             {
                 Directory.CreateDirectory(relativeDirPrefix);
             }
-
-            //Log.Info("开始资源打包");
-            //BuildPipeline.BuildAssetBundles(fold, buildAssetBundleOptions, buildTarget);
-
-            //Log.Info("完成资源打包");
-
-            //if (isContainAB)
-            //{
-            //    FileHelper.CleanDirectory("Assets/StreamingAssets/");
-            //    FileHelper.CopyDirectory(fold, "Assets/StreamingAssets/");
-            //}
 
             if (isBuildExe)
             {

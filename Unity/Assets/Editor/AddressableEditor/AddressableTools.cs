@@ -25,22 +25,14 @@ public class AddressableTools
         //先把之前的config删除
         clear(assetspackageConfigPath);
 
-        //bool addressableIsError = false;//addressable是否坏了
         AddressableAssetSettings settings = AASUtility.GetSettings();
         foreach (var group in settings.groups)
         {
             if (group == null)
             {
                 Logger.LogError("addressable坏了");
-                //addressableIsError = true;
             }
         }
-
-        //清除 addressables groups
-        //if (_is_atlas_model || addressableIsError)
-        //{
-        // clearAddressablesGroups();
-        //}
 
         //动态增加 addressables groups
         addAddressablesGroups();
@@ -51,8 +43,6 @@ public class AddressableTools
         CheckAssetBundles.Run();
 
         string assetFolder = Path.Combine(Application.dataPath, AssetBundleConfig.AssetsFolderName);
-        //writeAddressKeyToFile(XLuaManager.luaAssetbundleAssetName.ToLower(), AssetBundleConfig.AssetsPathMapFileName);
-        //writeAddressKeyToFile(IFix.Editor.IFixEditor.patch_Name.ToLower(), BuildUtils.IfixMapFileName);
 
         //特殊文件
         string app_version = Path.Combine(assetFolder, BuildUtils.AppVersionFileName);
@@ -78,27 +68,6 @@ public class AddressableTools
         //将资源全部打成远程模式
         SetAllGroupsToRemoteNoStatic();
     }
-
-    private static void writeAddressKeyToFile(string groupsName, string fileName)
-    {
-        //更新assetmap
-        List<AddressableAssetEntry> assets = new List<AddressableAssetEntry>();
-        AASUtility.GetSettings().GetAllAssets(assets, false,
-            (g) =>
-            {
-                return g.name.Equals(groupsName);
-            });
-
-
-        //把lua 的  address的key 写到文件里
-        string[] address = assets.Select(e => e.address).ToArray();
-        string assetFolder = Path.Combine(Application.dataPath, AssetBundleConfig.AssetsFolderName);
-        var assetPathMap = Path.Combine(assetFolder, fileName);
-        GameUtility.SafeWriteAllLines(assetPathMap, address);
-        AssetDatabase.Refresh();
-    }
-
-
 
     private static void clear(string path)
     {
@@ -152,41 +121,34 @@ public class AddressableTools
                     continue;
                 }
 
-                //if (di.Name == XLuaManager.luaAssetbundleAssetName)//Lua目录默认是root模式,所有lua脚本打包到一个group
-                //{
-                //    dic.Add(di.Name, false);
-                //}
-                //else//其它目录，如果本目录下有子目录，type是children模型，否就是root模式
-                //{
-                    bool hasSecondPath = false;
-                    string[] secondPaths = Directory.GetFileSystemEntries(paths[i]);
+                bool hasSecondPath = false;
+                string[] secondPaths = Directory.GetFileSystemEntries(paths[i]);
+                for (int j = 0; j < secondPaths.Length; j++)
+                {
+                    if (Directory.Exists(secondPaths[j]))
+                    {
+                        hasSecondPath = true;
+                        break;
+                    }
+                }
+
+                if (hasSecondPath)
+                {
+                    //创建目录
+                    createConfigDir(di.Name);
                     for (int j = 0; j < secondPaths.Length; j++)
                     {
                         if (Directory.Exists(secondPaths[j]))
                         {
-                            hasSecondPath = true;
-                            break;
+                            DirectoryInfo secondDi = new DirectoryInfo(secondPaths[j]);
+                            dic.Add(Path.Combine(di.Name, secondDi.Name), false);
                         }
                     }
-
-                    if (hasSecondPath)
-                    {
-                        //创建目录
-                        createConfigDir(di.Name);
-                        for (int j = 0; j < secondPaths.Length; j++)
-                        {
-                            if (Directory.Exists(secondPaths[j]))
-                            {
-                                DirectoryInfo secondDi = new DirectoryInfo(secondPaths[j]);
-                                dic.Add(Path.Combine(di.Name, secondDi.Name), false);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        dic.Add(di.Name, false);
-                    }
-                //}
+                }
+                else
+                {
+                    dic.Add(di.Name, false);
+                }
             }
         }
 
@@ -276,11 +238,6 @@ public class AddressableTools
         AssetDatabase.Refresh();
     }
 
-    private static void clearAddressablesGroups()
-    {
-        AASUtility.RemoveAllGroups();
-    }
-
     /// <summary>
     /// 在 Addressables Groups 动态创建groups
     /// </summary>
@@ -290,40 +247,6 @@ public class AddressableTools
 
         AASUtility.CreateGroup("global", false);
         return;
-        //再根据资源动态创建groups
-        string[] paths = Directory.GetFileSystemEntries(assetsPath);
-        for (int i = 0; i < paths.Length; i++)
-        {
-            if (Directory.Exists(paths[i]))
-            {
-                DirectoryInfo di = new DirectoryInfo(paths[i]);
-
-                if (di.Name == "Tmp")
-                {
-                    continue;
-                }
-
-                if (di.Name == "Lua")//
-                {
-                    AASUtility.CreateGroup(di.Name.ToLower());
-                }
-                else
-                {
-                    AASUtility.CreateGroup(di.Name.ToLower());
-                    string[] secondPaths = Directory.GetFileSystemEntries(paths[i]);
-                    for (int j = 0; j < secondPaths.Length; j++)
-                    {
-                        if (Directory.Exists(secondPaths[j]))
-                        {
-                            DirectoryInfo secondDi = new DirectoryInfo(secondPaths[j]);
-                            AASUtility.CreateGroup(di.Name.ToLower() + "_" + secondDi.Name.ToLower());
-                        }
-                    }
-
-                }
-
-            }
-        }
     }
 
     public static void SingleFileAddress(string group, string path)
@@ -343,26 +266,15 @@ public class AddressableTools
             return;
         }
         dir = dir.Substring(index + (Assets_Package + Path.DirectorySeparatorChar).Length);
-        var isLuaFile = false;
-        if (dir.IndexOf("LuaScript_Bytes_Content", StringComparison.OrdinalIgnoreCase) >= 0)
-        {
-            isLuaFile = true;
-        }
         index = dir.IndexOf(Path.DirectorySeparatorChar);
 
         if (index > 0)
         {
-            if (isLuaFile)
+
+            index = dir.IndexOf(Path.DirectorySeparatorChar, index + 1);
+            if (index > 0)
             {
                 dir = dir.Substring(0, index);
-            }
-            else
-            {
-                index = dir.IndexOf(Path.DirectorySeparatorChar, index + 1);
-                if (index > 0)
-                {
-                    dir = dir.Substring(0, index);
-                }
             }
         }
 

@@ -69,11 +69,7 @@ public static class CheckAssetBundles
     public static void Run()
     {
         ClearAllAssetBundles();
-        //RunAllCheckers();
-        //RunAllCheckersThread();
-        //var start = DateTime.Now;
         RunAllCheckersTask();
-       // Logger.LogError("time1:" + (DateTime.Now - start).TotalSeconds);
     }
 
 
@@ -202,76 +198,5 @@ public static class CheckAssetBundles
 
         AssetDatabase.Refresh();
     }
-
-    private static void RunAllCheckersThread()
-    {
-        ThreadPars[] threadParses = new ThreadPars[ThreadCount];
-        for (int index = 0; index < ThreadCount; index++)
-        {
-            threadParses[index] = new ThreadPars();
-        }
-
-        var guids = AssetDatabase.FindAssets("t:AddressableDispatcherConfig", new string[] { AddressableInspectorUtils.DatabaseRoot });
-        var length = guids.Length;
-        var count = 0;
-        foreach (var guid in guids)
-        {
-            count++;
-            var assetPath = AssetDatabase.GUIDToAssetPath(guid);
-            var config = AssetDatabase.LoadAssetAtPath<AddressableDispatcherConfig>(assetPath);
-            config.Load();
-
-            int index = count % ThreadCount;
-            threadParses[index].ChildDataList.Add(config);
-            threadParses[index].is_atlas_model = EditorUserSettings.GetConfigValue(AddressableTools.is_atlas_model);
-            //EditorUtility.DisplayProgressBar("Run checker :", config.PackagePath, (float)count / length);
-            //AddressableDispatcher.Run(config);
-        }
-
-        ThreadRun[] tRun = new ThreadRun[ThreadCount];
-        int finishedState = ThreadCount;
-        IAsyncResult[] results = new IAsyncResult[ThreadCount];
-
-     
-        _updateDelegate = delegate
-        {
-            var finishedCount = 0;
-            for (int j = 0; j < ThreadCount; j++)
-            {
-                if (results[j].IsCompleted)
-                {
-                    ++finishedCount;
-                }
-            }
-
-            EditorUtility.DisplayProgressBar("Run checker: ", string.Format("进度：{0}", finishedCount), finishedCount * 1f / ThreadCount);
-
-            if (finishedCount >= finishedState)
-            {
-                AssetDatabase.Refresh();
-                EditorUtility.ClearProgressBar();
-
-                EditorApplication.update -= _updateDelegate;
-            }
-        };
-
-        for (int j = 0; j < ThreadCount; j++)
-        {
-            tRun[j] = ThreadFind;
-            results[j] = tRun[j].BeginInvoke(threadParses[j], null, null);
-        }
-        EditorApplication.update += _updateDelegate;
-
-
-        Logger.LogError("==========over=============");
-
-        //AssetDatabase.Refresh();
-        // EditorUtility.ClearProgressBar();
-
-
-        //System.Threading.Thread.Sleep(50000);
-    }
-
-
 
 }

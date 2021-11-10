@@ -15,7 +15,6 @@ namespace ET
             AddressableTools.RunCheckAssetBundle();
         }
 
-
         //[MenuItem("Tools/Addressable/Marked AssetsPackage Addressable(散图模式)", false, 21)]
         //public static void RunCheckAssetBundleWithDiscreteImages()
         //{

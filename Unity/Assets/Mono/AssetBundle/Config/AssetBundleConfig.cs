@@ -29,7 +29,7 @@ namespace AssetBundles
         public static string GlobalAssetBundleName = "global_assets_all.bundle";
         private AssetBundle globalAssetBundle;
         public string remote_cdn_url { set; get; } = "";
-        public string inject_fix_info { set; get; } = "";
+
         public string EngineVer { set; get; } = "";
         public string ResVer { set; get; } = "";
 
@@ -91,12 +91,5 @@ namespace AssetBundles
             Debug.Log(string.Format("ReadConfigInfo EngineVer:{0} ResVer:{1} remote_cdn_url:{2}", this.EngineVer, this.ResVer, this.remote_cdn_url));
         }
 
-        /*
-         * 读取injectfix的数据，并执行
-         */
-        private void ReadInjectFixInfo(string text)
-        {
-            inject_fix_info = text;
-        }
     }
 }

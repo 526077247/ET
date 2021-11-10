@@ -50,7 +50,6 @@ public class AASUtility : Editor
         var g = CreateGroup(groupName);
         var entry = s.CreateOrMoveEntry(assetGuid, g);
         entry.address = entry.address.Replace("Assets/" + AssetBundleConfig.AssetsFolderName + "/", "");
-            //.Replace(XLuaManager.luaAssetbundleAssetName+"/",""); ;
     }
     public static void SetLabelToAsset(List<string> assetGuidList, string label, bool flag)
     {
@@ -93,39 +92,22 @@ public class AASUtility : Editor
         }
     }
 
-    //public static void AddGroup(string groupName, bool setAsDefaultGroup, bool readOnly, bool postEvent, List<AddressableAssetGroupSchema> schemasToCopy, params Type[] types)
-    //{
-    //    var s = GetSettings();
-    //    s.CreateGroup(groupName, setAsDefaultGroup,readOnly,postEvent,schemasToCopy,types);
-    //}
-
     public static void BuildPlayerContent()
     {
-        //System.Threading.Thread.Sleep(30000);
         var d = GetSettings();
         d.ActivePlayerDataBuilderIndex = 3;
-        //AddressableAssetSettings.CleanPlayerContent(d.ActivePlayerDataBuilder);
         AddressableAssetSettings.BuildPlayerContent();
     }
 
     public static void CleanPlayerContent()
     {
-       // var d = GetSettings();
-       // d.ActivePlayerDataBuilderIndex = 3;
-        //AddressableAssetSettings.CleanPlayerContent(d.ActivePlayerDataBuilder);
         AddressableAssetSettings.CleanPlayerContent();
         UnityEditor.Build.Pipeline.Utilities.BuildCache.PurgeCache(false);
-        // AssetImportMgr.OnDataBuilderComplete();
     }
 
     static public void Test()
     {
-        var d = GetSettings();
-
         var matguid = AssetDatabase.AssetPathToGUID("Assets/Data/hogeMat.mat");
         AddAssetToGroup(matguid, "CreatedGroup");
-        ////List<string> assetGuidList = new List<string>() { matguid };
-        ////SetLabelToAsset(assetGuidList, "mat", true);
-        //CreateGroup("CreatedGroup");
     }
 }

@@ -241,11 +241,7 @@ namespace AddressableExts
                 m_downloadHandler = null;
 
                 string cachePath = AssetBundleMgr.GetInstance().getCachedAssetBundlePath(bundleName);
-                //这里在启动的时候已经加载过了 
-                if(bundleName == "luascript_bytes_content_assets_all.bundle")
-                {
-                    AssetBundles.AddressablesManager.Instance.ReleaseLuas();
-                }
+
                 m_RequestOperation = AssetBundle.LoadFromFileAsync(cachePath, m_Options == null ? 0 : m_Options.Crc, (ulong)m_bundleOffset);
                 m_RequestOperation.completed += LocalRequestOperationCompleted;
                 //m_ProvideHandle.Complete(this, true, null);
