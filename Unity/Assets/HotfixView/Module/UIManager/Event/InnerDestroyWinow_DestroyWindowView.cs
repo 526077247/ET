@@ -13,15 +13,18 @@ namespace ET
 		{
 			var target = args.target;
 			UIBaseView view = target.GetComponent(target.ViewType) as UIBaseView;
-			var obj = view?.gameObject;
-			if (obj)
+			if (view != null)
 			{
-				if (GameObjectPoolComponent.Instance == null)
-					GameObject.Destroy(obj);
-				else
-					GameObjectPoolComponent.Instance.RecycleGameObject(obj);
+				var obj = view.gameObject;
+				if (obj)
+				{
+					if (GameObjectPoolComponent.Instance == null)
+						GameObject.Destroy(obj);
+					else
+						GameObjectPoolComponent.Instance.RecycleGameObject(obj);
+				}
+				UIEventSystem.Instance.OnDestroy(view);
 			}
-			view?.OnDestroy();
 		}
 	}
 }

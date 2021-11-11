@@ -44,7 +44,7 @@ namespace ET
 			trans.name = target.Name;
 			var view = target.GetComponent(target.ViewType) as UIBaseView;
 			view.gameObject = go;
-			view.OnCreate();
+            UIEventSystem.Instance.OnCreate(view);
 			target.LoadingState = UIWindowLoadingState.LoadOver;
 		}
     }

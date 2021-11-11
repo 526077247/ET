@@ -14,6 +14,9 @@ namespace ET
             self.windows = new Dictionary<string, UIWindow>();
             self.window_stack = new Dictionary<UILayerNames, LinkedList<string>>(UILayerNamesComparer.Instance);
             Game.EventSystem.Publish(new UIEventType.AfterUIManagerCreate()).Coroutine();
+            self.UIEventSystem = new UIEventSystem();
+            UIEventSystem.Instance = self.UIEventSystem;
+            UIEventSystem.Instance.Awake();
         }
     }
 
@@ -26,6 +29,8 @@ namespace ET
             self.windows = null;
             self.window_stack.Clear();
             self.window_stack = null;
+            UIEventSystem.Instance = null;
+            self.UIEventSystem = null;
             UIManagerComponent.Instance = null;
             Log.Info("UIManagerComponent Dispose");
         }
@@ -271,31 +276,31 @@ namespace ET
             return window;
         }
 
-        static void __ActivateWindow(this UIManagerComponent self, UIWindow target)
+        static void __ActivateWindow(UIWindow target)
         {
             var view = target.GetComponent(target.ViewType) as UIBaseContainer;
             view.SetActive(true);
         }
-        static void __ActivateWindow<T>(this UIManagerComponent self, UIWindow target, T p1)
+        static void __ActivateWindow<T>(UIWindow target, T p1)
         {
             var view = target.GetComponent(target.ViewType) as UIBaseContainer;
             view.SetActive(true, p1);
 
         }
-        static void __ActivateWindow<T, P>(this UIManagerComponent self, UIWindow target, T p1, P p2)
+        static void __ActivateWindow<T, P>(UIWindow target, T p1, P p2)
         {
             var view = target.GetComponent(target.ViewType) as UIBaseContainer;
             view.SetActive(true, p1, p2);
 
         }
-        static void __ActivateWindow<T, P, K>(this UIManagerComponent self, UIWindow target, T p1, P p2, K p3)
+        static void __ActivateWindow<T, P, K>( UIWindow target, T p1, P p2, K p3)
         {
             var view = target.GetComponent(target.ViewType) as UIBaseContainer;
             view.SetActive(true, p1, p2, p3);
 
         }
 
-        static void __Deactivate(this UIManagerComponent self, UIWindow target)
+        static void __Deactivate(UIWindow target)
         {
             var view = target.GetComponent(target.ViewType) as UIBaseContainer;
             if(view!=null)
@@ -375,7 +380,7 @@ namespace ET
         {
             if (target.Active)
             {
-                self.__Deactivate(target);
+                __Deactivate(target);
                 target.Active = false;
             }
         }
@@ -391,7 +396,7 @@ namespace ET
             }
             self.window_stack[layer_name].AddFirst(ui_name);
             await Game.EventSystem.Publish(new UIEventType.AddWindowToStack() { window = target });
-            self.__ActivateWindow(target);
+            __ActivateWindow(target);
             if (isFirst && layer_name == UILayerNames.BackgroudLayer || layer_name == UILayerNames.GameBackgroudLayer)
             {
                 //如果是背景layer，则销毁所有的normal层|BackgroudLayer
@@ -413,7 +418,7 @@ namespace ET
             }
             self.window_stack[layer_name].AddFirst(ui_name);
             await Game.EventSystem.Publish(new UIEventType.AddWindowToStack() { window = target });
-            self.__ActivateWindow(target, p1);
+            __ActivateWindow(target, p1);
             if (isFirst && layer_name == UILayerNames.BackgroudLayer || layer_name == UILayerNames.GameBackgroudLayer)
             {
                 //如果是背景layer，则销毁所有的normal层|BackgroudLayer
@@ -435,7 +440,7 @@ namespace ET
             }
             self.window_stack[layer_name].AddFirst(ui_name);
             await Game.EventSystem.Publish(new UIEventType.AddWindowToStack() { window = target });
-            self.__ActivateWindow(target, p1, p2);
+            __ActivateWindow(target, p1, p2);
             if (isFirst && layer_name == UILayerNames.BackgroudLayer || layer_name == UILayerNames.GameBackgroudLayer)
             {
                 //如果是背景layer，则销毁所有的normal层|BackgroudLayer
@@ -457,7 +462,7 @@ namespace ET
             }
             self.window_stack[layer_name].AddFirst(ui_name);
             await Game.EventSystem.Publish(new UIEventType.AddWindowToStack() { window = target });
-            self.__ActivateWindow(target, p1, p2, p3);
+            __ActivateWindow(target, p1, p2, p3);
             if (isFirst && layer_name == UILayerNames.BackgroudLayer || layer_name == UILayerNames.GameBackgroudLayer)
             {
                 //如果是背景layer，则销毁所有的normal层|BackgroudLayer

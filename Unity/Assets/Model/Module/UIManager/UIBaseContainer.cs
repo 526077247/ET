@@ -16,83 +16,25 @@ namespace ET
         int length = 1;
         
         Action OnComponentDestroy;
-        public virtual bool HasI18N => false;
         public string Path;
-        public virtual void OnCreate()
-        {
-            
-        }
-        public virtual void OnCreate<T>(T param1)
-        {
-            
-        }
 
-        public virtual void OnCreate<T,P>(T param1,P param2)
+        public void AfterOnEnable()
         {
-            
-        }
-        public virtual void OnCreate<T, P,K>(T param1, P param2,K param3)
-        {
-            
-        }
-        void BeroreOnEnable()
-        {
-            if (HasI18N)
-                Messager.Instance.AddListener(MessagerId.OnLanguageChange, OnLanguageChange);
             Walk((component) =>
             {
-                component.OnEnable();
+                UIEventSystem.Instance.OnEnable(component);
             });
         }
-        public virtual void OnEnable()
-        {
-            BeroreOnEnable();
-        }
-        public virtual void OnEnable<T>(T param1)
-        {
-            BeroreOnEnable();
-        }
 
-        public virtual void OnEnable<T, P>(T param1, P param2)
+        public void BeforeOnDisable()
         {
-            BeroreOnEnable();
-        }
-        public virtual void OnEnable<T, P, K>(T param1, P param2, K param3)
-        {
-            BeroreOnEnable();
-        }
-        void BeforeOnDisable()
-        {
-            if (HasI18N)
-                Messager.Instance.RemoveListener(MessagerId.OnLanguageChange, OnLanguageChange);
             Walk((component) =>
             {
-                component.OnDisable();
+                UIEventSystem.Instance.OnDisable(component);
             });
         }
-        public virtual void OnDisable()
-        {
-            BeforeOnDisable();
-        }
-        public virtual void OnDisable<T>(T param1)
-        {
-            BeforeOnDisable();
-        }
 
-        public virtual void OnDisable<T, P>(T param1, P param2)
-        {
-            BeforeOnDisable();
-        }
-        public virtual void OnDisable<T, P, K>(T param1, P param2, K param3)
-        {
-            BeforeOnDisable();
-        }
-        public virtual void OnLanguageChange(object sender = null, EventArgs args = null)
-        {
-
-        }
-
-        public virtual void OnDestroy()
+        public void BeforeOnDestroy()
         {
             var keys1 = components.Keys.ToList();
             for (int i = keys1.Count-1; i >= 0; i--)
@@ -102,7 +44,7 @@ namespace ET
                     var keys2 = components[keys1[i]].Keys.ToList();
                     for (int j = keys2.Count-1; j >= 0; j--)
                     {
-                        components[keys1[i]][keys2[j]].OnDestroy();
+                        UIEventSystem.Instance.OnDestroy(components[keys1[i]][keys2[j]]);
                     }
                 }
             }
@@ -167,8 +109,7 @@ namespace ET
             {
                 __RemoveComponent<T>(path);
             };
-            component_inst.OnCreate();
-
+            UIEventSystem.Instance.OnCreate(component_inst);
             RecordComponent(path, type, component_inst);
             length++;
             return component_inst;
@@ -188,7 +129,7 @@ namespace ET
             {
                 __RemoveComponent<T>(path);
             };
-            component_inst.OnCreate(a);
+            UIEventSystem.Instance.OnCreate(component_inst,a);
 
             RecordComponent(path, type, component_inst);
             length++;
@@ -208,7 +149,7 @@ namespace ET
             {
                 __RemoveComponent<T>(path);
             };
-            component_inst.OnCreate(a, b);
+            UIEventSystem.Instance.OnCreate(component_inst, a,b);
 
             RecordComponent(path, type, component_inst);
             length++;
@@ -228,7 +169,7 @@ namespace ET
             {
                 __RemoveComponent<T>(path);
             };
-            component_inst.OnCreate(a, b, c);
+            UIEventSystem.Instance.OnCreate(component_inst, a, b,c);
 
             RecordComponent(path, type, component_inst);
             length++;
@@ -238,11 +179,11 @@ namespace ET
         {
             if (active)
             {
-                OnEnable();
+                UIEventSystem.Instance.OnEnable(this);
             }
             else
             {
-                OnDisable();
+                UIEventSystem.Instance.OnDisable(this);
             }
         }
 
@@ -250,33 +191,33 @@ namespace ET
         {
             if (active)
             {
-                OnEnable(param1);
+                UIEventSystem.Instance.OnEnable(this,param1);
             }
             else
             {
-                OnDisable(param1);
+                UIEventSystem.Instance.OnDisable(this,param1);
             }
         }
         public virtual void SetActive<T, P>(bool active, T param1, P param2)
         {
             if (active)
             {
-                OnEnable(param1, param2);
+                UIEventSystem.Instance.OnEnable(this, param1, param2);
             }
             else
             {
-                OnDisable(param1, param2);
+                UIEventSystem.Instance.OnDisable(this, param1, param2);
             }
         }
         public virtual void SetActive<T, P, K>(bool active, T param1, P param2, K param3)
         {
             if (active)
             {
-                OnEnable(param1, param2, param3);
+                UIEventSystem.Instance.OnEnable(this, param1, param2, param3);
             }
             else
             {
-                OnDisable(param1, param2, param3);
+                UIEventSystem.Instance.OnDisable(this, param1, param2, param3);
             }
         }
         /// <summary>
@@ -308,7 +249,7 @@ namespace ET
             var component = InnerGetComponent<T>(path);
             if (component != null)
             {
-                component.OnDestroy();
+                UIEventSystem.Instance.OnDestroy(component);
                 components[path].Remove(typeof(T));
             }
         }

@@ -19,10 +19,10 @@ namespace ET
             ui.transform.localPosition = Vector3.zero;
             ui.transform.localRotation = Quaternion.identity;
             ui.transform.localScale = new Vector3(1, 1, 1);
-            ui.OnCreate();
-            ui.OnEnable(Content);
+            UIEventSystem.Instance.OnCreate(ui);
+            UIEventSystem.Instance.OnEnable(ui,Content);
             await TimerComponent.Instance.WaitAsync(seconds*1000);
-            ui.OnDestroy();
+            UIEventSystem.Instance.OnDestroy(ui);
             GameObjectPoolComponent.Instance.RecycleGameObject(gameObject);
         }
 

@@ -11,7 +11,7 @@ namespace ET
     {
         protected GameObject _gameObject;
         protected Transform _transform;
-        public virtual GameObject gameObject
+        public GameObject gameObject
         {
             get
             {
@@ -27,7 +27,7 @@ namespace ET
                 _transform = _gameObject.transform;
             }
         }
-        public virtual Transform transform
+        public Transform transform
         {
             get
             {

@@ -1,0 +1,15 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using UnityEngine;
+
+namespace ET
+{
+    public class ToastComponent:Entity
+    {
+        public static ToastComponent Instance;
+        public Transform root; 
+    }
+}

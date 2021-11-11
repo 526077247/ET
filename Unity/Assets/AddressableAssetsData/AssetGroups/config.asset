@@ -41,7 +41,8 @@ MonoBehaviour:
   - m_GUID: bb9e5b84bed69df4481948c33e1e14b4
     m_Address: Config/I18NConfigCategory.bytes
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - default
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
   m_ReadOnly: 0

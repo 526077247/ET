@@ -28,47 +28,5 @@ namespace ET
         }
         string name;
         public abstract string PrefabPath { get; }
-
-        public override GameObject gameObject
-        {
-            get
-            {
-                return _gameObject;
-            }
-            set
-            {
-                _gameObject = value;
-                _transform = _gameObject.transform;
-            }
-        }
-        public override Transform transform
-        {
-            get
-            {
-                return _transform;
-            }
-            set
-            {
-                _transform = value;
-                _gameObject = _transform.gameObject;
-            }
-        }
-        public override void OnEnable()
-        {
-            base.OnEnable();
-            Messager.Instance.AddListener(MessagerId.OnLanguageChange, OnSwitchLanguage);
-        }
-
-        public override void OnDisable()
-        {
-            base.OnDisable();
-            Messager.Instance.RemoveListener(MessagerId.OnLanguageChange, OnSwitchLanguage);
-        }
-
-        #region 多语言相关
-        //当语言改变时的回调,让子类自己实现
-        public virtual void OnSwitchLanguage(object sender,EventArgs args) {
-        }
-        #endregion
     }
 }

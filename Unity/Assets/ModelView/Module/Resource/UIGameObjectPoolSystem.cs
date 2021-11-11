@@ -15,7 +15,7 @@ namespace ET
             if (obj == null) return null;
             T res = self.AddChild<T>();
             res.AddComponent<UIBaseComponent, GameObject>(obj);
-            res.OnCreate();
+            UIEventSystem.Instance.OnCreate(res);
             return res;
         }
 
@@ -23,7 +23,7 @@ namespace ET
         {
             var bc = obj.GetComponent<UIBaseComponent>();
             self.RecycleGameObject(bc.gameObject, isClear);
-            obj.OnDestroy();
+            UIEventSystem.Instance.OnDestroy(obj);
         }
     }
 }
