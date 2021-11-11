@@ -67,6 +67,7 @@
     <Compile Include="Assets\Mono\UIComponent\CircleImage.cs" />
     <Compile Include="Assets\Mono\AssetBundle\Runtime\AssetBundleEncryptProvider.cs" />
     <Compile Include="Assets\Mono\Core\Async\AsyncMethodBuilderAttribute.cs" />
+    <Compile Include="Assets\Mono\MonoBehaviour\UIScriptCreator.cs" />
     <Compile Include="Assets\Mono\UIComponent\UIGameObjectPool.cs" />
     <Compile Include="Assets\Mono\Core\Helper\ByteHelper.cs" />
     <Compile Include="Assets\Mono\Core\Helper\JsonHelper.cs" />

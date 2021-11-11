@@ -37,14 +37,14 @@ namespace ET
                 {
                     "setting2",new ServerConfig{
                         iplist=new string[] { "127.0.0.1:10002" },
-                        update_list_cdn_url = "http://172.22.213.58:8081/cdn",
+                        update_list_cdn_url = "http://127.0.0.1:8081/cdn",
                         res_cdn_url = "http://127.0.0.1:8081/cdn",
                         test_update_list_cdn_url = "http://127.0.0.1:8081/cdn_test",
                         env_id = ENV_ID.DEVELOP,
                     }
                 },
             };
-            default_key = "setting1";
+            default_key = "setting2";
         }
     }
 }

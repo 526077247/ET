@@ -3,8 +3,6 @@ using UnityEngine.UI;
 
 namespace ET
 {
-
-
 	public class UILoadingView : UIBaseView
 	{
 		public static UILoadingView Instance;
@@ -18,6 +16,5 @@ namespace ET
 			}
 		}
 		public UISlider slider;
-
     }
 }

@@ -1,15 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using System;
-using UnityEngine.Events;
-using AssetBundles;
-using System.Linq;
 
 namespace ET
 {
-
     public class UIUpdateView : UIBaseView
     {
 
