@@ -310,9 +310,7 @@ namespace ET
             //2、更新资源
 
             var merge_mode_union = 1;
-            handler = AddressablesManager.Instance.CheckUpdateContent(new List<string>() { "default" }, merge_mode_union);
-            while (!handler.isDone)
-                await TimerComponent.Instance.WaitAsync(1);
+            handler =await AddressablesManager.Instance.CheckUpdateContent(new List<string>() { "default" }, merge_mode_union);
 
             var needdownloadinfo = handler.GetNeedDownloadinfo();
             Log.Info("needdownloadinfo: ", needdownloadinfo);
@@ -359,9 +357,7 @@ namespace ET
 
         async static ETTask<AddressableUpdateAsyncOperation> GetDownloadSize(this UIUpdateView self)
         {
-            var handler = AddressablesManager.Instance.GetDownloadSizeAsync(new string[] { "default" });
-            while (!handler.isDone)
-                await TimerComponent.Instance.WaitAsync(1);
+            var handler = await AddressablesManager.Instance.GetDownloadSizeAsync(new string[] { "default" });
             if (handler.isSuccess)
                 return handler;
             else
@@ -383,9 +379,7 @@ namespace ET
         //检查更新Catalog
         async static ETTask<AddressableUpdateAsyncOperation> CheckCatalogUpdates(this UIUpdateView self)
         {
-            var handler = AddressablesManager.Instance.CheckForCatalogUpdates();
-            while (!handler.isDone)
-                await TimerComponent.Instance.WaitAsync(1);
+            var handler = await AddressablesManager.Instance.CheckForCatalogUpdates();
             if (handler.isSuccess) return handler;
             else
             {
@@ -407,14 +401,10 @@ namespace ET
         async static ETTask<bool> UpdateCatalogs(this UIUpdateView self,string catalog)
         {
             //这里可能连不上，导致认为UpdateCatalogs成功
-            var handler = AddressablesManager.Instance.CheckForCatalogUpdates();
-            while (!handler.isDone)
-                await TimerComponent.Instance.WaitAsync(1);
+            var handler = await AddressablesManager.Instance.CheckForCatalogUpdates();
             if (handler.isSuccess)
             {
-                handler = AddressablesManager.Instance.UpdateCatalogs(catalog);
-                while (!handler.isDone)
-                    await TimerComponent.Instance.WaitAsync(1);
+                handler = await AddressablesManager.Instance.UpdateCatalogs(catalog);
                 if (handler.isSuccess) return true;
                 else
                 {

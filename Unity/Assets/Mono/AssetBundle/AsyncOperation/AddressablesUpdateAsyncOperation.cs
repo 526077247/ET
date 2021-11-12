@@ -1,4 +1,5 @@
-﻿using LitJson;
+﻿using ET;
+using LitJson;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -24,129 +25,149 @@ namespace AssetBundles
         public JsonData needLoadInfo = new JsonData();
 
         //检查catalog的更新
-        public IEnumerator CoCheckForCatalogUpdates()
+        public ETTask CoCheckForCatalogUpdates()
         {
+            ETTask result = ETTask.Create();
             ResetValue();
             var handle = Addressables.CheckForCatalogUpdates(false);
-            yield return handle;
-            if (handle.Status == AsyncOperationStatus.Succeeded)
+            handle.Completed += (res) =>
             {
-                isOver = true;
-                if (handle.Result != null && handle.Result.Count > 0)
+                if (handle.Status == AsyncOperationStatus.Succeeded)
                 {
-                    isSuccess = true;
-                    catalog = handle.Result[0];
+                    isOver = true;
+                    if (handle.Result != null && handle.Result.Count > 0)
+                    {
+                        isSuccess = true;
+                        catalog = handle.Result[0];
+                    }
+                    else
+                    {
+                        isSuccess = false;
+                    }
                 }
                 else
                 {
+                    isOver = true;
                     isSuccess = false;
                 }
-            }
-            else
-            {
-                isOver = true;
-                isSuccess = false;
-            }
-            Addressables.Release(handle);
-            yield break;
+                Addressables.Release(handle);
+                result.SetResult();
+            };
+            return result.GetAwaiter();
         }
 
         //根据key来获取下载大小
-        public IEnumerator CoGetDownloadSizeAsync(string[] keys)
+        public ETTask CoGetDownloadSizeAsync(string[] keys)
         {
+            ETTask result = ETTask.Create();
             ResetValue();
             var handle = Addressables.GetDownloadSizeAsync(keys);
-            yield return handle;
-            downloadSize = handle.Result;
-            isOver = true;
-            isSuccess = true;
-            Addressables.Release(handle);
-            yield break;
+            handle.Completed += (res) =>
+            {
+                downloadSize = handle.Result;
+                isOver = true;
+                isSuccess = true;
+                Addressables.Release(handle);
+                result.SetResult();
+            };
+            return result.GetAwaiter();
         }
 
         //下载catalogs
-        public IEnumerator CoUpdateCatalogs(string catalog)
+        public ETTask CoUpdateCatalogs(string catalog)
         {
+            ETTask result = ETTask.Create();
             ResetValue();
             var handle = Addressables.UpdateCatalogs(new string[] { catalog }, false);
-            yield return handle;
-
-            isOver = true;
-            isSuccess = handle.Status == AsyncOperationStatus.Succeeded;
-            Addressables.Release(handle);
-            yield break;
+            handle.Completed += (res) =>
+            {
+                isOver = true;
+                isSuccess = handle.Status == AsyncOperationStatus.Succeeded;
+                Addressables.Release(handle);
+                result.SetResult();
+            };
+            return result.GetAwaiter();
         }
 
         //下载资源
-        public IEnumerator CoDownloadDependenciesAsync(List<string> keys, MergeMode mergeMode)
+        public ETTask CoDownloadDependenciesAsync(List<string> keys, MergeMode mergeMode)
         {
+            ETTask result = ETTask.Create();
             ResetValue();
             downloadHandle = Addressables.DownloadDependenciesAsync(keys.ConvertAll(s => (object)s), mergeMode, false);
-            yield return downloadHandle;
-            isOver = true;
-            isSuccess = downloadHandle.Status == AsyncOperationStatus.Succeeded;
-            Addressables.Release(downloadHandle);
-            yield break;
-        }
-        //下载更新资源
-        public IEnumerator CoCheckUpdateContent(List<string> keys, MergeMode mergeMode)
-        {
-            ResetValue();
-            var handle = Addressables.LoadResourceLocationsAsync(keys.ConvertAll(s => (object)s), mergeMode);
-            yield return handle;
-            if (handle.Status == AsyncOperationStatus.Succeeded)
+            downloadHandle.Completed += (res) =>
             {
                 isOver = true;
-                if (handle.Result != null && handle.Result.Count > 0)
+                isSuccess = downloadHandle.Status == AsyncOperationStatus.Succeeded;
+                Addressables.Release(downloadHandle);
+                result.SetResult();
+            };
+            return result.GetAwaiter();
+        }
+        //下载更新资源
+        public ETTask CoCheckUpdateContent(List<string> keys, MergeMode mergeMode)
+        {
+            ETTask result = ETTask.Create();
+            ResetValue();
+            var handle = Addressables.LoadResourceLocationsAsync(keys.ConvertAll(s => (object)s), mergeMode);
+            handle.Completed += (res) =>
+            {
+                if (handle.Status == AsyncOperationStatus.Succeeded)
                 {
-                    isSuccess = true;
-                    downlocations = handle.Result;
-
-                    string bundleName3;
-                    string path;
-                    AssetBundleRequestOptions data;
-                    if (downlocations != null && downlocations.Count > 0)
+                    isOver = true;
+                    if (handle.Result != null && handle.Result.Count > 0)
                     {
-                        foreach (var item in downlocations)
+                        isSuccess = true;
+                        downlocations = handle.Result;
+
+                        string bundleName3;
+                        string path;
+                        AssetBundleRequestOptions data;
+                        if (downlocations != null && downlocations.Count > 0)
                         {
-                            if (item.HasDependencies)
+                            foreach (var item in downlocations)
                             {
-                                foreach (var dep in item.Dependencies)
+                                if (item.HasDependencies)
                                 {
-                                    bundleName3 = Path.GetFileName(dep.InternalId);
-                                    if (dep.Data != null)
+                                    foreach (var dep in item.Dependencies)
                                     {
-                                        data = dep.Data as AssetBundleRequestOptions;
-                                        path = AssetBundleMgr.GetInstance().TransformAssetBundleLocation(dep.InternalId, bundleName3, data.Hash);
-                                        if (UnityEngine.ResourceManagement.Util.ResourceManagerConfig.ShouldPathUseWebRequest(path))
+                                        bundleName3 = Path.GetFileName(dep.InternalId);
+                                        if (dep.Data != null)
                                         {
-                                            needLoadInfo[bundleName3] = data.Hash;
+                                            data = dep.Data as AssetBundleRequestOptions;
+                                            path = AssetBundleMgr.GetInstance().TransformAssetBundleLocation(dep.InternalId, bundleName3, data.Hash);
+                                            if (UnityEngine.ResourceManagement.Util.ResourceManagerConfig.ShouldPathUseWebRequest(path))
+                                            {
+                                                needLoadInfo[bundleName3] = data.Hash;
+                                            }
                                         }
                                     }
                                 }
                             }
                         }
+
+
                     }
-
-
+                    else
+                    {
+                        isSuccess = false;
+                    }
                 }
                 else
                 {
+                    isOver = true;
                     isSuccess = false;
                 }
-            }
-            else
-            {
-                isOver = true;
-                isSuccess = false;
-            }
-            Addressables.Release(handle);
-            yield break;
+                Addressables.Release(handle);
+                result.SetResult();
+            };
+            return result.GetAwaiter();
         }
 
         //下载更新资源
-        public IEnumerator CoDownloadUpdateContent(List<string> keys, MergeMode mergeMode)
+        public ETTask CoDownloadUpdateContent(List<string> keys, MergeMode mergeMode)
         {
+            ETTask result = ETTask.Create();
             ResetValue();
             var locHash = new HashSet<IResourceLocation>();
             string bundleName3;
@@ -184,12 +205,15 @@ namespace AssetBundles
                 }
             }
             downloadHandle = Addressables.DownloadDependenciesAsync(new List<IResourceLocation>(locHash), false);
-            yield return downloadHandle;
-            isOver = true;
-            isSuccess = downloadHandle.Status == AsyncOperationStatus.Succeeded;
+            downloadHandle.Completed += (res) =>
+            {
+                isOver = true;
+                isSuccess = downloadHandle.Status == AsyncOperationStatus.Succeeded;
 
-            Addressables.Release(downloadHandle);
-            yield break;
+                Addressables.Release(downloadHandle);
+                result.SetResult();
+            };
+            return result.GetAwaiter();
         }
 
         //重置数据

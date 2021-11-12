@@ -20,10 +20,8 @@ namespace ET
     //-- 资源管理系统：提供资源加载管理
     //-- 注意：
     //-- 1、只提供异步接口，即使内部使用的是同步操作，对外来说只有异步
-    //-- 2、两套API：使用回调（任何不带"Co"的接口）、使用协程（任何带"Co"的接口）
-    //-- 3、对于串行执行一连串的异步操作，建议使用协程（用同步形式的代码写异步逻辑），回调方式会使代码难读
-    //-- 4、所有lua层脚本别直接使用cs侧的AddressablesManager，都来这里获取接口
-    //-- 5、理论上做到逻辑层脚本对AB名字是完全透明的，所有资源只有packagePath的概念，这里对路径进行处理
+    //-- 2、对于串行执行一连串的异步操作，建议使用协程（用同步形式的代码写异步逻辑），回调方式会使代码难读
+    //-- 3、理论上做到逻辑层脚本对AB名字是完全透明的，所有资源只有packagePath的概念，这里对路径进行处理
     //--]]
     public class ResourcesComponent: Entity
     {
@@ -57,7 +55,7 @@ namespace ET
 
             while (!loader.isDone)
             {
-                await TimerComponent.Instance.WaitAsync(10);
+                await TimerComponent.Instance.WaitAsync(1);
                 progress_callback?.Invoke(loader.progress);
             }
             var asset = (TextAsset)loader.asset;
@@ -77,7 +75,7 @@ namespace ET
                 callback?.Invoke(null);
                 return null;
             }
-            var asset = await AddressablesManager.ETLoadAssetAsync<T>(path);
+            var asset = await AddressablesManager.LoadAssetAsync<T>(path);
 
             if (asset == null)
                 Debug.LogError("Asset load err : " + path);
@@ -98,7 +96,7 @@ namespace ET
 
             while (!loader.isDone)
             {
-                await TimerComponent.Instance.WaitAsync(10);
+                await TimerComponent.Instance.WaitAsync(1);
                 progress_callback?.Invoke(loader.progress);
             }
             var asset = loader.asset;
@@ -121,7 +119,7 @@ namespace ET
             var loader = AddressablesManager.LoadSceneAsync(path, isAdditive);
             while (!loader.isDone)
             {
-                await TimerComponent.Instance.WaitAsync(10);
+                await TimerComponent.Instance.WaitAsync(1);
                 progress_callback?.Invoke(loader.progress);
             }
             loader.Dispose();

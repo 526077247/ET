@@ -9,16 +9,11 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace AssetBundles
 {
-    public class AddressablesManager : MonoSingleton<AddressablesManager>
+    public class AddressablesManager
     {
-        const int MAX_ASSETBUNDLE_CREATE_NUM = 5;
+        public static AddressablesManager Instance { get; private set; } = new AddressablesManager();
 
-        //lua asset cache, cannot release on change secne
-        Dictionary<string, TextAsset> luaCaching = null;
-        private AssetBundle luaAssetBundle;
         private AssetBundle configBundle;
-        //bank cache, should release on change scene
-        Dictionary<string, TextAsset> bankCaching = new Dictionary<string, TextAsset>();
 
         //存放的是通过LoadAssetAsync加载的资源( 通俗的讲就是不带皮肤label的资源)
         //key为返回的unity asset, value代表这个asset被load了多少次，每一次都会返回一个handle
@@ -46,46 +41,42 @@ namespace AssetBundles
             }
         }
 
-        public void Initialize()
-        {
-        }
+        #region ==============> Addressable 相关接口提供
 
-        #region ==============> Addressable 相关接口提供的lua层
-
-        public AddressableUpdateAsyncOperation CheckForCatalogUpdates()
+        public async ETTask<AddressableUpdateAsyncOperation> CheckForCatalogUpdates()
         {
-            StartCoroutine(updateAsyncOpeartion.CoCheckForCatalogUpdates());
+            await updateAsyncOpeartion.CoCheckForCatalogUpdates();
             return updateAsyncOpeartion;
         }
 
-        public AddressableUpdateAsyncOperation GetDownloadSizeAsync(string[] keys)
+        public async ETTask<AddressableUpdateAsyncOperation> GetDownloadSizeAsync(string[] keys)
         {
-            StartCoroutine(updateAsyncOpeartion.CoGetDownloadSizeAsync(keys));
+            await updateAsyncOpeartion.CoGetDownloadSizeAsync(keys);
             return updateAsyncOpeartion;
         }
 
-        public AddressableUpdateAsyncOperation UpdateCatalogs(string catalog)
+        public async ETTask<AddressableUpdateAsyncOperation> UpdateCatalogs(string catalog)
         {
-            StartCoroutine(updateAsyncOpeartion.CoUpdateCatalogs(catalog));
+            await updateAsyncOpeartion.CoUpdateCatalogs(catalog);
             return updateAsyncOpeartion;
         }
 
-        public AddressableUpdateAsyncOperation DownloadDependenciesAsync(List<string> keys, int iMergeMode)
+        public async ETTask<AddressableUpdateAsyncOperation> DownloadDependenciesAsync(List<string> keys, int iMergeMode)
         {
             Addressables.MergeMode mergeMode = (Addressables.MergeMode)iMergeMode;
-            StartCoroutine(updateAsyncOpeartion.CoDownloadDependenciesAsync(keys, mergeMode));
+            await updateAsyncOpeartion.CoDownloadDependenciesAsync(keys, mergeMode);
             return updateAsyncOpeartion;
         }
-        public AddressableUpdateAsyncOperation CheckUpdateContent(List<string> keys, int iMergeMode)
+        public async ETTask<AddressableUpdateAsyncOperation> CheckUpdateContent(List<string> keys, int iMergeMode)
         {
             Addressables.MergeMode mergeMode = (Addressables.MergeMode)iMergeMode;
-            StartCoroutine(updateAsyncOpeartion.CoCheckUpdateContent(keys, mergeMode));
+            await updateAsyncOpeartion.CoCheckUpdateContent(keys, mergeMode);
             return updateAsyncOpeartion;
         }
-        public AddressableUpdateAsyncOperation DownloadUpdateContent(List<string> keys, int iMergeMode)
+        public async ETTask<AddressableUpdateAsyncOperation> DownloadUpdateContent(List<string> keys, int iMergeMode)
         {
             Addressables.MergeMode mergeMode = (Addressables.MergeMode)iMergeMode;
-            StartCoroutine(updateAsyncOpeartion.CoDownloadUpdateContent(keys, mergeMode));
+            await updateAsyncOpeartion.CoDownloadUpdateContent(keys, mergeMode);
             return updateAsyncOpeartion;
         }
         
@@ -210,7 +201,7 @@ namespace AssetBundles
             return asset;
         }
 
-        public ETTask<T> ETLoadAssetAsync<T>(string addressPath) where T: UnityEngine.Object
+        public ETTask<T> LoadAssetAsync<T>(string addressPath) where T: UnityEngine.Object
         {
             ETTask<T> tTask = ETTask<T>.Create();
             var label = GetAssetSkinLabel(addressPath);

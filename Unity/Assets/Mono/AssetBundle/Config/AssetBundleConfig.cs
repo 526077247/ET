@@ -13,8 +13,9 @@ namespace AssetBundles
         public string EngineVer;
         public string ResVer;
     }
-    public class AssetBundleConfig : MonoSingleton<AssetBundleConfig>
+    public class AssetBundleConfig
     {
+        public static AssetBundleConfig Instance { get; private set; } = new AssetBundleConfig();
         public static string localSvrAppPath = "Editor/AssetBundle/LocalServer/AssetBundleServer.exe";
         public static string AssetBundlesFolderName = "AssetBundles";
         public static string AssetBundleSuffix = ".assetbundle";
