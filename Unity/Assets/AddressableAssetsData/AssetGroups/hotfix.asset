@@ -15,10 +15,17 @@ MonoBehaviour:
   m_GroupName: hotfix
   m_Data:
     m_SerializedData: []
-  m_GUID: 54ad773610a8ba6488b594b27f9babac
+  m_GUID: 7b7df37045a1d934dba2316137bdedbc
   m_SerializeEntries:
   - m_GUID: 977bb7820df097c4880c46719308b5ae
     m_Address: Hotfix/HotfixInfo.bytes
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: aff205ebbe0c17c4883740cf302845a1
+    m_Address: Hotfix/Unity.HotfixView.patch.bytes
     m_ReadOnly: 0
     m_SerializedLabels:
     - default

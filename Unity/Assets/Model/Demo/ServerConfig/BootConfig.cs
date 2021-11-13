@@ -215,7 +215,7 @@ namespace ET
 
         bool IsStrInList(string str,List<string> list)
         {
-            if (string.IsNullOrEmpty(str) || list == null) return false;
+            if (list == null) return false;
             for (int i = 0; i < list.Count; i++)
                 if (list[i] == "all" || str == list[i])
                     return true;

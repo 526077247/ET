@@ -15,7 +15,7 @@ MonoBehaviour:
   m_GroupName: ui_uilogin
   m_Data:
     m_SerializedData: []
-  m_GUID: f61136be670174e41b76affaa530db71
+  m_GUID: 25237120faf072249b747d4179edfb78
   m_SerializeEntries:
   - m_GUID: 417d1b3ffb7cef24980aa197d6826c10
     m_Address: UI/UILogin/Atlas.spriteatlas

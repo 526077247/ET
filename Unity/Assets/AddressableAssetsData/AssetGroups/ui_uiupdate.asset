@@ -15,7 +15,7 @@ MonoBehaviour:
   m_GroupName: ui_uiupdate
   m_Data:
     m_SerializedData: []
-  m_GUID: a536d54fc7fbb6f4692664e992cbc80c
+  m_GUID: 47332d455336aab4897b94d3fc1831db
   m_SerializeEntries:
   - m_GUID: 11420b083bbcd2247aa8b2715a157358
     m_Address: UI/UIUpdate/Atlas.spriteatlas

@@ -15,7 +15,7 @@ MonoBehaviour:
   m_GroupName: uigames_unit
   m_Data:
     m_SerializedData: []
-  m_GUID: 8ea4d872e8031894eb0016fe43ec1329
+  m_GUID: ba10a4912f9d7664a8a6f9ad911289ce
   m_SerializeEntries:
   - m_GUID: b1494958bf9856a479bec1767c02878e
     m_Address: UIGames/Unit/Skeleton/Ani/Materials/skeleton_D.mat

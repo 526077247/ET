@@ -15,7 +15,7 @@ MonoBehaviour:
   m_GroupName: config
   m_Data:
     m_SerializedData: []
-  m_GUID: 182b5f4fb5b674b49a875d789dd3daab
+  m_GUID: 25afd6217508f4c46a6d6a6d378f73f2
   m_SerializeEntries:
   - m_GUID: 6c85a9219a189f249918906a18e186a6
     m_Address: Config/AIConfigCategory.bytes
@@ -31,15 +31,15 @@ MonoBehaviour:
     - default
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
-  - m_GUID: 04a40c5f1bc0d1c499a771145463654a
-    m_Address: Config/UnitConfigCategory.bytes
+  - m_GUID: bb9e5b84bed69df4481948c33e1e14b4
+    m_Address: Config/I18NConfigCategory.bytes
     m_ReadOnly: 0
     m_SerializedLabels:
     - default
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
-  - m_GUID: bb9e5b84bed69df4481948c33e1e14b4
-    m_Address: Config/I18NConfigCategory.bytes
+  - m_GUID: 04a40c5f1bc0d1c499a771145463654a
+    m_Address: Config/UnitConfigCategory.bytes
     m_ReadOnly: 0
     m_SerializedLabels:
     - default

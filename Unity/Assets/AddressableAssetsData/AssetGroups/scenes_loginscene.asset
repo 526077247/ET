@@ -15,7 +15,7 @@ MonoBehaviour:
   m_GroupName: scenes_loginscene
   m_Data:
     m_SerializedData: []
-  m_GUID: 1cbf1bb92939df64795a1b54a740ba1c
+  m_GUID: 3a8b272520f813f40b24159005913e53
   m_SerializeEntries:
   - m_GUID: fc2f27aa6115fdb4da65062d84414a36
     m_Address: Scenes/LoginScene/Login.unity

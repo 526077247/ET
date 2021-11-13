@@ -15,17 +15,17 @@ MonoBehaviour:
   m_GroupName: ui_uilobby
   m_Data:
     m_SerializedData: []
-  m_GUID: f91516c5c60762c408612a039c694b13
+  m_GUID: 6540d0dff7f4ad94eb70be7400fd4864
   m_SerializeEntries:
-  - m_GUID: d8d87e53d93e234448658c9a801a9967
-    m_Address: UI/UILobby/Prefabs/UILobbyView.prefab
+  - m_GUID: dc2c9e1dc4820e441887b19af7d93be4
+    m_Address: UI/UILobby/Atlas.spriteatlas
     m_ReadOnly: 0
     m_SerializedLabels:
     - default
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
-  - m_GUID: dc2c9e1dc4820e441887b19af7d93be4
-    m_Address: UI/UILobby/Atlas.spriteatlas
+  - m_GUID: d8d87e53d93e234448658c9a801a9967
+    m_Address: UI/UILobby/Prefabs/UILobbyView.prefab
     m_ReadOnly: 0
     m_SerializedLabels:
     - default

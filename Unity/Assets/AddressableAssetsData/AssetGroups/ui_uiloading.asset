@@ -15,7 +15,7 @@ MonoBehaviour:
   m_GroupName: ui_uiloading
   m_Data:
     m_SerializedData: []
-  m_GUID: 78f0d211f74200944a70b3a7c7e53337
+  m_GUID: d2845261c88755b4cb9426a5459356b7
   m_SerializeEntries:
   - m_GUID: db04150e9a2db3d499a75e4fd7943e23
     m_Address: UI/UILoading/Atlas.spriteatlas

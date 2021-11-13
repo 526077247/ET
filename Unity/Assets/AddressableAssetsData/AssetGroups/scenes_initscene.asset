@@ -15,7 +15,7 @@ MonoBehaviour:
   m_GroupName: scenes_initscene
   m_Data:
     m_SerializedData: []
-  m_GUID: 44b6f45275bd67944b132036d52aecf0
+  m_GUID: 8110e35f0e8349e46b8c9e772eb8e375
   m_SerializeEntries:
   - m_GUID: e0d691ac8c1d0454ba07089ea820e18a
     m_Address: Scenes/InitScene/Init.unity

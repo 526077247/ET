@@ -15,7 +15,7 @@ MonoBehaviour:
   m_GroupName: renderassets
   m_Data:
     m_SerializedData: []
-  m_GUID: c41d02525255c9f4a8efc87b0c329382
+  m_GUID: cc8a3e0f66ad4024ebb003a410c945b8
   m_SerializeEntries:
   - m_GUID: c3179d02f14ad314484e1be0b76f32d1
     m_Address: RenderAssets/Brightness Saturation And Contrast.shader

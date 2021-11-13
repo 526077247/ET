@@ -15,7 +15,7 @@ MonoBehaviour:
   m_GroupName: ui_uicommon
   m_Data:
     m_SerializedData: []
-  m_GUID: a48c961945d9c7940b8728ffb9f7e60c
+  m_GUID: ee026a3aa72cad244afef47e03f04778
   m_SerializeEntries:
   - m_GUID: 511390d6f32c65e4eaadb0e0e2617366
     m_Address: UI/UICommon/Atlas.spriteatlas

@@ -15,7 +15,7 @@ MonoBehaviour:
   m_GroupName: fonts
   m_Data:
     m_SerializedData: []
-  m_GUID: 7f03f3acb26eb994c9b756cf43ebaff8
+  m_GUID: 53732dbd61d672b459e59eb395fc8341
   m_SerializeEntries:
   - m_GUID: a616d93b858b5e8478549c9cb7af3280
     m_Address: Fonts/DefaultFont.asset

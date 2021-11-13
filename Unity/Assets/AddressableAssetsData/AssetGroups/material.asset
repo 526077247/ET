@@ -15,7 +15,7 @@ MonoBehaviour:
   m_GroupName: material
   m_Data:
     m_SerializedData: []
-  m_GUID: ea59cc01656d9c64296a1fb96956ad6b
+  m_GUID: 3d6d4685dcaaeed4bb04bda630941481
   m_SerializeEntries:
   - m_GUID: f8c53c1bdcd8fd9488949059dafb99d3
     m_Address: Material/Default Material.mat
