@@ -253,7 +253,9 @@ namespace ET
                 Log.Info("CheckResUpdate ResVer is Most Max Version, so return; flag = " + flag);
                 return false;
             }
-            if (PlatformUtil.IsEditor()) return false;
+
+            // 编辑器下不能测试热更，但可以测试下载。
+            if (PlatformUtil.IsEditor()) return false; 
 
             //找到最新版本，则设置当前资源存放的cdn地址
             var url = BootConfig.Instance.GetUpdateCdnResUrlByVersion(maxVer);
@@ -433,7 +435,7 @@ namespace ET
             var info = await HttpManager.Instance.HttpGetResult(url);
             if (!string.IsNullOrEmpty(info))
             {
-                await self.DownloadAllAssetBundle(size ,(progress) => { self.SetProgress((float)progress); });
+                await self.DownloadAllAssetBundle(size);
                 return true;
             }
             else
@@ -452,33 +454,36 @@ namespace ET
             }
         }
 
-        async static ETTask DownloadAllAssetBundle(this UIUpdateView self, long size, Action<double> callback)
+        async static ETTask DownloadAllAssetBundle(this UIUpdateView self, long size)
         {
             var downloadTool = (self as Entity).AddComponent<UnityWebRequestRenewalAsync>();
             var total_count = self.m_needdownloadinfo.Count;
             Log.Info("DownloadAllAssetBundle count = " + total_count);
             if (total_count <= 0)
                 return;
-            long download_size = 0;
+            self.download_size = 0;
+            self.overCount = 0;
+            self.RefreshProgress(downloadTool, size).Coroutine();
             for (int i = 0; i < self.m_needdownloadinfo.Count; i++)
             {
-                self.DownloadResinfoAsync(i).Coroutine();
-                while (downloadTool.Progress < 1)
-                {
-                    callback((double)(downloadTool.ByteDownloaded + download_size)/ size);
-                    await TimerComponent.Instance.WaitAsync(10);
-                }
-                download_size += downloadTool.ByteDownloaded;
-                callback(download_size / size);
+                await self.DownloadResinfoAsync(i);
+                self.download_size += downloadTool.ByteDownloaded;
             }
             Log.Info("DownloadAllAssetBundle end");
 
         }
-
+        static async ETTask RefreshProgress(this UIUpdateView self, UnityWebRequestRenewalAsync downloadTool, long size)
+        {
+            while (self.m_needdownloadinfo.Count!= self.overCount)
+            {
+                self.SetProgress((float)((double)(downloadTool.ByteDownloaded + self.download_size) / size));
+                await TimerComponent.Instance.WaitAsync(10);
+            }
+        }
         static async ETTask DownloadResinfoAsync(this UIUpdateView self, int order)
         {
             var downloadTool = (self as Entity).GetComponent<UnityWebRequestRenewalAsync>();
-            var downinfo = self.m_needdownloadinfo[order - 1];
+            var downinfo = self.m_needdownloadinfo[order];
             var url = string.Format("{0}/{1}", self.m_rescdn_url, downinfo.name);
             Log.Info("download ab ============, " + order + " = " + url);
             var savePath = AssetBundleMgr.GetInstance().getCachedAssetBundlePath(downinfo.name) + ".temp";
@@ -487,7 +492,7 @@ namespace ET
                 try
                 {
                     await downloadTool.DownloadAsync(url, savePath);
-                    AssetBundleMgr.GetInstance().CacheAssetBundle(url, downinfo.hash);
+                    AssetBundleMgr.GetInstance().CacheAssetBundle(downinfo.name, downinfo.hash);
                     return;
                 }
                 catch (Exception ex)

@@ -169,6 +169,9 @@ namespace ET
             this.WritePackages();
             if (this.byteWrites == this.totalBytes)
             {
+                this.fileStream?.Close();
+                this.fileStream?.Dispose();
+                this.fileStream = null;
                 this.tcs.SetResult();
             }
             else

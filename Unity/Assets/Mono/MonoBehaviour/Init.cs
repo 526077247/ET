@@ -21,6 +21,8 @@ namespace ET
 
 		private void Awake()
 		{
+			//测试下载时先把Addressables的缓存清掉，AppData\LocalLow下的缓存都删掉
+			//PlayerPrefs.DeleteAll();
 			System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
 			//先初始化AssetBundleMgr, 必须在Addressable系统初始化之前
 			sw.Start();

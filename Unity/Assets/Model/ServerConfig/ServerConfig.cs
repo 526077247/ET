@@ -44,7 +44,7 @@ namespace ET
                     }
                 },
             };
-            default_key = "setting2";
+            default_key = "setting1";
         }
     }
 }

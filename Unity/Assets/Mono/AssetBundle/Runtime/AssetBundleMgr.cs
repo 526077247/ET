@@ -214,11 +214,13 @@ public class AssetBundleMgr
     public void CacheAssetBundle(string assetBundleName, string hash)
     {
         var path = Path.Combine(PersistentAssetBundleFolder, assetBundleName);
-        File.Delete(path);
+        if(File.Exists(path))
+            File.Delete(path);
         File.Move(path+".temp", path);
 
         var hashPath = Path.Combine(PersistentAssetBundleFolder, assetBundleName + ".hash");
-        File.Delete(hashPath);
+        if (File.Exists(hashPath))
+            File.Delete(hashPath);
         File.WriteAllText(hashPath, hash);
 
         if (dict_cache_ab_hash.TryGetValue(assetBundleName, out string hashStr))

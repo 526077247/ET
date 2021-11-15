@@ -21,7 +21,8 @@ namespace ET
         public List<DownLoadInfo> m_needdownloadinfo = null;
         public string m_rescdn_url;
         public float last_progress;
-
+        public long download_size;
+        public int overCount;
         public override string PrefabPath => "UI/UIUpdate/Prefabs/UIUpdateView.prefab";
 
     }
