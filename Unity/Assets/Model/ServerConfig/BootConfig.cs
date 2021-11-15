@@ -14,13 +14,6 @@ namespace ET
 
     }
 
-    public class PoolConn
-    {
-        public int idx;
-        public DownloadAssetBundleAsyncOperation asyncOp;
-        public bool dirty;
-
-    }
     public class WhiteConfig
     {
         public ENV_ID env_id;

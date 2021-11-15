@@ -148,13 +148,15 @@ namespace ET
             //GC：交替重复2次，清干净一点
             GC.Collect();
             GC.Collect();
+            ETTask task = ETTask.Create(true);
             var res = Resources.UnloadUnusedAssets();
-            while (!res.isDone)
+            res.completed += (op) =>
             {
-                if (res.progress > 1) Log.Error("scene load waht's the fuck!");
-                await TimerComponent.Instance.WaitAsync(1);
-            }
-
+                task.SetResult();
+                if (!op.isDone) Log.Error("scene load waht's the fuck!");
+            };
+            await task;
+            task = null;
             slid_value += 0.1f;
             Game.EventSystem.Publish(new EventType.LoadingProgress { Progress = slid_value }).Coroutine();
             //初始化目标场景
@@ -190,7 +192,8 @@ namespace ET
             logic_scene.CoOnComplete();
             slid_value = 1;
             Game.EventSystem.Publish(new EventType.LoadingProgress { Progress = slid_value }).Coroutine();
-            await TimerComponent.Instance.WaitAsync(1);
+            //等久点，跳的太快
+            await TimerComponent.Instance.WaitAsync(500);
             //加载完成，关闭loading界面
             await Game.EventSystem.Publish(new EventType.LoadingFinish());
             //释放loading界面引用的资源

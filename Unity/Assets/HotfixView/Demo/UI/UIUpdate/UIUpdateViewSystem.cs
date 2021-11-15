@@ -28,6 +28,7 @@ namespace ET
     {
         public override void OnEnable(UIUpdateView self)
         {
+            self.last_progress = 0;
             self.m_slider.SetValue(0);
             self.StartCheckUpdate().Coroutine();
         }
@@ -52,12 +53,6 @@ namespace ET
             AssetBundleConfig.Instance.SyncLoadGlobalAssetBundle();
 
             Game.EventSystem.Publish(new EventType.AppStart()).Coroutine();
-        }
-
-
-        public static void SetSlidValue(this UIUpdateView self,float pro)
-        {
-            self.m_slider.SetValue(pro);
         }
 
         static void HideMsgBoxView(this UIUpdateView self)
@@ -105,7 +100,7 @@ namespace ET
             //TODO 网络检查 
             await self.CheckIsInWhiteList();
 
-            await self.CheckUpdateList();
+            await CheckUpdateList();
 
             var Over = await self.CheckAppUpdate();
             if (Over) return;
@@ -152,7 +147,7 @@ namespace ET
             }
         }
 
-        async static ETTask CheckUpdateList(this UIUpdateView self)
+        async static ETTask CheckUpdateList()
         {
             var url = BootConfig.Instance.GetUpdateListCdnUrl();
             //UpdateConfig aa = new UpdateConfig
@@ -258,7 +253,7 @@ namespace ET
                 Log.Info("CheckResUpdate ResVer is Most Max Version, so return; flag = " + flag);
                 return false;
             }
-            //if (PlatformUtil.IsEditor()) return false;
+            if (PlatformUtil.IsEditor()) return false;
 
             //找到最新版本，则设置当前资源存放的cdn地址
             var url = BootConfig.Instance.GetUpdateCdnResUrlByVersion(maxVer);
@@ -306,7 +301,9 @@ namespace ET
             }
 
             //开始进行更新
-            self.m_slider.SetValue(0);
+
+            self.last_progress = 0;
+            self.SetProgress(0);
             //2、更新资源
 
             var merge_mode_union = 1;
@@ -316,12 +313,8 @@ namespace ET
             Log.Info("needdownloadinfo: ", needdownloadinfo);
             self.m_needdownloadinfo = self.SortDownloadInfo(JsonHelper.FromJson<Dictionary<string, string>>(needdownloadinfo));
 
-            self.finish_count = 0;
-            //记录下载好了的资源的index
-            self.m_download_finish_index = new Dictionary<int, bool>();
-            self.last_progress = 0;
             Log.Info("CheckResUpdate DownloadContent begin");
-            bool result = await self.DownloadContent();
+            bool result = await self.DownloadContent(size);
             if (!result) return false;
             Log.Info("CheckResUpdate DownloadContent Success");
             return true;
@@ -357,7 +350,7 @@ namespace ET
 
         async static ETTask<AddressableUpdateAsyncOperation> GetDownloadSize(this UIUpdateView self)
         {
-            var handler = await AddressablesManager.Instance.GetDownloadSizeAsync(new string[] { "default" });
+            var handler = await AddressablesManager.Instance.GetDownloadSizeAsync("default");
             if (handler.isSuccess)
                 return handler;
             else
@@ -428,21 +421,20 @@ namespace ET
                 }
             }
         }
-
-        async static ETTask<bool> DownloadContent(this UIUpdateView self)
+        static void SetProgress(this UIUpdateView self, float value)
+        {
+            if(value> self.last_progress)
+                self.last_progress = value;
+            self.m_slider.SetValue(self.last_progress);
+        }
+        async static ETTask<bool> DownloadContent(this UIUpdateView self,long size)
         {
             var url = BootConfig.Instance.GetUpdateListCdnUrl();
             var info = await HttpManager.Instance.HttpGetResult(url);
             if (!string.IsNullOrEmpty(info))
             {
-                await self.DownloadAllAssetBundle((progress) => { self.m_slider.SetValue(progress); });
-                if(self.CheckNeedContinueDownload())
-                {
-                    Log.Info("DownloadContent DownloadDependenciesAsync retry");
-                    return await self.DownloadContent();
-                }
-                else
-                    return true;
+                await self.DownloadAllAssetBundle(size ,(progress) => { self.SetProgress((float)progress); });
+                return true;
             }
             else
             {
@@ -451,7 +443,7 @@ namespace ET
                 self.m_msgBoxViewBtnConfirm.RemoveOnClick();
                 self.m_msgBoxViewBtnCancel.RemoveOnClick();
                 if (btnState == self.BTN_CONFIRM)
-                    return await self.DownloadContent();
+                    return await self.DownloadContent(size);
                 else
                 {
                     GameUtility.Quit();
@@ -460,155 +452,61 @@ namespace ET
             }
         }
 
-        async static ETTask DownloadAllAssetBundle(this UIUpdateView self,Action<float> callback)
+        async static ETTask DownloadAllAssetBundle(this UIUpdateView self, long size, Action<double> callback)
         {
+            var downloadTool = (self as Entity).AddComponent<UnityWebRequestRenewalAsync>();
             var total_count = self.m_needdownloadinfo.Count;
             Log.Info("DownloadAllAssetBundle count = " + total_count);
             if (total_count <= 0)
                 return;
-            var progress_slice = 1f / total_count;
-            self.pool_conn = new Dictionary<int, PoolConn>();
-            self.conn_num = total_count;
-            var n_index = 1;
-            var n_end = self.m_needdownloadinfo.Count - 1;
-            n_index = self.AddDownloadConn(n_index, n_end);
-            do
+            long download_size = 0;
+            for (int i = 0; i < self.m_needdownloadinfo.Count; i++)
             {
-                var total = 0f;
-                var keys = self.pool_conn.Keys.ToList();
-                foreach (var item in keys)
+                self.DownloadResinfoAsync(i).Coroutine();
+                while (downloadTool.Progress < 1)
                 {
-                    var vo = self.pool_conn[item];
-                    var k = item;
-                    if (vo.dirty)
-                    {
-                        vo.asyncOp.Dispose();
-                        self.pool_conn.Remove(k);
-                    }
-                    else
-                    {
-                        if (vo.asyncOp.isDone)
-                        {
-                            if (vo.asyncOp.isSuccess)
-                            {
-                                self.m_download_finish_index[vo.idx] = true;
-                                self.finish_count++;
-                            }
-                            else
-                                Log.Error("error == " + vo.asyncOp.errorMsg);
-                            vo.dirty = true;//下一帧处理
-                        }
-                        else
-                            total += vo.asyncOp.progress;
-                    }
+                    callback((double)(downloadTool.ByteDownloaded + download_size)/ size);
+                    await TimerComponent.Instance.WaitAsync(10);
                 }
-                var progress = (self.finish_count + total) * progress_slice;
-                if (progress > self.last_progress)
-                {
-                    callback(progress);
-                    self.last_progress = progress;
-                }
-                n_index = self.AddDownloadConn(n_index, n_end);
-                await TimerComponent.Instance.WaitAsync(1);
-            } while (n_index <= n_end || self.GetDownConnCount() != 0);
-            callback(self.finish_count * progress_slice);
-
-            foreach (var item in self.pool_conn)
-            {
-                item.Value.asyncOp.Dispose();
+                download_size += downloadTool.ByteDownloaded;
+                callback(download_size / size);
             }
-            self.pool_conn.Clear();
-
-            //下载最后的版本资源
-            var end_num = self.m_needdownloadinfo.Count;
-            if (self.OtherDownloadFinish(end_num))
-            {
-                if (!self.m_download_finish_index.ContainsKey(end_num))
-                {
-                    var asyncOp = self.DownloadResinfo(end_num);
-                    while (!asyncOp.isDone) 
-                        await TimerComponent.Instance.WaitAsync(1);
-                    if (asyncOp.isSuccess)
-                    {
-                        self.m_download_finish_index[end_num] = true;
-                        self.finish_count++;
-                        callback(self.finish_count * progress_slice);
-                    }
-                    else
-                        Log.Info("error == " + asyncOp.errorMsg);
-                    asyncOp.Dispose();
-                }
-                Log.Info("DownloadAllAssetBundle end");
-            }
-        }
-        static bool OtherDownloadFinish(this UIUpdateView self,int res_idx)
-        {
-            for (int i = 1; i <= self.m_needdownloadinfo.Count; i++)
-                if ((i != res_idx) && !self.m_download_finish_index.ContainsKey(i))
-                    return false;
-            return true;
-        }
-        static int AddDownloadConn(this UIUpdateView self,int order, int n_end)
-        {
-            while (order <= n_end)
-            {
-                var conn_idx = self.GetConnIdx();
-                if (conn_idx != null)
-                {
-                    if (!self.m_download_finish_index.TryGetValue(order, out var res) || res == false)
-                    {
-                        self.pool_conn[(int)conn_idx] = new PoolConn { idx = order, asyncOp = self.DownloadResinfo(order) };
-
-                    }
-                    order = order + 1;
-                }
-                else break;
-            }
-            return order;
-        }
-
-        static int GetDownConnCount(this UIUpdateView self)
-        {
-            var num = 0;
-            foreach (var item in self.pool_conn)
-            {
-                if (!item.Value.dirty)
-                    num++;
-            }
-            return num;
+            Log.Info("DownloadAllAssetBundle end");
 
         }
 
-        static int? GetConnIdx(this UIUpdateView self)
+        static async ETTask DownloadResinfoAsync(this UIUpdateView self, int order)
         {
-            for (int i = 0; i < self.conn_num; i++)
-            {
-                if (!self.pool_conn.ContainsKey(i))
-                    return i;
-            }
-            return null;
-        }
-
-        static DownloadAssetBundleAsyncOperation DownloadResinfo(this UIUpdateView self,int order)
-        {
-            var downinfo = self.m_needdownloadinfo[order-1];
+            var downloadTool = (self as Entity).GetComponent<UnityWebRequestRenewalAsync>();
+            var downinfo = self.m_needdownloadinfo[order - 1];
             var url = string.Format("{0}/{1}", self.m_rescdn_url, downinfo.name);
             Log.Info("download ab ============, " + order + " = " + url);
-            var asyncOp = ABDownload.Instance.DownloadAssetBundle(url, downinfo.hash);
-            return asyncOp;
-        }
-
-        static bool CheckNeedContinueDownload(this UIUpdateView self)
-        {
-            if (self.m_needdownloadinfo.Count > 0 && self.m_download_finish_index.Count == self.m_needdownloadinfo.Count) return false;
-            for (int i = 1; i <= self.m_needdownloadinfo.Count; i++)
+            var savePath = AssetBundleMgr.GetInstance().getCachedAssetBundlePath(downinfo.name) + ".temp";
+            for (int i = 0; i < 3; i++)//重试3次
             {
-                if (!self.m_download_finish_index.ContainsKey(i))
+                try
                 {
-                    return true;
+                    await downloadTool.DownloadAsync(url, savePath);
+                    AssetBundleMgr.GetInstance().CacheAssetBundle(url, downinfo.hash);
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex);
                 }
             }
-            return false;
+            downloadTool.DeleteTempFile(savePath);
+            var btnState = await self.ShowMsgBoxView("下载失敗，請檢查網路", "重試", "退出遊戲");
+            self.m_msgBoxViewBtnConfirm.RemoveOnClick();
+            self.m_msgBoxViewBtnCancel.RemoveOnClick();
+            if (btnState == self.BTN_CONFIRM)
+            {
+                await self.DownloadResinfoAsync(order);
+            }
+            else
+            {
+                GameUtility.Quit();
+            }
         }
     }
 }

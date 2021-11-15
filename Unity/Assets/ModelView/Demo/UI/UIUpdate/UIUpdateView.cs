@@ -20,10 +20,6 @@ namespace ET
 
         public List<DownLoadInfo> m_needdownloadinfo = null;
         public string m_rescdn_url;
-        public Dictionary<int, bool> m_download_finish_index = null;
-        public int conn_num = 4;//默认连接数
-        public Dictionary<int, PoolConn> pool_conn = null;
-        public int finish_count = 0;
         public float last_progress;
 
         public override string PrefabPath => "UI/UIUpdate/Prefabs/UIUpdateView.prefab";

@@ -49,9 +49,9 @@ namespace AssetBundles
             return updateAsyncOpeartion;
         }
 
-        public async ETTask<AddressableUpdateAsyncOperation> GetDownloadSizeAsync(string[] keys)
+        public async ETTask<AddressableUpdateAsyncOperation> GetDownloadSizeAsync(string key)
         {
-            await updateAsyncOpeartion.CoGetDownloadSizeAsync(keys);
+            await updateAsyncOpeartion.CoGetDownloadSizeAsync(key);
             return updateAsyncOpeartion;
         }
 
@@ -146,11 +146,10 @@ namespace AssetBundles
                 return;
             }
 
-            int refCount;
             bool found = false;
             Debug.Log("ReleaseAsset " + go.name);
             //先从assetCacheing中寻找
-            if (dictAssetCaching.TryGetValue(go, out refCount))
+            if (dictAssetCaching.TryGetValue(go, out int refCount))
             {
                 found = true;
                 Addressables.Release(go);

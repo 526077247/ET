@@ -211,7 +211,25 @@ public class AssetBundleMgr
             dict_cache_ab_hash.Add(assetBundleName, hash);
         }
     }
+    public void CacheAssetBundle(string assetBundleName, string hash)
+    {
+        var path = Path.Combine(PersistentAssetBundleFolder, assetBundleName);
+        File.Delete(path);
+        File.Move(path+".temp", path);
 
+        var hashPath = Path.Combine(PersistentAssetBundleFolder, assetBundleName + ".hash");
+        File.Delete(hashPath);
+        File.WriteAllText(hashPath, hash);
+
+        if (dict_cache_ab_hash.TryGetValue(assetBundleName, out string hashStr))
+        {
+            dict_cache_ab_hash[assetBundleName] = hash;
+        }
+        else
+        {
+            dict_cache_ab_hash.Add(assetBundleName, hash);
+        }
+    }
     public void DelAssetBundleFromCache(string assetBundleName)
     {
         var path = Path.Combine(PersistentAssetBundleFolder, assetBundleName);

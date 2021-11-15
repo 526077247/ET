@@ -223,11 +223,16 @@ namespace ET
         /// <param name="filePath">文件写入路径</param>
         /// <param name="packageLength">单个任务包体字节大小</param>
         /// <param name="maxCount">同时开启最大任务个数</param>
+        /// <param name="clear">是否删除原文件</param>
         /// <returns></returns>
-        public async ETTask DownloadAsync(string url, string filePath, int packageLength = 1000000, int maxCount = 20)
+        public async ETTask DownloadAsync(string url, string filePath, int packageLength = 1000000, int maxCount = 20,bool clear=false)
         {
             try
             {
+                if (clear&&File.Exists(filePath))
+                {
+                    File.Delete(filePath);
+                }
                 url = url.Replace(" ", "%20");
                 this.Url = url;
                 this.packageLength = packageLength;
@@ -293,6 +298,13 @@ namespace ET
             }
         }
 
+        public void DeleteTempFile(string filePath)
+        {
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
+        }
         //下载进度
         public float Progress
         {

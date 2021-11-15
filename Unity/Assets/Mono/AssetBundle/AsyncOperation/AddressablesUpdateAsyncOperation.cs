@@ -57,11 +57,11 @@ namespace AssetBundles
         }
 
         //根据key来获取下载大小
-        public ETTask CoGetDownloadSizeAsync(string[] keys)
+        public ETTask CoGetDownloadSizeAsync(string key)
         {
             ETTask result = ETTask.Create();
             ResetValue();
-            var handle = Addressables.GetDownloadSizeAsync(keys);
+            var handle = Addressables.GetDownloadSizeAsync(key);
             handle.Completed += (res) =>
             {
                 downloadSize = handle.Result;
@@ -94,7 +94,7 @@ namespace AssetBundles
         {
             ETTask result = ETTask.Create();
             ResetValue();
-            downloadHandle = Addressables.DownloadDependenciesAsync(keys.ConvertAll(s => (object)s), mergeMode, false);
+            downloadHandle = Addressables.DownloadDependenciesAsync(keys, mergeMode, false);
             downloadHandle.Completed += (res) =>
             {
                 isOver = true;
@@ -109,7 +109,7 @@ namespace AssetBundles
         {
             ETTask result = ETTask.Create();
             ResetValue();
-            var handle = Addressables.LoadResourceLocationsAsync(keys.ConvertAll(s => (object)s), mergeMode);
+            var handle = Addressables.LoadResourceLocationsAsync(keys, mergeMode);
             handle.Completed += (res) =>
             {
                 if (handle.Status == AsyncOperationStatus.Succeeded)
