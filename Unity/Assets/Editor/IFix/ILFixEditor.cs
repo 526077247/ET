@@ -681,8 +681,10 @@ namespace IFix.Editor
             StringBuilder sb = new StringBuilder();
             foreach (var assembly in injectAssemblys)
             {
+                var path = string.Format("{0}{1}.patch.bytes", patchOutputDir, assembly);
+                if (File.Exists(path)) File.Delete(path);
                 if (GenPatch(assembly, string.Format("{0}/{1}.dll", outputDir, assembly),
-                    "./Assets/Plugins/IFix.Core.dll", string.Format("{0}{1}.patch.bytes", patchOutputDir, assembly)))
+                    "./Assets/Plugins/IFix.Core.dll", path))
                 {
                     sb.Append(assembly + ",");
                 }
@@ -886,9 +888,10 @@ namespace IFix.Editor
             {
                 foreach (var assembly in injectAssemblys)
                 {
+                    var path = string.Format("Assets/AssetsPackage/Hotfix/{0}.patch.bytes", assembly);
+                    if(File.Exists(path)) File.Delete(path);
                     var assembly_path = string.Format("./Library/{0}/{1}.dll", GetScriptAssembliesFolder(), assembly);
-                    if(GenPatch(assembly, assembly_path, "./Assets/Plugins/IFix.Core.dll",
-                        string.Format("Assets/AssetsPackage/Hotfix/{0}.patch.bytes", assembly)))
+                    if(GenPatch(assembly, assembly_path, "./Assets/Plugins/IFix.Core.dll", path))
                     {
                         sb.Append(assembly + ",");
                     }

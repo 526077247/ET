@@ -51,6 +51,7 @@ namespace ET
 		private PlatformType platformType;
 		private bool clearFolder;
 		private bool isBuildExe;
+		private bool isInject;
 		private bool isContainAB;
 		private BuildType buildType;
 		private BuildOptions buildOptions;
@@ -93,6 +94,7 @@ namespace ET
 				clearFolder = buildSettings.clearFolder;
 				isBuildExe = buildSettings.isBuildExe;
 				isContainAB = buildSettings.isContainAB;
+				isInject = buildSettings.isInject;
 				buildType = buildSettings.buildType;
 				buildAssetBundleOptions = buildSettings.buildAssetBundleOptions;
 			}
@@ -109,6 +111,7 @@ namespace ET
 			this.platformType = (PlatformType)EditorGUILayout.EnumPopup(platformType);
             this.clearFolder = EditorGUILayout.Toggle("清理资源文件夹: ", clearFolder);
             this.isBuildExe = EditorGUILayout.Toggle("是否打包EXE: ", this.isBuildExe);
+			this.isInject = EditorGUILayout.Toggle("是否Inject(整包,无IFix标签) ", this.isInject);
 			//this.isContainAB = EditorGUILayout.Toggle("是否同将资源打进EXE: ", this.isContainAB);
 			this.buildType = (BuildType)EditorGUILayout.EnumPopup("BuildType: ", this.buildType);
 			//EditorGUILayout.LabelField("BuildAssetBundleOptions(可多选):");
@@ -147,7 +150,7 @@ namespace ET
 							break;
                     }
                 }
-				BuildHelper.Build(this.platformType, this.buildOptions, this.isBuildExe,this.clearFolder);
+				BuildHelper.Build(this.platformType, this.buildOptions, this.isBuildExe,this.clearFolder, this.isInject);
 			}
 
 			GUILayout.Space(5);
@@ -160,7 +163,7 @@ namespace ET
 			buildSettings.isContainAB = isContainAB;
 			buildSettings.buildType = buildType;
 			buildSettings.buildAssetBundleOptions = buildAssetBundleOptions;
-
+			buildSettings.isInject = isInject;
 			EditorUtility.SetDirty(buildSettings);
 			AssetDatabase.SaveAssets();
         }

@@ -28,7 +28,10 @@ namespace ET
                 if (string.IsNullOrEmpty(self.Assemblys[i])) continue;
                 var bytes = await ResourcesComponent.Instance.LoadTextAsync("Hotfix/" + self.Assemblys[i] + ".patch.bytes", ignoreError:true);
                 if (bytes != null)
+                {
+                    Log.Info("Start Patch " + self.Assemblys[i]);
                     PatchManager.Load(new MemoryStream(bytes.bytes));
+                }
             }
         } 
     }

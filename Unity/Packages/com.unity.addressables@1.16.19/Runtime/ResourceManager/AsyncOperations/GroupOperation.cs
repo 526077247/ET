@@ -43,7 +43,11 @@ namespace UnityEngine.ResourceManagement.AsyncOperations
 
         internal override void ReleaseDependencies()
         {
-            if (Result == null) return;
+            if (Result == null)
+            {
+                Debug.LogError("Result is NULL");
+                return;
+            }
             for (int i = 0; i < Result.Count; i++)
                 if (Result[i].IsValid())
                     Result[i].Release();

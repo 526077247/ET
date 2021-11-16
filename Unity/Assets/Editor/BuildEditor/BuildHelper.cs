@@ -35,13 +35,13 @@ namespace ET
             PlayerSettings.keystorePass = "123456";
         }
 
-        public static void Build(PlatformType type, BuildOptions buildOptions, bool isBuildExe,bool clearFolder)
+        public static void Build(PlatformType type, BuildOptions buildOptions, bool isBuildExe,bool clearFolder,bool isInject)
         {
             EditorUserSettings.SetConfigValue(AddressableTools.is_packing, "1");
             if (buildmap[type] == EditorUserBuildSettings.activeBuildTarget)
             {
                 //pack
-                BuildHandle(type, buildOptions, isBuildExe,clearFolder);
+                BuildHandle(type, buildOptions, isBuildExe,clearFolder, isInject);
             }
             else
             {
@@ -50,7 +50,7 @@ namespace ET
                     if (EditorUserBuildSettings.activeBuildTarget == buildmap[type])
                     {
                         //pack
-                        BuildHandle(type, buildOptions, isBuildExe, clearFolder);
+                        BuildHandle(type, buildOptions, isBuildExe, clearFolder, isInject);
                     }
                 };
                 if(buildGroupmap.TryGetValue(type,out var group))
@@ -66,8 +66,7 @@ namespace ET
         }
         public static void HandleProject()
         {
-            //Inject
-            IFixEditor.InjectAssemblys();
+            
             //清除图集
             //AltasHelper.ClearAllAtlas();
 
@@ -89,7 +88,7 @@ namespace ET
             AddressableTools.BuildPlayerContent();
 
         }
-        static void BuildHandle(PlatformType type, BuildOptions buildOptions, bool isBuildExe,bool clearFolder)
+        static void BuildHandle(PlatformType type, BuildOptions buildOptions, bool isBuildExe,bool clearFolder,bool isInject)
         {
             
             
@@ -116,6 +115,11 @@ namespace ET
                     buildTarget = BuildTarget.StandaloneOSX;
                     IFixEditor.Patch();
                     break;
+            }
+            if (isInject)
+            {
+                //Inject
+                IFixEditor.InjectAssemblys();
             }
             HandleProject();
             //string fold = string.Format(BuildFolder, type);
