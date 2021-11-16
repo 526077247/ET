@@ -48,7 +48,7 @@ public class AssetBundleMgr
     {
         Debug.Log("InitBuildInAssetBundleHashInfo start");
         string text;
-#if UNITY_ANDROID
+#if UNITY_ANDROID && !UNITY_EDITOR
         string fileName = "aa/" + AssetBundleConfig.BuildInABHashFileName;
         text = AndroidAssetUtil.readAssetText(fileName);
 #else
