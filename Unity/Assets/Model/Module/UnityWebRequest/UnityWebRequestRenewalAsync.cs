@@ -169,9 +169,6 @@ namespace ET
             this.WritePackages();
             if (this.byteWrites == this.totalBytes)
             {
-                this.fileStream?.Close();
-                this.fileStream?.Dispose();
-                this.fileStream = null;
                 this.tcs.SetResult();
             }
             else
@@ -350,14 +347,8 @@ namespace ET
             }
         }
 
-        public override void Dispose()
+        public void Clear()
         {
-            if (this.IsDisposed)
-            {
-                return;
-            }
-
-            base.Dispose();
             headRequest?.Dispose();
             headRequest = null;
             foreach (UnityWebRequest dataRequest in this.dataRequests)
@@ -370,6 +361,17 @@ namespace ET
             this.fileStream?.Dispose();
             this.fileStream = null;
             this.isCancel = false;
+        }
+
+        public override void Dispose()
+        {
+            if (this.IsDisposed)
+            {
+                return;
+            }
+
+            base.Dispose();
+            Clear();
         }
     }
 }

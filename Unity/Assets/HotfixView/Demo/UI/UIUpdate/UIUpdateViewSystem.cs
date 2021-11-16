@@ -492,6 +492,7 @@ namespace ET
                 try
                 {
                     await downloadTool.DownloadAsync(url, savePath);
+                    downloadTool.Clear();
                     AssetBundleMgr.GetInstance().CacheAssetBundle(downinfo.name, downinfo.hash);
                     return;
                 }
