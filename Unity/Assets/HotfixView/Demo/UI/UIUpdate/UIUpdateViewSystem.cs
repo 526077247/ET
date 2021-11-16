@@ -14,13 +14,6 @@ namespace ET
         public override void OnCreate(UIUpdateView self)
         {
             self.m_slider = self.AddComponent<UISlider>("Loadingscreen/Slider");
-            self.m_msgBoxView = self.transform.Find("msgbox_view").gameObject;
-            self.m_msgBoxViewText = self.AddComponent<UIText>("msgbox_view/Text");
-            self.m_msgBoxViewBtnCancel = self.AddComponent<UIButton>("msgbox_view/btn_cancel");
-            self.m_msgBoxViewBtnCancelText = self.AddComponent<UIText>("msgbox_view/btn_cancel/Text");
-            self.m_msgBoxViewBtnConfirm = self.AddComponent<UIButton>("msgbox_view/btn_confirm");
-            self.m_msgBoxViewBtnConfirmText = self.AddComponent<UIText>("msgbox_view/btn_confirm/Text");
-            self.m_msgBoxView.SetActive(false);
         }
     }
 
@@ -55,45 +48,32 @@ namespace ET
             Game.EventSystem.Publish(new EventType.AppStart()).Coroutine();
         }
 
-        static void HideMsgBoxView(this UIUpdateView self)
-        {
-            self.m_msgBoxView.SetActive(false);
-
-        }
-
         async static ETTask<int> ShowMsgBoxView(this UIUpdateView self,string content, string confirmBtnText, string cancelBtnText)
         {
-            var btnState = self.BTN_NONE;
+            ETTask<int> tcs = ETTask<int>.Create();
             UnityAction confirmBtnFunc = () =>
              {
-                 self.HideMsgBoxView();
-                 btnState = self.BTN_CONFIRM;
+                 tcs.SetResult(self.BTN_CONFIRM);
              };
 
             UnityAction cancelBtnFunc = () =>
             {
-                self.HideMsgBoxView();
-                btnState = self.BTN_CANCEL;
+                tcs.SetResult(self.BTN_CANCEL);
             };
-            self.m_msgBoxView.SetActive(true);
-            self.m_msgBoxViewText.SetText(content);
-
-            self.m_msgBoxViewBtnConfirm.SetOnClick(confirmBtnFunc);
-            self.m_msgBoxViewBtnConfirmText.SetText(confirmBtnText);
-
-            if (!string.IsNullOrEmpty(cancelBtnText))
+            I18NComponent.Instance.I18NTryGetText(content, out content);
+            I18NComponent.Instance.I18NTryGetText(confirmBtnText, out confirmBtnText);
+            I18NComponent.Instance.I18NTryGetText(cancelBtnText, out cancelBtnText);
+            await UIManagerComponent.Instance.OpenWindow<UIMsgBoxWin, UIMsgBoxWin.MsgBoxPara>(new UIMsgBoxWin.MsgBoxPara
             {
-                self.m_msgBoxViewBtnCancel.gameObject.SetActive(true);
-                self.m_msgBoxViewBtnCancel.SetOnClick(cancelBtnFunc);
-                self.m_msgBoxViewBtnCancelText.SetText(cancelBtnText);
-            }
-            else
-            {
-                self.m_msgBoxViewBtnCancel.gameObject.SetActive(false);
-            }
-            while (btnState <= self.BTN_NONE)
-                await TimerComponent.Instance.WaitAsync(1);
-            return btnState;
+                Content = content,
+                ConfirmCallback = confirmBtnFunc,
+                ConfirmText = confirmBtnText,
+                CancelText = cancelBtnText,
+                CancelCallback = cancelBtnFunc
+            });
+            var result = await tcs;
+            await UIManagerComponent.Instance.CloseWindow<UIMsgBoxWin>();
+            return result;
         }
         public static async ETVoid StartCheckUpdate(this UIUpdateView self)
         {
@@ -135,13 +115,11 @@ namespace ET
                 BootConfig.Instance.SetWhiteList(info);
                 if (BootConfig.Instance.IsInWhiteList())
                 {
-                    var btnState = await self.ShowMsgBoxView("是否进入白名单模式", "确认", "取消");
+                    var btnState = await self.ShowMsgBoxView("是否进入白名单模式","Global_Btn_Confirm", "Global_Btn_Cancel");
                     if (btnState == self.BTN_CONFIRM)
                     {
                         BootConfig.Instance.SetWhiteMode(true);
                     }
-                    self.m_msgBoxViewBtnConfirm.RemoveOnClick();
-                    self.m_msgBoxViewBtnCancel.RemoveOnClick();
                 }
                 return;
             }
@@ -210,11 +188,9 @@ namespace ET
             if (verInfo != null && verInfo.force_update == 0)
                 force_update = false;
 
-            var cancelBtnText = force_update ? "退出游戏" : "进入游戏";
+            var cancelBtnText = force_update ? "Btn_Exit" : "Btn_Enter_Game";
             var content_updata = force_update ? "當前版本過低，請重新下載客戶端" : "當前版本較低，建議下載最新客戶端";
-            var btnState = await self.ShowMsgBoxView(content_updata, "确认", cancelBtnText);
-            self.m_msgBoxViewBtnConfirm.RemoveOnClick();
-            self.m_msgBoxViewBtnCancel.RemoveOnClick();
+            var btnState = await self.ShowMsgBoxView(content_updata, "Global_Btn_Confirm", cancelBtnText);
 
             if (btnState == self.BTN_CONFIRM)
             {
@@ -292,10 +268,8 @@ namespace ET
             Log.Info("CheckResUpdate res size_mb is " + size_mb);//不屏蔽
             if (size_mb > 0 && size_mb < 0.01) size_mb = 0.01;
 
-            var ct = "檢測到資源更新\n更新包大小：<color=#DB744C>{0}</color> MB\n是否立即下載？".Fmt(size_mb.ToString("0.00"));
-            var btnState = await self.ShowMsgBoxView(ct, "确认", "退出游戏");
-            self.m_msgBoxViewBtnConfirm.RemoveOnClick();
-            self.m_msgBoxViewBtnCancel.RemoveOnClick();
+            var ct = I18NComponent.Instance.I18NGetParamText("Update_Info",size_mb.ToString("0.00"));
+            var btnState = await self.ShowMsgBoxView(ct, "Global_Btn_Confirm", "Btn_Exit");
             if (btnState == self.BTN_CANCEL)
             {
                 GameUtility.Quit();
@@ -358,9 +332,7 @@ namespace ET
             else
             {
                 Log.Info("CoGetDownloadSize Get Download Size Async Faild");
-                var btnState = await self.ShowMsgBoxView("獲取更新失敗，請檢查網路", "重試", "退出遊戲");
-                self.m_msgBoxViewBtnConfirm.RemoveOnClick();
-                self.m_msgBoxViewBtnCancel.RemoveOnClick();
+                var btnState = await self.ShowMsgBoxView("Update_Get_Fail", "Update_ReTry", "Btn_Exit");
                 if (btnState == self.BTN_CONFIRM)
                     return await self.GetDownloadSize();
                 else
@@ -379,9 +351,7 @@ namespace ET
             else
             {
                 Log.Info("CheckCatalogUpdates Check CataLog Failed");
-                var btnState = await self.ShowMsgBoxView("獲取更新失敗，請檢查網路", "重試", "退出遊戲");
-                self.m_msgBoxViewBtnConfirm.RemoveOnClick();
-                self.m_msgBoxViewBtnCancel.RemoveOnClick();
+                var btnState = await self.ShowMsgBoxView("Update_Get_Fail", "Update_ReTry", "Btn_Exit");
                 if (btnState == self.BTN_CONFIRM)
                     return await self.CheckCatalogUpdates();
                 else
@@ -410,9 +380,7 @@ namespace ET
             else
             {
                 Log.Info("CoUpdateCatalogs Update Catalog Failed");
-                var btnState = await self.ShowMsgBoxView("獲取更新失敗，請檢查網路", "重試", "退出游戏");
-                self.m_msgBoxViewBtnConfirm.RemoveOnClick();
-                self.m_msgBoxViewBtnCancel.RemoveOnClick();
+                var btnState = await self.ShowMsgBoxView("Update_Get_Fail", "Update_ReTry", "Btn_Exit");
                 if (btnState == self.BTN_CONFIRM)
                     return await self.UpdateCatalogs(catalog);
                 else
@@ -441,9 +409,7 @@ namespace ET
             else
             {
                 Log.Info("DownloadContent Begin DownloadDependenciesAsync failed");
-                var btnState = await self.ShowMsgBoxView("獲取更新失敗，請檢查網路", "重試", "退出遊戲");
-                self.m_msgBoxViewBtnConfirm.RemoveOnClick();
-                self.m_msgBoxViewBtnCancel.RemoveOnClick();
+                var btnState = await self.ShowMsgBoxView("Update_Get_Fail", "Update_ReTry", "Btn_Exit");
                 if (btnState == self.BTN_CONFIRM)
                     return await self.DownloadContent(size);
                 else
@@ -502,9 +468,7 @@ namespace ET
                 }
             }
             downloadTool.DeleteTempFile(savePath);
-            var btnState = await self.ShowMsgBoxView("下载失敗，請檢查網路", "重試", "退出遊戲");
-            self.m_msgBoxViewBtnConfirm.RemoveOnClick();
-            self.m_msgBoxViewBtnCancel.RemoveOnClick();
+            var btnState = await self.ShowMsgBoxView("Update_Download_Fail", "Update_ReTry", "Btn_Exit");
             if (btnState == self.BTN_CONFIRM)
             {
                 await self.DownloadResinfoAsync(order);
