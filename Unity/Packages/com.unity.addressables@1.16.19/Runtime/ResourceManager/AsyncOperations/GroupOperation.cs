@@ -45,7 +45,7 @@ namespace UnityEngine.ResourceManagement.AsyncOperations
         {
             if (Result == null)
             {
-                Debug.LogError("Result is NULL");
+                Debug.LogError("服务器上旧版本 catalog_1.hash 与当前程序不匹配");
                 return;
             }
             for (int i = 0; i < Result.Count; i++)

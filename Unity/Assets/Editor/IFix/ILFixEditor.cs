@@ -343,16 +343,16 @@ namespace IFix.Editor
             return assembliesFolder;
         }
 
-        //默认的注入及备份程序集
+        //默认的注入及备份程序集(引用的顺序)
         //另外可以直接调用InjectAssembly对其它程序集进行注入。
         static string[] injectAssemblys = new string[]
         {
             "Assembly-CSharp",
             "Assembly-CSharp-firstpass",
-            "Unity.Hotfix",
-            "Unity.HotfixView",
             "Unity.Model",
+            "Unity.Hotfix",
             "Unity.ModelView",
+            "Unity.HotfixView",
         };
 
         /// <summary>
