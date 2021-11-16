@@ -10,6 +10,8 @@ namespace ET
 
         public UISlider m_slider;
 
+        public UIMsgBoxWin.MsgBoxPara para { get; private set; } = new UIMsgBoxWin.MsgBoxPara();
+
         public List<DownLoadInfo> m_needdownloadinfo = null;
         public string m_rescdn_url;
         public float last_progress;

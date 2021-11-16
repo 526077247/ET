@@ -63,14 +63,12 @@ namespace ET
             I18NComponent.Instance.I18NTryGetText(content, out content);
             I18NComponent.Instance.I18NTryGetText(confirmBtnText, out confirmBtnText);
             I18NComponent.Instance.I18NTryGetText(cancelBtnText, out cancelBtnText);
-            await UIManagerComponent.Instance.OpenWindow<UIMsgBoxWin, UIMsgBoxWin.MsgBoxPara>(new UIMsgBoxWin.MsgBoxPara
-            {
-                Content = content,
-                ConfirmCallback = confirmBtnFunc,
-                ConfirmText = confirmBtnText,
-                CancelText = cancelBtnText,
-                CancelCallback = cancelBtnFunc
-            });
+            self.para.Content = content;
+            self.para.ConfirmCallback = confirmBtnFunc;
+            self.para.ConfirmText = confirmBtnText;
+            self.para.CancelText = cancelBtnText;
+            self.para.CancelCallback = cancelBtnFunc;
+            await UIManagerComponent.Instance.OpenWindow<UIMsgBoxWin, UIMsgBoxWin.MsgBoxPara>(self.para);
             var result = await tcs;
             await UIManagerComponent.Instance.CloseWindow<UIMsgBoxWin>();
             return result;
@@ -115,7 +113,7 @@ namespace ET
                 BootConfig.Instance.SetWhiteList(info);
                 if (BootConfig.Instance.IsInWhiteList())
                 {
-                    var btnState = await self.ShowMsgBoxView("是否进入白名单模式","Global_Btn_Confirm", "Global_Btn_Cancel");
+                    var btnState = await self.ShowMsgBoxView("Update_White", "Global_Btn_Confirm", "Global_Btn_Cancel");
                     if (btnState == self.BTN_CONFIRM)
                     {
                         BootConfig.Instance.SetWhiteMode(true);
@@ -189,7 +187,7 @@ namespace ET
                 force_update = false;
 
             var cancelBtnText = force_update ? "Btn_Exit" : "Btn_Enter_Game";
-            var content_updata = force_update ? "當前版本過低，請重新下載客戶端" : "當前版本較低，建議下載最新客戶端";
+            var content_updata = force_update ? "Update_ReDownload" : "Update_SuDownload";
             var btnState = await self.ShowMsgBoxView(content_updata, "Global_Btn_Confirm", cancelBtnText);
 
             if (btnState == self.BTN_CONFIRM)
@@ -287,7 +285,7 @@ namespace ET
 
             var needdownloadinfo = handler.GetNeedDownloadinfo();
             Log.Info("needdownloadinfo: ", needdownloadinfo);
-            self.m_needdownloadinfo = self.SortDownloadInfo(JsonHelper.FromJson<Dictionary<string, string>>(needdownloadinfo));
+            self.m_needdownloadinfo = SortDownloadInfo(JsonHelper.FromJson<Dictionary<string, string>>(needdownloadinfo));
 
             Log.Info("CheckResUpdate DownloadContent begin");
             bool result = await self.DownloadContent(size);
@@ -296,7 +294,7 @@ namespace ET
             return true;
         }
 
-        static List<DownLoadInfo> SortDownloadInfo(this UIUpdateView self,Dictionary<string, string> needdownloadinfo)
+        static List<DownLoadInfo> SortDownloadInfo(Dictionary<string, string> needdownloadinfo)
         {
             List<DownLoadInfo> temp = new List<DownLoadInfo>();
             DownLoadInfo global_ab = null;
