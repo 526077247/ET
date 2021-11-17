@@ -78,7 +78,7 @@ namespace ET
             //TODO 网络检查 
             await self.CheckIsInWhiteList();
 
-            await CheckUpdateList();
+            await self.CheckUpdateList();
 
             var Over = await self.CheckAppUpdate();
             if (Over) return;
@@ -123,7 +123,7 @@ namespace ET
             }
         }
 
-        async static ETTask CheckUpdateList()
+        async static ETTask CheckUpdateList(this UIUpdateView self)
         {
             var url = BootConfig.Instance.GetUpdateListCdnUrl();
             //UpdateConfig aa = new UpdateConfig
@@ -142,16 +142,19 @@ namespace ET
             //        }}
             //    }
             //};
-            //Log.Info(JsonHelper.ToJson(aa));
             var info = await HttpManager.Instance.HttpGetResult<UpdateConfig>(url);
             if (info == null)
             {
-                Log.Error("CheckUpdateList error");
-                GameUtility.Quit();
-                return;
+                var btnState = await self.ShowMsgBoxView("Update_Get_Fail", "Update_ReTry", "Btn_Exit");
+                if (btnState == self.BTN_CONFIRM)
+                    await self.CheckUpdateList();
+                else
+                {
+                    GameUtility.Quit();
+                    return;
+                }
             }
             BootConfig.Instance.SetUpdateList(info);
-
         }
 
         async static ETTask<bool> CheckAppUpdate(this UIUpdateView self)
@@ -193,16 +196,14 @@ namespace ET
             if (btnState == self.BTN_CONFIRM)
             {
                 GameUtility.OpenURL(app_url);
+                //为了防止切换到网页后回来进入了游戏，所以这里需要继续进入该流程
                 return await self.CheckAppUpdate();
             }
-            else
+            else if(force_update)
             {
-                if (force_update)
-                {
-                    Log.Info("CheckAppUpdate Need Force Update And User Choose Exit Game!");
-                    GameUtility.Quit();
-                    return true;
-                }
+                Log.Info("CheckAppUpdate Need Force Update And User Choose Exit Game!");
+                GameUtility.Quit();
+                return true;
             }
             return false;
         }
@@ -228,9 +229,11 @@ namespace ET
                 return false;
             }
 
-            // 编辑器下不能测试热更，但可以测试下载。
-            if (PlatformUtil.IsEditor()) return false; 
 
+#if UNITY_EDITOR
+            // 编辑器下不能测试热更，但可以测试下载。
+            return false;
+#endif
             //找到最新版本，则设置当前资源存放的cdn地址
             var url = BootConfig.Instance.GetUpdateCdnResUrlByVersion(maxVer);
             self.m_rescdn_url = url;
