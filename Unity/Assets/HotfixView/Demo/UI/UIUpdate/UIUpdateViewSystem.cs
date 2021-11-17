@@ -236,12 +236,14 @@ namespace ET
             self.m_rescdn_url = url;
             Log.Info("CheckResUpdate res_cdn_url is " + url);
             AssetBundleMgr.GetInstance().SetAddressableRemoteResCdnUrl(self.m_rescdn_url);
-
+            //等一帧等addressables的Update回调执行完
+            await TimerComponent.Instance.WaitAsync(1);
             //检查更新版本
             Log.Info("begin  CheckCatalogUpdates");
             var handler = await self.CheckCatalogUpdates();
             if (handler == null) return false;
-
+            //等一帧
+            await TimerComponent.Instance.WaitAsync(1);
             var catalog = handler.catalog;
             Log.Info("CheckResUpdate CataLog = " + catalog);
 

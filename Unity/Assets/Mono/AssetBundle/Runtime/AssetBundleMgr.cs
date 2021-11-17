@@ -15,6 +15,8 @@ using UnityEngine.ResourceManagement.ResourceLocations;
 public class AssetBundleMgr
 {
     public static string PersistentAssetBundleFolder = Path.Combine(Application.persistentDataPath, "AssetBundles"); //assetbundle cache存放目录
+    public static string PersistentAssetCatalogFolder = Path.Combine(Application.persistentDataPath, "com.unity.addressables"); //assetbundle catalog存放目录
+
 
     public static string RemoteResCdnUrlStreamingPath = Path.Combine(Application.streamingAssetsPath, "RemoteResCdnUrl.bytes");//在streaming asset path res目录存放了远程资源的地址
     public static string RemoteResCdnUrlPersistentPath = Path.Combine(Application.persistentDataPath, "RemoteResCdnUrl.bytes");//在persistent path res目录存放了远程资源的地址
@@ -202,7 +204,7 @@ public class AssetBundleMgr
         File.Delete(hashPath);
         File.WriteAllText(hashPath, hash);
 
-        if (dict_cache_ab_hash.TryGetValue(assetBundleName, out string hashStr))
+        if (dict_cache_ab_hash.ContainsKey(assetBundleName))
         {
             dict_cache_ab_hash[assetBundleName] = hash;
         }
@@ -223,7 +225,7 @@ public class AssetBundleMgr
             File.Delete(hashPath);
         File.WriteAllText(hashPath, hash);
 
-        if (dict_cache_ab_hash.TryGetValue(assetBundleName, out string hashStr))
+        if (dict_cache_ab_hash.ContainsKey(assetBundleName))
         {
             dict_cache_ab_hash[assetBundleName] = hash;
         }
