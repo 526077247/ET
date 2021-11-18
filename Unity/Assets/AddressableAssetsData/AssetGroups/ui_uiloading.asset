@@ -24,20 +24,6 @@ MonoBehaviour:
     - default
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
-  - m_GUID: ccd52f431349f9d488023605d240efa8
-    m_Address: UI/UILoading/DiscreteImages/background_1.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - default
-    m_MainAsset: {fileID: 0}
-    m_TargetAsset: {fileID: 0}
-  - m_GUID: db2c564283de5bc4a81b97074bfecf0c
-    m_Address: UI/UILoading/DiscreteImages/wave_1.png
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - default
-    m_MainAsset: {fileID: 0}
-    m_TargetAsset: {fileID: 0}
   - m_GUID: 9800314ed8cc9bd4ba8819d89e31b56b
     m_Address: UI/UILoading/Prefabs/LoadingScreen.prefab
     m_ReadOnly: 0
