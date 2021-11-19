@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace ET
 {
+    [ObjectSystem]
     public class ToastComponentAwakeSystem : AwakeSystem<ToastComponent>
     {
         public override void Awake(ToastComponent self)
@@ -15,7 +16,7 @@ namespace ET
             self.root = UIManagerComponent.Instance.GetLayer(UILayerNames.TipLayer).transform;
         }
     }
-
+    [ObjectSystem]
     public class ToastComponentDestroySystem : DestroySystem<ToastComponent>
     {
         public override void Destroy(ToastComponent self)

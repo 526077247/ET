@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ET
 {
-	
+	[ObjectSystem]
 	public class NumericWatcherComponentAwakeSystem : AwakeSystem<NumericWatcherComponent>
 	{
 		public override void Awake(NumericWatcherComponent self)
@@ -13,7 +13,7 @@ namespace ET
 		}
 	}
 
-	
+	[ObjectSystem]
 	public class NumericWatcherComponentLoadSystem : LoadSystem<NumericWatcherComponent>
 	{
 		public override void Load(NumericWatcherComponent self)

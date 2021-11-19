@@ -52,16 +52,19 @@ namespace ET
 			sw.Reset();
 
 			InitUnitySetting();
+
+			SynchronizationContext.SetSynchronizationContext(ThreadSynchronizationContext.Instance);
 			DontDestroyOnLoad(gameObject);
 
 			Assembly modelAssembly = null;
 			foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
 			{
-				string assemblyName = assembly.FullName;
-				if (!assemblyName.Contains("Unity.ModelView"))
+				string assemblyName = $"{assembly.GetName().Name}.dll";
+				if (assemblyName != "Unity.ModelView.dll")
 				{
 					continue;
 				}
+
 				modelAssembly = assembly;
 				break;
 			}

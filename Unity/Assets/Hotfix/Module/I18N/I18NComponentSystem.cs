@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace ET
 {
+    [ObjectSystem]
     public class I18NComponentAwakeSystem : AwakeSystem<I18NComponent>
     {
         public override void Awake(I18NComponent self)
@@ -14,8 +15,8 @@ namespace ET
             I18NComponent.Instance = self;
             var res = I18NConfigCategory.Instance.GetAll();
             self.curLangType = (I18NComponent.LangType)PlayerPrefs.GetInt(CacheKeys.CurLangType, 0);
-            self.i18nTextDic.Clear();
-            self.i18nTextKeyDic.Clear();
+            self.i18nTextDic = new Dictionary<int, I18NConfig>();
+            self.i18nTextKeyDic = new Dictionary<string, I18NConfig>();
             foreach (var item in res)
             {
                 self.i18nTextDic.Add(item.Key, item.Value);
@@ -23,6 +24,20 @@ namespace ET
             }
             I18NBridge.Instance.GetValueById = self.I18NGetText;
             I18NBridge.Instance.GetValueByKey = self.I18NGetText;
+        }
+    }
+    [ObjectSystem]
+    public class I18NComponentDestroySystem : DestroySystem<I18NComponent>
+    {
+        public override void Destroy(I18NComponent self)
+        {
+            I18NComponent.Instance = null;
+            self.i18nTextDic.Clear();
+            self.i18nTextKeyDic.Clear();
+            self.i18nTextDic = null;
+            self.i18nTextKeyDic = null;
+            I18NBridge.Instance.GetValueById = null;
+            I18NBridge.Instance.GetValueByKey = null;
         }
     }
     public static class I18nComponentSystem

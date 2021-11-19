@@ -6,6 +6,7 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 namespace ET
 {
+	[UISystem]
 	public class UILoginViewOnCreateSystem : OnCreateSystem<UILoginView>
 	{
 		public override void OnCreate(UILoginView self)
@@ -31,7 +32,7 @@ namespace ET
 			}
 		}
 	}
-
+	[UISystem]
 	public class UILoginViewOnEnableSystem : OnEnableSystem<UILoginView, Scene>
 	{
 		public override void OnEnable(UILoginView self, Scene scene)

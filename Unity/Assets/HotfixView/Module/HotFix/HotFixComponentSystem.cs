@@ -9,6 +9,7 @@ using UnityEngine;
 
 namespace ET
 {
+    [ObjectSystem]
     public class HotFixComponentAwakeSystem : AwakeSystem<HotFixComponent>
     {
         public override void Awake(HotFixComponent self)
@@ -16,6 +17,7 @@ namespace ET
             HotFixComponent.Instance = self;
         }
     }
+
 
     public static class HotFixComponentSystem
     {

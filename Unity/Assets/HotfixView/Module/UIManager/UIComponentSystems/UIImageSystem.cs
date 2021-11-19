@@ -8,6 +8,7 @@ using UnityEngine.UI;
 
 namespace ET
 {
+    [UISystem]
     public class UIImageOnCreateSystem : OnCreateSystem<UIImage,string>
     {
         public override void OnCreate(UIImage self, string path)
@@ -15,6 +16,7 @@ namespace ET
             self.SetSpritePath(path).Coroutine();
         }
     }
+    [UISystem]
     public class UIImageOnDestroySystem : OnDestroySystem<UIImage>
     {
         public override void OnDestroy(UIImage self)

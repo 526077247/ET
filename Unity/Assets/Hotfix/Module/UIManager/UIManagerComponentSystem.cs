@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace ET
 {
+    [ObjectSystem]
     public class UIManagerComponentAwakeSystem : AwakeSystem<UIManagerComponent>
     {
         public override void Awake(UIManagerComponent self)
@@ -19,7 +20,7 @@ namespace ET
             UIEventSystem.Instance.Awake();
         }
     }
-
+    [ObjectSystem]
     public class UIManagerComponentDestroySystem : DestroySystem<UIManagerComponent>
     {
         public async override void Destroy(UIManagerComponent self)

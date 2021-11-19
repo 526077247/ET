@@ -15,8 +15,8 @@ namespace ET
             English,
         }
         public LangType curLangType;
-        public readonly Dictionary<int, I18NConfig> i18nTextDic = new Dictionary<int, I18NConfig>();
-        public readonly Dictionary<string, I18NConfig> i18nTextKeyDic = new Dictionary<string, I18NConfig>();
+        public Dictionary<int, I18NConfig> i18nTextDic;
+        public Dictionary<string, I18NConfig> i18nTextKeyDic;
     }
 
 }

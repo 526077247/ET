@@ -3,7 +3,8 @@ using UnityEngine;
 
 namespace ET
 {
-	public class UILobbyViewOnCreateSystem : OnCreateSystem<UILobbyView>
+    [UISystem]
+    public class UILobbyViewOnCreateSystem : OnCreateSystem<UILobbyView>
 	{
 		public override void OnCreate(UILobbyView self)
 		{
@@ -11,8 +12,8 @@ namespace ET
             self.EnterBtn.SetOnClick(self.OnEnterBtnClick);
         }
 	}
-
-	public class UILobbyViewOnEnableSystem : OnEnableSystem<UILobbyView, Scene>
+    [UISystem]
+    public class UILobbyViewOnEnableSystem : OnEnableSystem<UILobbyView, Scene>
 	{
 		public override void OnEnable(UILobbyView self, Scene scene)
 		{

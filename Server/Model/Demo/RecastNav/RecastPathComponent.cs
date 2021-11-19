@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace ET
 {
+    [ObjectSystem]
     public class RecastPathAwakeSystem: AwakeSystem<RecastPathComponent>
     {
         public override void Awake(RecastPathComponent self)

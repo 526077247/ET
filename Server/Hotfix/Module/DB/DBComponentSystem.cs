@@ -5,6 +5,7 @@ using MongoDB.Driver;
 
 namespace ET
 {
+	[ObjectSystem]
 	public class DBComponentAwakeSystem : AwakeSystem<DBComponent, string, string>
 	{
 		public override void Awake(DBComponent self, string dbConnection, string dbName)
@@ -29,8 +30,8 @@ namespace ET
 			DBComponent.Instance = self;
 		}
 	}
-	
-    public class DBComponentDestroySystem: DestroySystem<DBComponent>
+	[ObjectSystem]
+	public class DBComponentDestroySystem: DestroySystem<DBComponent>
     {
         public override void Destroy(DBComponent self)
         {

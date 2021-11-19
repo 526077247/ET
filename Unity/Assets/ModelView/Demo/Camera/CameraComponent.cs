@@ -2,6 +2,7 @@
 
 namespace ET
 {
+	[ObjectSystem]
 	public class CameraComponentAwakeSystem : AwakeSystem<CameraComponent>
 	{
 		public override void Awake(CameraComponent self)
@@ -9,7 +10,7 @@ namespace ET
 			self.Awake();
 		}
 	}
-
+	[ObjectSystem]
 	public class CameraComponentLateUpdateSystem : LateUpdateSystem<CameraComponent>
 	{
 		public override void LateUpdate(CameraComponent self)

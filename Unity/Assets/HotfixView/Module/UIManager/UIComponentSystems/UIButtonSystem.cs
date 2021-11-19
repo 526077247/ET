@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 namespace ET
 {
-
+    [UISystem]
     public class UIButtonOnCreateSystem : OnCreateSystem<UIButton>
     {
         public override void OnCreate(UIButton self)
@@ -17,6 +17,7 @@ namespace ET
             self.gray_state = false;
         }
     }
+    [UISystem]
     public class UIButtonOnDestroySystem : OnDestroySystem<UIButton>
     {
         public override void OnDestroy(UIButton self)

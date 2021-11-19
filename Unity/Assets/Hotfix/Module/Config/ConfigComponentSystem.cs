@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 
 namespace ET
 {
+	[ObjectSystem]
 	public class ConfigAwakeSystem : AwakeSystem<ConfigComponent>
 	{
 		public override void Awake(ConfigComponent self)
@@ -11,7 +12,7 @@ namespace ET
 			ConfigComponent.Instance = self;
 		}
 	}
-
+	[ObjectSystem]
 	public class ConfigDestroySystem : DestroySystem<ConfigComponent>
 	{
 		public override void Destroy(ConfigComponent self)

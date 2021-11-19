@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 namespace ET
 {
+	[UISystem]
 	public class UILoadingViewOnCreateSystem : OnCreateSystem<UILoadingView>
 	{
 		public override void OnCreate(UILoadingView self)
@@ -11,7 +12,7 @@ namespace ET
 			self.slider = self.AddComponent<UISlider>("Loadingscreen/Slider");
 		}
 	}
-
+	[UISystem]
 	public class UILoadingViewOnDestroySystem : OnDestroySystem<UILoadingView>
 	{
 		public override void OnDestroy(UILoadingView self)

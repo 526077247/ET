@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace ET
 {
+    [ObjectSystem]
     public class BaseSceneAwakeSystem : AwakeSystem<BaseScene,SceneConfig>
     {
         public override void Awake(BaseScene self, SceneConfig config)

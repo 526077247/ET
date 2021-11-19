@@ -7,7 +7,8 @@ using UnityEngine;
 
 namespace ET
 {
-    public class UILayersComponentAwakeSystem : AwakeSystem<UILayersComponent>
+	[ObjectSystem]
+	public class UILayersComponentAwakeSystem : AwakeSystem<UILayersComponent>
     {
 
 		UILayerDefine[] GetConfig()

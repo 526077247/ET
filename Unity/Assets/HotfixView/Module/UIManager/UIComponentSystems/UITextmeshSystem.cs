@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace ET
 {
+    [UISystem]
     public class UITextmeshOnCreateSystem : OnCreateSystem<UITextmesh>
     {
         public override void OnCreate(UITextmesh self)
@@ -14,6 +15,7 @@ namespace ET
             Messager.Instance.AddListener(MessagerId.OnLanguageChange, self.OnLanguageChange);
         }
     }
+    [UISystem]
     public class UITextmeshOnCreateSystem1 : OnCreateSystem<UITextmesh, string>
     {
         public override void OnCreate(UITextmesh self, string key)
@@ -23,6 +25,7 @@ namespace ET
         }
 
     }
+    [UISystem]
     public class UITextmeshOnDestroySystem : OnDestroySystem<UITextmesh>
     {
         public override void OnDestroy(UITextmesh self)

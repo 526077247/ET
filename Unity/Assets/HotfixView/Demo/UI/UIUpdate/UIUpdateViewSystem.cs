@@ -9,6 +9,7 @@ using System.Linq;
 
 namespace ET
 {
+    [UISystem]
     public class UIUpdateViewOnCreateSystem : OnCreateSystem<UIUpdateView>
     {
         public override void OnCreate(UIUpdateView self)
@@ -16,7 +17,7 @@ namespace ET
             self.m_slider = self.AddComponent<UISlider>("Loadingscreen/Slider");
         }
     }
-
+    [UISystem]
     public class UIUpdateViewOnEnableSystem : OnEnableSystem<UIUpdateView>
     {
         public override void OnEnable(UIUpdateView self)

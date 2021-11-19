@@ -8,6 +8,7 @@ using UnityEngine.UI;
 
 namespace ET
 {
+    [ObjectSystem]
     public class UILayerAwakeSystem : AwakeSystem<UILayer, UILayerDefine, GameObject>
     {
         public override void Awake(UILayer self, UILayerDefine layer,GameObject gameObject)
@@ -52,7 +53,7 @@ namespace ET
             self.rectTransform = self.gameObject.GetComponent<RectTransform>();
         }
     }
-
+    [ObjectSystem]
     public class UILayerDestroySystem : DestroySystem<UILayer>
     {
 
