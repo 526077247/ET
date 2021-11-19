@@ -73,7 +73,6 @@
     <Compile Include="Assets\Mono\MonoBehaviour\GizmosDebug.cs" />
     <Compile Include="Assets\Mono\Messager\MessagerId.cs" />
     <Compile Include="Assets\Mono\Messager\Messager.cs" />
-    <Compile Include="Assets\Mono\MonoBehaviour\WaveController.cs" />
     <Compile Include="Assets\Mono\Core\Helper\ZipHelper.cs" />
     <Compile Include="Assets\Mono\Singleton\Singleton.cs" />
     <Compile Include="Assets\Mono\Core\Helper\MD5Helper.cs" />
@@ -117,6 +116,9 @@
     <Compile Include="Assets\Mono\Core\Helper\StringHelper.cs" />
     <Compile Include="Assets\Mono\Utility\PlatformUtil.cs" />
     <Compile Include="Assets\Mono\Define.cs" />
+    <Compile Include="Assets\Mono\Helper\LoadHelper.cs" />
+    <Compile Include="Assets\Mono\Helper\StreamHelper.cs" />
+    <Compile Include="Assets\Mono\Helper\PathHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Mono\Unity.Mono.asmdef" />
