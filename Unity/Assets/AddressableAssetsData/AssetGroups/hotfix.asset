@@ -24,13 +24,6 @@ MonoBehaviour:
     - default
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
-  - m_GUID: aff205ebbe0c17c4883740cf302845a1
-    m_Address: Hotfix/Unity.HotfixView.patch.bytes
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - default
-    m_MainAsset: {fileID: 0}
-    m_TargetAsset: {fileID: 0}
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: dd1f300d6062fee48bf00a13907517b6, type: 2}
   m_SchemaSet:

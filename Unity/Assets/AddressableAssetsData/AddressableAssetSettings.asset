@@ -22,9 +22,9 @@ MonoBehaviour:
   m_maxConcurrentWebRequests: 500
   m_ContiguousBundles: 0
   m_RemoteCatalogBuildPath:
-    m_Id: d7a6a7ba92fba42459ebf637027f8593
+    m_Id: 4a95311fc5915f2419ee26b24e9968a4
   m_RemoteCatalogLoadPath:
-    m_Id: b396472473d77e8448c948a15dad33fc
+    m_Id: e0590cfd1155bd046b1cdd14b5419cfe
   m_overridePlayerVersion: 1
   m_GroupAssets:
   - {fileID: 11400000, guid: 73ccf9df8b83b43a9bddfe4b021a23ca, type: 2}
@@ -125,7 +125,7 @@ MonoBehaviour:
           m_Key: HostingServicePort
         - m_AssemblyName: mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
           m_ClassName: System.String
-          m_Data: Library/com.unity.addressables/aa/Windows/StandaloneWindows64
+          m_Data: ServerData/StandaloneWindows64
           m_Key: ContentRoot
         - m_AssemblyName: mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
           m_ClassName: System.Boolean
