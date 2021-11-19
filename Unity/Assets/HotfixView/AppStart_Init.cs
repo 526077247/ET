@@ -1,3 +1,5 @@
+using IFix.Core;
+using System.IO;
 using UnityEngine;
 
 namespace ET
@@ -13,8 +15,7 @@ namespace ET
 
 #if !UNITY_EDITOR
             // 热修复
-            Game.Scene.AddComponent<HotFixComponent>();
-            await HotFixComponent.Instance.HotFix();
+            await HotFix();
 #endif
 
             Game.Scene.AddComponent<MaterialComponent>();
@@ -42,9 +43,24 @@ namespace ET
             Game.Scene.AddComponent<GlobalComponent>();
             Game.Scene.AddComponent<AIDispatcherComponent>();
 
-            await SceneManagerComponent.Instance.SwitchScene<BaseScene>(SceneNames.Loading);
             await UIManagerComponent.Instance.OpenWindow<UIUpdateView>();//下载热更资源
             await UIManagerComponent.Instance.CloseWindow<UILoadingView>();
+        }
+
+        public static async ETTask HotFix()
+        {
+            var asset = await ResourcesComponent.Instance.LoadTextAsync("Hotfix/HotfixInfo.bytes");
+            var Assemblys = asset.text.Split(',');
+            for (int i = 0; i < Assemblys.Length; i++)
+            {
+                if (string.IsNullOrEmpty(Assemblys[i])) continue;
+                var bytes = await ResourcesComponent.Instance.LoadTextAsync("Hotfix/" + Assemblys[i] + ".patch.bytes", ignoreError: true);
+                if (bytes != null)
+                {
+                    Log.Info("Start Patch " + Assemblys[i]);
+                    PatchManager.Load(new MemoryStream(bytes.bytes));
+                }
+            }
         }
     }
 }

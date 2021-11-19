@@ -44,6 +44,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f15ad3f205c4f6e4ea80a0c070ff2860, type: 2}
   - {fileID: 11400000, guid: 31b1563d52c74624baa091a1ef136669, type: 2}
   - {fileID: 11400000, guid: 5c5acf07918f6a749938d94187df16ff, type: 2}
+  - {fileID: 11400000, guid: 634217bd239ba224f8076439b3768c73, type: 2}
   m_BuildSettings:
     m_CompileScriptsInVirtualMode: 0
     m_CleanupStreamingAssetsAfterBuilds: 1
@@ -121,11 +122,11 @@ MonoBehaviour:
         m_SerializedData:
         - m_AssemblyName: mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
           m_ClassName: System.Int32
-          m_Data: 62046
+          m_Data: 54477
           m_Key: HostingServicePort
         - m_AssemblyName: mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
           m_ClassName: System.String
-          m_Data: ServerData/StandaloneWindows64
+          m_Data: ServerData/Android;Library/com.unity.addressables/aa/Android/Android
           m_Key: ContentRoot
         - m_AssemblyName: mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
           m_ClassName: System.Boolean
