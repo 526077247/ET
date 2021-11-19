@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>ET</RootNamespace>
     <LangVersion>8</LangVersion>
   </PropertyGroup>
@@ -24,6 +24,10 @@
 
     <Compile Include="..\..\Unity\Assets\Editor\Helper\MongoHelper.cs">
       <Link>Base\MongoHelper.cs</Link>
+    </Compile>
+
+    <Compile Include="..\..\Unity\Assets\Editor\Helper\StructBsonSerialize.cs">
+      <Link>Base\StructBsonSerialize.cs</Link>
     </Compile>
 
     <Compile Include="..\..\Unity\Assets\Model\Core\**\*.cs"> 
