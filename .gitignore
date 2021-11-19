@@ -72,3 +72,7 @@ Server/.DS_Store
 /Unity/Unity.ResourceManager.csproj
 /Unity/ServerData
 /Unity/Assets/StompyRobot.meta
+/Unity/Assets/AssetsPackage/Code/Code.dll.bytes
+/Unity/Assets/AssetsPackage/Code/Code.dll.bytes.meta
+/Unity/Assets/AssetsPackage/Code/Code.pdb.bytes
+/Unity/Assets/AssetsPackage/Code/Code.pdb.bytes.meta
