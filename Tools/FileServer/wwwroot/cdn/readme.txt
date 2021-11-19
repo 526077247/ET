@@ -1,1 +1,1 @@
-﻿将ET\Unity\ServerData\选择的平台\* 放到此文件夹下
+﻿将ET\Unity\Library\com.unity.addressables\aa\选择的平台\* 放到此文件夹下，然后子文件夹下面的文件全部放到外层，文件夹名称和包内config.bytes里版本号一致
