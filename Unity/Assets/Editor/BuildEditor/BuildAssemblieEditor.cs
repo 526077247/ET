@@ -11,7 +11,7 @@ namespace ET
     public static class BuildAssemblieEditor
     {
         private const string ScriptAssembliesDir = "Temp/MyAssembly/";
-        private const string CodeDir = "Assets/Res/Code/";
+        private const string CodeDir = "Assets/AssetsPackage/Code/";
 
         [MenuItem("Tools/BuildDll")]
         public static void BuildDll()
@@ -23,15 +23,15 @@ namespace ET
                 "Assets/Hotfix/",
                 "Assets/HotfixView/"
             });
-            AssetDatabase.Refresh();
         }
 
         private static void CopyDllAndPdb(string FileName)
         {
-            Debug.Log("复制Code.dll到Bundles/Code目录");
+            Debug.Log("复制Code.dll到AssetsPackage/Code目录");
             Directory.CreateDirectory(CodeDir);
             File.Copy(Path.Combine(ScriptAssembliesDir, FileName + ".dll"), Path.Combine(CodeDir, FileName + ".dll.bytes"), true);
             File.Copy(Path.Combine(ScriptAssembliesDir, FileName + ".pdb"), Path.Combine(CodeDir, FileName + ".pdb.bytes"), true);
+            AssetDatabase.Refresh();
         }
 
         private static void BuildMuteAssembly(string Name, string[] CodeDirectorys)
