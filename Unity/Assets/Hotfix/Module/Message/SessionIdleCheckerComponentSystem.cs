@@ -1,7 +1,7 @@
 namespace ET
 {
     [ObjectSystem]
-    public class SessionIdleCheckerComponentAwakeSystem: AwakeSystem<SessionIdleCheckerComponent, int>
+    public class SessionIdleCheckerComponentAwakeSystem : AwakeSystem<SessionIdleCheckerComponent, int>
     {
         public override void Awake(SessionIdleCheckerComponent self, int checkInteral)
         {
@@ -10,7 +10,7 @@ namespace ET
     }
 
     [ObjectSystem]
-    public class SessionIdleCheckerComponentDestroySystem: DestroySystem<SessionIdleCheckerComponent>
+    public class SessionIdleCheckerComponentDestroySystem : DestroySystem<SessionIdleCheckerComponent>
     {
         public override void Destroy(SessionIdleCheckerComponent self)
         {
@@ -24,16 +24,27 @@ namespace ET
         {
             Session session = self.GetParent<Session>();
             long timeNow = TimeHelper.ClientNow();
-            
+#if !SERVER
+            if (timeNow - session.LastRecvTime > 6 * 1000)
+            {
+                if (session.GetComponent<SwitchRouterComponent>() == null)
+                {
+                    session.AddComponent<SwitchRouterComponent>();
+                }
+            }
+            return;
+#else
             if (timeNow - session.LastRecvTime < 30 * 1000 && timeNow - session.LastSendTime < 30 * 1000)
             {
                 return;
             }
-            
+
             Log.Info($"session timeout: {session.Id} {timeNow} {session.LastRecvTime} {session.LastSendTime} {timeNow - session.LastRecvTime} {timeNow - session.LastSendTime}");
             session.Error = ErrorCode.ERR_SessionSendOrRecvTimeout;
 
-            session.Dispose();
+            session.Dispose(); 
+#endif
+
         }
     }
 }

@@ -103,6 +103,10 @@
         <Compile Include="..\..\Server\Model\Module\Console\**\*.cs">
             <Link>Module\Console\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
+
+		<Compile Include="..\..\Unity\Assets\Model\Module\Router\**\*.cs">
+			<Link>Module\Router\%(RecursiveDir)%(FileName)%(Extension)</Link>
+		</Compile>
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\..\ThirdParty\protobuf-net\protobuf-net.csproj" />

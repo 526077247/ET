@@ -148,14 +148,19 @@ namespace ET
             {
                 var btnState = await self.ShowMsgBoxView("Update_Get_Fail", "Update_ReTry", "Btn_Exit");
                 if (btnState == self.BTN_CONFIRM)
+                {
                     await self.CheckUpdateList();
+                }
                 else
                 {
                     GameUtility.Quit();
                     return;
                 }
             }
-            BootConfig.Instance.SetUpdateList(info);
+            else
+            {
+                BootConfig.Instance.SetUpdateList(info);
+            }
         }
 
         async static ETTask<bool> CheckAppUpdate(this UIUpdateView self)

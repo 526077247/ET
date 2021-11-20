@@ -99,5 +99,21 @@ namespace ET
 
             return session;
         }
+
+        /// <summary>
+        /// 路由用.需要提前生成localconn
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="channelId"></param>
+        /// <param name="realIPEndPoint"></param>
+        /// <returns></returns>
+        public static Session Create(this NetKcpComponent self, long channelId, IPEndPoint realIPEndPoint)
+        {
+            Session session = self.AddChildWithId<Session, AService>(channelId, self.Service);
+            session.RemoteAddress = realIPEndPoint;
+            session.AddComponent<SessionIdleCheckerComponent, int>(NetThreadComponent.checkInteral);
+            self.Service.GetOrCreate(session.Id, realIPEndPoint);
+            return session;
+        }
     }
 }

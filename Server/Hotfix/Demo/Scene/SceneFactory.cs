@@ -22,10 +22,10 @@ namespace ET
             switch (scene.SceneType)
             {
                 case SceneType.Realm:
-                    scene.AddComponent<NetKcpComponent, IPEndPoint, int>(startSceneConfig.OuterIPPort, SessionStreamDispatcherType.SessionStreamDispatcherServerOuter);
+                    scene.AddComponent<NetKcpComponent, IPEndPoint, int>(new IPEndPoint(IPAddress.Any, startSceneConfig.OuterPort), SessionStreamDispatcherType.SessionStreamDispatcherServerOuter);
                     break;
                 case SceneType.Gate:
-                    scene.AddComponent<NetKcpComponent, IPEndPoint, int>(startSceneConfig.OuterIPPort, SessionStreamDispatcherType.SessionStreamDispatcherServerOuter);
+                    scene.AddComponent<NetKcpComponent, IPEndPoint, int>(startSceneConfig.InnerIPOutPort, SessionStreamDispatcherType.SessionStreamDispatcherServerOuter);
                     scene.AddComponent<PlayerComponent>();
                     scene.AddComponent<GateSessionKeyComponent>();
                     break;
@@ -35,6 +35,11 @@ namespace ET
                     break;
                 case SceneType.Location:
                     scene.AddComponent<LocationComponent>();
+                    break;
+                case SceneType.Router:
+                    Log.Debug("Router:" + startSceneConfig.OuterPort);
+                    scene.AddComponent<RouterServiceComponent, IPEndPoint>(new IPEndPoint(IPAddress.Any, startSceneConfig.OuterPort));
+                    scene.AddComponent<RouterServiceInnerComponent>();
                     break;
             }
 

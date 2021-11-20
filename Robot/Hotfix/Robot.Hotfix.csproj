@@ -78,7 +78,11 @@
         <Compile Include="..\..\Server\Hotfix\Module\Console\**\*.cs">
             <Link>Module\Console\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
-
+		
+		<Compile Include="..\..\Unity\Assets\Hotfix\Module\Router\**\*.cs">
+			<Link>Module\Router\%(RecursiveDir)%(FileName)%(Extension)</Link>
+		</Compile>
+		
         <Compile Include="..\..\Server\Hotfix\Config\**\*.cs">
             <Link>Config\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
