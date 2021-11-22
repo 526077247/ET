@@ -1,10 +1,13 @@
 {
     "name": "Unity.HotfixView",
+    "rootNamespace": "",
     "references": [
         "Unity.Hotfix",
         "Unity.Model",
         "Unity.ModelView",
-        "Unity.Mono"
+        "Unity.Mono",
+        "Unity.TextMeshPro",
+        "Unity.RenderPipelines.Universal.Runtime"
     ],
     "includePlatforms": [
         "Editor"

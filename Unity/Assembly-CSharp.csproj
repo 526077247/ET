@@ -802,10 +802,6 @@
       <Project>{1066F652-6A89-D1C4-9881-1A19DF7AB80E}</Project>
       <Name>Unity.Hotfix</Name>
     </ProjectReference>
-    <ProjectReference Include="Unity.ThirdParty.csproj">
-      <Project>{E15BADD2-3A26-309A-AB0F-DC5B08044350}</Project>
-      <Name>Unity.ThirdParty</Name>
-    </ProjectReference>
     <ProjectReference Include="Unity.Addressables.Editor.csproj">
       <Project>{E289E69C-9553-9AD6-DC5B-B46A6DB654DB}</Project>
       <Name>Unity.Addressables.Editor</Name>
