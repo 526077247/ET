@@ -11,7 +11,7 @@ namespace ET
 {
     public static class BuildAssemblieEditor
     {
-        private const string ScriptAssembliesDir = "Temp/MyAssembly/";
+        public const string ScriptAssembliesDir = "Temp/MyAssembly/";
         private const string CodeDir = "Assets/AssetsPackage/Code/";
 
         [MenuItem("Tools/BuildDll")]
@@ -123,7 +123,7 @@ namespace ET
                 await Task.Delay(100);
             }
             
-            Debug.Log("copy Code.dll to AssetsPackage/Code");
+            
             Directory.CreateDirectory(CodeDir);
             File.Copy(Path.Combine(ScriptAssembliesDir, "Code.dll"), Path.Combine(CodeDir, "Code.dll.bytes"), true);
             File.Copy(Path.Combine(ScriptAssembliesDir, "Code.pdb"), Path.Combine(CodeDir, "Code.pdb.bytes"), true);
