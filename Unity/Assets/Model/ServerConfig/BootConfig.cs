@@ -36,8 +36,9 @@ namespace ET
         public Dictionary<string,Dictionary<string, Resver>> res_list;
         public Dictionary<string, AppConfig> app_list;
     }
-    public class BootConfig : Singleton<BootConfig>
+    public class BootConfig
     {
+        public static BootConfig Instance { get; private set; } = new BootConfig();
         string m_update_list_cdn_url;
         string m_cdn_url;
         bool m_inWhiteList;
@@ -48,13 +49,6 @@ namespace ET
             m_update_list_cdn_url = ServerConfigManagerComponent.Instance.GetUpdateListCdnUrl();
             m_cdn_url = ServerConfigManagerComponent.Instance.GetResCdnUrl();
             m_inWhiteList = false;
-        }
-
-        public override void Dispose()
-        {
-            Release();
-            m_resUpdateList = null;
-            m_appUpdateList = null;
         }
 
         #region 白名单

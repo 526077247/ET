@@ -4,11 +4,11 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
 using ET;
-public class HttpManager : Singleton<HttpManager>
+public class HttpManager
 {
     const int DEFAULT_TIMEOUT = 10;// 默认超时时间
 
-    
+    public static HttpManager Instance { get; private set; } = new HttpManager();
     public UnityWebRequest HttpGet(string url, Dictionary<string, string> headers = null, Dictionary<string, string> param = null, int timeout = DEFAULT_TIMEOUT)
     {
         string strParam = ConvertParamToStr(param);
@@ -174,10 +174,5 @@ public class HttpManager : Singleton<HttpManager>
             }
         }
         return builder.ToString();
-    }
-
-    public override void Dispose()
-    {
-
     }
 }

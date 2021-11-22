@@ -107,7 +107,6 @@
     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Serializers\SingleSerializer.cs" />
     <Compile Include="Assets\Mono\Core\Helper\ZipHelper.cs" />
     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\SubItemToken.cs" />
-    <Compile Include="Assets\Mono\Singleton\Singleton.cs" />
     <Compile Include="Assets\Mono\Core\Helper\MD5Helper.cs" />
     <Compile Include="Assets\Mono\Core\Helper\ObjectHelper.cs" />
     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Serializers\GuidSerializer.cs" />
@@ -218,7 +217,6 @@
     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Meta\AttributeMap.cs" />
     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\SerializationContext.cs" />
     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Serializers\UInt16Serializer.cs" />
-    <Compile Include="Assets\Mono\Singleton\MonoSingleton.cs" />
     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\CallbackAttributes.cs" />
     <Compile Include="Assets\Mono\ThirdParty\protobuf-net\Meta\TypeModel.cs" />
     <Compile Include="Assets\Mono\Core\Helper\StringHelper.cs" />

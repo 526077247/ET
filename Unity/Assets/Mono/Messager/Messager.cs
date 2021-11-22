@@ -3,8 +3,9 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    public class Messager:MonoSingleton<Messager>
+    public class Messager
     {
+        public static Messager Instance { get; private set; } = new Messager();
         class Event
         {
             public object sender;
