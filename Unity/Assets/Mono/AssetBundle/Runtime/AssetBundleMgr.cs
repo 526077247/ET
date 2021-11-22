@@ -1,4 +1,6 @@
 ﻿using AssetBundles;
+using ET;
+using IFix.Core;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -72,6 +74,24 @@ public class AssetBundleMgr
     }
     #endregion
 
+    public async ETTask StartInjectFix()
+    {
+#if !UNITY_EDITOR
+        var asset = await AddressablesManager.Instance.LoadAssetAsync<TextAsset>("Hotfix/HotfixInfo.bytes");
+        var Assemblys = asset.text.Split(',');
+        for (int i = 0; i < Assemblys.Length; i++)
+        {
+            if (string.IsNullOrEmpty(Assemblys[i])) continue;
+            var bytes = await AddressablesManager.Instance.LoadAssetAsync<TextAsset>("Hotfix/" + Assemblys[i] + ".patch.bytes");
+            if (bytes != null)
+            {
+                Debug.Log("Start Patch " + Assemblys[i]);
+                PatchManager.Load(new MemoryStream(bytes.bytes));
+            }
+        }
+#endif
+    }
+
     public void SetAddressableRemoteResCdnUrl(string cdnUrl)
     {
         Debug.Log("SetAddressableRemoteResCdnUrl cdnUrl = " + cdnUrl);
@@ -130,7 +150,7 @@ public class AssetBundleMgr
         return location;
     }
 
-    #region ===========> asset bundle cache at persistent folder
+#region ===========> asset bundle cache at persistent folder
     //判断assetbundle是否是内置在包里面的
     public bool IsAssetBundleInPackage(string hash)
     {
@@ -270,5 +290,5 @@ public class AssetBundleMgr
             size += GetDirectorySize(d);
         return size;
     }
-    #endregion
+#endregion
 }

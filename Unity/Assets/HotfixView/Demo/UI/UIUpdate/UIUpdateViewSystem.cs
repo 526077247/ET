@@ -46,6 +46,8 @@ namespace ET
             //重新加载配置
             AssetBundleConfig.Instance.SyncLoadGlobalAssetBundle();
 
+            //热修复
+            await AssetBundleMgr.GetInstance().StartInjectFix();
             Game.EventSystem.Publish(new EventType.AppStart()).Coroutine();
         }
 

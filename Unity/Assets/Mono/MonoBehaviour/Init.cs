@@ -44,6 +44,13 @@ namespace ET
 			Debug.Log(string.Format("SetAddressableRemoteResCdnUrl use {0}ms", sw.ElapsedMilliseconds));
 			sw.Reset();
 
+			//开始热修复
+			sw.Start();
+			await AssetBundleMgr.GetInstance().StartInjectFix();
+			sw.Stop();
+			Debug.Log(string.Format("StartInjectFix use {0}ms", sw.ElapsedMilliseconds));
+			sw.Reset();
+
 			InitUnitySetting();
 
 			SynchronizationContext.SetSynchronizationContext(ThreadSynchronizationContext.Instance);

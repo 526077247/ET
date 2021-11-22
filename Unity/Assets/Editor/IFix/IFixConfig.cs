@@ -10,10 +10,6 @@ public class IFixConfig
     static string[] Assemblys = new string[]
     {
         "Assembly-CSharp",
-        "Unity.Hotfix",
-        "Unity.HotfixView",
-        "Unity.Model",
-        "Unity.ModelView",
     };
     [IFix]
     static IEnumerable<Type> ToProcess
