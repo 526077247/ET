@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <LangVersion>latest</LangVersion>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -53,12 +53,12 @@
     <UnityVersion>2020.3.22f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Analyzer Include="C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="Assets\Scripts\Renderer\BrightnessSaturationContrast.cs" />
     <Compile Include="Assets\Scripts\Renderer\AdditionPostProcessRendererFeature.cs" />
     <Compile Include="Assets\Scripts\Renderer\AdditionPostProcessPass.cs" />
-    <Compile Include="Assets\StompyRobot\SROptions\SROptions.cs" />
-    <Compile Include="Assets\StompyRobot\SROptions\SROptions.Test.cs" />
-    <Compile Include="Assets\StompyRobot\SROptions\SROptions.Attributes.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
@@ -78,7 +78,6 @@
     <None Include="Assets\TextMesh Pro\Shaders\TMPro_Surface.cginc" />
     <None Include="Assets\link.xml" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
-    <None Include="Assets\StompyRobot\SROptions\link.xml" />
     <None Include="Assets\AssetsPackage\UI\UICommon\Shaders\UIGray.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF Overlay.shader" />
@@ -758,37 +757,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="Unity.HotfixView.csproj">
-      <Project>{D31345DE-9B88-525C-8E9C-744C99AE7509}</Project>
-      <Name>Unity.HotfixView</Name>
-    </ProjectReference>
-    <ProjectReference Include="Unity.ModelView.csproj">
-      <Project>{2F8409C1-DA01-D464-DBF2-00C6449E459E}</Project>
-      <Name>Unity.ModelView</Name>
-    </ProjectReference>
-    <ProjectReference Include="StompyRobot.SRF.Editor.csproj">
-      <Project>{CE0CFCD1-C4F0-6016-5544-E3B0BE2ACE1E}</Project>
-      <Name>StompyRobot.SRF.Editor</Name>
-    </ProjectReference>
     <ProjectReference Include="Unity.Addressables.csproj">
       <Project>{6BD2BBA9-48A7-2F6C-695E-DC9903B302F2}</Project>
       <Name>Unity.Addressables</Name>
     </ProjectReference>
-    <ProjectReference Include="StompyRobot.SRDebugger.csproj">
-      <Project>{C7B02D4B-93E2-351C-965D-EE8D7C808E14}</Project>
-      <Name>StompyRobot.SRDebugger</Name>
-    </ProjectReference>
-    <ProjectReference Include="Unity.Model.csproj">
-      <Project>{B4BF9894-F5D9-41C4-13E3-3F26F7700E29}</Project>
-      <Name>Unity.Model</Name>
-    </ProjectReference>
-    <ProjectReference Include="StompyRobot.SRDebugger.Editor.csproj">
-      <Project>{33ED933F-E198-69A1-CBE1-E54B1EED4D77}</Project>
-      <Name>StompyRobot.SRDebugger.Editor</Name>
-    </ProjectReference>
     <ProjectReference Include="Unity.ResourceManager.csproj">
       <Project>{1FB9DC1B-8733-BB2F-CFA6-F06CE7A5C783}</Project>
       <Name>Unity.ResourceManager</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.Addressables.Editor.csproj">
+      <Project>{E289E69C-9553-9AD6-DC5B-B46A6DB654DB}</Project>
+      <Name>Unity.Addressables.Editor</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.Editor.csproj">
       <Project>{CD311104-1830-B119-81B6-5DBEE2467FFB}</Project>
@@ -797,18 +776,6 @@
     <ProjectReference Include="Unity.Mono.csproj">
       <Project>{29FA1059-9757-9C19-985B-FC9FC473328E}</Project>
       <Name>Unity.Mono</Name>
-    </ProjectReference>
-    <ProjectReference Include="Unity.Hotfix.csproj">
-      <Project>{1066F652-6A89-D1C4-9881-1A19DF7AB80E}</Project>
-      <Name>Unity.Hotfix</Name>
-    </ProjectReference>
-    <ProjectReference Include="Unity.Addressables.Editor.csproj">
-      <Project>{E289E69C-9553-9AD6-DC5B-B46A6DB654DB}</Project>
-      <Name>Unity.Addressables.Editor</Name>
-    </ProjectReference>
-    <ProjectReference Include="StompyRobot.SRF.csproj">
-      <Project>{99158B00-AD8C-CA37-D0C3-DB308574902F}</Project>
-      <Name>StompyRobot.SRF</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
