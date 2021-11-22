@@ -123,19 +123,12 @@ namespace ET
                 await Task.Delay(100);
             }
             
-            Debug.Log("copy Code.dll to Bundles/Code");
+            Debug.Log("copy Code.dll to AssetsPackage/Code");
             Directory.CreateDirectory(CodeDir);
             File.Copy(Path.Combine(ScriptAssembliesDir, "Code.dll"), Path.Combine(CodeDir, "Code.dll.bytes"), true);
             File.Copy(Path.Combine(ScriptAssembliesDir, "Code.pdb"), Path.Combine(CodeDir, "Code.pdb.bytes"), true);
             AssetDatabase.Refresh();
-            
-            // 设置ab包
-            AssetImporter assetImporter1 = AssetImporter.GetAtPath("Assets/Bundles/Code/Code.dll.bytes");
-            assetImporter1.assetBundleName = "Code.unity3d";
-            AssetImporter assetImporter2 = AssetImporter.GetAtPath("Assets/Bundles/Code/Code.pdb.bytes");
-            assetImporter2.assetBundleName = "Code.unity3d";
-            
-            AssetDatabase.Refresh();
+
             Debug.Log("build success!");
         }
     }

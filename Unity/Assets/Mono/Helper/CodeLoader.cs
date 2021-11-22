@@ -1,5 +1,6 @@
 ﻿#define ILRuntime1
 
+using AssetBundles;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,16 +19,15 @@ namespace ET
 		public Action LateUpdate { get; set; }
 		public Action OnApplicationQuit { get; set; }
 
-		private readonly IStaticMethod start;
+		private IStaticMethod start;
 		
-		private readonly Type[] hotfixTypes;
+		private Type[] hotfixTypes;
 
-		private CodeLoader()
+		public async ETTask Init()
 		{
-			Dictionary<string, UnityEngine.Object> dictionary = AssetsBundleHelper.LoadBundle("code.unity3d");
-			byte[] assBytes = ((TextAsset)dictionary["Code.dll"]).bytes;
-			byte[] pdbBytes = ((TextAsset)dictionary["Code.pdb"]).bytes;
-			
+			byte[] assBytes = (await AddressablesManager.Instance.LoadAssetAsync<TextAsset>("Code/Code.dll.bytes")).bytes;
+			byte[] pdbBytes = (await AddressablesManager.Instance.LoadAssetAsync<TextAsset>("Code/Code.pdb.bytes")).bytes;
+
 #if ILRuntime
 			ILRuntime.Runtime.Enviorment.AppDomain appDomain = new ILRuntime.Runtime.Enviorment.AppDomain();
 			using (System.IO.MemoryStream assStream = new System.IO.MemoryStream(assBytes))

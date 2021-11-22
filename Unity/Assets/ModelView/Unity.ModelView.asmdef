@@ -1,9 +1,12 @@
 {
     "name": "Unity.ModelView",
+    "rootNamespace": "",
     "references": [
         "Unity.Model",
         "Unity.ThirdParty",
-        "Unity.Mono"    ],
+        "Unity.Mono",
+        "Unity.TextMeshPro"
+    ],
     "includePlatforms": [
         "Editor"
     ],
