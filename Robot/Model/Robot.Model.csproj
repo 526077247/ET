@@ -107,7 +107,7 @@
             <Link>Module\Console\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
 
-		<Compile Include="..\..\Unity\Assets\Model\Module\Router\**\*.cs">
+		<Compile Include="..\..\Unity\Codes\Model\Module\Router\**\*.cs">
 			<Link>Module\Router\%(RecursiveDir)%(FileName)%(Extension)</Link>
 		</Compile>
     </ItemGroup>
