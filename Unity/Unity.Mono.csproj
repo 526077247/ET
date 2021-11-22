@@ -116,12 +116,14 @@
     <Compile Include="Assets\Mono\Core\Helper\StringHelper.cs" />
     <Compile Include="Assets\Mono\Utility\PlatformUtil.cs" />
     <Compile Include="Assets\Mono\Define.cs" />
-    <Compile Include="Assets\Mono\Helper\ILHelper.cs" />
     <Compile Include="Assets\Mono\Helper\MonoStaticMethod.cs" />
     <Compile Include="Assets\Mono\Helper\IStaticMethod.cs" />
-    <Compile Include="Assets\Mono\Helper\DllHelper.cs" />
-    <Compile Include="Assets\Mono\Helper\CodeLoader.cs" />
-    <Compile Include="Assets\Mono\Helper\ILStaticMethod.cs" />
+    <Compile Include="Assets\Mono\ILRuntime\ILHelper.cs" />
+    <Compile Include="Assets\Mono\ILRuntime\Generate\CLRBindings.cs" />
+    <Compile Include="Assets\Mono\ILRuntime\IAsyncStateMachineAdaptor.cs" />
+    <Compile Include="Assets\Mono\ILRuntime\ILStaticMethod.cs" />
+    <Compile Include="Assets\Mono\CodeLoader.cs" />
+    <Compile Include="Assets\Mono\ILRuntime\ISupportInitializeAdapter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Mono\Unity.Mono.asmdef" />
