@@ -1,9 +1,7 @@
 {
     "name": "Unity.ModelView",
-    "rootNamespace": "",
     "references": [
         "Unity.Model",
-        "Unity.ThirdParty",
         "Unity.Mono",
         "Unity.TextMeshPro"
     ],
