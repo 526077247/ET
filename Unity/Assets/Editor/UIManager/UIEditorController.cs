@@ -30,7 +30,7 @@ public class UIScriptController
         UnityEngine.Debug.Log(path);
         GenerateEntityCode(go, path);
         GenerateSystemCode(go, path);
-        AssetDatabase.Refresh();
+        //AssetDatabase.Refresh();
     }
     static Dictionary<Type, string> WidgetInterfaceList;
     static UIScriptController()
@@ -52,7 +52,7 @@ public class UIScriptController
         string name = go.name;
         var temp = new List<string>(path.Split('/'));
         int index = temp.IndexOf("AssetsPackage");
-        var dirPath = $"Assets/ModelView/Demo/{temp[index + 1]}/{temp[index + 2]}";
+        var dirPath = $"Codes/ModelView/Demo/{temp[index + 1]}/{temp[index + 2]}";
         if (!Directory.Exists(dirPath))
         {
             Directory.CreateDirectory(dirPath);
@@ -120,7 +120,7 @@ public class UIScriptController
         string name = go.name;
         var temp = new List<string>(path.Split('/'));
         int index = temp.IndexOf("AssetsPackage");
-        var dirPath = $"Assets/HotfixView/Demo/{temp[index + 1]}/{temp[index + 2]}";
+        var dirPath = $"Codes/HotfixView/Demo/{temp[index + 1]}/{temp[index + 2]}";
         if (!Directory.Exists(dirPath))
         {
             Directory.CreateDirectory(dirPath);
