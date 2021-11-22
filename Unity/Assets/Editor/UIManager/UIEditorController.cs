@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using UnityEditor;
 using System.IO;
-using ET;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,19 +15,19 @@ public class UIScriptController
     {
         if (!go.name.StartsWith("UI"))
         {
-            Log.Error(go.name + "没有以UI开头");
+            UnityEngine.Debug.LogError(go.name + "没有以UI开头");
             return false;
         }
         if (!go.name.EndsWith("View") && !go.name.EndsWith("Win") && !go.name.EndsWith("Panel"))
         {
-            Log.Error(go.name + "没有以View、Win、Panel结尾");
+            UnityEngine.Debug.LogError(go.name + "没有以View、Win、Panel结尾");
             return false;
         }
         return path.Contains(addressable_path);
     }
     public static void GenerateUICode(GameObject go, string path)
     {
-        Log.Debug(path);
+        UnityEngine.Debug.Log(path);
         GenerateEntityCode(go, path);
         GenerateSystemCode(go, path);
         AssetDatabase.Refresh();
@@ -61,7 +60,7 @@ public class UIScriptController
         var csPath = $"{dirPath}/{name}.cs";
         if (File.Exists(csPath))
         {
-            Log.Error("已存在 " + csPath + ",将不会再次生成。");
+            UnityEngine.Debug.LogError("已存在 " + csPath + ",将不会再次生成。");
             return;
         }
         StreamWriter sw = new StreamWriter(csPath, false, Encoding.UTF8);
@@ -129,7 +128,7 @@ public class UIScriptController
         var csPath = $"{dirPath}/{name}System.cs";
         if (File.Exists(csPath))
         {
-            Log.Error("已存在 " + csPath + ",将不会再次生成。");
+            UnityEngine.Debug.LogError("已存在 " + csPath + ",将不会再次生成。");
             return;
         }
         StreamWriter sw = new StreamWriter(csPath, false, Encoding.UTF8);
