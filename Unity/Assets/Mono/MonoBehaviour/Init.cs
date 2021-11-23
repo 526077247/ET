@@ -56,6 +56,10 @@ namespace ET
 			SynchronizationContext.SetSynchronizationContext(ThreadSynchronizationContext.Instance);
 			DontDestroyOnLoad(gameObject);
 
+			Log.ILog = new UnityLogger();
+
+			Options.Instance = new Options();
+
 			await CodeLoader.Instance.Init();
 			this.codeLoader = CodeLoader.Instance;
             if (isStart)

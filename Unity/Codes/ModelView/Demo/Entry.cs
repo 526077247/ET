@@ -17,8 +17,6 @@ namespace ET
 				
 				ProtobufHelper.Init();
 				
-				Game.Options = new Options();
-				
 				Game.EventSystem.Publish(new EventType.AppStart()).Coroutine();
 			}
 			catch (Exception e)

@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Unity/Assets/Editor/AddressableEditor/AASUtility.cs.meta
 guid: b901100113406014582eb9fa598acd62
+=======
+guid: 0e345c60bebba1742ae15c700ec617d9
+>>>>>>> upstream/master:Unity/Assets/Mono/Helper/AssetsBundleHelper.cs.meta
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
