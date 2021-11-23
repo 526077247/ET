@@ -502,7 +502,7 @@ namespace ET
 			catch (Exception e)
 			{
 				Log.Error(e);
-				this.OnError(ErrorCode.ERR_SocketCantSend);
+				this.OnError(ErrorCore.ERR_SocketCantSend);
 			}
 		}
 		public bool IsRouterConnected = true;
