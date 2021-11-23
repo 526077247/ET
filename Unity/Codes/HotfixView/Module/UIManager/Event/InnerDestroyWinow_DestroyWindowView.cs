@@ -25,6 +25,7 @@ namespace ET
 				}
 				UIEventSystem.Instance.OnDestroy(view);
 			}
+			await ETTask.CompletedTask;
 		}
 	}
 }

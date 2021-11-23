@@ -8,7 +8,7 @@ namespace ET
 	{
 		protected override async ETTask Run(EventType.ShowToast args)
 		{
-			Show(args.Text).Coroutine();
+			await Show(args.Text);
 		}
 
         async ETTask Show(string Content, int seconds = 3)

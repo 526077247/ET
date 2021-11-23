@@ -17,6 +17,7 @@ namespace ET
                 var layer = UIManagerComponent.Instance.GetComponent<UILayersComponent>().layers[target.Layer];
                 view.transform.SetParent(layer.transform, false);
             }
+            await ETTask.CompletedTask;
         }
     }
 }

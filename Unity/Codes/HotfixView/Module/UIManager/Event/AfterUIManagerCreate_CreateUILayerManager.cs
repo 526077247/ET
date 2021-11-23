@@ -12,6 +12,7 @@ namespace ET
         protected override async ETTask Run(UIEventType.AfterUIManagerCreate args)
         {
             UIManagerComponent.Instance.AddComponent<UILayersComponent>();
-		}
+            await ETTask.CompletedTask;
+        }
     }
 }

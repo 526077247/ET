@@ -157,8 +157,8 @@ namespace ET
 				{
 					this.allEvents.Add(eventType, new List<object>());
 				}
-				this.allEvents[eventType].Add(obj);
-			}
+                this.allEvents[eventType].Add(obj);
+            }
 			
 			this.Load();
 		}

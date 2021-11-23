@@ -11,12 +11,9 @@ namespace ET
 	public class Init: MonoBehaviour
 	{
 		private CodeLoader codeLoader;
-		private bool isStart = false;
+
 		private void Awake()
 		{
-			isStart = false;
-			//测试下载时先把Addressables的缓存清掉，AppData\LocalLow下的缓存都删掉
-			//PlayerPrefs.DeleteAll();
 			System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
 			//初始化App版本，解决覆盖安装问题
 			sw.Start();
@@ -71,17 +68,17 @@ namespace ET
 
 		private void Update()
 		{
-			this.codeLoader?.Update.Invoke();
+			this.codeLoader?.Update?.Invoke();
 		}
 
 		private void LateUpdate()
 		{
-			this.codeLoader?.LateUpdate.Invoke();
+			this.codeLoader?.LateUpdate?.Invoke();
 		}
 
 		private void OnApplicationQuit()
 		{
-			this.codeLoader?.OnApplicationQuit.Invoke();
+			this.codeLoader?.OnApplicationQuit?.Invoke();
 		}
 
 		// 一些unity的设置项目

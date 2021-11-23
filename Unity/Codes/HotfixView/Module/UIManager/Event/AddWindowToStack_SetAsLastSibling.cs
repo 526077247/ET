@@ -15,6 +15,7 @@ namespace ET
 			{
 				view.transform.SetAsLastSibling();
 			}
+			await ETTask.CompletedTask;
 		}
 	}
 }

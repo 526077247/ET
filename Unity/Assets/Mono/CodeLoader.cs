@@ -14,7 +14,16 @@ namespace ET
 {
 	public class CodeLoader
 	{
-        public static CodeLoader Instance { get; private set; } = new CodeLoader();
+        static CodeLoader __Instance;
+        public static CodeLoader Instance
+        {
+            get
+            {
+                if (__Instance == null)
+                    __Instance = new CodeLoader();
+                return __Instance;
+            }
+        }
 
         public Action Update;
         public Action LateUpdate;

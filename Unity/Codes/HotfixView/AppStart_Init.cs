@@ -1,4 +1,3 @@
-using IFix.Core;
 using System.IO;
 using UnityEngine;
 
@@ -24,7 +23,7 @@ namespace ET
             // 加载配置
             Game.Scene.AddComponent<ConfigComponent>();
             ConfigComponent.GetAllConfigBytes = await LoadConfigHelper.LoadAllConfigBytes();
-            await ConfigComponent.Instance.LoadAsync();
+            ConfigComponent.Instance.LoadAll();
             Game.Scene.AddComponent<I18NComponent>();
             Game.Scene.AddComponent<OpcodeTypeComponent>();
             Game.Scene.AddComponent<MessageDispatcherComponent>();

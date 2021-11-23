@@ -14,6 +14,7 @@ namespace ET
 			UIBaseView uibaseview = args.uibaseview as UIBaseView;
 			uibaseview.__BaseViewName = args.name;
 			args.window.PrefabPath = uibaseview.PrefabPath;
+			await ETTask.CompletedTask;
 		}
 	}
 }

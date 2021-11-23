@@ -6,6 +6,7 @@
         {
             if(UILoadingView.Instance!=null)
                 UILoadingView.Instance.SetSlidValue(args.Progress);
+            await ETTask.CompletedTask;
         }
     }
 }

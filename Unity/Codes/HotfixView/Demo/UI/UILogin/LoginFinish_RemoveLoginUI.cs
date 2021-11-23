@@ -6,7 +6,7 @@ namespace ET
 	{
 		protected override async ETTask Run(EventType.LoginFinish args)
 		{
-			UIManagerComponent.Instance.CloseWindow<UILoginView>();
+			await UIManagerComponent.Instance.CloseWindow<UILoginView>();
 		}
 	}
 }

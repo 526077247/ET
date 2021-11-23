@@ -24,7 +24,7 @@ namespace ET
 
             Game.Scene.AddComponent<ConfigComponent>();
             ConfigComponent.GetAllConfigBytes = LoadConfigHelper.LoadAllConfigBytes();
-            await ConfigComponent.Instance.LoadAsync();
+            ConfigComponent.Instance.LoadAll();
 
             StartProcessConfig processConfig = StartProcessConfigCategory.Instance.Get(Game.Options.Process);
             
