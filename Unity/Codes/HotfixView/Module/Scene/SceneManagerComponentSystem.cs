@@ -34,7 +34,7 @@ namespace ET
                 Name = SceneNames.Map,
             };
 
-            var res = new Dictionary<SceneNames, SceneConfig>(SceneNamesCompare.Instance);
+            var res = new Dictionary<SceneNames, SceneConfig>();
             res.Add(InitScene.Name,InitScene);
             res.Add(LoadingScene.Name, LoadingScene);
             res.Add(MapScene.Name, MapScene);
@@ -48,7 +48,7 @@ namespace ET
             self.ScenesChangeIgnoreClean = new List<string>();
             self.DestroyWindowExceptNames = new List<string>();
             SceneManagerComponent.Instance = self;
-            self.scenes = new Dictionary<SceneNames, BaseScene>(SceneNamesCompare.Instance);
+            self.scenes = new Dictionary<SceneNames, BaseScene>();
             self.SceneConfigs = GetSceneConfig();
 
         }

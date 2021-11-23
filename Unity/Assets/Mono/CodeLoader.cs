@@ -3,6 +3,7 @@
 using AssetBundles;
 using System;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 #if ILRuntime
@@ -13,40 +14,45 @@ namespace ET
 {
 	public class CodeLoader
 	{
-		public static CodeLoader Instance = new CodeLoader();
+        public static CodeLoader Instance { get; private set; } = new CodeLoader();
 
-		public Action Update;
-		public Action LateUpdate;
-		public Action OnApplicationQuit;
+        public Action Update;
+        public Action LateUpdate;
+        public Action OnApplicationQuit;
 
-		private readonly IStaticMethod start;
-		
-		private readonly Type[] hotfixTypes;
+        private readonly IStaticMethod start;
 
-        private IStaticMethod start;
+        private readonly Type[] hotfixTypes;
 
-        private Type[] hotfixTypes;
-
-        public async ETTask Init()
+        private CodeLoader()
         {
-            byte[] assBytes = (await AddressablesManager.Instance.LoadAssetAsync<TextAsset>("Code/Code.dll.bytes")).bytes;
-            byte[] pdbBytes = (await AddressablesManager.Instance.LoadAssetAsync<TextAsset>("Code/Code.pdb.bytes")).bytes;
-
+#if !UNITY_EDITOR
+            var ab = AddressablesManager.Instance.SyncLoadAssetBundle("code_assets_all.bundle");
+            byte[] assBytes = ((TextAsset)ab.LoadAsset("Assets/AssetsPackage/Code/Code.dll.bytes", typeof(TextAsset))).bytes;
+            byte[] pdbBytes = ((TextAsset)ab.LoadAsset("Assets/AssetsPackage/Code/Code.pdb.bytes", typeof(TextAsset))).bytes;
+#else
+            byte[] assBytes = (AssetDatabase.LoadAssetAtPath("Assets/AssetsPackage/Code/Code.dll.bytes", typeof(TextAsset)) as TextAsset).bytes;
+            byte[] pdbBytes = (AssetDatabase.LoadAssetAtPath("Assets/AssetsPackage/Code/Code.pdb.bytes", typeof(TextAsset)) as TextAsset).bytes;
+#endif
 #if ILRuntime
-            ILRuntime.Runtime.Enviorment.AppDomain appDomain = new ILRuntime.Runtime.Enviorment.AppDomain();
-            System.IO.MemoryStream assStream = new System.IO.MemoryStream(assBytes);
+			ILRuntime.Runtime.Enviorment.AppDomain appDomain = new ILRuntime.Runtime.Enviorment.AppDomain();
+			System.IO.MemoryStream assStream = new System.IO.MemoryStream(assBytes);
 			System.IO.MemoryStream pdbStream = new System.IO.MemoryStream(pdbBytes);
-            appDomain.LoadAssembly(assStream, pdbStream, new ILRuntime.Mono.Cecil.Pdb.PdbReaderProvider());
-            ILHelper.InitILRuntime(appDomain);
-
-            this.hotfixTypes = Type.EmptyTypes;
-            this.hotfixTypes = appDomain.LoadedTypes.Values.Select(x => x.ReflectionType).ToArray();
+			appDomain.LoadAssembly(assStream, pdbStream, new ILRuntime.Mono.Cecil.Pdb.PdbReaderProvider());
+			
+			ILHelper.InitILRuntime(appDomain);
+			
+			this.hotfixTypes = Type.EmptyTypes;
+			this.hotfixTypes = appDomain.LoadedTypes.Values.Select(x => x.ReflectionType).ToArray();
 			this.start = new ILStaticMethod(appDomain, "ET.Entry", "Start", 0);
 #else
 
-			System.Reflection.Assembly assembly = System.Reflection.Assembly.Load(assBytes, pdbBytes);
-			hotfixTypes = assembly.GetTypes();
-			this.start = new MonoStaticMethod(assembly, "ET.Entry", "Start");
+            System.Reflection.Assembly assembly = System.Reflection.Assembly.Load(assBytes, pdbBytes);
+            hotfixTypes = assembly.GetTypes();
+            this.start = new MonoStaticMethod(assembly, "ET.Entry", "Start");
+#endif
+#if !UNITY_EDITOR
+            ab.Unload(true);
 #endif
         }
 

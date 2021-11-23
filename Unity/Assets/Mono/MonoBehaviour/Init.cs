@@ -12,7 +12,7 @@ namespace ET
 	{
 		private CodeLoader codeLoader;
 		private bool isStart = false;
-		private async void Awake()
+		private void Awake()
 		{
 			isStart = false;
 			//测试下载时先把Addressables的缓存清掉，AppData\LocalLow下的缓存都删掉
@@ -54,24 +54,19 @@ namespace ET
 			InitUnitySetting();
 
 			SynchronizationContext.SetSynchronizationContext(ThreadSynchronizationContext.Instance);
+
 			DontDestroyOnLoad(gameObject);
 
 			Log.ILog = new UnityLogger();
 
 			Options.Instance = new Options();
 
-			await CodeLoader.Instance.Init();
 			this.codeLoader = CodeLoader.Instance;
-            if (isStart)
-				this.codeLoader?.Start();
 		}
 
 		private void Start()
 		{
-			if (this.codeLoader != null)
-				this.codeLoader.Start();
-			else
-				isStart = true;
+			this.codeLoader.Start();
 		}
 
 		private void Update()

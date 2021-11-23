@@ -34,7 +34,8 @@ MonoBehaviour:
   - m_GUID: 6e95b7712f16b2d4c9ae4fcf72e0d6b7
     m_Address: UI/UIUpdate/Prefabs/UIMsgBoxWin.prefab
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - default
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
   m_ReadOnly: 0

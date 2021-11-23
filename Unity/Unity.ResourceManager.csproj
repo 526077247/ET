@@ -57,8 +57,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Packages\com.unity.addressables@1.16.19\Runtime\ResourceManager\ResourceLocations\IResourceLocation.cs" />
-    <Compile Include="Packages\com.unity.addressables@1.16.19\Runtime\ResourceManager\ResourceProviders\InstanceProvider.cs" />
     <Compile Include="Packages\com.unity.addressables@1.16.19\Runtime\ResourceManager\ResourceProviders\Simulation\VirtualAssetBundle.cs" />
+    <Compile Include="Packages\com.unity.addressables@1.16.19\Runtime\ResourceManager\ResourceProviders\InstanceProvider.cs" />
     <Compile Include="Packages\com.unity.addressables@1.16.19\Runtime\ResourceManager\AsyncOperations\DownloadStatus.cs" />
     <Compile Include="Packages\com.unity.addressables@1.16.19\Runtime\ResourceManager\ResourceProviders\AssetBundleProvider.cs" />
     <Compile Include="Packages\com.unity.addressables@1.16.19\Runtime\ResourceManager\ResourceManager.cs" />
@@ -339,15 +339,6 @@
     </Reference>
     <Reference Include="EPPlus">
       <HintPath>Assets\Editor\ArtToolsEditor\EPPlus.dll</HintPath>
-    </Reference>
-    <Reference Include="ILRuntime.Mono.Cecil.Mdb">
-      <HintPath>Library\PackageCache\com.ourpalm.ilruntime@1.6.7\Plugins\ILRuntime.Mono.Cecil.Mdb.dll</HintPath>
-    </Reference>
-    <Reference Include="ILRuntime.Mono.Cecil">
-      <HintPath>Library\PackageCache\com.ourpalm.ilruntime@1.6.7\Plugins\ILRuntime.Mono.Cecil.dll</HintPath>
-    </Reference>
-    <Reference Include="ILRuntime.Mono.Cecil.Pdb">
-      <HintPath>Library\PackageCache\com.ourpalm.ilruntime@1.6.7\Plugins\ILRuntime.Mono.Cecil.Pdb.dll</HintPath>
     </Reference>
     <Reference Include="ICSharpCode.NRefactory">
       <HintPath>Library\PackageCache\com.unity.render-pipelines.core@10.7.0\Editor\ShaderGenerator\ICSharpCode.NRefactory.dll</HintPath>

@@ -237,11 +237,9 @@ namespace ET
                 return false;
             }
 
-
-#if UNITY_EDITOR
             // 编辑器下不能测试热更，但可以测试下载。
-            return false;
-#endif
+            if (Define.IsEditor) return false;
+
             //找到最新版本，则设置当前资源存放的cdn地址
             var url = BootConfig.Instance.GetUpdateCdnResUrlByVersion(maxVer);
             self.m_rescdn_url = url;

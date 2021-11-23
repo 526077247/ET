@@ -2,10 +2,10 @@
     "name": "Unity.Mono",
     "rootNamespace": "",
     "references": [
-        "ILRuntime",
         "Unity.TextMeshPro",
         "Unity.Addressables",
-        "Unity.ResourceManager"
+        "Unity.ResourceManager",
+        "Unity.RenderPipelines.Universal.Runtime"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

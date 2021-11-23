@@ -7,7 +7,7 @@ using ET;
 public class HttpManager
 {
     const int DEFAULT_TIMEOUT = 10;// 默认超时时间
-
+    public static AcceptAllCertificate certificateHandler = new AcceptAllCertificate();
     public static HttpManager Instance { get; private set; } = new HttpManager();
     public UnityWebRequest HttpGet(string url, Dictionary<string, string> headers = null, Dictionary<string, string> param = null, int timeout = DEFAULT_TIMEOUT)
     {
@@ -15,6 +15,7 @@ public class HttpManager
         if (!string.IsNullOrEmpty(strParam))
             url += "?" + strParam;
         var request = UnityWebRequest.Get(url);
+        request.certificateHandler = certificateHandler;
         if (timeout > 0)
         {
             request.timeout = timeout;
@@ -31,6 +32,7 @@ public class HttpManager
     {
         byte[] postBytes = System.Text.Encoding.Default.GetBytes(JsonUtility.ToJson(param));
         var request = new UnityWebRequest(url, "POST");
+        request.certificateHandler = certificateHandler;
         request.uploadHandler = (UploadHandler)new UploadHandlerRaw(postBytes);
         request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
@@ -49,6 +51,7 @@ public class HttpManager
     {
         string strParam = ConvertParamToStr(param);
         var request = new UnityWebRequest(url + "?" + strParam, "POST");
+        request.certificateHandler = certificateHandler;
         request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
         if(headers!=null)
@@ -67,6 +70,7 @@ public class HttpManager
     {
         string strParam = ConvertParamToStr(param);
         var request = new UnityWebRequest(url + "?" + strParam, "PUT");
+        request.certificateHandler = certificateHandler;
         request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
         if(headers!=null)
@@ -89,6 +93,7 @@ public class HttpManager
           url = LocalImage(url);
         }
         var request =   UnityWebRequestTexture.GetTexture(url);
+        request.certificateHandler = certificateHandler;
         if (timeout > 0)
         {
             request.timeout = timeout;

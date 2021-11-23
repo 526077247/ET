@@ -23,69 +23,41 @@ namespace ILRuntime.Runtime.Generated
             Type[] args;
             Type type = typeof(ET.CodeLoader);
 
-            field = type.GetField("Instance", flag);
-            app.RegisterCLRFieldGetter(field, get_Instance_0);
-            app.RegisterCLRFieldSetter(field, set_Instance_0);
-            app.RegisterCLRFieldBinding(field, CopyToStack_Instance_0, AssignFromStack_Instance_0);
             field = type.GetField("Update", flag);
-            app.RegisterCLRFieldGetter(field, get_Update_1);
-            app.RegisterCLRFieldSetter(field, set_Update_1);
-            app.RegisterCLRFieldBinding(field, CopyToStack_Update_1, AssignFromStack_Update_1);
+            app.RegisterCLRFieldGetter(field, get_Update_0);
+            app.RegisterCLRFieldSetter(field, set_Update_0);
+            app.RegisterCLRFieldBinding(field, CopyToStack_Update_0, AssignFromStack_Update_0);
             field = type.GetField("LateUpdate", flag);
-            app.RegisterCLRFieldGetter(field, get_LateUpdate_2);
-            app.RegisterCLRFieldSetter(field, set_LateUpdate_2);
-            app.RegisterCLRFieldBinding(field, CopyToStack_LateUpdate_2, AssignFromStack_LateUpdate_2);
+            app.RegisterCLRFieldGetter(field, get_LateUpdate_1);
+            app.RegisterCLRFieldSetter(field, set_LateUpdate_1);
+            app.RegisterCLRFieldBinding(field, CopyToStack_LateUpdate_1, AssignFromStack_LateUpdate_1);
             field = type.GetField("OnApplicationQuit", flag);
-            app.RegisterCLRFieldGetter(field, get_OnApplicationQuit_3);
-            app.RegisterCLRFieldSetter(field, set_OnApplicationQuit_3);
-            app.RegisterCLRFieldBinding(field, CopyToStack_OnApplicationQuit_3, AssignFromStack_OnApplicationQuit_3);
+            app.RegisterCLRFieldGetter(field, get_OnApplicationQuit_2);
+            app.RegisterCLRFieldSetter(field, set_OnApplicationQuit_2);
+            app.RegisterCLRFieldBinding(field, CopyToStack_OnApplicationQuit_2, AssignFromStack_OnApplicationQuit_2);
 
 
         }
 
 
 
-        static object get_Instance_0(ref object o)
-        {
-            return ET.CodeLoader.Instance;
-        }
-
-        static StackObject* CopyToStack_Instance_0(ref object o, ILIntepreter __intp, StackObject* __ret, IList<object> __mStack)
-        {
-            var result_of_this_method = ET.CodeLoader.Instance;
-            return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
-        }
-
-        static void set_Instance_0(ref object o, object v)
-        {
-            ET.CodeLoader.Instance = (ET.CodeLoader)v;
-        }
-
-        static StackObject* AssignFromStack_Instance_0(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
-        {
-            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            ET.CodeLoader @Instance = (ET.CodeLoader)typeof(ET.CodeLoader).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
-            ET.CodeLoader.Instance = @Instance;
-            return ptr_of_this_method;
-        }
-
-        static object get_Update_1(ref object o)
+        static object get_Update_0(ref object o)
         {
             return ((ET.CodeLoader)o).Update;
         }
 
-        static StackObject* CopyToStack_Update_1(ref object o, ILIntepreter __intp, StackObject* __ret, IList<object> __mStack)
+        static StackObject* CopyToStack_Update_0(ref object o, ILIntepreter __intp, StackObject* __ret, IList<object> __mStack)
         {
             var result_of_this_method = ((ET.CodeLoader)o).Update;
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 
-        static void set_Update_1(ref object o, object v)
+        static void set_Update_0(ref object o, object v)
         {
             ((ET.CodeLoader)o).Update = (System.Action)v;
         }
 
-        static StackObject* AssignFromStack_Update_1(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
+        static StackObject* AssignFromStack_Update_0(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             System.Action @Update = (System.Action)typeof(System.Action).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)8);
@@ -93,23 +65,23 @@ namespace ILRuntime.Runtime.Generated
             return ptr_of_this_method;
         }
 
-        static object get_LateUpdate_2(ref object o)
+        static object get_LateUpdate_1(ref object o)
         {
             return ((ET.CodeLoader)o).LateUpdate;
         }
 
-        static StackObject* CopyToStack_LateUpdate_2(ref object o, ILIntepreter __intp, StackObject* __ret, IList<object> __mStack)
+        static StackObject* CopyToStack_LateUpdate_1(ref object o, ILIntepreter __intp, StackObject* __ret, IList<object> __mStack)
         {
             var result_of_this_method = ((ET.CodeLoader)o).LateUpdate;
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 
-        static void set_LateUpdate_2(ref object o, object v)
+        static void set_LateUpdate_1(ref object o, object v)
         {
             ((ET.CodeLoader)o).LateUpdate = (System.Action)v;
         }
 
-        static StackObject* AssignFromStack_LateUpdate_2(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
+        static StackObject* AssignFromStack_LateUpdate_1(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             System.Action @LateUpdate = (System.Action)typeof(System.Action).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)8);
@@ -117,23 +89,23 @@ namespace ILRuntime.Runtime.Generated
             return ptr_of_this_method;
         }
 
-        static object get_OnApplicationQuit_3(ref object o)
+        static object get_OnApplicationQuit_2(ref object o)
         {
             return ((ET.CodeLoader)o).OnApplicationQuit;
         }
 
-        static StackObject* CopyToStack_OnApplicationQuit_3(ref object o, ILIntepreter __intp, StackObject* __ret, IList<object> __mStack)
+        static StackObject* CopyToStack_OnApplicationQuit_2(ref object o, ILIntepreter __intp, StackObject* __ret, IList<object> __mStack)
         {
             var result_of_this_method = ((ET.CodeLoader)o).OnApplicationQuit;
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 
-        static void set_OnApplicationQuit_3(ref object o, object v)
+        static void set_OnApplicationQuit_2(ref object o, object v)
         {
             ((ET.CodeLoader)o).OnApplicationQuit = (System.Action)v;
         }
 
-        static StackObject* AssignFromStack_OnApplicationQuit_3(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
+        static StackObject* AssignFromStack_OnApplicationQuit_2(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             System.Action @OnApplicationQuit = (System.Action)typeof(System.Action).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)8);

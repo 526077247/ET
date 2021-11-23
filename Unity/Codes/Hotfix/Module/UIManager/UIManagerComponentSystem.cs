@@ -13,7 +13,7 @@ namespace ET
         {
             UIManagerComponent.Instance = self;
             self.windows = new Dictionary<string, UIWindow>();
-            self.window_stack = new Dictionary<UILayerNames, LinkedList<string>>(UILayerNamesComparer.Instance);
+            self.window_stack = new Dictionary<UILayerNames, LinkedList<string>>();
             Game.EventSystem.Publish(new UIEventType.AfterUIManagerCreate()).Coroutine();
             self.UIEventSystem = new UIEventSystem();
             UIEventSystem.Instance = self.UIEventSystem;

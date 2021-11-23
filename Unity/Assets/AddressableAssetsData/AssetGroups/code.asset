@@ -20,13 +20,15 @@ MonoBehaviour:
   - m_GUID: 7707e8056985ade4a93cc4fe15d7e886
     m_Address: Code/Code.dll.bytes
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - default
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
   - m_GUID: 6470b029eec6f9741902447e84f45c62
     m_Address: Code/Code.pdb.bytes
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - default
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
   m_ReadOnly: 0

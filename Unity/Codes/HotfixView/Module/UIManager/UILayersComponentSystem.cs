@@ -90,7 +90,7 @@ namespace ET
 			GameObject.DontDestroyOnLoad(self.gameObject);
 			GameObject.DontDestroyOnLoad(event_system);
 			self.Resolution = new Vector2(Define.DesignScreen_Width, Define.DesignScreen_Height);//分辨率
-			self.layers = new Dictionary<UILayerNames, UILayer>(UILayerNamesComparer.Instance);
+			self.layers = new Dictionary<UILayerNames, UILayer>();
 
 			var UILayers = GetConfig();
 			for (int i = 0; i < UILayers.Length; i++)
