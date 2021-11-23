@@ -1,7 +1,9 @@
 ﻿using ET;
+using IFix.Core;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -390,6 +392,33 @@ namespace AssetBundles
             int hashCode = bundleName.ToLower().GetHashCode();
             int offset = 47 + Math.Abs(hashCode) % 256;
             return offset;
+        }
+
+
+        public void StartInjectFix()
+        {
+#if !UNITY_EDITOR
+            string assetBundleName = "hotfix_assets_all.bundle";
+            if (AssetBundleMgr.GetInstance().IsCached(assetBundleName, "", true))
+            {
+                var path = Path.Combine(AssetBundleMgr.PersistentAssetBundleFolder, assetBundleName);
+                var addressPath = "Assets/AssetsPackage/Hotfix/HotfixInfo.bytes";
+                var ab = AssetBundle.LoadFromFile(path, 0, (ulong)computeBundleOffset(assetBundleName));
+                TextAsset asset = (TextAsset)ab.LoadAsset(addressPath, typeof(TextAsset));
+                var Assemblys = asset.text.Split(',');
+                for (int i = 0; i < Assemblys.Length; i++)
+                {
+                    if (string.IsNullOrEmpty(Assemblys[i])) continue;
+                    var bytes = (TextAsset)ab.LoadAsset("Assets/AssetsPackage/Hotfix/" + Assemblys[i] + ".patch.bytes", typeof(TextAsset));
+                    if (bytes != null)
+                    {
+                        Debug.Log("Start Patch " + Assemblys[i]);
+                        PatchManager.Load(new MemoryStream(bytes.bytes));
+                    }
+                }
+                ab.Unload(true);
+            }
+#endif
         }
         #endregion
     }

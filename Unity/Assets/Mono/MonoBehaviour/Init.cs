@@ -46,7 +46,7 @@ namespace ET
 
 			//开始热修复
 			sw.Start();
-			await AssetBundleMgr.GetInstance().StartInjectFix();
+			AddressablesManager.Instance.StartInjectFix();
 			sw.Stop();
 			Debug.Log(string.Format("StartInjectFix use {0}ms", sw.ElapsedMilliseconds));
 			sw.Reset();

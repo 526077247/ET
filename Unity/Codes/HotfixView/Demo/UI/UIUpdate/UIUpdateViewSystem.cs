@@ -47,7 +47,7 @@ namespace ET
             AssetBundleConfig.Instance.SyncLoadGlobalAssetBundle();
 
             //»»–ﬁ∏¥
-            await AssetBundleMgr.GetInstance().StartInjectFix();
+            AddressablesManager.Instance.StartInjectFix();
             Game.EventSystem.Publish(new EventType.AppStart()).Coroutine();
         }
 

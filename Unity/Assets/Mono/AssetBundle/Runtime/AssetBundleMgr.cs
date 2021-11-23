@@ -1,6 +1,4 @@
 ﻿using AssetBundles;
-using ET;
-using IFix.Core;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -73,24 +71,6 @@ public class AssetBundleMgr
         }
     }
     #endregion
-
-    public async ETTask StartInjectFix()
-    {
-#if !UNITY_EDITOR
-        var asset = await AddressablesManager.Instance.LoadAssetAsync<TextAsset>("Hotfix/HotfixInfo.bytes");
-        var Assemblys = asset.text.Split(',');
-        for (int i = 0; i < Assemblys.Length; i++)
-        {
-            if (string.IsNullOrEmpty(Assemblys[i])) continue;
-            var bytes = await AddressablesManager.Instance.LoadAssetAsync<TextAsset>("Hotfix/" + Assemblys[i] + ".patch.bytes");
-            if (bytes != null)
-            {
-                Debug.Log("Start Patch " + Assemblys[i]);
-                PatchManager.Load(new MemoryStream(bytes.bytes));
-            }
-        }
-#endif
-    }
 
     public void SetAddressableRemoteResCdnUrl(string cdnUrl)
     {
