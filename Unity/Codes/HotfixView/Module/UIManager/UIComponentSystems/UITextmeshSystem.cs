@@ -100,7 +100,7 @@ namespace ET
             }
         }
 
-        public static void OnLanguageChange(this UITextmesh self, object sender, EventArgs args)
+        public static void OnLanguageChange(this UITextmesh self, object args)
         {
             if (self.__text_key !=null)
                 I18NComponent.Instance.I18NGetParamText(self.__text_key, self.keyParams);

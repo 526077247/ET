@@ -25,13 +25,13 @@ namespace ILRuntime.Runtime.Generated
             args = new Type[]{};
             method = type.GetMethod("get_Instance", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, get_Instance_0);
-            args = new Type[]{typeof(ET.MessagerId), typeof(System.Object), typeof(System.EventArgs)};
+            args = new Type[]{typeof(ET.MessagerId), typeof(System.Object)};
             method = type.GetMethod("Broadcast", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, Broadcast_1);
-            args = new Type[]{typeof(ET.MessagerId), typeof(System.Action<System.Object, System.EventArgs>)};
+            args = new Type[]{typeof(ET.MessagerId), typeof(System.Action<System.Object>)};
             method = type.GetMethod("AddListener", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, AddListener_2);
-            args = new Type[]{typeof(ET.MessagerId), typeof(System.Action<System.Object, System.EventArgs>)};
+            args = new Type[]{typeof(ET.MessagerId), typeof(System.Action<System.Object>)};
             method = type.GetMethod("RemoveListener", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, RemoveListener_3);
 
@@ -54,25 +54,21 @@ namespace ILRuntime.Runtime.Generated
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
-            StackObject* __ret = ILIntepreter.Minus(__esp, 4);
+            StackObject* __ret = ILIntepreter.Minus(__esp, 3);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.EventArgs @args = (System.EventArgs)typeof(System.EventArgs).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            System.Object @args = (System.Object)typeof(System.Object).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            System.Object @sender = (System.Object)typeof(System.Object).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
-            __intp.Free(ptr_of_this_method);
-
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 3);
             ET.MessagerId @name = (ET.MessagerId)typeof(ET.MessagerId).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)20);
             __intp.Free(ptr_of_this_method);
 
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 4);
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 3);
             ET.Messager instance_of_this_method = (ET.Messager)typeof(ET.Messager).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
-            instance_of_this_method.Broadcast(@name, @sender, @args);
+            instance_of_this_method.Broadcast(@name, @args);
 
             return __ret;
         }
@@ -84,7 +80,7 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 3);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.Action<System.Object, System.EventArgs> @evt = (System.Action<System.Object, System.EventArgs>)typeof(System.Action<System.Object, System.EventArgs>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)8);
+            System.Action<System.Object> @evt = (System.Action<System.Object>)typeof(System.Action<System.Object>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)8);
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
@@ -107,7 +103,7 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 3);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.Action<System.Object, System.EventArgs> @evt = (System.Action<System.Object, System.EventArgs>)typeof(System.Action<System.Object, System.EventArgs>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)8);
+            System.Action<System.Object> @evt = (System.Action<System.Object>)typeof(System.Action<System.Object>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)8);
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);

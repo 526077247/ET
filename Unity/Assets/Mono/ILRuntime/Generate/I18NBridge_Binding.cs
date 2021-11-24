@@ -27,14 +27,10 @@ namespace ILRuntime.Runtime.Generated
             method = type.GetMethod("get_Instance", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, get_Instance_0);
 
-            field = type.GetField("GetValueById", flag);
-            app.RegisterCLRFieldGetter(field, get_GetValueById_0);
-            app.RegisterCLRFieldSetter(field, set_GetValueById_0);
-            app.RegisterCLRFieldBinding(field, CopyToStack_GetValueById_0, AssignFromStack_GetValueById_0);
-            field = type.GetField("GetValueByKey", flag);
-            app.RegisterCLRFieldGetter(field, get_GetValueByKey_1);
-            app.RegisterCLRFieldSetter(field, set_GetValueByKey_1);
-            app.RegisterCLRFieldBinding(field, CopyToStack_GetValueByKey_1, AssignFromStack_GetValueByKey_1);
+            field = type.GetField("i18nTextKeyDic", flag);
+            app.RegisterCLRFieldGetter(field, get_i18nTextKeyDic_0);
+            app.RegisterCLRFieldSetter(field, set_i18nTextKeyDic_0);
+            app.RegisterCLRFieldBinding(field, CopyToStack_i18nTextKeyDic_0, AssignFromStack_i18nTextKeyDic_0);
 
 
         }
@@ -52,51 +48,27 @@ namespace ILRuntime.Runtime.Generated
         }
 
 
-        static object get_GetValueById_0(ref object o)
+        static object get_i18nTextKeyDic_0(ref object o)
         {
-            return ((global::I18NBridge)o).GetValueById;
+            return ((global::I18NBridge)o).i18nTextKeyDic;
         }
 
-        static StackObject* CopyToStack_GetValueById_0(ref object o, ILIntepreter __intp, StackObject* __ret, IList<object> __mStack)
+        static StackObject* CopyToStack_i18nTextKeyDic_0(ref object o, ILIntepreter __intp, StackObject* __ret, IList<object> __mStack)
         {
-            var result_of_this_method = ((global::I18NBridge)o).GetValueById;
+            var result_of_this_method = ((global::I18NBridge)o).i18nTextKeyDic;
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 
-        static void set_GetValueById_0(ref object o, object v)
+        static void set_i18nTextKeyDic_0(ref object o, object v)
         {
-            ((global::I18NBridge)o).GetValueById = (System.Func<System.Int32, System.String>)v;
+            ((global::I18NBridge)o).i18nTextKeyDic = (System.Collections.Generic.Dictionary<System.String, System.String>)v;
         }
 
-        static StackObject* AssignFromStack_GetValueById_0(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
+        static StackObject* AssignFromStack_i18nTextKeyDic_0(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            System.Func<System.Int32, System.String> @GetValueById = (System.Func<System.Int32, System.String>)typeof(System.Func<System.Int32, System.String>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)8);
-            ((global::I18NBridge)o).GetValueById = @GetValueById;
-            return ptr_of_this_method;
-        }
-
-        static object get_GetValueByKey_1(ref object o)
-        {
-            return ((global::I18NBridge)o).GetValueByKey;
-        }
-
-        static StackObject* CopyToStack_GetValueByKey_1(ref object o, ILIntepreter __intp, StackObject* __ret, IList<object> __mStack)
-        {
-            var result_of_this_method = ((global::I18NBridge)o).GetValueByKey;
-            return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
-        }
-
-        static void set_GetValueByKey_1(ref object o, object v)
-        {
-            ((global::I18NBridge)o).GetValueByKey = (System.Func<System.String, System.String>)v;
-        }
-
-        static StackObject* AssignFromStack_GetValueByKey_1(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
-        {
-            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            System.Func<System.String, System.String> @GetValueByKey = (System.Func<System.String, System.String>)typeof(System.Func<System.String, System.String>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)8);
-            ((global::I18NBridge)o).GetValueByKey = @GetValueByKey;
+            System.Collections.Generic.Dictionary<System.String, System.String> @i18nTextKeyDic = (System.Collections.Generic.Dictionary<System.String, System.String>)typeof(System.Collections.Generic.Dictionary<System.String, System.String>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            ((global::I18NBridge)o).i18nTextKeyDic = @i18nTextKeyDic;
             return ptr_of_this_method;
         }
 

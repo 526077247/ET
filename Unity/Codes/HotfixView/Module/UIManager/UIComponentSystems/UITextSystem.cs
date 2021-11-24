@@ -40,14 +40,14 @@ namespace ET
     public static class UITextSystem 
     {
 
-        //µ±ÊÖ¶¯ĞŞ¸ÄtextµÄÊ±ºò£¬ĞèÒª½«monoµÄi18textcomponent¸ø½ûÓÃµô
+        //å½“æ‰‹åŠ¨ä¿®æ”¹textçš„æ—¶å€™ï¼Œéœ€è¦å°†monoçš„i18textcomponentç»™ç¦ç”¨æ‰
         static void __DisableI18Component(this UIText self,bool enable = false)
         {
             if (self.unity_i18ncomp_touched != null)
             {
                 self.unity_i18ncomp_touched.enabled = enable;
                 if (!enable)
-                    Log.Warning($"×é¼ş{self.gameObject.name}, textÔÚLua²ã½øĞĞÁËĞŞ¸Ä£¬ËùÒÔÓ¦¸ÃÈ¥µôÈ¥Ô¤ÉèÀïÃæµÄI18N×é¼ş£¬·ñÔò»á±»¸²¸Ç");
+                    Log.Warning($"ç»„ä»¶{self.gameObject.name}, textåœ¨Luaå±‚è¿›è¡Œäº†ä¿®æ”¹ï¼Œæ‰€ä»¥åº”è¯¥å»æ‰å»é¢„è®¾é‡Œé¢çš„I18Nç»„ä»¶ï¼Œå¦åˆ™ä¼šè¢«è¦†ç›–");
             }
         }
 
@@ -101,7 +101,7 @@ namespace ET
             }
         }
 
-        public static void OnLanguageChange(this UIText self, object sender,EventArgs args)
+        public static void OnLanguageChange(this UIText self, object args)
         {
             if (self.__text_key != null)
                 I18NComponent.Instance.I18NGetParamText(self.__text_key, self.keyParams);

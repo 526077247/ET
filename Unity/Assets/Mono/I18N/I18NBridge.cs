@@ -1,32 +1,22 @@
 ﻿using System;
+using System.Collections.Generic;
 
 public class I18NBridge
 {
 
     public static I18NBridge Instance { get; private set; } = new I18NBridge();
 
-    public Func<string, string> GetValueByKey;
-
-    public Func<int, string> GetValueById;
+    public Dictionary<string, string> i18nTextKeyDic;
 
     /// <summary>
-    /// 通过中文本获取多语言文本(还没实现,先用根据ID获取的重载)
+    /// 通过key获取多语言文本
     /// </summary>
-    /// <param name="str">中文文本</param>
+    /// <param name="key">key</param>
     /// <returns></returns>
-    public string GetText(string str)
+    public string GetText(string key)
     {
-        return GetValueByKey?.Invoke(str);
+        return i18nTextKeyDic[key];
     }
 
-    /// <summary>
-    /// 通过文本ID获取多语言文本
-    /// </summary>
-    /// <param name="id">文本ID</param>
-    /// <returns></returns>
-    public string GetText(int id)
-    {
-        return GetValueById?.Invoke(id);
-    }
 }
 

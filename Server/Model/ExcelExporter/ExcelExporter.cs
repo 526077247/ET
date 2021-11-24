@@ -232,9 +232,7 @@ namespace ET
                 {
                     continue;
                 }
-                bool isEmpty = false;
-                StringBuilder ssb = new StringBuilder();
-                ssb.Append("{");
+                sb.Append("{");
                 sb.Append($"\"_t\":\"{name}\",");
                 for (int col = 3; col <= worksheet.Dimension.End.Column; ++col)
                 {
@@ -254,16 +252,11 @@ namespace ET
                     }
                     else
                     {
-                        ssb.Append(",");
+                        sb.Append(",");
                     }
-                    string text = worksheet.Cells[row, col].Text.Trim();
-                    if (col == 3)
-                        isEmpty = string.IsNullOrEmpty(text);
-                    ssb.Append($"\"{headInfo.FieldName}\":{Convert(headInfo.FieldType, text)}");
+                    sb.Append($"\"{headInfo.FieldName}\":{Convert(headInfo.FieldType, worksheet.Cells[row, col].Text.Trim())}");
                 }
-                ssb.Append("},\n");
-                if (!isEmpty)
-                    sb.Append(ssb);
+                sb.Append("},\n");
             }
         }
 

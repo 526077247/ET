@@ -27,7 +27,7 @@ public class I18NText : MonoBehaviour
         Messager.Instance?.RemoveListener(MessagerId.OnLanguageChange, OnSwitchLanguage);
     }
 
-    private void OnSwitchLanguage(object sender = null, EventArgs args = null)
+    private void OnSwitchLanguage(object args = null)
     {
         if (m_Text != null)
             m_Text.text = I18NBridge.Instance.GetText(key);

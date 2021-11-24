@@ -440,14 +440,26 @@ namespace AssetBundles
                 configBundle = SyncLoadAssetBundle("config_assets_all.bundle");
             }
             var assets = configBundle.LoadAllAssets<TextAsset>();
-#else
-            var assets = AssetDatabase.LoadAllAssetsAtPath("Assets/AssetsPackage/Config");
-#endif
             foreach (TextAsset asset in assets)
             {
                 res.Add(asset.name, asset);
-                Debug.Log(asset.name);
             }
+#else
+            var fullPath = "Assets/AssetsPackage/Config/";
+            if (Directory.Exists(fullPath)){
+                DirectoryInfo direction = new DirectoryInfo(fullPath);
+                FileInfo[] files = direction.GetFiles("*",SearchOption.AllDirectories);
+                for(int i=0;i<files.Length;i++){
+                    if (files[i].Name.EndsWith(".meta")){
+                        continue;
+                    }
+                    var asset = AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/AssetsPackage/Config/" + files[i].Name);
+                    res.Add(asset.name, asset);
+                }  
+
+            }  
+
+#endif
             return res;
         }
         #endregion

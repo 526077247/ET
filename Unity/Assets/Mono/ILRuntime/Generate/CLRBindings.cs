@@ -100,9 +100,11 @@ namespace ILRuntime.Runtime.Generated
             System_Runtime_CompilerServices_TaskAwaiter_Binding.Register(app);
             UnityEngine_PlayerPrefs_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Int32_ILTypeInstance_Binding.Register(app);
+            I18NBridge_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Int32_ILTypeInstance_Binding_Enumerator_Binding.Register(app);
             System_Collections_Generic_KeyValuePair_2_Int32_ILTypeInstance_Binding.Register(app);
-            I18NBridge_Binding.Register(app);
+            System_Collections_Generic_Dictionary_2_String_ILTypeInstance_Binding_Enumerator_Binding.Register(app);
+            System_Collections_Generic_KeyValuePair_2_String_ILTypeInstance_Binding.Register(app);
             ET_Messager_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_UInt16_List_1_ILTypeInstance_Binding.Register(app);
             ET_KService_Binding.Register(app);
@@ -133,6 +135,7 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_KeyValuePair_2_String_ET_IDisposableAdapter_Binding_Adapter_Binding.Register(app);
             System_Collections_Generic_List_1_ETTask_Binding.Register(app);
             ET_ETTaskHelper_Binding.Register(app);
+            ET_ETTask_1_ET_IDisposableAdapter_Binding_Adapter_Binding.Register(app);
             AssetBundles_AddressablesManager_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_TextAsset_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_TextAsset_Binding_Enumerator_Binding.Register(app);
@@ -144,7 +147,6 @@ namespace ILRuntime.Runtime.Generated
             UnityEngine_Camera_Binding.Register(app);
             UnityEngine_Physics_Binding.Register(app);
             UnityEngine_RaycastHit_Binding.Register(app);
-            ET_ETTask_1_ET_IDisposableAdapter_Binding_Adapter_Binding.Register(app);
             System_Collections_Generic_List_1_ET_IDisposableAdapter_Binding_Adapter_Binding.Register(app);
             ET_ETTask_1_GameObject_Binding.Register(app);
             UnityEngine_Transform_Binding.Register(app);
@@ -281,8 +283,6 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_List_1_UnityWebRequest_Binding_Enumerator_Binding.Register(app);
             System_IO_File_Binding.Register(app);
             System_IO_FileStream_Binding.Register(app);
-            System_Collections_Generic_Dictionary_2_String_ILTypeInstance_Binding_Enumerator_Binding.Register(app);
-            System_Collections_Generic_KeyValuePair_2_String_ILTypeInstance_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_Dictionary_2_String_ILTypeInstance_Binding.Register(app);
             System_Char_Binding.Register(app);
             ET_CodeLoader_Binding.Register(app);

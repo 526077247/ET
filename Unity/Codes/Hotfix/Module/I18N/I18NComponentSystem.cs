@@ -17,13 +17,13 @@ namespace ET
             self.curLangType = (I18NComponent.LangType)PlayerPrefs.GetInt(CacheKeys.CurLangType, 0);
             self.i18nTextDic = new Dictionary<int, I18NConfig>();
             self.i18nTextKeyDic = new Dictionary<string, I18NConfig>();
+            I18NBridge.Instance.i18nTextKeyDic = new Dictionary<string, string>();
             foreach (var item in res)
             {
                 self.i18nTextDic.Add(item.Key, item.Value);
                 self.i18nTextKeyDic.Add(item.Value.Key, item.Value);
+                I18NBridge.Instance.i18nTextKeyDic.Add(item.Value.Key,self.I18NGetText(item.Value.Key));
             }
-            I18NBridge.Instance.GetValueById = self.I18NGetText;
-            I18NBridge.Instance.GetValueByKey = self.I18NGetText;
         }
     }
     [ObjectSystem]
@@ -36,8 +36,7 @@ namespace ET
             self.i18nTextKeyDic.Clear();
             self.i18nTextDic = null;
             self.i18nTextKeyDic = null;
-            I18NBridge.Instance.GetValueById = null;
-            I18NBridge.Instance.GetValueByKey = null;
+            I18NBridge.Instance.i18nTextKeyDic = null;
         }
     }
     public static class I18nComponentSystem
@@ -141,6 +140,10 @@ namespace ET
             //修改当前语言
             PlayerPrefs.SetInt(CacheKeys.CurLangType, (int)langType);
             self.curLangType = langType;
+            foreach (var item in self.i18nTextKeyDic)
+            {
+                I18NBridge.Instance.i18nTextKeyDic.Add(item.Value.Key,self.I18NGetText(item.Value.Key));
+            }
             Messager.Instance.Broadcast(MessagerId.OnLanguageChange);
         }
     }

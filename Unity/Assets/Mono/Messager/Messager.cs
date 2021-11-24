@@ -8,12 +8,11 @@ namespace ET
         public static Messager Instance { get; private set; } = new Messager();
         class Event
         {
-            public object sender;
-            public EventArgs args;
+            public object args;
             public MessagerId name;
         }
 
-        readonly Dictionary<MessagerId, LinkedList<Action<object,EventArgs>>> evts = new Dictionary<MessagerId, LinkedList<Action<object, EventArgs>>>(MessagerIdComparer.Instance);
+        readonly Dictionary<MessagerId, LinkedList<Action<object>>> evts = new Dictionary<MessagerId, LinkedList<Action<object>>>(MessagerIdComparer.Instance);
 
         readonly Queue<Event> eventsQueue= new Queue<Event>();
 
@@ -34,7 +33,6 @@ namespace ET
         void RecycelEvent(Event evt)
         {
             evt.args = null;
-            evt.sender = null;
             eventsPool.Enqueue(evt);
         }
         private void Update()
@@ -44,7 +42,7 @@ namespace ET
                 while (eventsQueue.Count > 0)
                 {
                     Event eventNode = eventsQueue.Dequeue();
-                    BroadcastImmediate(eventNode.name, eventNode.sender,eventNode.args);
+                    BroadcastImmediate(eventNode.name, eventNode.args);
                     RecycelEvent(eventNode);
                 }
             }
@@ -54,10 +52,10 @@ namespace ET
         /// </summary>
         /// <param name="name"></param>
         /// <param name="evt"></param>
-        public void AddListener(MessagerId name, Action<object, EventArgs> evt)
+        public void AddListener(MessagerId name, Action<object> evt)
         {
             if (!evts.ContainsKey(name))
-                evts.Add(name, new LinkedList<Action<object, EventArgs>>());
+                evts.Add(name, new LinkedList<Action<object>>());
             evts[name].AddLast(evt);
         }
         /// <summary>
@@ -65,7 +63,7 @@ namespace ET
         /// </summary>
         /// <param name="name"></param>
         /// <param name="evt"></param>
-        public void RemoveListener(MessagerId name, Action<object, EventArgs> evt)
+        public void RemoveListener(MessagerId name, Action<object> evt)
         {
             if (evts.ContainsKey(name))
             {
@@ -77,13 +75,11 @@ namespace ET
         /// 抛出事件下一帧执行（线程安全的）
         /// </summary>
         /// <param name="name"></param>
-        /// <param name="sender"></param>
         /// <param name="args"></param>
-        public void Broadcast(MessagerId name, object sender = null, EventArgs args = null)
+        public void Broadcast(MessagerId name, object args = null)
         {
             Event evt = GetEvent();
             evt.args = args;
-            evt.sender = sender;
             evt.name = name;
             eventsQueue.Enqueue(evt);
         }
@@ -92,15 +88,14 @@ namespace ET
         /// 抛出事件立刻执行（线程不安全的）
         /// </summary>
         /// <param name="name"></param>
-        /// <param name="sender"></param>
         /// <param name="args"></param>
-        public void BroadcastImmediate(MessagerId name, object sender = null, EventArgs args = null)
+        public void BroadcastImmediate(MessagerId name, object args = null)
         {
             if (evts.TryGetValue(name, out var evt))
             {
                 foreach (var item in evt)
                 {
-                    item?.Invoke(sender, args);
+                    item?.Invoke(args);
                 }
             }
         }

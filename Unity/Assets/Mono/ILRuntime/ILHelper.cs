@@ -30,7 +30,7 @@ namespace ET
             appdomain.DelegateManager.RegisterMethodDelegate<long, MemoryStream>();
             appdomain.DelegateManager.RegisterMethodDelegate<long, IPEndPoint>();
             appdomain.DelegateManager.RegisterMethodDelegate<ILTypeInstance>();
-            
+            appdomain.DelegateManager.RegisterMethodDelegate<object, EventArgs>();
             
             appdomain.DelegateManager.RegisterFunctionDelegate<UnityEngine.Events.UnityAction>();
             appdomain.DelegateManager.RegisterFunctionDelegate<System.Object, ET.ETTask>();
@@ -44,7 +44,7 @@ namespace ET
             appdomain.DelegateManager.RegisterFunctionDelegate<int, int, int>();//Linq
             appdomain.DelegateManager.RegisterFunctionDelegate<KeyValuePair<int, List<int>>, bool>();
             appdomain.DelegateManager.RegisterFunctionDelegate<KeyValuePair<int, int>, KeyValuePair<int, int>, int>();
-            
+
             // 注册适配器
             RegisterAdaptor(appdomain);
             
@@ -54,7 +54,7 @@ namespace ET
             PType.RegisterILRuntimeCLRRedirection(appdomain);
            
             
-            CLRBindings.Initialize(appdomain);
+            // CLRBindings.Initialize(appdomain);
         }
         
         public static void RegisterAdaptor(ILRuntime.Runtime.Enviorment.AppDomain appdomain)
