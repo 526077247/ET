@@ -348,6 +348,7 @@ namespace IFix.Editor
         static string[] injectAssemblys = new string[]
         {
             "Assembly-CSharp",
+            "Unity.Mono"
         };
 
         /// <summary>

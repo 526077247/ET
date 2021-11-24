@@ -10,6 +10,7 @@ public class IFixConfig
     static string[] Assemblys = new string[]
     {
         "Assembly-CSharp",
+        "Unity.Mono",
     };
     [IFix]
     static IEnumerable<Type> ToProcess
