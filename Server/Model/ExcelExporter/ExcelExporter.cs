@@ -7,6 +7,7 @@ using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Emit;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Attributes;
 using OfficeOpenXml;
@@ -185,7 +186,7 @@ namespace ET
             sb.AppendLine("{\"list\":[");
             foreach (ExcelWorksheet worksheet in p.Workbook.Worksheets)
             {
-                ExportSheetJson(worksheet, configType, sb);
+                ExportSheetJson(worksheet, name, configType, sb);
             }
             sb.AppendLine("]}");
 
@@ -201,7 +202,7 @@ namespace ET
             sw.Write(sb.ToString());
         }
 
-        static void ExportSheetJson(ExcelWorksheet worksheet, ConfigType configType, StringBuilder sb)
+        static void ExportSheetJson(ExcelWorksheet worksheet, string name, ConfigType configType, StringBuilder sb)
         {
             int infoRow = 2;
             HeadInfo[] headInfos = new HeadInfo[100];
@@ -234,6 +235,7 @@ namespace ET
                 bool isEmpty = false;
                 StringBuilder ssb = new StringBuilder();
                 ssb.Append("{");
+                sb.Append($"\"_t\":\"{name}\",");
                 for (int col = 3; col <= worksheet.Dimension.End.Column; ++col)
                 {
                     HeadInfo headInfo = headInfos[col];
