@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace ET
 {
-	public class ShowToastEvent_CreateToastUI : AEvent<EventType.ShowToast>
+	public class ShowToastEvent_CreateToastUI : AEvent<UIEventType.ShowToast>
 	{
-		protected override async ETTask Run(EventType.ShowToast args)
+		protected override async ETTask Run(UIEventType.ShowToast args)
 		{
 			await Show(args.Text);
 		}

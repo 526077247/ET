@@ -296,7 +296,7 @@ namespace ET
                                 catch (Exception e)
                                 {
                                     Log.Error(e);
-                                    kChannel.OnError(ErrorCode.ERR_SocketCantSend);
+                                    kChannel.OnError(ErrorCore.ERR_SocketCantSend);
                                 }
 
                                 break;

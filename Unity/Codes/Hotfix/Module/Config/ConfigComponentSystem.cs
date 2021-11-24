@@ -25,18 +25,20 @@ namespace ET
 	{
 		public static void LoadOneConfig(this ConfigComponent self, Type configType)
 		{
-			byte[] oneConfigBytes = ConfigComponent.GetOneConfigBytes(configType.FullName);
+			byte[] oneConfigBytes = self.ConfigLoader.GetOneConfigBytes(configType.FullName);
 
 			object category = ProtobufHelper.FromBytes(configType, oneConfigBytes, 0, oneConfigBytes.Length);
 
 			self.AllConfig[configType] = category;
 		}
 
-		public static void LoadAll(this ConfigComponent self)
+		public static void Load(this ConfigComponent self)
 		{
 			self.AllConfig.Clear();
 			HashSet<Type> types = Game.EventSystem.GetTypes(typeof(ConfigAttribute));
-			Dictionary<string, byte[]> configBytes = ConfigComponent.GetAllConfigBytes;
+
+			Dictionary<string, byte[]> configBytes = new Dictionary<string, byte[]>();
+			self.ConfigLoader.GetAllConfigBytes(configBytes);
 
 			foreach (Type type in types)
 			{
@@ -44,13 +46,28 @@ namespace ET
 			}
 		}
 
+		public static async ETTask LoadAsync(this ConfigComponent self)
+		{
+			self.AllConfig.Clear();
+			HashSet<Type> types = Game.EventSystem.GetTypes(typeof(ConfigAttribute));
+
+			Dictionary<string, byte[]> configBytes = new Dictionary<string, byte[]>();
+			self.ConfigLoader.GetAllConfigBytes(configBytes);
+
+			List<Task> listTasks = new List<Task>();
+
+			foreach (Type type in types)
+			{
+				Task task = Task.Run(() => self.LoadOneInThread(type, configBytes));
+				listTasks.Add(task);
+			}
+
+			await Task.WhenAll(listTasks.ToArray());
+		}
+
 		private static void LoadOneInThread(this ConfigComponent self, Type configType, Dictionary<string, byte[]> configBytes)
 		{
-			if (!configBytes.TryGetValue(configType.Name, out byte[] oneConfigBytes))
-			{
-				Log.Error("Config Not Found, Key: " + configType.Name);
-				return;
-			}
+			byte[] oneConfigBytes = configBytes[configType.Name];
 
 			object category = ProtobufHelper.FromBytes(configType, oneConfigBytes, 0, oneConfigBytes.Length);
 

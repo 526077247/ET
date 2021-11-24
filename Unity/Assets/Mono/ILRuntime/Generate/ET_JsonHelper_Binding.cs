@@ -36,20 +36,6 @@ namespace ILRuntime.Runtime.Generated
                     lst.Add(m);
                 }
             }
-            args = new Type[]{typeof(System.String[])};
-            if (genericMethods.TryGetValue("FromJson", out lst))
-            {
-                foreach(var m in lst)
-                {
-                    if(m.MatchGenericParameters(args, typeof(System.String[]), typeof(System.String)))
-                    {
-                        method = m.MakeGenericMethod(args);
-                        app.RegisterCLRMethodRedirection(method, FromJson_0);
-
-                        break;
-                    }
-                }
-            }
             args = new Type[]{typeof(System.Collections.Generic.Dictionary<System.String, System.String>)};
             if (genericMethods.TryGetValue("FromJson", out lst))
             {
@@ -58,7 +44,7 @@ namespace ILRuntime.Runtime.Generated
                     if(m.MatchGenericParameters(args, typeof(System.Collections.Generic.Dictionary<System.String, System.String>), typeof(System.String)))
                     {
                         method = m.MakeGenericMethod(args);
-                        app.RegisterCLRMethodRedirection(method, FromJson_1);
+                        app.RegisterCLRMethodRedirection(method, FromJson_0);
 
                         break;
                     }
@@ -66,10 +52,10 @@ namespace ILRuntime.Runtime.Generated
             }
             args = new Type[]{typeof(System.Object)};
             method = type.GetMethod("ToJson", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, ToJson_2);
+            app.RegisterCLRMethodRedirection(method, ToJson_1);
             args = new Type[]{typeof(System.Type), typeof(System.String)};
             method = type.GetMethod("FromJson", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, FromJson_3);
+            app.RegisterCLRMethodRedirection(method, FromJson_2);
 
 
         }
@@ -86,28 +72,12 @@ namespace ILRuntime.Runtime.Generated
             __intp.Free(ptr_of_this_method);
 
 
-            var result_of_this_method = ET.JsonHelper.FromJson<System.String[]>(@json);
-
-            return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
-        }
-
-        static StackObject* FromJson_1(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
-        {
-            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            StackObject* ptr_of_this_method;
-            StackObject* __ret = ILIntepreter.Minus(__esp, 1);
-
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.String @json = (System.String)typeof(System.String).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
-            __intp.Free(ptr_of_this_method);
-
-
             var result_of_this_method = ET.JsonHelper.FromJson<System.Collections.Generic.Dictionary<System.String, System.String>>(@json);
 
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 
-        static StackObject* ToJson_2(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* ToJson_1(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
@@ -123,7 +93,7 @@ namespace ILRuntime.Runtime.Generated
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 
-        static StackObject* FromJson_3(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* FromJson_2(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;

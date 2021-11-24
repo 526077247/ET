@@ -9,8 +9,7 @@ namespace ET
 
             // 加载配置
             Game.Scene.AddComponent<ConfigComponent>();
-            ConfigComponent.GetAllConfigBytes = LoadConfigHelper.LoadAllConfigBytes();
-            ConfigComponent.Instance.LoadAll();
+            await ConfigComponent.Instance.LoadAsync();
             
             Game.Scene.AddComponent<OpcodeTypeComponent>();
             Game.Scene.AddComponent<MessageDispatcherComponent>();

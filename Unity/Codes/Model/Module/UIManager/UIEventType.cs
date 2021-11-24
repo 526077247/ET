@@ -38,5 +38,27 @@ namespace ET
         {
             public UIWindow window;
         }
+
+        //加载界面
+        public struct LoadingBegin
+        {
+
+        }
+        public struct LoadingProgress
+        {
+            public float Progress;
+        }
+
+        public struct LoadingFinish
+        {
+            public string[] cleanup_besides_path;
+        }
+        //即时消息弹出框
+        public struct ShowToast
+        {
+            public Scene Scene;
+            public string Text;
+        }
+
     }
 }

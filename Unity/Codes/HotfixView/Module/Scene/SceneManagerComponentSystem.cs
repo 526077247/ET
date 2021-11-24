@@ -82,8 +82,8 @@ namespace ET
             float slid_value = 0;
             Log.Info("InnerSwitchScene start open uiloading");
             //打开loading界面
-            await Game.EventSystem.Publish(new EventType.LoadingBegin());
-            Game.EventSystem.Publish(new EventType.LoadingProgress { Progress = slid_value }).Coroutine();
+            await Game.EventSystem.Publish(new UIEventType.LoadingBegin());
+            Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value }).Coroutine();
 
             CameraManagerComponent.Instance.SetCameraStackAtLoadingStart();
 
@@ -100,7 +100,7 @@ namespace ET
             }
             
             slid_value += 0.01f;
-            Game.EventSystem.Publish(new EventType.LoadingProgress { Progress = slid_value }).Coroutine();
+            Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value }).Coroutine();
             await TimerComponent.Instance.WaitAsync(1);
 
             //清理UI
@@ -108,7 +108,7 @@ namespace ET
             await UIManagerComponent.Instance.DestroyWindowExceptNames(self.DestroyWindowExceptNames.ToArray());
             
             slid_value += 0.01f;
-            Game.EventSystem.Publish(new EventType.LoadingProgress { Progress = slid_value }).Coroutine();
+            Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value }).Coroutine();
             //清除ImageLoaderManager里的资源缓存 这里考虑到我们是单场景
             Log.Info("InnerSwitchScene ImageLoaderManager Cleanup");
             ImageLoaderComponent.Instance.Clear();
@@ -119,7 +119,7 @@ namespace ET
             {
                 GameObjectPoolComponent.Instance.Cleanup(true, cleanup_besides_path);
                 slid_value += 0.01f;
-                Game.EventSystem.Publish(new EventType.LoadingProgress { Progress = slid_value }).Coroutine();
+                Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value }).Coroutine();
                 //清除除loading外的资源缓存 
                 using (ListComponent<UnityEngine.Object> gos = ListComponent<UnityEngine.Object>.Create())
                 {
@@ -135,16 +135,16 @@ namespace ET
                     ResourcesComponent.Instance.ClearAssetsCache(gos.List.ToArray());
                 }
                 slid_value += 0.01f;
-                Game.EventSystem.Publish(new EventType.LoadingProgress { Progress = slid_value }).Coroutine();
+                Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value }).Coroutine();
             }
             else
             {
                 slid_value += 0.02f;
-                Game.EventSystem.Publish(new EventType.LoadingProgress { Progress = slid_value }).Coroutine();
+                Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value }).Coroutine();
             }
             await ResourcesComponent.Instance.LoadSceneAsync(self.GetSceneConfigByName(SceneNames.Loading).SceneAddress, false);
             slid_value += 0.01f;
-            Game.EventSystem.Publish(new EventType.LoadingProgress { Progress = slid_value }).Coroutine();
+            Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value }).Coroutine();
             //GC：交替重复2次，清干净一点
             GC.Collect();
             GC.Collect();
@@ -158,7 +158,7 @@ namespace ET
             await task;
             task = null;
             slid_value += 0.1f;
-            Game.EventSystem.Publish(new EventType.LoadingProgress { Progress = slid_value }).Coroutine();
+            Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value }).Coroutine();
             //初始化目标场景
             if (!self.scenes.TryGetValue(scene_config.Name,out var logic_scene))
             {
@@ -168,34 +168,34 @@ namespace ET
             logic_scene.OnEnter();
 
             slid_value += 0.02f;
-            Game.EventSystem.Publish(new EventType.LoadingProgress { Progress = slid_value }).Coroutine();
+            Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value }).Coroutine();
             //异步加载目标场景
             await ResourcesComponent.Instance.LoadSceneAsync(scene_config.SceneAddress, false, (progress) =>
              {
-                 Game.EventSystem.Publish(new EventType.LoadingProgress { Progress = slid_value + 0.65f * progress }).Coroutine();
+                 Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value + 0.65f * progress }).Coroutine();
                  if (progress > 1) Log.Error("scene load waht's the fuck!");
              });
 
             slid_value += 0.65f;
-            Game.EventSystem.Publish(new EventType.LoadingProgress { Progress = slid_value }).Coroutine();
+            Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value }).Coroutine();
             //准备工作：预加载资源等
             await logic_scene.OnPrepare((progress) =>
             {
-                Game.EventSystem.Publish(new EventType.LoadingProgress { Progress = slid_value + 0.15f * progress }).Coroutine();
+                Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value + 0.15f * progress }).Coroutine();
                 if (progress > 1) Log.Error("scene load waht's the fuck!");
             });
 
             slid_value += 0.15f;
-            Game.EventSystem.Publish(new EventType.LoadingProgress { Progress = slid_value }).Coroutine();
+            Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value }).Coroutine();
             CameraManagerComponent.Instance.SetCameraStackAtLoadingDone();
             self.current_scene = logic_scene;
             logic_scene.CoOnComplete();
             slid_value = 1;
-            Game.EventSystem.Publish(new EventType.LoadingProgress { Progress = slid_value }).Coroutine();
+            Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value }).Coroutine();
             //等久点，跳的太快
             await TimerComponent.Instance.WaitAsync(500);
             //加载完成，关闭loading界面
-            await Game.EventSystem.Publish(new EventType.LoadingFinish());
+            await Game.EventSystem.Publish(new UIEventType.LoadingFinish());
             //释放loading界面引用的资源
             GameObjectPoolComponent.Instance.CleanupWithPathArray(true, cleanup_besides_path);
             self.busing = false;

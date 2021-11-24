@@ -65,7 +65,6 @@ namespace ET
                     Directory.Delete(clientProtoDir, true);
                 template = File.ReadAllText("Template.txt");
                 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-                string paths = "";
                 foreach (string path in Directory.GetFiles(excelDir))
                 {
                     string fileName = Path.GetFileName(path);
@@ -79,7 +78,6 @@ namespace ET
                     if (name.StartsWith("C_") || name.StartsWith("A_"))
                     {
                         var real = name.Split("_")[1];
-                        paths += "\"" + real + "Category\",";
                         ExportExcelClass(p, real, ConfigType.Client);
                         ExportExcelJson(p, real, ConfigType.Client);
                     }
@@ -90,19 +88,8 @@ namespace ET
                         ExportExcelJson(p, real, ConfigType.Server);
                     }
                 }
-                if (paths.Length > 0)
-                {
-                    paths = "[" + paths[0..^1] + "]";
-                }
                 ExportExcelProtobuf(ConfigType.Client);
                 ExportExcelProtobuf(ConfigType.Server);
-                string dir = GetProtoDir(ConfigType.Client);
-                if (!Directory.Exists(dir))
-                {
-                    Directory.CreateDirectory(dir);
-                }
-                string wpath = Path.Combine(dir, $"ConfigPaths.json");
-                File.WriteAllText(wpath, paths);
                 Console.WriteLine("导表成功!");
             }
             catch (Exception e)

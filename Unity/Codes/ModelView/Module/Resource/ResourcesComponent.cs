@@ -38,10 +38,7 @@ namespace ET
         {
             return AddressablesManager.IsProsessRunning;
         }
-        public TextAsset LoadTextAsset(string path)
-        {
-            return AddressablesManager.LoadTextAsset(path);
-        }
+
         //异步加载Asset：协程形式
         public async ETTask<TextAsset> LoadTextAsync(string path, Action<float> progress_callback = null, Action<TextAsset> callback = null,bool ignoreError = false)
         {

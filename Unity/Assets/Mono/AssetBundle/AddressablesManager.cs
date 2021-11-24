@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -187,21 +188,6 @@ namespace AssetBundles
         }
         #endregion
 
-        public TextAsset LoadTextAsset(string addressPath)
-        {
-            if (configBundle == null)
-            {
-                configBundle = SyncLoadAssetBundle("config_assets_all.bundle");
-            }
-            addressPath = "Assets/AssetsPackage/" + addressPath;
-            TextAsset asset = (TextAsset)configBundle.LoadAsset(addressPath, typeof(TextAsset));
-            if (asset == null)
-            {
-                Debug.LogError("LoadTextAsset fail, path: "+ addressPath);
-            }
-            return asset;
-        }
-
         public ETTask<T> LoadAssetAsync<T>(string addressPath) where T: UnityEngine.Object
         {
             ETTask<T> tTask = ETTask<T>.Create();
@@ -228,7 +214,7 @@ namespace AssetBundles
             return tTask.GetAwaiter();
         }
 
-        #region =============== LoadAssetAsync
+#region =============== LoadAssetAsync
         public BaseAssetAsyncLoader LoadAssetAsync(string addressPath, Type assetType)
         {
             var loader = AddressablesAsyncLoader.Get();
@@ -307,9 +293,9 @@ namespace AssetBundles
             }
             return default(T);
         }
-        #endregion
+#endregion
 
-        #region =============> skin change begin
+#region =============> skin change begin
         public void InitAssetSkinLabelText(string text)
         {
             string[] lines = GameUtility.StringToArrary(text);
@@ -373,9 +359,9 @@ namespace AssetBundles
                 return "";
             }
         }
-        #endregion
+#endregion
 
-        #region sync load asset function 
+#region sync load asset function 
 
         /*
          * @brief 之所以是有这些接口，是为了在启动时进行使用，加快启动速度，其他地方严禁调用这里的方法
@@ -419,6 +405,50 @@ namespace AssetBundles
                 ab.Unload(true);
             }
 #endif
+        }
+
+        public TextAsset LoadTextAsset(string addressPath)
+        {
+            addressPath = "Assets/AssetsPackage/" + addressPath;
+#if !UNITY_EDITOR
+            if (configBundle == null)
+            {
+                configBundle = SyncLoadAssetBundle("config_assets_all.bundle");
+            }
+            TextAsset asset = (TextAsset)configBundle.LoadAsset(addressPath, typeof(TextAsset));
+            if (asset == null)
+            {
+                Debug.LogError("LoadTextAsset fail, path: "+ addressPath);
+            }
+            return asset;
+#else
+            TextAsset asset = (AssetDatabase.LoadAssetAtPath(addressPath, typeof(TextAsset)) as TextAsset);
+            if (asset == null)
+            {
+                Debug.LogError("LoadTextAsset fail, path: " + addressPath);
+            }
+            return asset;
+#endif
+        }
+        public Dictionary<string, TextAsset> LoadAllTextAsset()
+        {
+            Dictionary<string, TextAsset> res = new Dictionary<string, TextAsset>();
+#if !UNITY_EDITOR
+            
+            if (configBundle == null)
+            {
+                configBundle = SyncLoadAssetBundle("config_assets_all.bundle");
+            }
+            var assets = configBundle.LoadAllAssets<TextAsset>();
+#else
+            var assets = AssetDatabase.LoadAllAssetsAtPath("Assets/AssetsPackage/Config");
+#endif
+            foreach (TextAsset asset in assets)
+            {
+                res.Add(asset.name, asset);
+                Debug.Log(asset.name);
+            }
+            return res;
         }
         #endregion
     }
