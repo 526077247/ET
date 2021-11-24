@@ -1,4 +1,4 @@
-﻿#define ILRuntime1
+﻿#define ILRuntime
 
 using AssetBundles;
 using System;
@@ -28,13 +28,15 @@ namespace ET
         public Action Update;
         public Action LateUpdate;
         public Action OnApplicationQuit;
+		
+		private Type[] hotfixTypes;
 
-        private readonly IStaticMethod start;
-
-        private readonly Type[] hotfixTypes;
-
-        private CodeLoader()
-        {
+		private CodeLoader()
+		{
+		}
+		
+		public void Start()
+		{
 #if !UNITY_EDITOR
             var ab = AddressablesManager.Instance.SyncLoadAssetBundle("code_assets_all.bundle");
             byte[] assBytes = ((TextAsset)ab.LoadAsset("Assets/AssetsPackage/Code/Code.dll.bytes", typeof(TextAsset))).bytes;
@@ -53,17 +55,19 @@ namespace ET
 			
 			this.hotfixTypes = Type.EmptyTypes;
 			this.hotfixTypes = appDomain.LoadedTypes.Values.Select(x => x.ReflectionType).ToArray();
-			this.start = new ILStaticMethod(appDomain, "ET.Entry", "Start", 0);
+			IStaticMethod start = new ILStaticMethod(appDomain, "ET.Entry", "Start", 0);
 #else
 
-            System.Reflection.Assembly assembly = System.Reflection.Assembly.Load(assBytes, pdbBytes);
-            hotfixTypes = assembly.GetTypes();
-            this.start = new MonoStaticMethod(assembly, "ET.Entry", "Start");
+			System.Reflection.Assembly assembly = System.Reflection.Assembly.Load(assBytes, pdbBytes);
+			hotfixTypes = assembly.GetTypes();
+			IStaticMethod start = new MonoStaticMethod(assembly, "ET.Entry", "Start");
 #endif
 #if !UNITY_EDITOR
             ab.Unload(true);
 #endif
-        }
+			
+			start.Run();
+		}
 
         public void Start()
         {

@@ -16,7 +16,7 @@ namespace ET
         IsCreate = 1 << 3,
     }
 
-    public partial class Entity: Object
+    public partial class Entity: DisposeObject
     {
         [IgnoreDataMember]
         private static readonly Pool<HashSet<Entity>> hashSetPool = new Pool<HashSet<Entity>>();
