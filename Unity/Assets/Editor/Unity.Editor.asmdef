@@ -9,7 +9,7 @@
         "Unity.Addressables.Editor",
         "Unity.ScriptableBuildPipeline",
         "Unity.ScriptableBuildPipeline.Editor",
-        "Unity.ResourceManager"
+        "Unity.ResourceManager",
         "Unity.ThirdParty"
     ],
     "includePlatforms": [

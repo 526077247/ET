@@ -5,7 +5,7 @@
         "Unity.TextMeshPro",
         "Unity.Addressables",
         "Unity.ResourceManager",
-        "Unity.RenderPipelines.Universal.Runtime"
+        "Unity.RenderPipelines.Universal.Runtime",
         "Unity.ThirdParty"
     ],
     "includePlatforms": [],
