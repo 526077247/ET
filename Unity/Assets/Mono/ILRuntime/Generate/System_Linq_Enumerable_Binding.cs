@@ -35,12 +35,12 @@ namespace ILRuntime.Runtime.Generated
                     lst.Add(m);
                 }
             }
-            args = new Type[]{typeof(ET.ISupportInitializeAdapter.Adapter)};
+            args = new Type[]{typeof(ET.IDisposableAdapter.Adapter)};
             if (genericMethods.TryGetValue("ToArray", out lst))
             {
                 foreach(var m in lst)
                 {
-                    if(m.MatchGenericParameters(args, typeof(ET.ISupportInitializeAdapter.Adapter[]), typeof(System.Collections.Generic.IEnumerable<ET.ISupportInitializeAdapter.Adapter>)))
+                    if(m.MatchGenericParameters(args, typeof(ET.IDisposableAdapter.Adapter[]), typeof(System.Collections.Generic.IEnumerable<ET.IDisposableAdapter.Adapter>)))
                     {
                         method = m.MakeGenericMethod(args);
                         app.RegisterCLRMethodRedirection(method, ToArray_0);
@@ -145,11 +145,11 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 1);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.Collections.Generic.IEnumerable<ET.ISupportInitializeAdapter.Adapter> @source = (System.Collections.Generic.IEnumerable<ET.ISupportInitializeAdapter.Adapter>)typeof(System.Collections.Generic.IEnumerable<ET.ISupportInitializeAdapter.Adapter>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            System.Collections.Generic.IEnumerable<ET.IDisposableAdapter.Adapter> @source = (System.Collections.Generic.IEnumerable<ET.IDisposableAdapter.Adapter>)typeof(System.Collections.Generic.IEnumerable<ET.IDisposableAdapter.Adapter>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
 
-            var result_of_this_method = System.Linq.Enumerable.ToArray<ET.ISupportInitializeAdapter.Adapter>(@source);
+            var result_of_this_method = System.Linq.Enumerable.ToArray<ET.IDisposableAdapter.Adapter>(@source);
 
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }

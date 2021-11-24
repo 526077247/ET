@@ -21,18 +21,11 @@ namespace ILRuntime.Runtime.Generated
             BindingFlags flag = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
             MethodBase method;
             Type[] args;
-<<<<<<< HEAD:Unity/Assets/Mono/ILRuntime/Generate/System_Collections_Generic_SortedDictionary_2_Int32_ET_ISupportInitia.cs
-            Type type = typeof(System.Collections.Generic.SortedDictionary<System.Int32, ET.ISupportInitializeAdapter.Adapter>);
-=======
             Type type = typeof(System.Collections.Generic.SortedDictionary<System.Int32, ILRuntime.Runtime.Intepreter.ILTypeInstance>);
-            args = new Type[]{typeof(System.Int32), typeof(ILRuntime.Runtime.Intepreter.ILTypeInstance)};
-            method = type.GetMethod("Add", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, Add_0);
->>>>>>> 65be985a2fc6ec3d19fb4439b70466975ced1b08:Unity/Assets/Mono/ILRuntime/Generate/System_Collections_Generic_SortedDictionary_2_Int32_ILTypeInstance_Bi.cs
             args = new Type[]{};
             method = type.GetMethod("get_Values", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, get_Values_0);
-            args = new Type[]{typeof(System.Int32), typeof(ET.ISupportInitializeAdapter.Adapter)};
+            args = new Type[]{typeof(System.Int32), typeof(ILRuntime.Runtime.Intepreter.ILTypeInstance)};
             method = type.GetMethod("Add", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, Add_1);
 
@@ -50,18 +43,7 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 1);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-<<<<<<< HEAD:Unity/Assets/Mono/ILRuntime/Generate/System_Collections_Generic_SortedDictionary_2_Int32_ET_ISupportInitia.cs
-            System.Collections.Generic.SortedDictionary<System.Int32, ET.ISupportInitializeAdapter.Adapter> instance_of_this_method = (System.Collections.Generic.SortedDictionary<System.Int32, ET.ISupportInitializeAdapter.Adapter>)typeof(System.Collections.Generic.SortedDictionary<System.Int32, ET.ISupportInitializeAdapter.Adapter>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
-=======
-            ILRuntime.Runtime.Intepreter.ILTypeInstance @value = (ILRuntime.Runtime.Intepreter.ILTypeInstance)typeof(ILRuntime.Runtime.Intepreter.ILTypeInstance).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
-            __intp.Free(ptr_of_this_method);
-
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            System.Int32 @key = ptr_of_this_method->Value;
-
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 3);
             System.Collections.Generic.SortedDictionary<System.Int32, ILRuntime.Runtime.Intepreter.ILTypeInstance> instance_of_this_method = (System.Collections.Generic.SortedDictionary<System.Int32, ILRuntime.Runtime.Intepreter.ILTypeInstance>)typeof(System.Collections.Generic.SortedDictionary<System.Int32, ILRuntime.Runtime.Intepreter.ILTypeInstance>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
->>>>>>> 65be985a2fc6ec3d19fb4439b70466975ced1b08:Unity/Assets/Mono/ILRuntime/Generate/System_Collections_Generic_SortedDictionary_2_Int32_ILTypeInstance_Bi.cs
             __intp.Free(ptr_of_this_method);
 
             var result_of_this_method = instance_of_this_method.Values;
@@ -76,18 +58,14 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 3);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-<<<<<<< HEAD:Unity/Assets/Mono/ILRuntime/Generate/System_Collections_Generic_SortedDictionary_2_Int32_ET_ISupportInitia.cs
-            ET.ISupportInitializeAdapter.Adapter @value = (ET.ISupportInitializeAdapter.Adapter)typeof(ET.ISupportInitializeAdapter.Adapter).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            ILRuntime.Runtime.Intepreter.ILTypeInstance @value = (ILRuntime.Runtime.Intepreter.ILTypeInstance)typeof(ILRuntime.Runtime.Intepreter.ILTypeInstance).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
             System.Int32 @key = ptr_of_this_method->Value;
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 3);
-            System.Collections.Generic.SortedDictionary<System.Int32, ET.ISupportInitializeAdapter.Adapter> instance_of_this_method = (System.Collections.Generic.SortedDictionary<System.Int32, ET.ISupportInitializeAdapter.Adapter>)typeof(System.Collections.Generic.SortedDictionary<System.Int32, ET.ISupportInitializeAdapter.Adapter>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
-=======
             System.Collections.Generic.SortedDictionary<System.Int32, ILRuntime.Runtime.Intepreter.ILTypeInstance> instance_of_this_method = (System.Collections.Generic.SortedDictionary<System.Int32, ILRuntime.Runtime.Intepreter.ILTypeInstance>)typeof(System.Collections.Generic.SortedDictionary<System.Int32, ILRuntime.Runtime.Intepreter.ILTypeInstance>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
->>>>>>> 65be985a2fc6ec3d19fb4439b70466975ced1b08:Unity/Assets/Mono/ILRuntime/Generate/System_Collections_Generic_SortedDictionary_2_Int32_ILTypeInstance_Bi.cs
             __intp.Free(ptr_of_this_method);
 
             instance_of_this_method.Add(@key, @value);

@@ -21,17 +21,7 @@ namespace ILRuntime.Runtime.Generated
             BindingFlags flag = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
             MethodBase method;
             Type[] args;
-<<<<<<< HEAD:Unity/Assets/Mono/ILRuntime/Generate/ET_ETTask_1_ET_ISupportInitializeAdapter_Binding_Adapter_Binding.cs
-            Type type = typeof(ET.ETTask<ET.ISupportInitializeAdapter.Adapter>);
-=======
             Type type = typeof(ET.ETTask<ET.IDisposableAdapter.Adapter>);
-            args = new Type[]{typeof(ET.IDisposableAdapter.Adapter)};
-            method = type.GetMethod("SetResult", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, SetResult_0);
-            args = new Type[]{typeof(System.Boolean)};
-            method = type.GetMethod("Create", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, Create_1);
->>>>>>> 65be985a2fc6ec3d19fb4439b70466975ced1b08:Unity/Assets/Mono/ILRuntime/Generate/ET_ETTask_1_ET_IDisposableAdapter_Binding_Adapter_Binding.cs
             args = new Type[]{};
             method = type.GetMethod("GetAwaiter", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, GetAwaiter_0);
@@ -41,7 +31,7 @@ namespace ILRuntime.Runtime.Generated
             args = new Type[]{};
             method = type.GetMethod("GetResult", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, GetResult_2);
-            args = new Type[]{typeof(ET.ISupportInitializeAdapter.Adapter)};
+            args = new Type[]{typeof(ET.IDisposableAdapter.Adapter)};
             method = type.GetMethod("SetResult", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, SetResult_3);
             args = new Type[]{typeof(System.Boolean)};
@@ -59,15 +49,7 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 1);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-<<<<<<< HEAD:Unity/Assets/Mono/ILRuntime/Generate/ET_ETTask_1_ET_ISupportInitializeAdapter_Binding_Adapter_Binding.cs
-            ET.ETTask<ET.ISupportInitializeAdapter.Adapter> instance_of_this_method = (ET.ETTask<ET.ISupportInitializeAdapter.Adapter>)typeof(ET.ETTask<ET.ISupportInitializeAdapter.Adapter>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
-=======
-            ET.IDisposableAdapter.Adapter @result = (ET.IDisposableAdapter.Adapter)typeof(ET.IDisposableAdapter.Adapter).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
-            __intp.Free(ptr_of_this_method);
-
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
             ET.ETTask<ET.IDisposableAdapter.Adapter> instance_of_this_method = (ET.ETTask<ET.IDisposableAdapter.Adapter>)typeof(ET.ETTask<ET.IDisposableAdapter.Adapter>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
->>>>>>> 65be985a2fc6ec3d19fb4439b70466975ced1b08:Unity/Assets/Mono/ILRuntime/Generate/ET_ETTask_1_ET_IDisposableAdapter_Binding_Adapter_Binding.cs
             __intp.Free(ptr_of_this_method);
 
             var result_of_this_method = instance_of_this_method.GetAwaiter();
@@ -82,14 +64,10 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 1);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            ET.ETTask<ET.ISupportInitializeAdapter.Adapter> instance_of_this_method = (ET.ETTask<ET.ISupportInitializeAdapter.Adapter>)typeof(ET.ETTask<ET.ISupportInitializeAdapter.Adapter>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            ET.ETTask<ET.IDisposableAdapter.Adapter> instance_of_this_method = (ET.ETTask<ET.IDisposableAdapter.Adapter>)typeof(ET.ETTask<ET.IDisposableAdapter.Adapter>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
-<<<<<<< HEAD:Unity/Assets/Mono/ILRuntime/Generate/ET_ETTask_1_ET_ISupportInitializeAdapter_Binding_Adapter_Binding.cs
             var result_of_this_method = instance_of_this_method.IsCompleted;
-=======
-            var result_of_this_method = ET.ETTask<ET.IDisposableAdapter.Adapter>.Create(@fromPool);
->>>>>>> 65be985a2fc6ec3d19fb4439b70466975ced1b08:Unity/Assets/Mono/ILRuntime/Generate/ET_ETTask_1_ET_IDisposableAdapter_Binding_Adapter_Binding.cs
 
             __ret->ObjectType = ObjectTypes.Integer;
             __ret->Value = result_of_this_method ? 1 : 0;
@@ -123,15 +101,11 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 2);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-<<<<<<< HEAD:Unity/Assets/Mono/ILRuntime/Generate/ET_ETTask_1_ET_ISupportInitializeAdapter_Binding_Adapter_Binding.cs
-            ET.ISupportInitializeAdapter.Adapter @result = (ET.ISupportInitializeAdapter.Adapter)typeof(ET.ISupportInitializeAdapter.Adapter).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            ET.IDisposableAdapter.Adapter @result = (ET.IDisposableAdapter.Adapter)typeof(ET.IDisposableAdapter.Adapter).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            ET.ETTask<ET.ISupportInitializeAdapter.Adapter> instance_of_this_method = (ET.ETTask<ET.ISupportInitializeAdapter.Adapter>)typeof(ET.ETTask<ET.ISupportInitializeAdapter.Adapter>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
-=======
             ET.ETTask<ET.IDisposableAdapter.Adapter> instance_of_this_method = (ET.ETTask<ET.IDisposableAdapter.Adapter>)typeof(ET.ETTask<ET.IDisposableAdapter.Adapter>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
->>>>>>> 65be985a2fc6ec3d19fb4439b70466975ced1b08:Unity/Assets/Mono/ILRuntime/Generate/ET_ETTask_1_ET_IDisposableAdapter_Binding_Adapter_Binding.cs
             __intp.Free(ptr_of_this_method);
 
             instance_of_this_method.SetResult(@result);
@@ -146,15 +120,10 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 1);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-<<<<<<< HEAD:Unity/Assets/Mono/ILRuntime/Generate/ET_ETTask_1_ET_ISupportInitializeAdapter_Binding_Adapter_Binding.cs
             System.Boolean @fromPool = ptr_of_this_method->Value == 1;
-=======
-            ET.ETTask<ET.IDisposableAdapter.Adapter> instance_of_this_method = (ET.ETTask<ET.IDisposableAdapter.Adapter>)typeof(ET.ETTask<ET.IDisposableAdapter.Adapter>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
-            __intp.Free(ptr_of_this_method);
->>>>>>> 65be985a2fc6ec3d19fb4439b70466975ced1b08:Unity/Assets/Mono/ILRuntime/Generate/ET_ETTask_1_ET_IDisposableAdapter_Binding_Adapter_Binding.cs
 
 
-            var result_of_this_method = ET.ETTask<ET.ISupportInitializeAdapter.Adapter>.Create(@fromPool);
+            var result_of_this_method = ET.ETTask<ET.IDisposableAdapter.Adapter>.Create(@fromPool);
 
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }

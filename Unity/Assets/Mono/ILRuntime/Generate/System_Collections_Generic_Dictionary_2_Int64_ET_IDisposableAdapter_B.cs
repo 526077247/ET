@@ -21,19 +21,11 @@ namespace ILRuntime.Runtime.Generated
             BindingFlags flag = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
             MethodBase method;
             Type[] args;
-<<<<<<< HEAD:Unity/Assets/Mono/ILRuntime/Generate/System_Collections_Generic_Dictionary_2_Int64_ET_ISupportInitializeAd.cs
-            Type type = typeof(System.Collections.Generic.Dictionary<System.Int64, ET.ISupportInitializeAdapter.Adapter>);
-            args = new Type[]{typeof(System.Int64), typeof(ET.ISupportInitializeAdapter.Adapter)};
-=======
             Type type = typeof(System.Collections.Generic.Dictionary<System.Int64, ET.IDisposableAdapter.Adapter>);
-            args = new Type[]{typeof(System.Int64), typeof(ET.IDisposableAdapter.Adapter).MakeByRefType()};
-            method = type.GetMethod("TryGetValue", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, TryGetValue_0);
             args = new Type[]{typeof(System.Int64), typeof(ET.IDisposableAdapter.Adapter)};
->>>>>>> 65be985a2fc6ec3d19fb4439b70466975ced1b08:Unity/Assets/Mono/ILRuntime/Generate/System_Collections_Generic_Dictionary_2_Int64_ET_IDisposableAdapter_B.cs
             method = type.GetMethod("Add", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, Add_0);
-            args = new Type[]{typeof(System.Int64), typeof(ET.ISupportInitializeAdapter.Adapter).MakeByRefType()};
+            args = new Type[]{typeof(System.Int64), typeof(ET.IDisposableAdapter.Adapter).MakeByRefType()};
             method = type.GetMethod("TryGetValue", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, TryGetValue_1);
             args = new Type[]{typeof(System.Int64)};
@@ -69,14 +61,14 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 3);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            ET.ISupportInitializeAdapter.Adapter @value = (ET.ISupportInitializeAdapter.Adapter)typeof(ET.ISupportInitializeAdapter.Adapter).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            ET.IDisposableAdapter.Adapter @value = (ET.IDisposableAdapter.Adapter)typeof(ET.IDisposableAdapter.Adapter).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
             System.Int64 @key = *(long*)&ptr_of_this_method->Value;
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 3);
-            System.Collections.Generic.Dictionary<System.Int64, ET.ISupportInitializeAdapter.Adapter> instance_of_this_method = (System.Collections.Generic.Dictionary<System.Int64, ET.ISupportInitializeAdapter.Adapter>)typeof(System.Collections.Generic.Dictionary<System.Int64, ET.ISupportInitializeAdapter.Adapter>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            System.Collections.Generic.Dictionary<System.Int64, ET.IDisposableAdapter.Adapter> instance_of_this_method = (System.Collections.Generic.Dictionary<System.Int64, ET.IDisposableAdapter.Adapter>)typeof(System.Collections.Generic.Dictionary<System.Int64, ET.IDisposableAdapter.Adapter>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             instance_of_this_method.Add(@key, @value);
@@ -172,21 +164,10 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 2);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-<<<<<<< HEAD:Unity/Assets/Mono/ILRuntime/Generate/System_Collections_Generic_Dictionary_2_Int64_ET_ISupportInitializeAd.cs
             System.Int64 @key = *(long*)&ptr_of_this_method->Value;
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            System.Collections.Generic.Dictionary<System.Int64, ET.ISupportInitializeAdapter.Adapter> instance_of_this_method = (System.Collections.Generic.Dictionary<System.Int64, ET.ISupportInitializeAdapter.Adapter>)typeof(System.Collections.Generic.Dictionary<System.Int64, ET.ISupportInitializeAdapter.Adapter>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
-=======
-            ET.IDisposableAdapter.Adapter @value = (ET.IDisposableAdapter.Adapter)typeof(ET.IDisposableAdapter.Adapter).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
-            __intp.Free(ptr_of_this_method);
-
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            System.Int64 @key = *(long*)&ptr_of_this_method->Value;
-
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 3);
             System.Collections.Generic.Dictionary<System.Int64, ET.IDisposableAdapter.Adapter> instance_of_this_method = (System.Collections.Generic.Dictionary<System.Int64, ET.IDisposableAdapter.Adapter>)typeof(System.Collections.Generic.Dictionary<System.Int64, ET.IDisposableAdapter.Adapter>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
->>>>>>> 65be985a2fc6ec3d19fb4439b70466975ced1b08:Unity/Assets/Mono/ILRuntime/Generate/System_Collections_Generic_Dictionary_2_Int64_ET_IDisposableAdapter_B.cs
             __intp.Free(ptr_of_this_method);
 
             var result_of_this_method = instance_of_this_method.Remove(@key);
@@ -218,14 +199,7 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 1);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-<<<<<<< HEAD:Unity/Assets/Mono/ILRuntime/Generate/System_Collections_Generic_Dictionary_2_Int64_ET_ISupportInitializeAd.cs
-            System.Collections.Generic.Dictionary<System.Int64, ET.ISupportInitializeAdapter.Adapter> instance_of_this_method = (System.Collections.Generic.Dictionary<System.Int64, ET.ISupportInitializeAdapter.Adapter>)typeof(System.Collections.Generic.Dictionary<System.Int64, ET.ISupportInitializeAdapter.Adapter>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
-=======
-            System.Int64 @key = *(long*)&ptr_of_this_method->Value;
-
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
             System.Collections.Generic.Dictionary<System.Int64, ET.IDisposableAdapter.Adapter> instance_of_this_method = (System.Collections.Generic.Dictionary<System.Int64, ET.IDisposableAdapter.Adapter>)typeof(System.Collections.Generic.Dictionary<System.Int64, ET.IDisposableAdapter.Adapter>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
->>>>>>> 65be985a2fc6ec3d19fb4439b70466975ced1b08:Unity/Assets/Mono/ILRuntime/Generate/System_Collections_Generic_Dictionary_2_Int64_ET_IDisposableAdapter_B.cs
             __intp.Free(ptr_of_this_method);
 
             instance_of_this_method.Clear();
@@ -250,24 +224,6 @@ namespace ILRuntime.Runtime.Generated
             return __ret + 1;
         }
 
-<<<<<<< HEAD:Unity/Assets/Mono/ILRuntime/Generate/System_Collections_Generic_Dictionary_2_Int64_ET_ISupportInitializeAd.cs
-=======
-        static StackObject* Clear_5(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
-        {
-            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            StackObject* ptr_of_this_method;
-            StackObject* __ret = ILIntepreter.Minus(__esp, 1);
-
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.Collections.Generic.Dictionary<System.Int64, ET.IDisposableAdapter.Adapter> instance_of_this_method = (System.Collections.Generic.Dictionary<System.Int64, ET.IDisposableAdapter.Adapter>)typeof(System.Collections.Generic.Dictionary<System.Int64, ET.IDisposableAdapter.Adapter>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
-            __intp.Free(ptr_of_this_method);
-
-            instance_of_this_method.Clear();
-
-            return __ret;
-        }
-
->>>>>>> 65be985a2fc6ec3d19fb4439b70466975ced1b08:Unity/Assets/Mono/ILRuntime/Generate/System_Collections_Generic_Dictionary_2_Int64_ET_IDisposableAdapter_B.cs
         static StackObject* ContainsKey_6(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;

@@ -14,22 +14,14 @@ using ILRuntime.CLR.Utils;
 
 namespace ILRuntime.Runtime.Generated
 {
-<<<<<<< HEAD:Unity/Assets/Mono/ILRuntime/Generate/System_Collections_Generic_Dictionary_2_String_ILTypeInstance_Binding_t1.cs
     unsafe class System_Collections_Generic_Dictionary_2_String_ILTypeInstance_Binding_Enumerator_Binding
-=======
-    unsafe class System_Collections_Generic_Dictionary_2_String_ET_IDisposableAdapter_Binding_Adapter_Binding_ValueCollection_Binding_Enumerator_Binding
->>>>>>> 65be985a2fc6ec3d19fb4439b70466975ced1b08:Unity/Assets/Mono/ILRuntime/Generate/System_Collections_Generic_Dictionary_2_String_ET_IDisposableAdapter__t3.cs
     {
         public static void Register(ILRuntime.Runtime.Enviorment.AppDomain app)
         {
             BindingFlags flag = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
             MethodBase method;
             Type[] args;
-<<<<<<< HEAD:Unity/Assets/Mono/ILRuntime/Generate/System_Collections_Generic_Dictionary_2_String_ILTypeInstance_Binding_t1.cs
             Type type = typeof(System.Collections.Generic.Dictionary<System.String, ILRuntime.Runtime.Intepreter.ILTypeInstance>.Enumerator);
-=======
-            Type type = typeof(System.Collections.Generic.Dictionary<System.String, ET.IDisposableAdapter.Adapter>.ValueCollection.Enumerator);
->>>>>>> 65be985a2fc6ec3d19fb4439b70466975ced1b08:Unity/Assets/Mono/ILRuntime/Generate/System_Collections_Generic_Dictionary_2_String_ET_IDisposableAdapter__t3.cs
             args = new Type[]{};
             method = type.GetMethod("get_Current", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, get_Current_0);
@@ -37,20 +29,12 @@ namespace ILRuntime.Runtime.Generated
             method = type.GetMethod("MoveNext", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, MoveNext_1);
 
-<<<<<<< HEAD:Unity/Assets/Mono/ILRuntime/Generate/System_Collections_Generic_Dictionary_2_String_ILTypeInstance_Binding_t1.cs
             app.RegisterCLRCreateDefaultInstance(type, () => new System.Collections.Generic.Dictionary<System.String, ILRuntime.Runtime.Intepreter.ILTypeInstance>.Enumerator());
-=======
-            app.RegisterCLRCreateDefaultInstance(type, () => new System.Collections.Generic.Dictionary<System.String, ET.IDisposableAdapter.Adapter>.ValueCollection.Enumerator());
->>>>>>> 65be985a2fc6ec3d19fb4439b70466975ced1b08:Unity/Assets/Mono/ILRuntime/Generate/System_Collections_Generic_Dictionary_2_String_ET_IDisposableAdapter__t3.cs
 
 
         }
 
-<<<<<<< HEAD:Unity/Assets/Mono/ILRuntime/Generate/System_Collections_Generic_Dictionary_2_String_ILTypeInstance_Binding_t1.cs
         static void WriteBackInstance(ILRuntime.Runtime.Enviorment.AppDomain __domain, StackObject* ptr_of_this_method, IList<object> __mStack, ref System.Collections.Generic.Dictionary<System.String, ILRuntime.Runtime.Intepreter.ILTypeInstance>.Enumerator instance_of_this_method)
-=======
-        static void WriteBackInstance(ILRuntime.Runtime.Enviorment.AppDomain __domain, StackObject* ptr_of_this_method, IList<object> __mStack, ref System.Collections.Generic.Dictionary<System.String, ET.IDisposableAdapter.Adapter>.ValueCollection.Enumerator instance_of_this_method)
->>>>>>> 65be985a2fc6ec3d19fb4439b70466975ced1b08:Unity/Assets/Mono/ILRuntime/Generate/System_Collections_Generic_Dictionary_2_String_ET_IDisposableAdapter__t3.cs
         {
             ptr_of_this_method = ILIntepreter.GetObjectAndResolveReference(ptr_of_this_method);
             switch(ptr_of_this_method->ObjectType)
@@ -89,11 +73,7 @@ namespace ILRuntime.Runtime.Generated
                     break;
                  case ObjectTypes.ArrayReference:
                     {
-<<<<<<< HEAD:Unity/Assets/Mono/ILRuntime/Generate/System_Collections_Generic_Dictionary_2_String_ILTypeInstance_Binding_t1.cs
                         var instance_of_arrayReference = __mStack[ptr_of_this_method->Value] as System.Collections.Generic.Dictionary<System.String, ILRuntime.Runtime.Intepreter.ILTypeInstance>.Enumerator[];
-=======
-                        var instance_of_arrayReference = __mStack[ptr_of_this_method->Value] as System.Collections.Generic.Dictionary<System.String, ET.IDisposableAdapter.Adapter>.ValueCollection.Enumerator[];
->>>>>>> 65be985a2fc6ec3d19fb4439b70466975ced1b08:Unity/Assets/Mono/ILRuntime/Generate/System_Collections_Generic_Dictionary_2_String_ET_IDisposableAdapter__t3.cs
                         instance_of_arrayReference[ptr_of_this_method->ValueLow] = instance_of_this_method;
                     }
                     break;
@@ -108,11 +88,7 @@ namespace ILRuntime.Runtime.Generated
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
             ptr_of_this_method = ILIntepreter.GetObjectAndResolveReference(ptr_of_this_method);
-<<<<<<< HEAD:Unity/Assets/Mono/ILRuntime/Generate/System_Collections_Generic_Dictionary_2_String_ILTypeInstance_Binding_t1.cs
             System.Collections.Generic.Dictionary<System.String, ILRuntime.Runtime.Intepreter.ILTypeInstance>.Enumerator instance_of_this_method = (System.Collections.Generic.Dictionary<System.String, ILRuntime.Runtime.Intepreter.ILTypeInstance>.Enumerator)typeof(System.Collections.Generic.Dictionary<System.String, ILRuntime.Runtime.Intepreter.ILTypeInstance>.Enumerator).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)16);
-=======
-            System.Collections.Generic.Dictionary<System.String, ET.IDisposableAdapter.Adapter>.ValueCollection.Enumerator instance_of_this_method = (System.Collections.Generic.Dictionary<System.String, ET.IDisposableAdapter.Adapter>.ValueCollection.Enumerator)typeof(System.Collections.Generic.Dictionary<System.String, ET.IDisposableAdapter.Adapter>.ValueCollection.Enumerator).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)16);
->>>>>>> 65be985a2fc6ec3d19fb4439b70466975ced1b08:Unity/Assets/Mono/ILRuntime/Generate/System_Collections_Generic_Dictionary_2_String_ET_IDisposableAdapter__t3.cs
 
             var result_of_this_method = instance_of_this_method.Current;
 
@@ -131,11 +107,7 @@ namespace ILRuntime.Runtime.Generated
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
             ptr_of_this_method = ILIntepreter.GetObjectAndResolveReference(ptr_of_this_method);
-<<<<<<< HEAD:Unity/Assets/Mono/ILRuntime/Generate/System_Collections_Generic_Dictionary_2_String_ILTypeInstance_Binding_t1.cs
             System.Collections.Generic.Dictionary<System.String, ILRuntime.Runtime.Intepreter.ILTypeInstance>.Enumerator instance_of_this_method = (System.Collections.Generic.Dictionary<System.String, ILRuntime.Runtime.Intepreter.ILTypeInstance>.Enumerator)typeof(System.Collections.Generic.Dictionary<System.String, ILRuntime.Runtime.Intepreter.ILTypeInstance>.Enumerator).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)16);
-=======
-            System.Collections.Generic.Dictionary<System.String, ET.IDisposableAdapter.Adapter>.ValueCollection.Enumerator instance_of_this_method = (System.Collections.Generic.Dictionary<System.String, ET.IDisposableAdapter.Adapter>.ValueCollection.Enumerator)typeof(System.Collections.Generic.Dictionary<System.String, ET.IDisposableAdapter.Adapter>.ValueCollection.Enumerator).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)16);
->>>>>>> 65be985a2fc6ec3d19fb4439b70466975ced1b08:Unity/Assets/Mono/ILRuntime/Generate/System_Collections_Generic_Dictionary_2_String_ET_IDisposableAdapter__t3.cs
 
             var result_of_this_method = instance_of_this_method.MoveNext();
 

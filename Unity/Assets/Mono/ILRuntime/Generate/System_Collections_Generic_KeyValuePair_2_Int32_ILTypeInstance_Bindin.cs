@@ -96,7 +96,9 @@ namespace ILRuntime.Runtime.Generated
             WriteBackInstance(__domain, ptr_of_this_method, __mStack, ref instance_of_this_method);
 
             __intp.Free(ptr_of_this_method);
-            return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
+            __ret->ObjectType = ObjectTypes.Integer;
+            __ret->Value = result_of_this_method;
+            return __ret + 1;
         }
 
         static StackObject* get_Value_1(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
@@ -115,9 +117,7 @@ namespace ILRuntime.Runtime.Generated
             WriteBackInstance(__domain, ptr_of_this_method, __mStack, ref instance_of_this_method);
 
             __intp.Free(ptr_of_this_method);
-            __ret->ObjectType = ObjectTypes.Integer;
-            __ret->Value = result_of_this_method;
-            return __ret + 1;
+            return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 
 

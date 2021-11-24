@@ -68,12 +68,6 @@ namespace ET
 			
 			start.Run();
 		}
-
-        public void Start()
-        {
-            this.start.Run();
-        }
-
         public Type[] GetHotfixTypes()
         {
             return this.hotfixTypes;
