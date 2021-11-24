@@ -82,7 +82,7 @@ namespace ET
 		public int Height { get; set; }
 		[ProtoMember(6)]
 		public int Weight { get; set; }
-		[ProtoMember(7, IsRequired  = true)]
+		[ProtoMember(7)]
 		public string Perfab { get; set; }
 
 	}

@@ -8,7 +8,7 @@ namespace ET
     public class I18NComponent : Entity
     {
         public static I18NComponent Instance;
-        //ÓïÑÔÀàĞÍÃ¶¾Ù
+        //è¯­è¨€ç±»å‹æšä¸¾
         public enum LangType:byte
         {
             Chinese,
