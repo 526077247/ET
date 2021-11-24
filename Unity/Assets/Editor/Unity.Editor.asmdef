@@ -10,6 +10,7 @@
         "Unity.ScriptableBuildPipeline",
         "Unity.ScriptableBuildPipeline.Editor",
         "Unity.ResourceManager"
+        "Unity.ThirdParty"
     ],
     "includePlatforms": [
         "Editor"
