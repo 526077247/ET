@@ -61,11 +61,12 @@ namespace ILRuntime.Runtime.Generated
             ET_ETTask_1_String_Binding.Register(app);
             System_Exception_Binding.Register(app);
             System_Action_Binding.Register(app);
-            System_Collections_Generic_List_1_Vector3_Binding.Register(app);
+            ET_ListComponent_1_Vector3_Binding.Register(app);
             System_Collections_Generic_List_1_Single_Binding.Register(app);
             UnityEngine_Vector3_Binding.Register(app);
             UnityEngine_Quaternion_Binding.Register(app);
             ET_ETTaskCompleted_Binding.Register(app);
+            System_Collections_Generic_List_1_Vector3_Binding.Register(app);
             ET_ETAsyncTaskMethodBuilder_1_Boolean_Binding.Register(app);
             System_Action_1_Boolean_Binding.Register(app);
             System_Math_Binding.Register(app);
@@ -95,8 +96,9 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_Dictionary_2_Type_Object_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_Byte_Array_Binding.Register(app);
             System_Threading_Monitor_Binding.Register(app);
-            System_Collections_Generic_List_1_Task_Binding.Register(app);
+            ET_ListComponent_1_Task_Binding.Register(app);
             System_Threading_Tasks_Task_Binding.Register(app);
+            System_Collections_Generic_List_1_Task_Binding.Register(app);
             System_Runtime_CompilerServices_TaskAwaiter_Binding.Register(app);
             UnityEngine_PlayerPrefs_Binding.Register(app);
             I18NBridge_Binding.Register(app);
@@ -128,6 +130,7 @@ namespace ILRuntime.Runtime.Generated
             System_Runtime_CompilerServices_AsyncVoidMethodBuilder_Binding.Register(app);
             System_Collections_Generic_LinkedList_1_String_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_Boolean_Binding.Register(app);
+            ET_ListComponent_1_ETTask_Binding.Register(app);
             System_Collections_Generic_List_1_ETTask_Binding.Register(app);
             ET_ETTaskHelper_Binding.Register(app);
             AssetBundles_AddressablesManager_Binding.Register(app);

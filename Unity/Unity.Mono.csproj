@@ -89,6 +89,7 @@
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Runtime_InteropServices_RuntimeInformation_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\UnityEngine_TextAsset_Binding.cs" />
      <Compile Include="Assets\Mono\Core\Helper\EnumHelper.cs" />
+     <Compile Include="Assets\Mono\Core\ListComponent.cs" />
      <Compile Include="Assets\Mono\Core\TimeInfo.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_Dictionary_2_String_Type_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Threading_ReaderWriterLockSlim_Binding.cs" />
@@ -109,8 +110,10 @@
      <Compile Include="Assets\Mono\ILRuntime\Generate\ET_ETAsyncTaskMethodBuilder_1_Int32_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\ET_ETAsyncTaskMethodBuilder_1_String_Array_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\I18NBridge_Binding.cs" />
+     <Compile Include="Assets\Mono\Core\HashSetComponent.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_ValueTuple_2_UInt16_MemoryStream_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_Dictionary_2_String_Material_Binding.cs" />
+     <Compile Include="Assets\Mono\ILRuntime\Generate\ET_ListComponent_1_Task_Binding.cs" />
      <Compile Include="Assets\Mono\Core\ThreadSynchronizationContext.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\TMPro_TMP_Text_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Linq_Enumerable_Binding.cs" />
@@ -188,6 +191,7 @@
      <Compile Include="Assets\Mono\Core\Helper\MD5Helper.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\UnityEngine_Vector2_Binding.cs" />
      <Compile Include="Assets\Mono\Module\Network\AService.cs" />
+     <Compile Include="Assets\Mono\ILRuntime\Generate\ET_ListComponent_1_ETTask_Binding.cs" />
      <Compile Include="Assets\Mono\Core\Helper\ObjectHelper.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_List_1_String_Binding_Enumerator_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\UnityEngine_Events_UnityAction_Binding.cs" />
@@ -389,6 +393,7 @@
      <Compile Include="Assets\Mono\Core\Async\ETVoid.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_SortedDictionary_2_Int64_List_1_Int64_Bind_t1.cs" />
      <Compile Include="Assets\Mono\Module\NetworkTCP\TService.cs" />
+     <Compile Include="Assets\Mono\ILRuntime\Generate\ET_ListComponent_1_Vector3_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_Dictionary_2_String_Dictionary_2_Type_ILTy_t1.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\UnityEngine_Networking_DownloadHandlerTexture_Binding.cs" />
      <Compile Include="Assets\Mono\Core\Async\ETTaskCompleted.cs" />
@@ -689,20 +694,11 @@
  <Reference Include="EPPlus">
  <HintPath>E:/GitProject/ET_Framwork/Unity/Assets/Editor/ArtToolsEditor/EPPlus.dll</HintPath>
  </Reference>
- <Reference Include="ILRuntime.Mono.Cecil">
- <HintPath>E:/GitProject/ET_Framwork/Unity/Assets/ThirdParty/ILRuntime/Plugins/ILRuntime.Mono.Cecil.dll</HintPath>
- </Reference>
  <Reference Include="ICSharpCode.NRefactory">
  <HintPath>E:/GitProject/ET_Framwork/Unity/Library/PackageCache/com.unity.render-pipelines.core@10.7.0/Editor/ShaderGenerator/ICSharpCode.NRefactory.dll</HintPath>
  </Reference>
  <Reference Include="ICSharpCode.SharpZipLib">
  <HintPath>E:/GitProject/ET_Framwork/Unity/Assets/Plugins/ICSharpCode.SharpZipLib.dll</HintPath>
- </Reference>
- <Reference Include="ILRuntime.Mono.Cecil.Mdb">
- <HintPath>E:/GitProject/ET_Framwork/Unity/Assets/ThirdParty/ILRuntime/Plugins/ILRuntime.Mono.Cecil.Mdb.dll</HintPath>
- </Reference>
- <Reference Include="ILRuntime.Mono.Cecil.Pdb">
- <HintPath>E:/GitProject/ET_Framwork/Unity/Assets/ThirdParty/ILRuntime/Plugins/ILRuntime.Mono.Cecil.Pdb.dll</HintPath>
  </Reference>
  <Reference Include="MongoDB.Bson">
  <HintPath>E:/GitProject/ET_Framwork/Unity/Assets/Plugins/MongoDB.Bson.dll</HintPath>
