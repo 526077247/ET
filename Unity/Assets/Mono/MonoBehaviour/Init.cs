@@ -68,17 +68,17 @@ namespace ET
 
 		private void Update()
 		{
-			this.codeLoader?.Update?.Invoke();
+			this.codeLoader.Update();
 		}
 
 		private void LateUpdate()
 		{
-			this.codeLoader?.LateUpdate?.Invoke();
+			this.codeLoader.LateUpdate();
 		}
 
 		private void OnApplicationQuit()
 		{
-			this.codeLoader?.OnApplicationQuit?.Invoke();
+			this.codeLoader.OnApplicationQuit();
 		}
 
 		// 一些unity的设置项目
