@@ -28,6 +28,7 @@ namespace ET
         {
             foreach (I18NConfig config in list)
             {
+                config.EndInit();
                 this.dict.Add(config.Id, config);
             }            
             this.AfterEndInit();

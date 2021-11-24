@@ -5,7 +5,7 @@ namespace ET
     {
         public override void Awake(SessionIdleCheckerComponent self, int checkInteral)
         {
-            self.RepeatedTimer = TimerComponent.Instance.NewRepeatedTimer(checkInteral, self.Check);
+            self.RepeatedTimer = TimerComponent.Instance.NewRepeatedTimer(checkInteral, () => { self.Check(); });
         }
     }
 
@@ -39,7 +39,8 @@ namespace ET
                 return;
             }
 
-            Log.Info($"session timeout: {session.Id} {timeNow} {session.LastRecvTime} {session.LastSendTime} {timeNow - session.LastRecvTime} {timeNow - session.LastSendTime}");
+            Log.Info(
+                $"session timeout: {session.Id} {timeNow} {session.LastRecvTime} {session.LastSendTime} {timeNow - session.LastRecvTime} {timeNow - session.LastSendTime}");
             session.Error = ErrorCore.ERR_SessionSendOrRecvTimeout;
 
             session.Dispose(); 
