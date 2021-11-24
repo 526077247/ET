@@ -82,8 +82,10 @@ namespace ET
         //异步加载图片 会自动识别图集：回调方式（image 和button已经封装 外部使用时候 谨慎使用）
         public async ETTask<Sprite> LoadImageAsync(string image_path, Action<Sprite> callback = null)
         {
-            using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Resources, image_path.GetHashCode()))//协程锁防重入
+            CoroutineLock coroutineLock = null;
+            try
             {
+                coroutineLock = await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Resources, image_path.GetHashCode());
                 __GetSpriteLoadInfoByPath(image_path, out Type asset_type, out string asset_address, out string subasset_name);
                 if (asset_type == sprite_type)
                 {
@@ -93,6 +95,10 @@ namespace ET
                 {
                     return await __LoadSpriteImageAsyncInternal(m_cacheSpriteAtlas, asset_address, subasset_name, callback);
                 }
+            }
+            finally
+            {
+                coroutineLock?.Dispose();
             }
         }
 
@@ -140,11 +146,17 @@ namespace ET
         //异步加载图集： 回调方式，按理除了预加载的时候其余时候是不需要关心图集的
         public async ETTask<Sprite> LoadAtlasImageAsync(string atlas_path, Action<float> progress_callback=null,Action<Sprite> callback =null)
         {
-            using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Resources, atlas_path.GetHashCode()))//协程锁防重入
+            CoroutineLock coroutineLock = null;
+            try
             {
+                coroutineLock = await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Resources, atlas_path.GetHashCode());
                 var res = await __LoadAtlasImageAsyncInternal(atlas_path, null, progress_callback, callback);
                 callback?.Invoke(res);
                 return res;
+            }
+            finally
+            {
+                coroutineLock?.Dispose();
             }
         }
 
@@ -152,11 +164,17 @@ namespace ET
         //异步加载图片： 回调方式，按理除了预加载的时候其余时候是不需要关心图集的
         public async ETTask<Sprite> LoadSingleImageAsync(string atlas_path, Action<float> progress_callback = null, Action<Sprite> callback = null)
         {
-            using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Resources, atlas_path.GetHashCode()))//协程锁防重入
+            CoroutineLock coroutineLock = null;
+            try
             {
+                coroutineLock = await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Resources, atlas_path.GetHashCode());
                 var res = await __LoadSingleImageAsyncInternal(atlas_path, progress_callback, callback);
                 callback?.Invoke(res);
                 return res;
+            }
+            finally
+            {
+                coroutineLock?.Dispose();
             }
         }
         #region private

@@ -18,15 +18,19 @@ namespace ET
             if (res2 != null)
                 res.AddRange(res2);
             if (res.Count <= 0) return;
-
-
-            using (ListComponent<ETTask> TaskScheduler = ListComponent<ETTask>.Create())
+            ListComponent<ETTask> TaskScheduler= null;
+            try
             {
-                foreach (var res_path in res)
-                {
-                    TaskScheduler.List.Add(GameObjectPoolComponent.Instance.PreLoadGameObjectAsync(res_path, 1));
-                }
-                await ETTaskHelper.WaitAll(TaskScheduler.List);
+	            TaskScheduler = ListComponent<ETTask>.Create();
+	            foreach (var res_path in res)
+	            {
+		            TaskScheduler.List.Add(GameObjectPoolComponent.Instance.PreLoadGameObjectAsync(res_path, 1));
+	            }
+	            await ETTaskHelper.WaitAll(TaskScheduler.List);
+            }
+            finally
+            {
+	            TaskScheduler?.Dispose();
             }
         }
         protected override async ETTask Run(UIEventType.InnerOpenWindow args)

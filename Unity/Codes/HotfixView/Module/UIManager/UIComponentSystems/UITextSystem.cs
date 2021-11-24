@@ -13,7 +13,7 @@ namespace ET
     {
         public override void OnCreate(UIText self)
         {
-            Messager.Instance.AddListener(MessagerId.OnLanguageChange, self.OnLanguageChange);
+            I18NComponent.Instance.RegisterI18NEntity(self);
         }
     }
     [UISystem]
@@ -21,7 +21,7 @@ namespace ET
     {
         public override void OnCreate(UIText self, string key)
         {
-            Messager.Instance.AddListener(MessagerId.OnLanguageChange, self.OnLanguageChange);
+            I18NComponent.Instance.RegisterI18NEntity(self);
             self.SetI18NKey(key);
         }
     }
@@ -30,10 +30,17 @@ namespace ET
     {
         public override void OnDestroy(UIText self)
         {
-            Messager.Instance.RemoveListener(MessagerId.OnLanguageChange, self.OnLanguageChange);
+            I18NComponent.Instance.RemoveI18NEntity(self);
             self.unity_i18ncomp_touched = null;
             self.keyParams = null;
-
+        }
+    }
+    [UISystem]
+    public class UITextI18NSystem: I18NSystem<UIText>
+    {
+        public override void OnLanguageChange(UIText self)
+        {
+            self.OnLanguageChange();
         }
     }
 
@@ -101,7 +108,7 @@ namespace ET
             }
         }
 
-        public static void OnLanguageChange(this UIText self, object args)
+        public static void OnLanguageChange(this UIText self)
         {
             if (self.__text_key != null)
                 I18NComponent.Instance.I18NGetParamText(self.__text_key, self.keyParams);

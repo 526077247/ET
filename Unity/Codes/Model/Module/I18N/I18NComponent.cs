@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System;
 
 namespace ET
 {
@@ -17,6 +17,7 @@ namespace ET
         public LangType curLangType;
         public Dictionary<int, I18NConfig> i18nTextDic;
         public Dictionary<string, I18NConfig> i18nTextKeyDic;
+        public Dictionary<long, Entity> I18NEntity;
     }
 
 }

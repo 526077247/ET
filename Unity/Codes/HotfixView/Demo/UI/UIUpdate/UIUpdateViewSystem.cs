@@ -54,12 +54,12 @@ namespace ET
         async static ETTask<int> ShowMsgBoxView(this UIUpdateView self,string content, string confirmBtnText, string cancelBtnText)
         {
             ETTask<int> tcs = ETTask<int>.Create();
-            UnityAction confirmBtnFunc = () =>
+            Action confirmBtnFunc = () =>
              {
                  tcs.SetResult(self.BTN_CONFIRM);
              };
 
-            UnityAction cancelBtnFunc = () =>
+            Action cancelBtnFunc = () =>
             {
                 tcs.SetResult(self.BTN_CANCEL);
             };

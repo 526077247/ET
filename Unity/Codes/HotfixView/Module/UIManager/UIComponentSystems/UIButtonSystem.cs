@@ -38,7 +38,7 @@ namespace ET
             self.__onclick?.Invoke();
         }
 
-        public static void SetOnClick(this UIButton self,UnityAction callback)
+        public static void SetOnClick(this UIButton self,Action callback)
         {
             self.RemoveOnClick();
             self.__onclick = () =>

@@ -171,20 +171,26 @@ namespace ET
 		//预加载：可提供初始实例化个数
 		public async ETTask PreLoadGameObjectAsync(string path,int inst_count, Action<float> progress_callback = null, Action callback =null)
         {
-			using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Resources, path.GetHashCode()))//协程锁防重入
-			{
-				if (CheckHasCached(path))
-				{
-					callback?.Invoke();
-					return;
-				}
-				var go = await ResourcesComponent.Instance.LoadAsync(path, typeof(GameObject), progress_callback);
-				if (go != null)
-				{
-					CacheAndInstGameObject(path, go as GameObject, inst_count);
-				}
-				callback?.Invoke();
-			}
+	        CoroutineLock coroutineLock = null;
+	        try
+	        {
+		        coroutineLock = await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Resources, path.GetHashCode());
+		        if (CheckHasCached(path))
+		        {
+			        callback?.Invoke();
+			        return;
+		        }
+		        var go = await ResourcesComponent.Instance.LoadAsync(path, typeof(GameObject), progress_callback);
+		        if (go != null)
+		        {
+			        CacheAndInstGameObject(path, go as GameObject, inst_count);
+		        }
+		        callback?.Invoke();
+	        }
+	        finally
+	        {
+		        coroutineLock?.Dispose();
+	        }
         }
 
 
@@ -402,7 +408,7 @@ namespace ET
 		//清理缓存
 		public void Cleanup(bool includePooledGo = true, string[] excludePathArray=null)
         {
-			Debug.Log("GameObjectPool Cleanup ");
+			Log.Info("GameObjectPool Cleanup ");
             foreach (var item in __instCache)
             {
                 foreach (var inst in item.Value)
@@ -430,25 +436,25 @@ namespace ET
 					}
 				}
 
-				ListComponent<string> keys = ListComponent<string>.Create();
-				foreach (var item in __goPool.Keys)
+                List<string> keys = new List<string>();
+                foreach (var item in __goPool.Keys)
                 {
-					keys.List.Add(item);
-				}
-                for (int i= keys.List.Count-1;i>=0;i--)
-                {
-					var path = keys.List[i];
-					if (dict_excludepath != null && !dict_excludepath.ContainsKey(path) && __goPool.TryOnlyGet(path,out var pooledGo))
-                    {
-						if (pooledGo != null && __CheckNeedUnload(path))
-						{
-							AddressablesManager.ReleaseAsset(pooledGo);
-							__goPool.Remove(path);
-						}
-					}
+                    keys.Add(item);
                 }
-				keys.Dispose();
+                for (int i = keys.Count - 1; i >= 0; i--)
+                {
+                    var path = keys[i];
+                    if (dict_excludepath != null && !dict_excludepath.ContainsKey(path) && __goPool.TryOnlyGet(path, out var pooledGo))
+                    {
+                        if (pooledGo != null && __CheckNeedUnload(path))
+                        {
+                            AddressablesManager.ReleaseAsset(pooledGo);
+                            __goPool.Remove(path);
+                        }
+                    }
+                }
 			}
+            Log.Info("GameObjectPool Cleanup Over");
 		}
 		//--释放asset
 		//--注意这里需要保证外面没有引用这些path的inst了，不然会出现材质丢失的问题
@@ -490,14 +496,14 @@ namespace ET
 
 			if (includePooledGo)
 			{
-				ListComponent<string> keys = ListComponent<string>.Create();
+				List<string> keys = new List<string>();
 				foreach (var item in __goPool.Keys)
 				{
-					keys.List.Add(item);
+					keys.Add(item);
 				}
-				for (int i = keys.List.Count - 1; i >= 0; i--)
+				for (int i = keys.Count - 1; i >= 0; i--)
 				{
-					var path = keys.List[i];
+					var path = keys[i];
 					if (patharray != null && dict_path.ContainsKey(path) && __goPool.TryOnlyGet(path, out var pooledGo))
 					{
 						if (pooledGo != null && __CheckNeedUnload(path))
@@ -507,7 +513,6 @@ namespace ET
 						}
 					}
 				}
-				keys.Dispose();
 			}
 		}
 		/// <summary>

@@ -17,6 +17,7 @@ namespace ET
             self.curLangType = (I18NComponent.LangType)PlayerPrefs.GetInt(CacheKeys.CurLangType, 0);
             self.i18nTextDic = new Dictionary<int, I18NConfig>();
             self.i18nTextKeyDic = new Dictionary<string, I18NConfig>();
+            self.I18NEntity = new Dictionary<long, Entity>();
             I18NBridge.Instance.i18nTextKeyDic = new Dictionary<string, string>();
             foreach (var item in res)
             {
@@ -39,7 +40,7 @@ namespace ET
             I18NBridge.Instance.i18nTextKeyDic = null;
         }
     }
-    public static class I18nComponentSystem
+    public static class I18NComponentSystem
     {
         public static string I18NGetText(this I18NComponent self, string key)
         {
@@ -144,7 +145,24 @@ namespace ET
             {
                 I18NBridge.Instance.i18nTextKeyDic.Add(item.Value.Key,self.I18NGetText(item.Value.Key));
             }
-            Messager.Instance.Broadcast(MessagerId.OnLanguageChange);
+
+            var values = self.I18NEntity.Values;
+            foreach (var entity in values)
+            {
+                UIEventSystem.Instance.OnLanguageChange(entity);
+            }
+            I18NBridge.Instance.OnLanguageChange();
+        }
+
+        public static void RegisterI18NEntity(this I18NComponent self,Entity entity)
+        {
+            if(!self.I18NEntity.ContainsKey(entity.Id))
+                self.I18NEntity.Add(entity.Id,entity);
+        }
+        
+        public static void RemoveI18NEntity(this I18NComponent self,Entity entity)
+        {
+            self.I18NEntity.Remove(entity.Id);
         }
     }
 }

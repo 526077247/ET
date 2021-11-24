@@ -5,7 +5,7 @@ namespace ET
 {
     public static class LoginHelper
     {
-        public static async ETTask Login(Scene zoneScene, string address, string account, string password)
+        public static async ETTask Login(Scene zoneScene, string address, string account, string password,Action onError)
         {
             try
             {
@@ -50,6 +50,7 @@ namespace ET
             }
             catch (Exception e)
             {
+                onError?.Invoke();
                 Log.Error(e);
             }
         } 

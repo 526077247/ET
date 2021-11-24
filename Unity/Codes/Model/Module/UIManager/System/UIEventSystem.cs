@@ -504,5 +504,30 @@ namespace ET
 
 		#endregion
 
+		public void OnLanguageChange(Entity component)
+		{
+			List<object> iOnCreateSystems = this.typeSystems.GetSystems(component.GetType(), typeof(IOnCreateSystem));
+			if (iOnCreateSystems == null)
+			{
+				return;
+			}
+
+			foreach (IOnCreateSystem aOnCreateSystem in iOnCreateSystems)
+			{
+				if (aOnCreateSystem == null)
+				{
+					continue;
+				}
+
+				try
+				{
+					aOnCreateSystem.Run(component);
+				}
+				catch (Exception e)
+				{
+					Log.Error(e);
+				}
+			}
+		}
 	}
 }

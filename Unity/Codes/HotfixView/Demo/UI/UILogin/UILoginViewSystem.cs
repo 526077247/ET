@@ -13,7 +13,10 @@ namespace ET
 		{
 			self.loginBtn = self.AddComponent<UIButton>("Panel/LoginBtn");
 			self.registerBtn = self.AddComponent<UIButton>("Panel/RegisterBtn");
-			self.loginBtn.SetOnClick(self.OnLogin);
+			self.loginBtn.SetOnClick(() =>
+			{
+				self.OnLogin();
+			});
 			self.account = self.AddComponent<UIInput>("Panel/Account");
 			self.password = self.AddComponent<UIInput>("Panel/Password");
 			self.ipaddr = self.AddComponent<UIInputTextmesh>("Panel/GM/InputField");
@@ -46,14 +49,16 @@ namespace ET
 	public static class UILoginViewSystem
 	{
 		
-		public static async void OnLogin(this UILoginView self)
+		public static void OnLogin(this UILoginView self)
 		{
 			self.loginBtn.SetInteractable(false);
 			GlobalComponent.Instance.Account = self.account.GetText();
 			PlayerPrefs.SetString(CacheKeys.Account, self.account.GetText());
 			PlayerPrefs.SetString(CacheKeys.Password, self.password.GetText());
-			await LoginHelper.Login(self.scene, self.ipaddr.GetText(), self.account.GetText(), self.password.GetText());
-			self.loginBtn.SetInteractable(true);
+			LoginHelper.Login(self.scene, self.ipaddr.GetText(), self.account.GetText(), self.password.GetText(), () =>
+			{
+				self.loginBtn.SetInteractable(true);
+			});
 		}
 		public static void OnBtnClick(this UILoginView self,string name)
         {

@@ -125,6 +125,7 @@ namespace AssetBundles
                     keys.Add(key);
                 }
             }
+
             foreach (var key in keys)
             {
                 dictAssetCaching.Remove(key);
@@ -140,6 +141,7 @@ namespace AssetBundles
                     listSkinAssetCaching.RemoveAt(i);
                 }
             }
+            Debug.Log("ClearAssetsCache Over");
         }
 
         public void ReleaseAsset(UnityEngine.Object go)

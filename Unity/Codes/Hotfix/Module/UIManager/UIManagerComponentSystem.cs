@@ -89,8 +89,11 @@ namespace ET
                 dict_ui_names = new Dictionary<string, bool>();
                 foreach (var item in except_ui_names) dict_ui_names[item] = true;
             }
-            using (ListComponent<ETTask> TaskScheduler = ListComponent<ETTask>.Create())
+
+            ListComponent<ETTask> TaskScheduler = null;
+            try
             {
+                TaskScheduler = ListComponent<ETTask>.Create();
                 foreach (var item in self.windows)
                 {
                     if (item.Value.Layer == layer && dict_ui_names != null && !dict_ui_names.ContainsKey(item.Key))
@@ -99,6 +102,10 @@ namespace ET
                     }
                 }
                 await ETTaskHelper.WaitAll(TaskScheduler.List);
+            }
+            finally
+            {
+                TaskScheduler?.Dispose();
             }
         }
 
@@ -190,8 +197,10 @@ namespace ET
                 }
             }
             var keys = self.windows.Keys.ToArray();
-            using (ListComponent<ETTask> TaskScheduler = ListComponent<ETTask>.Create())
+            ListComponent<ETTask> TaskScheduler = null;
+            try
             {
+                TaskScheduler = ListComponent<ETTask>.Create();
                 for (int i = self.windows.Count - 1; i >= 0; i--)
                 {
                     if (!dict_ui_names.ContainsKey(keys[i]))
@@ -201,13 +210,19 @@ namespace ET
                 }
                 await ETTaskHelper.WaitAll(TaskScheduler.List);
             }
+            finally
+            {
+                TaskScheduler?.Dispose();
+            }
         }
         //销毁指定层级外层级所有窗口
         public static async ETTask DestroyWindowExceptLayer(this UIManagerComponent self, UILayerNames layer)
         {
             var keys = self.windows.Keys.ToArray();
-            using (ListComponent<ETTask> TaskScheduler = ListComponent<ETTask>.Create())
+            ListComponent<ETTask> TaskScheduler = null;
+            try
             {
+                TaskScheduler = ListComponent<ETTask>.Create();
                 for (int i = self.windows.Count - 1; i >= 0; i--)
                 {
                     if (self.windows[keys[i]].Layer != layer)
@@ -218,13 +233,19 @@ namespace ET
                 }
                 await ETTaskHelper.WaitAll(TaskScheduler.List);
             }
+            finally
+            {
+                TaskScheduler?.Dispose();
+            }
         }
         //销毁层级所有窗口
         public static async ETTask DestroyWindowByLayer(this UIManagerComponent self, UILayerNames layer)
         {
             var keys = self.windows.Keys.ToArray();
-            using (ListComponent<ETTask> TaskScheduler = ListComponent<ETTask>.Create())
+            ListComponent<ETTask> TaskScheduler = null;
+            try
             {
+                TaskScheduler = ListComponent<ETTask>.Create();
                 for (int i = self.windows.Count - 1; i >= 0; i--)
                 {
                     if (self.windows[keys[i]].Layer == layer)
@@ -234,17 +255,27 @@ namespace ET
                 }
                 await ETTaskHelper.WaitAll(TaskScheduler.List);
             }
+            finally
+            {
+                TaskScheduler?.Dispose();
+            }
         }
         public static async ETTask DestroyAllWindow(this UIManagerComponent self)
         {
             var keys = self.windows.Keys.ToArray();
-            using (ListComponent<ETTask> TaskScheduler = ListComponent<ETTask>.Create())
+            ListComponent<ETTask> TaskScheduler = null;
+            try
             {
+                TaskScheduler = ListComponent<ETTask>.Create();
                 for (int i = self.windows.Count - 1; i >= 0; i--)
                 {
                     TaskScheduler.List.Add(self.DestroyWindow(self.windows[keys[i]].Name));
                 }
                 await ETTaskHelper.WaitAll(TaskScheduler.List);
+            }
+            finally
+            {
+                TaskScheduler?.Dispose();
             }
         }
 
@@ -310,8 +341,10 @@ namespace ET
 
         static async ETTask<T> __InnerOpenWindow<T>(this UIManagerComponent self, UIWindow target) where T : UIBaseContainer
         {
-            using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.UIManager, target.GetHashCode()))
+            CoroutineLock coroutineLock = null;
+            try
             {
+                coroutineLock = await CoroutineLockComponent.Instance.Wait(CoroutineLockType.UIManager, target.GetHashCode());
                 target.Active = true;
                 T res = target.GetComponent(target.ViewType) as T;
                 var need_load = target.LoadingState == UIWindowLoadingState.NotStart;
@@ -324,11 +357,17 @@ namespace ET
                 await self.__AddWindowToStack(target);
                 return res;
             }
+            finally
+            {
+                coroutineLock?.Dispose();
+            }
         }
         static async ETTask<T> __InnerOpenWindow<T, P1>(this UIManagerComponent self, UIWindow target, P1 p1) where T : UIBaseContainer
         {
-            using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.UIManager, target.GetHashCode()))
+            CoroutineLock coroutineLock = null;
+            try
             {
+                coroutineLock = await CoroutineLockComponent.Instance.Wait(CoroutineLockType.UIManager, target.GetHashCode());
                 target.Active = true;
                 T res = target.GetComponent(target.ViewType) as T;
                 var need_load = target.LoadingState == UIWindowLoadingState.NotStart;
@@ -341,11 +380,17 @@ namespace ET
                 await self.__AddWindowToStack(target, p1);
                 return res;
             }
+            finally
+            {
+                coroutineLock?.Dispose();
+            }
         }
         static async ETTask<T> __InnerOpenWindow<T, P1, P2>(this UIManagerComponent self, UIWindow target, P1 p1, P2 p2) where T : UIBaseContainer
         {
-            using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.UIManager, target.GetHashCode()))
+            CoroutineLock coroutineLock = null;
+            try
             {
+                coroutineLock = await CoroutineLockComponent.Instance.Wait(CoroutineLockType.UIManager, target.GetHashCode());
                 target.Active = true;
                 T res = target.GetComponent(target.ViewType) as T;
                 var need_load = target.LoadingState == UIWindowLoadingState.NotStart;
@@ -358,11 +403,17 @@ namespace ET
                 await self.__AddWindowToStack(target, p1, p2);
                 return res;
             }
+            finally
+            {
+                coroutineLock?.Dispose();
+            }
         }
         static async ETTask<T> __InnerOpenWindow<T, P1, P2, P3>(this UIManagerComponent self, UIWindow target, P1 p1, P2 p2, P3 p3) where T : UIBaseContainer
         {
-            using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.UIManager, target.GetHashCode()))
+            CoroutineLock coroutineLock = null;
+            try
             {
+                coroutineLock = await CoroutineLockComponent.Instance.Wait(CoroutineLockType.UIManager, target.GetHashCode());
                 target.Active = true;
                 T res = target.GetComponent(target.ViewType) as T;
                 var need_load = target.LoadingState == UIWindowLoadingState.NotStart;
@@ -374,6 +425,10 @@ namespace ET
                 await Game.EventSystem.Publish(new UIEventType.ResetWindowLayer() { window = target });
                 await self.__AddWindowToStack(target, p1, p2, p3);
                 return res;
+            }
+            finally
+            {
+                coroutineLock?.Dispose();
             }
         }
 

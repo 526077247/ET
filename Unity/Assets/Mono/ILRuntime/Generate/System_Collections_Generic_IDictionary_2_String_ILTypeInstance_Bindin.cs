@@ -14,21 +14,21 @@ using ILRuntime.CLR.Utils;
 
 namespace ILRuntime.Runtime.Generated
 {
-    unsafe class System_Collections_Generic_IDictionary_2_String_ET_IDisposableAdapter_Binding_Adapter_Binding
+    unsafe class System_Collections_Generic_IDictionary_2_String_ILTypeInstance_Binding
     {
         public static void Register(ILRuntime.Runtime.Enviorment.AppDomain app)
         {
             BindingFlags flag = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
             MethodBase method;
             Type[] args;
-            Type type = typeof(System.Collections.Generic.IDictionary<System.String, ET.IDisposableAdapter.Adapter>);
-            args = new Type[]{typeof(System.String), typeof(ET.IDisposableAdapter.Adapter)};
+            Type type = typeof(System.Collections.Generic.IDictionary<System.String, ILRuntime.Runtime.Intepreter.ILTypeInstance>);
+            args = new Type[]{typeof(System.String), typeof(ILRuntime.Runtime.Intepreter.ILTypeInstance)};
             method = type.GetMethod("set_Item", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, set_Item_0);
             args = new Type[]{typeof(System.String)};
             method = type.GetMethod("Remove", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, Remove_1);
-            args = new Type[]{typeof(System.String), typeof(ET.IDisposableAdapter.Adapter).MakeByRefType()};
+            args = new Type[]{typeof(System.String), typeof(ILRuntime.Runtime.Intepreter.ILTypeInstance).MakeByRefType()};
             method = type.GetMethod("TryGetValue", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, TryGetValue_2);
             args = new Type[]{typeof(System.String)};
@@ -55,7 +55,7 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 3);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            ET.IDisposableAdapter.Adapter @value = (ET.IDisposableAdapter.Adapter)typeof(ET.IDisposableAdapter.Adapter).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            ILRuntime.Runtime.Intepreter.ILTypeInstance @value = (ILRuntime.Runtime.Intepreter.ILTypeInstance)typeof(ILRuntime.Runtime.Intepreter.ILTypeInstance).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
@@ -63,7 +63,7 @@ namespace ILRuntime.Runtime.Generated
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 3);
-            System.Collections.Generic.IDictionary<System.String, ET.IDisposableAdapter.Adapter> instance_of_this_method = (System.Collections.Generic.IDictionary<System.String, ET.IDisposableAdapter.Adapter>)typeof(System.Collections.Generic.IDictionary<System.String, ET.IDisposableAdapter.Adapter>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            System.Collections.Generic.IDictionary<System.String, ILRuntime.Runtime.Intepreter.ILTypeInstance> instance_of_this_method = (System.Collections.Generic.IDictionary<System.String, ILRuntime.Runtime.Intepreter.ILTypeInstance>)typeof(System.Collections.Generic.IDictionary<System.String, ILRuntime.Runtime.Intepreter.ILTypeInstance>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             instance_of_this_method[key] = value;
@@ -82,7 +82,7 @@ namespace ILRuntime.Runtime.Generated
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            System.Collections.Generic.IDictionary<System.String, ET.IDisposableAdapter.Adapter> instance_of_this_method = (System.Collections.Generic.IDictionary<System.String, ET.IDisposableAdapter.Adapter>)typeof(System.Collections.Generic.IDictionary<System.String, ET.IDisposableAdapter.Adapter>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            System.Collections.Generic.IDictionary<System.String, ILRuntime.Runtime.Intepreter.ILTypeInstance> instance_of_this_method = (System.Collections.Generic.IDictionary<System.String, ILRuntime.Runtime.Intepreter.ILTypeInstance>)typeof(System.Collections.Generic.IDictionary<System.String, ILRuntime.Runtime.Intepreter.ILTypeInstance>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             var result_of_this_method = instance_of_this_method.Remove(@key);
@@ -99,13 +99,13 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 3);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            ET.IDisposableAdapter.Adapter @value = (ET.IDisposableAdapter.Adapter)typeof(ET.IDisposableAdapter.Adapter).CheckCLRTypes(__intp.RetriveObject(ptr_of_this_method, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            ILRuntime.Runtime.Intepreter.ILTypeInstance @value = (ILRuntime.Runtime.Intepreter.ILTypeInstance)typeof(ILRuntime.Runtime.Intepreter.ILTypeInstance).CheckCLRTypes(__intp.RetriveObject(ptr_of_this_method, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
             System.String @key = (System.String)typeof(System.String).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 3);
-            System.Collections.Generic.IDictionary<System.String, ET.IDisposableAdapter.Adapter> instance_of_this_method = (System.Collections.Generic.IDictionary<System.String, ET.IDisposableAdapter.Adapter>)typeof(System.Collections.Generic.IDictionary<System.String, ET.IDisposableAdapter.Adapter>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            System.Collections.Generic.IDictionary<System.String, ILRuntime.Runtime.Intepreter.ILTypeInstance> instance_of_this_method = (System.Collections.Generic.IDictionary<System.String, ILRuntime.Runtime.Intepreter.ILTypeInstance>)typeof(System.Collections.Generic.IDictionary<System.String, ILRuntime.Runtime.Intepreter.ILTypeInstance>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
 
             var result_of_this_method = instance_of_this_method.TryGetValue(@key, out @value);
 
@@ -157,7 +157,7 @@ namespace ILRuntime.Runtime.Generated
                     break;
                  case ObjectTypes.ArrayReference:
                     {
-                        var instance_of_arrayReference = __mStack[ptr_of_this_method->Value] as ET.IDisposableAdapter.Adapter[];
+                        var instance_of_arrayReference = __mStack[ptr_of_this_method->Value] as ILRuntime.Runtime.Intepreter.ILTypeInstance[];
                         instance_of_arrayReference[ptr_of_this_method->ValueLow] = @value;
                     }
                     break;
@@ -184,7 +184,7 @@ namespace ILRuntime.Runtime.Generated
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            System.Collections.Generic.IDictionary<System.String, ET.IDisposableAdapter.Adapter> instance_of_this_method = (System.Collections.Generic.IDictionary<System.String, ET.IDisposableAdapter.Adapter>)typeof(System.Collections.Generic.IDictionary<System.String, ET.IDisposableAdapter.Adapter>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            System.Collections.Generic.IDictionary<System.String, ILRuntime.Runtime.Intepreter.ILTypeInstance> instance_of_this_method = (System.Collections.Generic.IDictionary<System.String, ILRuntime.Runtime.Intepreter.ILTypeInstance>)typeof(System.Collections.Generic.IDictionary<System.String, ILRuntime.Runtime.Intepreter.ILTypeInstance>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             var result_of_this_method = instance_of_this_method.ContainsKey(@key);
@@ -201,7 +201,7 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 1);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.Collections.Generic.IDictionary<System.String, ET.IDisposableAdapter.Adapter> instance_of_this_method = (System.Collections.Generic.IDictionary<System.String, ET.IDisposableAdapter.Adapter>)typeof(System.Collections.Generic.IDictionary<System.String, ET.IDisposableAdapter.Adapter>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            System.Collections.Generic.IDictionary<System.String, ILRuntime.Runtime.Intepreter.ILTypeInstance> instance_of_this_method = (System.Collections.Generic.IDictionary<System.String, ILRuntime.Runtime.Intepreter.ILTypeInstance>)typeof(System.Collections.Generic.IDictionary<System.String, ILRuntime.Runtime.Intepreter.ILTypeInstance>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             var result_of_this_method = instance_of_this_method.Keys;
@@ -216,7 +216,7 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 1);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.Collections.Generic.IDictionary<System.String, ET.IDisposableAdapter.Adapter> instance_of_this_method = (System.Collections.Generic.IDictionary<System.String, ET.IDisposableAdapter.Adapter>)typeof(System.Collections.Generic.IDictionary<System.String, ET.IDisposableAdapter.Adapter>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            System.Collections.Generic.IDictionary<System.String, ILRuntime.Runtime.Intepreter.ILTypeInstance> instance_of_this_method = (System.Collections.Generic.IDictionary<System.String, ILRuntime.Runtime.Intepreter.ILTypeInstance>)typeof(System.Collections.Generic.IDictionary<System.String, ILRuntime.Runtime.Intepreter.ILTypeInstance>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             var result_of_this_method = instance_of_this_method.Values;
@@ -235,16 +235,11 @@ namespace ILRuntime.Runtime.Generated
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            System.Collections.Generic.IDictionary<System.String, ET.IDisposableAdapter.Adapter> instance_of_this_method = (System.Collections.Generic.IDictionary<System.String, ET.IDisposableAdapter.Adapter>)typeof(System.Collections.Generic.IDictionary<System.String, ET.IDisposableAdapter.Adapter>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            System.Collections.Generic.IDictionary<System.String, ILRuntime.Runtime.Intepreter.ILTypeInstance> instance_of_this_method = (System.Collections.Generic.IDictionary<System.String, ILRuntime.Runtime.Intepreter.ILTypeInstance>)typeof(System.Collections.Generic.IDictionary<System.String, ILRuntime.Runtime.Intepreter.ILTypeInstance>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             var result_of_this_method = instance_of_this_method[key];
 
-            object obj_result_of_this_method = result_of_this_method;
-            if(obj_result_of_this_method is CrossBindingAdaptorType)
-            {    
-                return ILIntepreter.PushObject(__ret, __mStack, ((CrossBindingAdaptorType)obj_result_of_this_method).ILInstance);
-            }
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 

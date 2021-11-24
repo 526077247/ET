@@ -12,7 +12,7 @@ namespace ET
     {
         public override void OnCreate(UITextmesh self)
         {
-            Messager.Instance.AddListener(MessagerId.OnLanguageChange, self.OnLanguageChange);
+            I18NComponent.Instance.RegisterI18NEntity(self);
         }
     }
     [UISystem]
@@ -20,8 +20,8 @@ namespace ET
     {
         public override void OnCreate(UITextmesh self, string key)
         {
+            I18NComponent.Instance.RegisterI18NEntity(self);
             self.SetI18NKey(key);
-            Messager.Instance.AddListener(MessagerId.OnLanguageChange, self.OnLanguageChange);
         }
 
     }
@@ -30,9 +30,17 @@ namespace ET
     {
         public override void OnDestroy(UITextmesh self)
         {
-            Messager.Instance.RemoveListener(MessagerId.OnLanguageChange, self.OnLanguageChange);
+            I18NComponent.Instance.RemoveI18NEntity(self);
             self.unity_i18ncomp_touched = null;
             self.keyParams = null;
+        }
+    }
+    [UISystem]
+    public class UITextmeshI18NSystem: I18NSystem<UITextmesh>
+    {
+        public override void OnLanguageChange(UITextmesh self)
+        {
+            self.OnLanguageChange();
         }
     }
     public static class UITextmeshSystem
@@ -100,7 +108,7 @@ namespace ET
             }
         }
 
-        public static void OnLanguageChange(this UITextmesh self, object args)
+        public static void OnLanguageChange(this UITextmesh self)
         {
             if (self.__text_key !=null)
                 I18NComponent.Instance.I18NGetParamText(self.__text_key, self.keyParams);

@@ -7,7 +7,11 @@ public class I18NBridge
     public static I18NBridge Instance { get; private set; } = new I18NBridge();
 
     public Dictionary<string, string> i18nTextKeyDic;
-
+    public event Action OnLanguageChangeEvt;
+    public void OnLanguageChange()
+    {
+        OnLanguageChangeEvt?.Invoke();
+    }
     /// <summary>
     /// 通过key获取多语言文本
     /// </summary>

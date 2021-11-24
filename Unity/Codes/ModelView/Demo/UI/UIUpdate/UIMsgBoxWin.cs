@@ -21,8 +21,8 @@ namespace ET
 			public string Content;
 			public string CancelText;
 			public string ConfirmText;
-			public UnityAction CancelCallback;
-			public UnityAction ConfirmCallback;
+			public Action CancelCallback;
+			public Action ConfirmCallback;
 		}
 	}
 }

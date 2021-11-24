@@ -30,8 +30,7 @@ namespace ET
             appdomain.DelegateManager.RegisterMethodDelegate<long, MemoryStream>();
             appdomain.DelegateManager.RegisterMethodDelegate<long, IPEndPoint>();
             appdomain.DelegateManager.RegisterMethodDelegate<ILTypeInstance>();
-            appdomain.DelegateManager.RegisterMethodDelegate<object, EventArgs>();
-            
+
             appdomain.DelegateManager.RegisterFunctionDelegate<UnityEngine.Events.UnityAction>();
             appdomain.DelegateManager.RegisterFunctionDelegate<System.Object, ET.ETTask>();
             appdomain.DelegateManager.RegisterFunctionDelegate<ILTypeInstance, bool>();

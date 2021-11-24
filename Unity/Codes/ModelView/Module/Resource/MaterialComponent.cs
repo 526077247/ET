@@ -27,8 +27,10 @@ namespace ET
 
         public async ETTask<Material> LoadMaterialAsync(string address,Action<Material> callback = null)
         {
-            using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Resources, address.GetHashCode()))//协程锁防重入
+            CoroutineLock coroutineLock = null;
+            try
             {
+                coroutineLock = await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Resources, address.GetHashCode());
                 if (m_cacheMaterial.TryGetValue(address, out var res))
                 {
                     res = await ResourcesComponent.Instance.LoadAsync<Material>(address);
@@ -37,6 +39,10 @@ namespace ET
                 }
                 callback?.Invoke(res);
                 return res;
+            }
+            finally
+            {
+                coroutineLock?.Dispose();
             }
         }
     }
