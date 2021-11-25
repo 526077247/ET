@@ -5,7 +5,7 @@ namespace ET
 {
     public static class LoginHelper
     {
-        public static async ETTask Login(Scene zoneScene, string address, string account, string password,Action onError)
+        public static async ETTask Login(Scene zoneScene, string address, string account, string password,Action onError=null)
         {
             try
             {
