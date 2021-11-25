@@ -3,8 +3,6 @@
 	public static class Define
 	{
 		public const string BuildOutputDir = "./Temp/Bin/Debug";
-		
-		public const string LogicVersion = "LogicVersion.txt";
 #if UNITY_EDITOR
 		public static readonly bool Debug = true;
 #else
