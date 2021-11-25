@@ -12,11 +12,11 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace>ET</RootNamespace>
-    <ProjectGuid>{C109842F-01DA-64D4-DBF2-00C6449E459E}</ProjectGuid>
+    <ProjectGuid>{C109842F-01DA-64D4-DBF2-00C6449E459F}</ProjectGuid>
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <AssemblyName>Unity.ModelView</AssemblyName>
+    <AssemblyName>Data</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <BaseDirectory>.</BaseDirectory>
@@ -57,10 +57,8 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Codes\Model\**\*.cs" />
     <Compile Include="Codes\ModelView\**\*.cs" />
-    <Reference Include="Unity.TextMeshPro, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>Library\ScriptAssemblies\Unity.TextMeshPro.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEngine">
       <HintPath>./Temp/bin/Debug/UnityEngine.dll</HintPath>
     </Reference>
@@ -600,13 +598,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="Unity.Model.csproj">
-      <Project>{9498bfb4-d9f5-c441-13e3-3f26f7700e29}</Project>
-      <Name>Unity.Model</Name>
-    </ProjectReference>
     <ProjectReference Include="Unity.Mono.csproj">
       <Project>{5910fa29-5797-199c-985b-fc9fc473328e}</Project>
       <Name>Unity.Mono</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.ThirdParty.csproj">
+      <Project>{d2ad5be1-263a-9a30-ab0f-dc5b08044350}</Project>
+      <Name>Unity.ThirdParty</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
