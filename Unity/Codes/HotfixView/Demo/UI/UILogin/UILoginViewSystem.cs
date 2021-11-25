@@ -13,10 +13,8 @@ namespace ET
 		{
 			self.loginBtn = self.AddComponent<UIButton>("Panel/LoginBtn");
 			self.registerBtn = self.AddComponent<UIButton>("Panel/RegisterBtn");
-			self.loginBtn.SetOnClick(() =>
-			{
-				self.OnLogin();
-			});
+			self.loginBtn.SetOnClick(() => { self.OnLogin(); });
+			self.registerBtn.SetOnClick(() => { self.OnRegister(); });
 			self.account = self.AddComponent<UIInput>("Panel/Account");
 			self.password = self.AddComponent<UIInput>("Panel/Password");
 			self.ipaddr = self.AddComponent<UIInputTextmesh>("Panel/GM/InputField");
@@ -63,6 +61,11 @@ namespace ET
 		public static void OnBtnClick(this UILoginView self,string name)
         {
 			self.ipaddr.SetText(ServerConfigManagerComponent.Instance.ChangeEnv(name.ToLower()).iplist[0]);
+		}
+
+		public static async void OnRegister(this UILoginView self)
+		{
+			
 		}
 	}
 }

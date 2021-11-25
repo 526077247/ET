@@ -23,7 +23,10 @@ namespace ET
 		private Assembly assembly;
 		
 		private Type[] allTypes;
-
+		
+		private AppDomain appDomain;
+		private MemoryStream assStream ;
+		private MemoryStream pdbStream ;
 		private CodeLoader()
 		{
 		}
@@ -62,10 +65,13 @@ namespace ET
 					byte[] assBytes = (AssetDatabase.LoadAssetAtPath("Assets/AssetsPackage/Code/Code.dll.bytes", typeof(TextAsset)) as TextAsset).bytes;
 					byte[] pdbBytes = (AssetDatabase.LoadAssetAtPath("Assets/AssetsPackage/Code/Code.pdb.bytes", typeof(TextAsset)) as TextAsset).bytes;
 #endif
-				
-					AppDomain appDomain = new AppDomain();
-					MemoryStream assStream = new MemoryStream(assBytes);
-					MemoryStream pdbStream = new MemoryStream(pdbBytes);
+					
+					if(appDomain!=null) appDomain.Dispose();
+					appDomain = new AppDomain();
+					if(assStream!=null) assStream.Dispose();
+					if(pdbStream!=null) pdbStream.Dispose();
+					assStream = new MemoryStream(assBytes);
+					pdbStream = new MemoryStream(pdbBytes);
 					appDomain.LoadAssembly(assStream, pdbStream, new ILRuntime.Mono.Cecil.Pdb.PdbReaderProvider());
 
 					ILHelper.InitILRuntime(appDomain);
@@ -121,6 +127,13 @@ namespace ET
 		public Type[] GetTypes()
 		{
 			return this.allTypes;
+		}
+
+		public bool isReStart = false;
+		public void ReStart()
+		{
+			Log.Debug("ReStart");
+			isReStart = true;
 		}
 	}
 }

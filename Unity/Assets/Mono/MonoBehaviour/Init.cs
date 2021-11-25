@@ -68,12 +68,19 @@ namespace ET
 
 		private void Update()
 		{
-			this.codeLoader.Update();
+			this.codeLoader.Update?.Invoke();
+			if (this.codeLoader.isReStart)
+			{
+				Log.Debug("ReStart");
+				this.codeLoader.OnApplicationQuit();
+				this.codeLoader.Start();
+				this.codeLoader.isReStart = false;
+			}
 		}
 
 		private void LateUpdate()
 		{
-			this.codeLoader.LateUpdate();
+			this.codeLoader.LateUpdate?.Invoke();
 		}
 
 		private void OnApplicationQuit()

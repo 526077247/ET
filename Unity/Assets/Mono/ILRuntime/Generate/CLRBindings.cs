@@ -144,10 +144,11 @@ namespace ILRuntime.Runtime.Generated
             UnityEngine_Camera_Binding.Register(app);
             UnityEngine_Physics_Binding.Register(app);
             UnityEngine_RaycastHit_Binding.Register(app);
+            ET_CodeLoader_Binding.Register(app);
+            AssetBundles_AssetBundleConfig_Binding.Register(app);
             ET_ETTask_1_GameObject_Binding.Register(app);
             UnityEngine_Transform_Binding.Register(app);
             ET_ETAsyncTaskMethodBuilder_1_AddressableUpdateAsyncOperation_Binding.Register(app);
-            AssetBundles_AssetBundleConfig_Binding.Register(app);
             ET_ETTask_1_List_1_ILTypeInstance_Binding.Register(app);
             ET_PlatformUtil_Binding.Register(app);
             ET_VersionCompare_Binding.Register(app);
@@ -275,7 +276,6 @@ namespace ILRuntime.Runtime.Generated
             System_IO_FileStream_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_Dictionary_2_String_ILTypeInstance_Binding.Register(app);
             System_Char_Binding.Register(app);
-            ET_CodeLoader_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_Int32_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_List_1_GameObject_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_GameObject_String_Binding.Register(app);

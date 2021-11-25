@@ -40,15 +40,12 @@ namespace ET
             }
             AddressablesManager.Instance.ClearAssetsCache();
 
-            //预加载Lua
-            //AddressablesManager.Instance.ReleaseLuas();
-
             //重新加载配置
             AssetBundleConfig.Instance.SyncLoadGlobalAssetBundle();
 
             //热修复
             AddressablesManager.Instance.StartInjectFix();
-            Game.EventSystem.Publish(new EventType.AppStart()).Coroutine();
+            CodeLoader.Instance.ReStart();
         }
 
         async static ETTask<int> ShowMsgBoxView(this UIUpdateView self,string content, string confirmBtnText, string cancelBtnText)
