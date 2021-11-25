@@ -11,6 +11,7 @@ namespace ET
 			self.Awake();
 		}
 	}
+
 	[ObjectSystem]
 	public class AnimatorComponentUpdateSystem : UpdateSystem<AnimatorComponent>
 	{
@@ -19,6 +20,7 @@ namespace ET
 			self.Update();
 		}
 	}
+	
 	[ObjectSystem]
 	public class AnimatorComponentDestroySystem : DestroySystem<AnimatorComponent>
 	{

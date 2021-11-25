@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 
 using UnityEditor;
+using UnityEngine;
 
 namespace ET
 {
@@ -93,7 +94,8 @@ namespace ET
             
             
             BuildTarget buildTarget = BuildTarget.StandaloneWindows;
-            string exeName = "ET";
+            string programName = "ET";
+            string exeName = programName;
             switch (type)
             {
                 case PlatformType.PC:
@@ -143,6 +145,16 @@ namespace ET
                 UnityEngine.Debug.Log("开始EXE打包");
                 BuildPipeline.BuildPlayer(levels, $"{relativeDirPrefix}/{exeName}", buildTarget, buildOptions);
                 UnityEngine.Debug.Log("完成exe打包");
+            }
+            else
+            {
+                if (isContainAB && type == PlatformType.PC)
+                {
+                    string targetPath = Path.Combine(relativeDirPrefix, $"{programName}_Data/StreamingAssets/");
+                    FileHelper.CleanDirectory(targetPath);
+                    Debug.Log($"src dir: {fold}    target: {targetPath}");
+                    FileHelper.CopyDirectory(fold, targetPath);
+                }
             }
         }
     }

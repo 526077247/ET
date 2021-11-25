@@ -62,9 +62,7 @@ namespace ET
 		[MenuItem("Tools/打包工具")]
 		public static void ShowWindow()
 		{
-			EditorWindow window = GetWindow<BuildEditor>(true, "打包工具");
-			window.minSize = new Vector2(420, 220);
-			window.maxSize = new Vector2(700, 400);
+			GetWindow(typeof (BuildEditor));
 		}
 
         private void OnEnable()
@@ -120,7 +118,7 @@ namespace ET
 			switch (buildType)
 			{
 				case BuildType.Development:
-					this.buildOptions = BuildOptions.Development | BuildOptions.AutoRunPlayer | BuildOptions.ConnectWithProfiler | BuildOptions.AllowDebugging;
+					this.buildOptions = BuildOptions.Development | BuildOptions.ConnectWithProfiler | BuildOptions.AllowDebugging;
 					break;
 				case BuildType.Release:
 					this.buildOptions = BuildOptions.None;
@@ -129,7 +127,7 @@ namespace ET
 
 			GUILayout.Space(5);
 
-			if (GUILayout.Button("开始打包", GUILayout.ExpandHeight(true)))
+			if (GUILayout.Button("开始打包"))
 			{
 				if (this.platformType == PlatformType.None)
 				{

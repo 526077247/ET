@@ -11,6 +11,7 @@ namespace ET
             self.mapMask = LayerMask.GetMask("Map");
         }
     }
+
     [ObjectSystem]
     public class OperaComponentUpdateSystem : UpdateSystem<OperaComponent>
     {

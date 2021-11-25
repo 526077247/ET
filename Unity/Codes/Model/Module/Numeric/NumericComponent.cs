@@ -12,7 +12,7 @@ namespace ET
 			public long New;
 		}
 	}
-
+	
 	[ObjectSystem]
 	public class NumericComponentAwakeSystem : AwakeSystem<NumericComponent>
 	{
