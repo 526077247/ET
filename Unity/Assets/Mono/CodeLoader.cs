@@ -14,20 +14,11 @@ namespace ET
 {
 	public class CodeLoader
 	{
-        static CodeLoader __Instance;
-        public static CodeLoader Instance
-        {
-            get
-            {
-                if (__Instance == null)
-                    __Instance = new CodeLoader();
-                return __Instance;
-            }
-        }
+		public static CodeLoader Instance = new CodeLoader();
 
-        public Action Update;
-        public Action LateUpdate;
-        public Action OnApplicationQuit;
+		public Action Update;
+		public Action LateUpdate;
+		public Action OnApplicationQuit;
 
 		private Assembly assembly;
 		
@@ -101,13 +92,13 @@ namespace ET
 		// Game.EventSystem.Load();
 		public void LoadHotfix()
 		{
-			byte[] assBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Logic.dll"));
-			byte[] pdbBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Logic.pdb"));
-#if !UNITY_EDITOR
-            ab.Unload(true);
-#endif
-			
+			// 傻屌Unity在这里搞了个傻逼优化，认为同一个路径的dll，返回的程序集就一样。所以这里每次编译都要随机名字
+			string logicVersion = File.ReadAllText(Path.Combine(Define.BuildOutputDir, Define.LogicVersion));
+			byte[] assBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, $"{logicVersion}.dll"));
+			byte[] pdbBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, $"{logicVersion}.pdb"));
+
 			Assembly hotfixAssembly = Assembly.Load(assBytes, pdbBytes);
+			
 			List<Type> listType = new List<Type>();
 			listType.AddRange(this.assembly.GetTypes());
 			listType.AddRange(hotfixAssembly.GetTypes());

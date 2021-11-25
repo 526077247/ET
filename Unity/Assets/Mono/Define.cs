@@ -2,6 +2,9 @@
 {
 	public static class Define
 	{
+		public const string BuildOutputDir = "./Temp/Bin/Debug";
+		
+		public const string LogicVersion = "LogicVersion.txt";
 #if UNITY_EDITOR
 		public static readonly bool Debug = true;
 #else
@@ -9,8 +12,6 @@
 #endif
 		public static readonly int DesignScreen_Width = 1366;
 		public static readonly int DesignScreen_Height = 768;
-
-		public const string BuildOutputDir = "Temp/Bin/Debug/";
 
 		// 1 mono模式 2 ILRuntime模式 3 mono热重载模式
 		public static int CodeMode = 3;
