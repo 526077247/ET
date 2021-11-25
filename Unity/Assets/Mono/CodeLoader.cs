@@ -47,6 +47,9 @@ namespace ET
 					this.allTypes = assembly.GetTypes();
 					IStaticMethod start = new MonoStaticMethod(assembly, "ET.Entry", "Start");
 					start.Run();
+#if !UNITY_EDITOR
+					ab.Unload(true);
+#endif
 					break;
 				}
 				case Define.CodeMode_ILRuntime:
@@ -69,8 +72,12 @@ namespace ET
 
 					this.allTypes = appDomain.LoadedTypes.Values.Select(x => x.ReflectionType).ToArray();
 					IStaticMethod start = new ILStaticMethod(appDomain, "ET.Entry", "Start", 0);
+#if !UNITY_EDITOR
+					ab.Unload(true);
+#endif
 					start.Run();
 					break;
+					
 				}
 				case Define.CodeMode_Reload:
 				{

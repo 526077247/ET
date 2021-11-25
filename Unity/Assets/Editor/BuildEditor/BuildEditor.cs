@@ -158,6 +158,7 @@ namespace ET
 
 		private void SaveSettings()
         {
+	        if(buildSettings==null) return;
 			buildSettings.clearFolder = clearFolder;
 			buildSettings.isBuildExe = isBuildExe;
 			buildSettings.isContainAB = isContainAB;
