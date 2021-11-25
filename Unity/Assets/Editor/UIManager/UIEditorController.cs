@@ -97,15 +97,15 @@ public class UIScriptController
         {
             Transform child = trans.GetChild(nIndex);
             string strTemp = strPath + "/" + child.name;
-
-            if (child.GetComponent<UIScriptCreator>()!=null && child.GetComponent<UIScriptCreator>().isMarked)
+            var uisc = child.GetComponent<UIScriptCreator>();
+            if (uisc!=null && uisc.isMarked)
             {
                 foreach (var uiComponent in WidgetInterfaceList)
                 {
                     Component component = child.GetComponent(uiComponent.Key);
                     if (null != component)
                     {
-                        strBuilder.AppendFormat("\t\tpublic {0} {1};", uiComponent.Value, child.name)
+                        strBuilder.AppendFormat("\t\tpublic {0} {1};", uiComponent.Value, uisc.GetModuleName())
                             .AppendLine();
                         break;
                     }
@@ -177,15 +177,16 @@ public class UIScriptController
         {
             Transform child = trans.GetChild(nIndex);
             string strTemp = strPath==""? child.name: (strPath + "/" + child.name);
-
-            if (child.GetComponent<UIScriptCreator>() != null && child.GetComponent<UIScriptCreator>().isMarked)
+            
+            var uisc = child.GetComponent<UIScriptCreator>();
+            if (uisc!=null && uisc.isMarked)
             {
                 foreach (var uiComponent in WidgetInterfaceList)
                 {
                     Component component = child.GetComponent(uiComponent.Key);
                     if (null != component)
                     {
-                        strBuilder.AppendFormat("\t\t\tself.{0} = self.AddComponent<{1}>(\"{2}\");", child.name, uiComponent.Value, strTemp)
+                        strBuilder.AppendFormat("\t\t\tself.{0} = self.AddComponent<{1}>(\"{2}\");", uisc.GetModuleName(), uiComponent.Value, strTemp)
                             .AppendLine();
                         break;
                     }
