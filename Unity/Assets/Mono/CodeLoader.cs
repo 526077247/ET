@@ -43,9 +43,14 @@ namespace ET
 			{
 				case Define.CodeMode_Mono:
 				{
-					Dictionary<string, UnityEngine.Object> dictionary = AssetsBundleHelper.LoadBundle("code.unity3d");
-					byte[] assBytes = ((TextAsset)dictionary["Code.dll"]).bytes;
-					byte[] pdbBytes = ((TextAsset)dictionary["Code.pdb"]).bytes;
+#if !UNITY_EDITOR
+                    var ab = AddressablesManager.Instance.SyncLoadAssetBundle("code_assets_all.bundle");
+                    byte[] assBytes = ((TextAsset)ab.LoadAsset("Assets/AssetsPackage/Code/Code.dll.bytes", typeof(TextAsset))).bytes;
+                    byte[] pdbBytes = ((TextAsset)ab.LoadAsset("Assets/AssetsPackage/Code/Code.pdb.bytes", typeof(TextAsset))).bytes;
+#else
+					byte[] assBytes = (AssetDatabase.LoadAssetAtPath("Assets/AssetsPackage/Code/Code.dll.bytes", typeof(TextAsset)) as TextAsset).bytes;
+					byte[] pdbBytes = (AssetDatabase.LoadAssetAtPath("Assets/AssetsPackage/Code/Code.pdb.bytes", typeof(TextAsset)) as TextAsset).bytes;
+#endif
 					
 					assembly = Assembly.Load(assBytes, pdbBytes);
 					this.allTypes = assembly.GetTypes();
@@ -56,12 +61,12 @@ namespace ET
 				case Define.CodeMode_ILRuntime:
 				{
 #if !UNITY_EDITOR
-            var ab = AddressablesManager.Instance.SyncLoadAssetBundle("code_assets_all.bundle");
-            byte[] assBytes = ((TextAsset)ab.LoadAsset("Assets/AssetsPackage/Code/Code.dll.bytes", typeof(TextAsset))).bytes;
-            byte[] pdbBytes = ((TextAsset)ab.LoadAsset("Assets/AssetsPackage/Code/Code.pdb.bytes", typeof(TextAsset))).bytes;
+                    var ab = AddressablesManager.Instance.SyncLoadAssetBundle("code_assets_all.bundle");
+                    byte[] assBytes = ((TextAsset)ab.LoadAsset("Assets/AssetsPackage/Code/Code.dll.bytes", typeof(TextAsset))).bytes;
+                    byte[] pdbBytes = ((TextAsset)ab.LoadAsset("Assets/AssetsPackage/Code/Code.pdb.bytes", typeof(TextAsset))).bytes;
 #else
-            byte[] assBytes = (AssetDatabase.LoadAssetAtPath("Assets/AssetsPackage/Code/Code.dll.bytes", typeof(TextAsset)) as TextAsset).bytes;
-            byte[] pdbBytes = (AssetDatabase.LoadAssetAtPath("Assets/AssetsPackage/Code/Code.pdb.bytes", typeof(TextAsset)) as TextAsset).bytes;
+					byte[] assBytes = (AssetDatabase.LoadAssetAtPath("Assets/AssetsPackage/Code/Code.dll.bytes", typeof(TextAsset)) as TextAsset).bytes;
+					byte[] pdbBytes = (AssetDatabase.LoadAssetAtPath("Assets/AssetsPackage/Code/Code.pdb.bytes", typeof(TextAsset)) as TextAsset).bytes;
 #endif
 				
 					AppDomain appDomain = new AppDomain();
