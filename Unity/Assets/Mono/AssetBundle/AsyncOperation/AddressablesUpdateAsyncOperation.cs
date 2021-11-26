@@ -42,11 +42,13 @@ namespace AssetBundles
                     }
                     else
                     {
+                        Debug.LogError("handle.Result == null || handle.Result.Count == 0, Check catalog_1.hash is exist");
                         isSuccess = false;
                     }
                 }
                 else
                 {
+                    Debug.LogError("handle.Status == AsyncOperationStatus.Succeeded");
                     isOver = true;
                     isSuccess = false;
                 }

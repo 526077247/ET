@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 468a46d0ae32c3544b7d98094e6448a9, type: 3}
   m_Name: AddressableAssetSettings
   m_EditorClassIdentifier: 
-  m_DefaultGroup: 2cae785edf9e8644a9fc1150ddf15d44
+  m_DefaultGroup: 9ef3c7917cb7a5e46b5108a9c2343985
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 1
   m_BundleLocalCatalog: 0
@@ -22,7 +22,7 @@ MonoBehaviour:
   m_maxConcurrentWebRequests: 500
   m_ContiguousBundles: 0
   m_RemoteCatalogBuildPath:
-    m_Id: 4a95311fc5915f2419ee26b24e9968a4
+    m_Id: d7a6a7ba92fba42459ebf637027f8593
   m_RemoteCatalogLoadPath:
     m_Id: e0590cfd1155bd046b1cdd14b5419cfe
   m_overridePlayerVersion: 1
@@ -65,7 +65,7 @@ MonoBehaviour:
       - m_Id: 4a95311fc5915f2419ee26b24e9968a4
         m_Value: ServerData/[BuildTarget]
       - m_Id: e0590cfd1155bd046b1cdd14b5419cfe
-        m_Value: http://127.0.0.1:8080/cdn
+        m_Value: http://127.0.0.1:8081/cdn
     - m_InheritedParent: 
       m_Id: b4a47ebd563bcaa469f7398e29ea6221
       m_ProfileName: New Profile
@@ -79,7 +79,7 @@ MonoBehaviour:
       - m_Id: 4a95311fc5915f2419ee26b24e9968a4
         m_Value: ServerData/[BuildTarget]
       - m_Id: e0590cfd1155bd046b1cdd14b5419cfe
-        m_Value: http://127.0.0.1:8080/cdn
+        m_Value: http://127.0.0.1:8081/cdn
     m_ProfileEntryNames:
     - m_Id: bc71a3b7aabeb5e4e8045ec2d2886fa5
       m_Name: BuildTarget
@@ -122,11 +122,11 @@ MonoBehaviour:
         m_SerializedData:
         - m_AssemblyName: mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
           m_ClassName: System.Int32
-          m_Data: 54477
+          m_Data: 58421
           m_Key: HostingServicePort
         - m_AssemblyName: mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
           m_ClassName: System.String
-          m_Data: ServerData/Android;Library/com.unity.addressables/aa/Android/Android
+          m_Data: ServerData/StandaloneWindows64
           m_Key: ContentRoot
         - m_AssemblyName: mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
           m_ClassName: System.Boolean
