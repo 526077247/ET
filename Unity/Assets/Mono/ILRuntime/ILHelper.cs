@@ -29,14 +29,20 @@ namespace ET
             list.Add(typeof(Dictionary<string, long>));
             list.Add(typeof(Dictionary<string, int>));
             list.Add(typeof(Dictionary<string, object>));
+            list.Add(typeof(List<ILTypeInstance>));
             list.Add(typeof(List<int>));
             list.Add(typeof(List<long>));
             list.Add(typeof(List<string>));
             list.Add(typeof(List<object>));
+            list.Add(typeof(ListComponent<ILTypeInstance>));
             list.Add(typeof(ETTask<int>));
             list.Add(typeof(ETTask<long>));
             list.Add(typeof(ETTask<string>));
             list.Add(typeof(ETTask<object>));
+            list.Add(typeof(ETTask<AssetBundle>));
+            list.Add(typeof(ETTask<UnityEngine.Object[]>));
+            list.Add(typeof(ListComponent<ETTask>));
+            list.Add(typeof(ListComponent<Vector3>));
             
             // 注册重定向函数
 
@@ -50,7 +56,9 @@ namespace ET
             appdomain.DelegateManager.RegisterMethodDelegate<long, MemoryStream>();
             appdomain.DelegateManager.RegisterMethodDelegate<long, IPEndPoint>();
             appdomain.DelegateManager.RegisterMethodDelegate<ILTypeInstance>();
-
+            appdomain.DelegateManager.RegisterMethodDelegate<AsyncOperation>();
+            
+            
             appdomain.DelegateManager.RegisterFunctionDelegate<UnityEngine.Events.UnityAction>();
             appdomain.DelegateManager.RegisterFunctionDelegate<System.Object, ET.ETTask>();
             appdomain.DelegateManager.RegisterFunctionDelegate<ILTypeInstance, bool>();
@@ -63,7 +71,7 @@ namespace ET
             appdomain.DelegateManager.RegisterFunctionDelegate<int, int, int>();//Linq
             appdomain.DelegateManager.RegisterFunctionDelegate<KeyValuePair<int, List<int>>, bool>();
             appdomain.DelegateManager.RegisterFunctionDelegate<KeyValuePair<int, int>, KeyValuePair<int, int>, int>();
-
+            
             appdomain.DelegateManager.RegisterDelegateConvertor<UnityEngine.Events.UnityAction>((act) =>
             {
                 return new UnityEngine.Events.UnityAction(() =>
