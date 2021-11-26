@@ -14,7 +14,6 @@ namespace ET
             {
                 TextAsset v = kv.Value as TextAsset;
                 string key = kv.Key;
-                Log.Info(key);
                 output[key] = v.bytes;
             }
         }
