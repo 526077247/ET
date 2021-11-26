@@ -96,28 +96,35 @@ namespace ET
             BuildTarget buildTarget = BuildTarget.StandaloneWindows;
             string programName = "ET";
             string exeName = programName;
+            string platform = "";
             switch (type)
             {
                 case PlatformType.PC:
                     buildTarget = BuildTarget.StandaloneWindows64;
                     exeName += ".exe";
                     IFixEditor.Patch();
+                    platform = "pc";
                     break;
                 case PlatformType.Android:
                     KeystoreSetting();
                     buildTarget = BuildTarget.Android;
                     exeName += ".apk";
                     IFixEditor.CompileToAndroid();
+                    platform = "android";
                     break;
                 case PlatformType.IOS:
                     buildTarget = BuildTarget.iOS;
                     IFixEditor.CompileToIOS();
+                    platform = "ios";
                     break;
                 case PlatformType.MacOS:
                     buildTarget = BuildTarget.StandaloneOSX;
                     IFixEditor.Patch();
+                    platform = "pc";
                     break;
             }
+            //打程序集
+            BuildAssemblieEditor.BuildCode();
             if (isInject)
             {
                 //Inject
@@ -146,6 +153,22 @@ namespace ET
                 BuildPipeline.BuildPlayer(levels, $"{relativeDirPrefix}/{exeName}", buildTarget, buildOptions);
                 UnityEngine.Debug.Log("完成exe打包");
             }
+            else
+            {
+                string jstr = File.ReadAllText("Assets/AssetsPackage/config.bytes");
+                var obj = JsonHelper.FromJson<Dictionary<string, string>>(jstr);
+                string version = obj["ResVer"];
+                var settings = AASUtility.GetSettings();
+                string fold = Directory.GetParent(settings.RemoteCatalogBuildPath.GetValue(settings)).FullName;
+                
+                string targetPath = Path.Combine(relativeDirPrefix, $"{version}_{platform}");
+
+                FileHelper.CleanDirectory(targetPath);
+                FileHelper.CopyFiles(fold, targetPath);
+                
+                UnityEngine.Debug.Log("完成cdn资源打包");
+            }
         }
+        
     }
 }

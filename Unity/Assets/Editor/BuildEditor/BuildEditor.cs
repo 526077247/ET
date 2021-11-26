@@ -59,6 +59,7 @@ namespace ET
 
 		private ETBuildSettings buildSettings;
 
+		private Dictionary<string, string> config;
 		[MenuItem("Tools/打包工具")]
 		public static void ShowWindow()
 		{
@@ -96,6 +97,8 @@ namespace ET
 				buildType = buildSettings.buildType;
 				buildAssetBundleOptions = buildSettings.buildAssetBundleOptions;
 			}
+			string jstr = File.ReadAllText("Assets/AssetsPackage/config.bytes");
+			config = JsonHelper.FromJson<Dictionary<string, string>>(jstr);
         }
 
         private void OnDisable()
@@ -105,6 +108,19 @@ namespace ET
 
         private void OnGUI() 
 		{
+			EditorGUILayout.LabelField("cdn地址：" + this.config["remote_cdn_url"]);
+			EditorGUILayout.LabelField("引擎版本：" + this.config["EngineVer"]);
+			EditorGUILayout.LabelField("资源版本：" + this.config["ResVer"]);
+			if (GUILayout.Button("修改配置"))
+			{
+				System.Diagnostics.Process.Start("notepad.exe", "Assets/AssetsPackage/config.bytes");
+			}
+			if (GUILayout.Button("刷新配置"))
+			{
+				string jstr = File.ReadAllText("Assets/AssetsPackage/config.bytes");
+				config = JsonHelper.FromJson<Dictionary<string, string>>(jstr);
+			}
+			EditorGUILayout.LabelField("");
 			EditorGUILayout.LabelField("打包平台:");
 			this.platformType = (PlatformType)EditorGUILayout.EnumPopup(platformType);
             this.clearFolder = EditorGUILayout.Toggle("清理资源文件夹: ", clearFolder);
@@ -114,7 +130,7 @@ namespace ET
 			this.buildType = (BuildType)EditorGUILayout.EnumPopup("BuildType: ", this.buildType);
 			//EditorGUILayout.LabelField("BuildAssetBundleOptions(可多选):");
 			//this.buildAssetBundleOptions = (BuildAssetBundleOptions)EditorGUILayout.EnumFlagsField(this.buildAssetBundleOptions);
-			
+
 			switch (buildType)
 			{
 				case BuildType.Development:
