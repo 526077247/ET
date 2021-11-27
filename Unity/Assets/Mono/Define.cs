@@ -12,13 +12,9 @@
 		public static readonly int DesignScreen_Height = 768;
 
 		// 1 mono模式 2 ILRuntime模式 3 mono热重载模式
-#if UNITY_ANDROID
-		public static int CodeMode = 1;
-#elif UNITY_IOS
-		public static int CodeMode = 2;
-#elif UNITY_EDITOR
+#if UNITY_EDITOR
 		public static int CodeMode = 3;
-#else // PC测试ILRuntime
+#else // ILRuntime
 		public static int CodeMode = 2;
 #endif
 		public const int CodeMode_Mono = 1;

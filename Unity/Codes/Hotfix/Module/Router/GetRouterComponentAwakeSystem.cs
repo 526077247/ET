@@ -30,7 +30,7 @@ namespace ET
         static async ETTask<string[]> GetRouterListFake()
         {
             await ETTask.CompletedTask;
-            return new string[]{"127.0.0.1:10007", "127.0.0.1:10008", "127.0.0.1:10009", };
+            return new string[]{"172.22.213.58:10007", "172.22.213.58:10008", "172.22.213.58:10009", };
         }
         private static async ETVoid SynAsync(GetRouterComponent self, long gateid, long channelid)
         {

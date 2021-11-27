@@ -153,21 +153,20 @@ namespace ET
                 BuildPipeline.BuildPlayer(levels, $"{relativeDirPrefix}/{exeName}", buildTarget, buildOptions);
                 UnityEngine.Debug.Log("完成exe打包");
             }
-            else
-            {
-                string jstr = File.ReadAllText("Assets/AssetsPackage/config.bytes");
-                var obj = JsonHelper.FromJson<Dictionary<string, string>>(jstr);
-                string version = obj["ResVer"];
-                var settings = AASUtility.GetSettings();
-                string fold = Directory.GetParent(settings.RemoteCatalogBuildPath.GetValue(settings)).FullName;
-                
-                string targetPath = Path.Combine(relativeDirPrefix, $"{version}_{platform}");
-
-                FileHelper.CleanDirectory(targetPath);
-                FileHelper.CopyFiles(fold, targetPath);
-                
-                UnityEngine.Debug.Log("完成cdn资源打包");
-            }
+            
+            string jstr = File.ReadAllText("Assets/AssetsPackage/config.bytes");
+            var obj = JsonHelper.FromJson<Dictionary<string, string>>(jstr);
+            string version = obj["ResVer"];
+            var settings = AASUtility.GetSettings();
+            string fold = Directory.GetParent(settings.RemoteCatalogBuildPath.GetValue(settings)).FullName;
+            
+            string targetPath = Path.Combine(relativeDirPrefix, $"{version}_{platform}");
+            if (!Directory.Exists(targetPath)) Directory.CreateDirectory(targetPath);
+            FileHelper.CleanDirectory(targetPath);
+            FileHelper.CopyFiles(fold, targetPath);
+            
+            UnityEngine.Debug.Log("完成cdn资源打包");
+            
         }
         
     }

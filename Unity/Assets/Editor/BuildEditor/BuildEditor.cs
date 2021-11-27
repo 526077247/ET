@@ -97,8 +97,6 @@ namespace ET
 				buildType = buildSettings.buildType;
 				buildAssetBundleOptions = buildSettings.buildAssetBundleOptions;
 			}
-			string jstr = File.ReadAllText("Assets/AssetsPackage/config.bytes");
-			config = JsonHelper.FromJson<Dictionary<string, string>>(jstr);
         }
 
         private void OnDisable()
@@ -108,6 +106,11 @@ namespace ET
 
         private void OnGUI() 
 		{
+			if (this.config == null)
+			{
+				string jstr = File.ReadAllText("Assets/AssetsPackage/config.bytes");
+				config = JsonHelper.FromJson<Dictionary<string, string>>(jstr);
+			}
 			EditorGUILayout.LabelField("cdn地址：" + this.config["remote_cdn_url"]);
 			EditorGUILayout.LabelField("引擎版本：" + this.config["EngineVer"]);
 			EditorGUILayout.LabelField("资源版本：" + this.config["ResVer"]);
