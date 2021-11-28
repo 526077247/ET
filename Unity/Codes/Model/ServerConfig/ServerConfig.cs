@@ -13,6 +13,7 @@ namespace ET
     {
         public string[] iplist;
         public string update_list_cdn_url;
+        public string router_list_cdn_url;
         public string res_cdn_url;
         public string test_update_list_cdn_url;
         public ENV_ID env_id;
@@ -29,6 +30,7 @@ namespace ET
                     "setting1",new ServerConfig{
                         iplist=new string[] { "172.22.213.58:10002" },
                         update_list_cdn_url = "http://172.22.213.58:8081/cdn",
+                        router_list_cdn_url = "http://172.22.213.58:8081/cdn",
                         res_cdn_url="http://172.22.213.58:8081/cdn",
                         test_update_list_cdn_url = "http://172.22.213.58:8081/cdn_test",
                         env_id = ENV_ID.DEVELOP,
@@ -38,6 +40,7 @@ namespace ET
                     "setting2",new ServerConfig{
                         iplist=new string[] { "127.0.0.1:10002" },
                         update_list_cdn_url = "http://127.0.0.1:8081/cdn",
+                        router_list_cdn_url = "http://127.0.0.1:8081/cdn",
                         res_cdn_url = "http://127.0.0.1:8081/cdn",
                         test_update_list_cdn_url = "http://127.0.0.1:8081/cdn_test",
                         env_id = ENV_ID.DEVELOP,

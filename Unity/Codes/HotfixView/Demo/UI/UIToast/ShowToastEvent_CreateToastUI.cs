@@ -15,6 +15,7 @@ namespace ET
         {
             GameObject gameObject = await GameObjectPoolComponent.Instance.GetGameObjectAsync("UI/UIToast/Prefabs/UIToast.prefab");
             UIToast ui = ToastComponent.Instance.AddChild<UIToast, GameObject>(gameObject);
+            ui.transform = gameObject.transform;
             ui.transform.SetParent(ToastComponent.Instance.root);
             ui.transform.localPosition = Vector3.zero;
             ui.transform.localRotation = Quaternion.identity;

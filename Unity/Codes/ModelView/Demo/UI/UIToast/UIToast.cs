@@ -7,6 +7,6 @@ namespace ET
 {
     public class UIToast : UIBaseComponent
 	{
-		public UITextmesh Text;
+		public TMPro.TMP_Text Text;
     }
 }

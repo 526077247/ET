@@ -10,7 +10,7 @@ namespace ET
     {
         public override void OnCreate(UIToast self)
         {
-            self.Text = self.AddComponent<UITextmesh>("Content");
+            self.Text = self.transform.Find("Content").GetComponent<TMPro.TMP_Text>();
         }
     }
     [UISystem]
