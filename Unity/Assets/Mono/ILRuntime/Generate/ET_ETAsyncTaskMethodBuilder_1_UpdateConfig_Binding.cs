@@ -14,14 +14,14 @@ using ILRuntime.CLR.Utils;
 
 namespace ILRuntime.Runtime.Generated
 {
-    unsafe class ET_ETAsyncTaskMethodBuilder_1_List_1_ILTypeInstance_Binding
+    unsafe class ET_ETAsyncTaskMethodBuilder_1_UpdateConfig_Binding
     {
         public static void Register(ILRuntime.Runtime.Enviorment.AppDomain app)
         {
             BindingFlags flag = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
             MethodBase method;
             Type[] args;
-            Type type = typeof(ET.ETAsyncTaskMethodBuilder<System.Collections.Generic.List<ILRuntime.Runtime.Intepreter.ILTypeInstance>>);
+            Type type = typeof(ET.ETAsyncTaskMethodBuilder<ET.UpdateConfig>);
             args = new Type[]{};
             method = type.GetMethod("Create", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, Create_0);
@@ -57,12 +57,12 @@ namespace ILRuntime.Runtime.Generated
             method = type.GetMethod("get_Task", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, get_Task_2);
 
-            app.RegisterCLRCreateDefaultInstance(type, () => new ET.ETAsyncTaskMethodBuilder<System.Collections.Generic.List<ILRuntime.Runtime.Intepreter.ILTypeInstance>>());
+            app.RegisterCLRCreateDefaultInstance(type, () => new ET.ETAsyncTaskMethodBuilder<ET.UpdateConfig>());
 
 
         }
 
-        static void WriteBackInstance(ILRuntime.Runtime.Enviorment.AppDomain __domain, StackObject* ptr_of_this_method, IList<object> __mStack, ref ET.ETAsyncTaskMethodBuilder<System.Collections.Generic.List<ILRuntime.Runtime.Intepreter.ILTypeInstance>> instance_of_this_method)
+        static void WriteBackInstance(ILRuntime.Runtime.Enviorment.AppDomain __domain, StackObject* ptr_of_this_method, IList<object> __mStack, ref ET.ETAsyncTaskMethodBuilder<ET.UpdateConfig> instance_of_this_method)
         {
             ptr_of_this_method = ILIntepreter.GetObjectAndResolveReference(ptr_of_this_method);
             switch(ptr_of_this_method->ObjectType)
@@ -101,7 +101,7 @@ namespace ILRuntime.Runtime.Generated
                     break;
                  case ObjectTypes.ArrayReference:
                     {
-                        var instance_of_arrayReference = __mStack[ptr_of_this_method->Value] as ET.ETAsyncTaskMethodBuilder<System.Collections.Generic.List<ILRuntime.Runtime.Intepreter.ILTypeInstance>>[];
+                        var instance_of_arrayReference = __mStack[ptr_of_this_method->Value] as ET.ETAsyncTaskMethodBuilder<ET.UpdateConfig>[];
                         instance_of_arrayReference[ptr_of_this_method->ValueLow] = instance_of_this_method;
                     }
                     break;
@@ -114,7 +114,7 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 0);
 
 
-            var result_of_this_method = ET.ETAsyncTaskMethodBuilder<System.Collections.Generic.List<ILRuntime.Runtime.Intepreter.ILTypeInstance>>.Create();
+            var result_of_this_method = ET.ETAsyncTaskMethodBuilder<ET.UpdateConfig>.Create();
 
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
@@ -130,9 +130,9 @@ namespace ILRuntime.Runtime.Generated
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
             ptr_of_this_method = ILIntepreter.GetObjectAndResolveReference(ptr_of_this_method);
-            object instance_of_this_method = (ET.ETAsyncTaskMethodBuilder<System.Collections.Generic.List<ILRuntime.Runtime.Intepreter.ILTypeInstance>>)typeof(ET.ETAsyncTaskMethodBuilder<System.Collections.Generic.List<ILRuntime.Runtime.Intepreter.ILTypeInstance>>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)16);
+            object instance_of_this_method = (ET.ETAsyncTaskMethodBuilder<ET.UpdateConfig>)typeof(ET.ETAsyncTaskMethodBuilder<ET.UpdateConfig>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)16);
 
-            ((ET.ETAsyncTaskMethodBuilder<System.Collections.Generic.List<ILRuntime.Runtime.Intepreter.ILTypeInstance>>)instance_of_this_method).Start<ET.IAsyncStateMachineClassInheritanceAdaptor.IAsyncStateMachineAdaptor>(ref @stateMachine);
+            ((ET.ETAsyncTaskMethodBuilder<ET.UpdateConfig>)instance_of_this_method).Start<ET.IAsyncStateMachineClassInheritanceAdaptor.IAsyncStateMachineAdaptor>(ref @stateMachine);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
             switch(ptr_of_this_method->ObjectType)
@@ -202,7 +202,7 @@ namespace ILRuntime.Runtime.Generated
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
             ptr_of_this_method = ILIntepreter.GetObjectAndResolveReference(ptr_of_this_method);
-            ET.ETAsyncTaskMethodBuilder<System.Collections.Generic.List<ILRuntime.Runtime.Intepreter.ILTypeInstance>> instance_of_this_method = (ET.ETAsyncTaskMethodBuilder<System.Collections.Generic.List<ILRuntime.Runtime.Intepreter.ILTypeInstance>>)typeof(ET.ETAsyncTaskMethodBuilder<System.Collections.Generic.List<ILRuntime.Runtime.Intepreter.ILTypeInstance>>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)16);
+            ET.ETAsyncTaskMethodBuilder<ET.UpdateConfig> instance_of_this_method = (ET.ETAsyncTaskMethodBuilder<ET.UpdateConfig>)typeof(ET.ETAsyncTaskMethodBuilder<ET.UpdateConfig>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)16);
 
             var result_of_this_method = instance_of_this_method.Task;
 

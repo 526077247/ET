@@ -14,28 +14,6 @@ namespace ET
 
     }
 
-    public class WhiteConfig
-    {
-        public ENV_ID env_id;
-        public string account;
-    }
-    public class Resver
-    {
-        public List<string> channel;
-        public List<string> update_tailnumber;
-        public int force_update;
-    }
-    public class AppConfig
-    {
-        public string app_url;
-        public Dictionary<string, Resver> app_ver;
-        public string jump_channel;
-    }
-    public class UpdateConfig
-    {
-        public Dictionary<string,Dictionary<string, Resver>> res_list;
-        public Dictionary<string, AppConfig> app_list;
-    }
     public class BootConfig
     {
         public static BootConfig Instance { get; private set; } = new BootConfig();
@@ -141,7 +119,7 @@ namespace ET
             return null;
         }
         //找到可以更新的最大app版本号
-        public string FindMaxUpdateAppVer(string channel,string local_app_ver = "")
+        public string FindMaxUpdateAppVer(string channel)
         {
             if (m_appUpdateList == null) return null;
             string last_ver = null;
