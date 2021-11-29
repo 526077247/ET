@@ -63,7 +63,6 @@ namespace ET
 					byte[] pdbBytes = (AssetDatabase.LoadAssetAtPath("Assets/AssetsPackage/Code/Code.pdb.bytes", typeof(TextAsset)) as TextAsset).bytes;
 #endif
 					
-					if(appDomain!=null) appDomain.Dispose();
 					appDomain = new ILRuntime.Runtime.Enviorment.AppDomain();
 					if(assStream!=null) assStream.Dispose();
 					if(pdbStream!=null) pdbStream.Dispose();

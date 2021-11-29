@@ -52,11 +52,11 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 2);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            UnityEngine.RenderMode @value = (UnityEngine.RenderMode)typeof(UnityEngine.RenderMode).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)20);
+            UnityEngine.RenderMode @value = (UnityEngine.RenderMode)typeof(UnityEngine.RenderMode).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            UnityEngine.Canvas instance_of_this_method = (UnityEngine.Canvas)typeof(UnityEngine.Canvas).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            UnityEngine.Canvas instance_of_this_method = (UnityEngine.Canvas)typeof(UnityEngine.Canvas).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             instance_of_this_method.renderMode = value;
@@ -71,11 +71,11 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 2);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            UnityEngine.Camera @value = (UnityEngine.Camera)typeof(UnityEngine.Camera).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            UnityEngine.Camera @value = (UnityEngine.Camera)typeof(UnityEngine.Camera).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            UnityEngine.Canvas instance_of_this_method = (UnityEngine.Canvas)typeof(UnityEngine.Canvas).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            UnityEngine.Canvas instance_of_this_method = (UnityEngine.Canvas)typeof(UnityEngine.Canvas).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             instance_of_this_method.worldCamera = value;
@@ -93,7 +93,7 @@ namespace ILRuntime.Runtime.Generated
             System.Single @value = *(float*)&ptr_of_this_method->Value;
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            UnityEngine.Canvas instance_of_this_method = (UnityEngine.Canvas)typeof(UnityEngine.Canvas).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            UnityEngine.Canvas instance_of_this_method = (UnityEngine.Canvas)typeof(UnityEngine.Canvas).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             instance_of_this_method.planeDistance = value;
@@ -108,11 +108,11 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 2);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.String @value = (System.String)typeof(System.String).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            System.String @value = (System.String)typeof(System.String).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            UnityEngine.Canvas instance_of_this_method = (UnityEngine.Canvas)typeof(UnityEngine.Canvas).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            UnityEngine.Canvas instance_of_this_method = (UnityEngine.Canvas)typeof(UnityEngine.Canvas).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             instance_of_this_method.sortingLayerName = value;
@@ -130,7 +130,7 @@ namespace ILRuntime.Runtime.Generated
             System.Int32 @value = ptr_of_this_method->Value;
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            UnityEngine.Canvas instance_of_this_method = (UnityEngine.Canvas)typeof(UnityEngine.Canvas).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            UnityEngine.Canvas instance_of_this_method = (UnityEngine.Canvas)typeof(UnityEngine.Canvas).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             instance_of_this_method.sortingOrder = value;
@@ -145,7 +145,7 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 1);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            UnityEngine.Canvas instance_of_this_method = (UnityEngine.Canvas)typeof(UnityEngine.Canvas).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            UnityEngine.Canvas instance_of_this_method = (UnityEngine.Canvas)typeof(UnityEngine.Canvas).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             var result_of_this_method = instance_of_this_method.worldCamera;

@@ -37,15 +37,15 @@ namespace ILRuntime.Runtime.Generated
             args = new Type[]{};
             method = type.GetMethod("get_CompletedTask", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, get_CompletedTask_4);
-            args = new Type[]{};
-            method = type.GetMethod("SetResult", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, SetResult_5);
-            args = new Type[]{typeof(System.Boolean)};
-            method = type.GetMethod("Create", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, Create_6);
             args = new Type[]{typeof(System.Exception)};
             method = type.GetMethod("SetException", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, SetException_7);
+            app.RegisterCLRMethodRedirection(method, SetException_5);
+            args = new Type[]{};
+            method = type.GetMethod("SetResult", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, SetResult_6);
+            args = new Type[]{typeof(System.Boolean)};
+            method = type.GetMethod("Create", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, Create_7);
 
 
         }
@@ -124,37 +124,7 @@ namespace ILRuntime.Runtime.Generated
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 
-        static StackObject* SetResult_5(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
-        {
-            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            StackObject* ptr_of_this_method;
-            StackObject* __ret = ILIntepreter.Minus(__esp, 1);
-
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            ET.ETTask instance_of_this_method = (ET.ETTask)typeof(ET.ETTask).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
-            __intp.Free(ptr_of_this_method);
-
-            instance_of_this_method.SetResult();
-
-            return __ret;
-        }
-
-        static StackObject* Create_6(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
-        {
-            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            StackObject* ptr_of_this_method;
-            StackObject* __ret = ILIntepreter.Minus(__esp, 1);
-
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.Boolean @fromPool = ptr_of_this_method->Value == 1;
-
-
-            var result_of_this_method = ET.ETTask.Create(@fromPool);
-
-            return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
-        }
-
-        static StackObject* SetException_7(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* SetException_5(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
@@ -171,6 +141,36 @@ namespace ILRuntime.Runtime.Generated
             instance_of_this_method.SetException(@e);
 
             return __ret;
+        }
+
+        static StackObject* SetResult_6(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        {
+            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
+            StackObject* ptr_of_this_method;
+            StackObject* __ret = ILIntepreter.Minus(__esp, 1);
+
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
+            ET.ETTask instance_of_this_method = (ET.ETTask)typeof(ET.ETTask).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            __intp.Free(ptr_of_this_method);
+
+            instance_of_this_method.SetResult();
+
+            return __ret;
+        }
+
+        static StackObject* Create_7(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        {
+            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
+            StackObject* ptr_of_this_method;
+            StackObject* __ret = ILIntepreter.Minus(__esp, 1);
+
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
+            System.Boolean @fromPool = ptr_of_this_method->Value == 1;
+
+
+            var result_of_this_method = ET.ETTask.Create(@fromPool);
+
+            return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 
 

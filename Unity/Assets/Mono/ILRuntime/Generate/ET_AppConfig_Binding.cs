@@ -60,7 +60,7 @@ namespace ILRuntime.Runtime.Generated
         static StackObject* AssignFromStack_app_ver_0(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            System.Collections.Generic.Dictionary<System.String, ET.Resver> @app_ver = (System.Collections.Generic.Dictionary<System.String, ET.Resver>)typeof(System.Collections.Generic.Dictionary<System.String, ET.Resver>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            System.Collections.Generic.Dictionary<System.String, ET.Resver> @app_ver = (System.Collections.Generic.Dictionary<System.String, ET.Resver>)typeof(System.Collections.Generic.Dictionary<System.String, ET.Resver>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             ((ET.AppConfig)o).app_ver = @app_ver;
             return ptr_of_this_method;
         }
@@ -84,7 +84,7 @@ namespace ILRuntime.Runtime.Generated
         static StackObject* AssignFromStack_app_url_1(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            System.String @app_url = (System.String)typeof(System.String).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            System.String @app_url = (System.String)typeof(System.String).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             ((ET.AppConfig)o).app_url = @app_url;
             return ptr_of_this_method;
         }
@@ -108,7 +108,7 @@ namespace ILRuntime.Runtime.Generated
         static StackObject* AssignFromStack_jump_channel_2(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            System.String @jump_channel = (System.String)typeof(System.String).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            System.String @jump_channel = (System.String)typeof(System.String).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             ((ET.AppConfig)o).jump_channel = @jump_channel;
             return ptr_of_this_method;
         }

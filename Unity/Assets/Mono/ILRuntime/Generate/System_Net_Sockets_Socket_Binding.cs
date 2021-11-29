@@ -55,11 +55,11 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 2);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.Net.EndPoint @localEP = (System.Net.EndPoint)typeof(System.Net.EndPoint).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            System.Net.EndPoint @localEP = (System.Net.EndPoint)typeof(System.Net.EndPoint).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            System.Net.Sockets.Socket instance_of_this_method = (System.Net.Sockets.Socket)typeof(System.Net.Sockets.Socket).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            System.Net.Sockets.Socket instance_of_this_method = (System.Net.Sockets.Socket)typeof(System.Net.Sockets.Socket).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             instance_of_this_method.Bind(@localEP);
@@ -74,18 +74,18 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 4);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.Byte[] @optionOutValue = (System.Byte[])typeof(System.Byte[]).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            System.Byte[] @optionOutValue = (System.Byte[])typeof(System.Byte[]).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            System.Byte[] @optionInValue = (System.Byte[])typeof(System.Byte[]).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            System.Byte[] @optionInValue = (System.Byte[])typeof(System.Byte[]).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 3);
             System.Int32 @ioControlCode = ptr_of_this_method->Value;
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 4);
-            System.Net.Sockets.Socket instance_of_this_method = (System.Net.Sockets.Socket)typeof(System.Net.Sockets.Socket).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            System.Net.Sockets.Socket instance_of_this_method = (System.Net.Sockets.Socket)typeof(System.Net.Sockets.Socket).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             var result_of_this_method = instance_of_this_method.IOControl(@ioControlCode, @optionInValue, @optionOutValue);
@@ -102,11 +102,11 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 6);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.Net.EndPoint @remoteEP = (System.Net.EndPoint)typeof(System.Net.EndPoint).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            System.Net.EndPoint @remoteEP = (System.Net.EndPoint)typeof(System.Net.EndPoint).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            System.Net.Sockets.SocketFlags @socketFlags = (System.Net.Sockets.SocketFlags)typeof(System.Net.Sockets.SocketFlags).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)20);
+            System.Net.Sockets.SocketFlags @socketFlags = (System.Net.Sockets.SocketFlags)typeof(System.Net.Sockets.SocketFlags).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 3);
@@ -116,11 +116,11 @@ namespace ILRuntime.Runtime.Generated
             System.Int32 @offset = ptr_of_this_method->Value;
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 5);
-            System.Byte[] @buffer = (System.Byte[])typeof(System.Byte[]).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            System.Byte[] @buffer = (System.Byte[])typeof(System.Byte[]).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 6);
-            System.Net.Sockets.Socket instance_of_this_method = (System.Net.Sockets.Socket)typeof(System.Net.Sockets.Socket).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            System.Net.Sockets.Socket instance_of_this_method = (System.Net.Sockets.Socket)typeof(System.Net.Sockets.Socket).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             var result_of_this_method = instance_of_this_method.SendTo(@buffer, @offset, @size, @socketFlags, @remoteEP);
@@ -137,7 +137,7 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 1);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.Net.Sockets.Socket instance_of_this_method = (System.Net.Sockets.Socket)typeof(System.Net.Sockets.Socket).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            System.Net.Sockets.Socket instance_of_this_method = (System.Net.Sockets.Socket)typeof(System.Net.Sockets.Socket).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             instance_of_this_method.Dispose();
@@ -152,13 +152,13 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 3);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.Net.EndPoint @remoteEP = (System.Net.EndPoint)typeof(System.Net.EndPoint).CheckCLRTypes(__intp.RetriveObject(ptr_of_this_method, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            System.Net.EndPoint @remoteEP = (System.Net.EndPoint)typeof(System.Net.EndPoint).CheckCLRTypes(__intp.RetriveObject(ptr_of_this_method, __mStack));
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            System.Byte[] @buffer = (System.Byte[])typeof(System.Byte[]).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            System.Byte[] @buffer = (System.Byte[])typeof(System.Byte[]).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 3);
-            System.Net.Sockets.Socket instance_of_this_method = (System.Net.Sockets.Socket)typeof(System.Net.Sockets.Socket).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            System.Net.Sockets.Socket instance_of_this_method = (System.Net.Sockets.Socket)typeof(System.Net.Sockets.Socket).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
 
             var result_of_this_method = instance_of_this_method.ReceiveFrom(@buffer, ref @remoteEP);
 
@@ -233,7 +233,7 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 1);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.Net.Sockets.Socket instance_of_this_method = (System.Net.Sockets.Socket)typeof(System.Net.Sockets.Socket).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            System.Net.Sockets.Socket instance_of_this_method = (System.Net.Sockets.Socket)typeof(System.Net.Sockets.Socket).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             var result_of_this_method = instance_of_this_method.Available;
@@ -250,15 +250,15 @@ namespace ILRuntime.Runtime.Generated
             StackObject* ptr_of_this_method;
             StackObject* __ret = ILIntepreter.Minus(__esp, 3);
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.Net.Sockets.ProtocolType @protocolType = (System.Net.Sockets.ProtocolType)typeof(System.Net.Sockets.ProtocolType).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)20);
+            System.Net.Sockets.ProtocolType @protocolType = (System.Net.Sockets.ProtocolType)typeof(System.Net.Sockets.ProtocolType).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            System.Net.Sockets.SocketType @socketType = (System.Net.Sockets.SocketType)typeof(System.Net.Sockets.SocketType).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)20);
+            System.Net.Sockets.SocketType @socketType = (System.Net.Sockets.SocketType)typeof(System.Net.Sockets.SocketType).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 3);
-            System.Net.Sockets.AddressFamily @addressFamily = (System.Net.Sockets.AddressFamily)typeof(System.Net.Sockets.AddressFamily).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)20);
+            System.Net.Sockets.AddressFamily @addressFamily = (System.Net.Sockets.AddressFamily)typeof(System.Net.Sockets.AddressFamily).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
 

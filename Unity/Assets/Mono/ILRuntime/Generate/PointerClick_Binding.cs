@@ -14,46 +14,46 @@ using ILRuntime.CLR.Utils;
 
 namespace ILRuntime.Runtime.Generated
 {
-    unsafe class ET_UILayerScript_Binding
+    unsafe class PointerClick_Binding
     {
         public static void Register(ILRuntime.Runtime.Enviorment.AppDomain app)
         {
             BindingFlags flag = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
             FieldInfo field;
             Type[] args;
-            Type type = typeof(ET.UILayerScript);
+            Type type = typeof(global::PointerClick);
 
-            field = type.GetField("UILayer", flag);
-            app.RegisterCLRFieldGetter(field, get_UILayer_0);
-            app.RegisterCLRFieldSetter(field, set_UILayer_0);
-            app.RegisterCLRFieldBinding(field, CopyToStack_UILayer_0, AssignFromStack_UILayer_0);
+            field = type.GetField("onClick", flag);
+            app.RegisterCLRFieldGetter(field, get_onClick_0);
+            app.RegisterCLRFieldSetter(field, set_onClick_0);
+            app.RegisterCLRFieldBinding(field, CopyToStack_onClick_0, AssignFromStack_onClick_0);
 
 
         }
 
 
 
-        static object get_UILayer_0(ref object o)
+        static object get_onClick_0(ref object o)
         {
-            return ((ET.UILayerScript)o).UILayer;
+            return ((global::PointerClick)o).onClick;
         }
 
-        static StackObject* CopyToStack_UILayer_0(ref object o, ILIntepreter __intp, StackObject* __ret, IList<object> __mStack)
+        static StackObject* CopyToStack_onClick_0(ref object o, ILIntepreter __intp, StackObject* __ret, IList<object> __mStack)
         {
-            var result_of_this_method = ((ET.UILayerScript)o).UILayer;
+            var result_of_this_method = ((global::PointerClick)o).onClick;
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 
-        static void set_UILayer_0(ref object o, object v)
+        static void set_onClick_0(ref object o, object v)
         {
-            ((ET.UILayerScript)o).UILayer = (ET.UILayer)v;
+            ((global::PointerClick)o).onClick = (UnityEngine.Events.UnityEvent)v;
         }
 
-        static StackObject* AssignFromStack_UILayer_0(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
+        static StackObject* AssignFromStack_onClick_0(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            ET.UILayer @UILayer = (ET.UILayer)typeof(ET.UILayer).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
-            ((ET.UILayerScript)o).UILayer = @UILayer;
+            UnityEngine.Events.UnityEvent @onClick = (UnityEngine.Events.UnityEvent)typeof(UnityEngine.Events.UnityEvent).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            ((global::PointerClick)o).onClick = @onClick;
             return ptr_of_this_method;
         }
 

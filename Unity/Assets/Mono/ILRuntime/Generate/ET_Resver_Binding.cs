@@ -86,7 +86,7 @@ namespace ILRuntime.Runtime.Generated
         static StackObject* AssignFromStack_channel_1(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            System.Collections.Generic.List<System.String> @channel = (System.Collections.Generic.List<System.String>)typeof(System.Collections.Generic.List<System.String>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            System.Collections.Generic.List<System.String> @channel = (System.Collections.Generic.List<System.String>)typeof(System.Collections.Generic.List<System.String>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             ((ET.Resver)o).channel = @channel;
             return ptr_of_this_method;
         }
@@ -110,7 +110,7 @@ namespace ILRuntime.Runtime.Generated
         static StackObject* AssignFromStack_update_tailnumber_2(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            System.Collections.Generic.List<System.String> @update_tailnumber = (System.Collections.Generic.List<System.String>)typeof(System.Collections.Generic.List<System.String>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            System.Collections.Generic.List<System.String> @update_tailnumber = (System.Collections.Generic.List<System.String>)typeof(System.Collections.Generic.List<System.String>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             ((ET.Resver)o).update_tailnumber = @update_tailnumber;
             return ptr_of_this_method;
         }

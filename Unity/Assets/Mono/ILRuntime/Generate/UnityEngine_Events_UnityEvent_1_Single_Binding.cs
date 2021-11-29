@@ -40,11 +40,11 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 2);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            UnityEngine.Events.UnityAction<System.Single> @call = (UnityEngine.Events.UnityAction<System.Single>)typeof(UnityEngine.Events.UnityAction<System.Single>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)8);
+            UnityEngine.Events.UnityAction<System.Single> @call = (UnityEngine.Events.UnityAction<System.Single>)typeof(UnityEngine.Events.UnityAction<System.Single>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            UnityEngine.Events.UnityEvent<System.Single> instance_of_this_method = (UnityEngine.Events.UnityEvent<System.Single>)typeof(UnityEngine.Events.UnityEvent<System.Single>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            UnityEngine.Events.UnityEvent<System.Single> instance_of_this_method = (UnityEngine.Events.UnityEvent<System.Single>)typeof(UnityEngine.Events.UnityEvent<System.Single>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             instance_of_this_method.AddListener(@call);
@@ -59,11 +59,11 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 2);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            UnityEngine.Events.UnityAction<System.Single> @call = (UnityEngine.Events.UnityAction<System.Single>)typeof(UnityEngine.Events.UnityAction<System.Single>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)8);
+            UnityEngine.Events.UnityAction<System.Single> @call = (UnityEngine.Events.UnityAction<System.Single>)typeof(UnityEngine.Events.UnityAction<System.Single>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            UnityEngine.Events.UnityEvent<System.Single> instance_of_this_method = (UnityEngine.Events.UnityEvent<System.Single>)typeof(UnityEngine.Events.UnityEvent<System.Single>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            UnityEngine.Events.UnityEvent<System.Single> instance_of_this_method = (UnityEngine.Events.UnityEvent<System.Single>)typeof(UnityEngine.Events.UnityEvent<System.Single>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             instance_of_this_method.RemoveListener(@call);

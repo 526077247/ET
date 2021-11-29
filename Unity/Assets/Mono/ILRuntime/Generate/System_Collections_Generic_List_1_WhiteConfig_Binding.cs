@@ -14,33 +14,33 @@ using ILRuntime.CLR.Utils;
 
 namespace ILRuntime.Runtime.Generated
 {
-    unsafe class UnityEngine_AssetBundleRequest_Binding
+    unsafe class System_Collections_Generic_List_1_WhiteConfig_Binding
     {
         public static void Register(ILRuntime.Runtime.Enviorment.AppDomain app)
         {
             BindingFlags flag = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
             MethodBase method;
             Type[] args;
-            Type type = typeof(UnityEngine.AssetBundleRequest);
+            Type type = typeof(System.Collections.Generic.List<ET.WhiteConfig>);
             args = new Type[]{};
-            method = type.GetMethod("get_allAssets", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, get_allAssets_0);
+            method = type.GetMethod("GetEnumerator", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, GetEnumerator_0);
 
 
         }
 
 
-        static StackObject* get_allAssets_0(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* GetEnumerator_0(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
             StackObject* __ret = ILIntepreter.Minus(__esp, 1);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            UnityEngine.AssetBundleRequest instance_of_this_method = (UnityEngine.AssetBundleRequest)typeof(UnityEngine.AssetBundleRequest).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            System.Collections.Generic.List<ET.WhiteConfig> instance_of_this_method = (System.Collections.Generic.List<ET.WhiteConfig>)typeof(System.Collections.Generic.List<ET.WhiteConfig>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
-            var result_of_this_method = instance_of_this_method.allAssets;
+            var result_of_this_method = instance_of_this_method.GetEnumerator();
 
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }

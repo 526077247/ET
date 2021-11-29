@@ -3,12 +3,6 @@
 
 namespace ET
 {
-    public enum ENV_ID:byte
-    {
-        DEVELOP = 1,//开发|测试服
-        PUBLISH = 2, //预发布
-        ONLINE = 3, //正式服
-    }
     public class ServerConfig
     {
         public string[] iplist;
@@ -16,7 +10,7 @@ namespace ET
         public string router_list_cdn_url;
         public string res_cdn_url;
         public string test_update_list_cdn_url;
-        public ENV_ID env_id;
+        public int env_id;
 
 
         public static Dictionary<string, ServerConfig> config;

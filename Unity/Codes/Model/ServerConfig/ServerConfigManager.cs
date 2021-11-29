@@ -64,7 +64,7 @@ namespace ET
 			return cur_config.test_update_list_cdn_url;
 		}
 
-		public ENV_ID GetEnvId()
+		public int GetEnvId()
         {
 			return cur_config.env_id;
 		}

@@ -14,14 +14,14 @@ using ILRuntime.CLR.Utils;
 
 namespace ILRuntime.Runtime.Generated
 {
-    unsafe class ET_ETAsyncTaskMethodBuilder_1_AssetBundle_Binding
+    unsafe class ET_ETAsyncTaskMethodBuilder_1_TextAsset_Binding
     {
         public static void Register(ILRuntime.Runtime.Enviorment.AppDomain app)
         {
             BindingFlags flag = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
             MethodBase method;
             Type[] args;
-            Type type = typeof(ET.ETAsyncTaskMethodBuilder<UnityEngine.AssetBundle>);
+            Type type = typeof(ET.ETAsyncTaskMethodBuilder<UnityEngine.TextAsset>);
             args = new Type[]{};
             method = type.GetMethod("Create", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, Create_0);
@@ -56,12 +56,12 @@ namespace ILRuntime.Runtime.Generated
             args = new Type[]{};
             method = type.GetMethod("get_Task", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, get_Task_2);
-            args = new Type[]{typeof(ET.ETTask<UnityEngine.AssetBundle>), typeof(ET.IAsyncStateMachineClassInheritanceAdaptor.IAsyncStateMachineAdaptor)};
+            args = new Type[]{typeof(ET.ETTask<System.Boolean>), typeof(ET.IAsyncStateMachineClassInheritanceAdaptor.IAsyncStateMachineAdaptor)};
             if (genericMethods.TryGetValue("AwaitUnsafeOnCompleted", out lst))
             {
                 foreach(var m in lst)
                 {
-                    if(m.MatchGenericParameters(args, typeof(void), typeof(ET.ETTask<UnityEngine.AssetBundle>).MakeByRefType(), typeof(ET.IAsyncStateMachineClassInheritanceAdaptor.IAsyncStateMachineAdaptor).MakeByRefType()))
+                    if(m.MatchGenericParameters(args, typeof(void), typeof(ET.ETTask<System.Boolean>).MakeByRefType(), typeof(ET.IAsyncStateMachineClassInheritanceAdaptor.IAsyncStateMachineAdaptor).MakeByRefType()))
                     {
                         method = m.MakeGenericMethod(args);
                         app.RegisterCLRMethodRedirection(method, AwaitUnsafeOnCompleted_3);
@@ -73,16 +73,16 @@ namespace ILRuntime.Runtime.Generated
             args = new Type[]{typeof(System.Exception)};
             method = type.GetMethod("SetException", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, SetException_4);
-            args = new Type[]{typeof(UnityEngine.AssetBundle)};
+            args = new Type[]{typeof(UnityEngine.TextAsset)};
             method = type.GetMethod("SetResult", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, SetResult_5);
 
-            app.RegisterCLRCreateDefaultInstance(type, () => new ET.ETAsyncTaskMethodBuilder<UnityEngine.AssetBundle>());
+            app.RegisterCLRCreateDefaultInstance(type, () => new ET.ETAsyncTaskMethodBuilder<UnityEngine.TextAsset>());
 
 
         }
 
-        static void WriteBackInstance(ILRuntime.Runtime.Enviorment.AppDomain __domain, StackObject* ptr_of_this_method, IList<object> __mStack, ref ET.ETAsyncTaskMethodBuilder<UnityEngine.AssetBundle> instance_of_this_method)
+        static void WriteBackInstance(ILRuntime.Runtime.Enviorment.AppDomain __domain, StackObject* ptr_of_this_method, IList<object> __mStack, ref ET.ETAsyncTaskMethodBuilder<UnityEngine.TextAsset> instance_of_this_method)
         {
             ptr_of_this_method = ILIntepreter.GetObjectAndResolveReference(ptr_of_this_method);
             switch(ptr_of_this_method->ObjectType)
@@ -121,7 +121,7 @@ namespace ILRuntime.Runtime.Generated
                     break;
                  case ObjectTypes.ArrayReference:
                     {
-                        var instance_of_arrayReference = __mStack[ptr_of_this_method->Value] as ET.ETAsyncTaskMethodBuilder<UnityEngine.AssetBundle>[];
+                        var instance_of_arrayReference = __mStack[ptr_of_this_method->Value] as ET.ETAsyncTaskMethodBuilder<UnityEngine.TextAsset>[];
                         instance_of_arrayReference[ptr_of_this_method->ValueLow] = instance_of_this_method;
                     }
                     break;
@@ -134,7 +134,7 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 0);
 
 
-            var result_of_this_method = ET.ETAsyncTaskMethodBuilder<UnityEngine.AssetBundle>.Create();
+            var result_of_this_method = ET.ETAsyncTaskMethodBuilder<UnityEngine.TextAsset>.Create();
 
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
@@ -150,9 +150,9 @@ namespace ILRuntime.Runtime.Generated
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
             ptr_of_this_method = ILIntepreter.GetObjectAndResolveReference(ptr_of_this_method);
-            object instance_of_this_method = (ET.ETAsyncTaskMethodBuilder<UnityEngine.AssetBundle>)typeof(ET.ETAsyncTaskMethodBuilder<UnityEngine.AssetBundle>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            object instance_of_this_method = (ET.ETAsyncTaskMethodBuilder<UnityEngine.TextAsset>)typeof(ET.ETAsyncTaskMethodBuilder<UnityEngine.TextAsset>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
 
-            ((ET.ETAsyncTaskMethodBuilder<UnityEngine.AssetBundle>)instance_of_this_method).Start<ET.IAsyncStateMachineClassInheritanceAdaptor.IAsyncStateMachineAdaptor>(ref @stateMachine);
+            ((ET.ETAsyncTaskMethodBuilder<UnityEngine.TextAsset>)instance_of_this_method).Start<ET.IAsyncStateMachineClassInheritanceAdaptor.IAsyncStateMachineAdaptor>(ref @stateMachine);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
             switch(ptr_of_this_method->ObjectType)
@@ -222,7 +222,7 @@ namespace ILRuntime.Runtime.Generated
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
             ptr_of_this_method = ILIntepreter.GetObjectAndResolveReference(ptr_of_this_method);
-            ET.ETAsyncTaskMethodBuilder<UnityEngine.AssetBundle> instance_of_this_method = (ET.ETAsyncTaskMethodBuilder<UnityEngine.AssetBundle>)typeof(ET.ETAsyncTaskMethodBuilder<UnityEngine.AssetBundle>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            ET.ETAsyncTaskMethodBuilder<UnityEngine.TextAsset> instance_of_this_method = (ET.ETAsyncTaskMethodBuilder<UnityEngine.TextAsset>)typeof(ET.ETAsyncTaskMethodBuilder<UnityEngine.TextAsset>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
 
             var result_of_this_method = instance_of_this_method.Task;
 
@@ -243,13 +243,13 @@ namespace ILRuntime.Runtime.Generated
             ET.IAsyncStateMachineClassInheritanceAdaptor.IAsyncStateMachineAdaptor @stateMachine = (ET.IAsyncStateMachineClassInheritanceAdaptor.IAsyncStateMachineAdaptor)typeof(ET.IAsyncStateMachineClassInheritanceAdaptor.IAsyncStateMachineAdaptor).CheckCLRTypes(__intp.RetriveObject(ptr_of_this_method, __mStack));
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            ET.ETTask<UnityEngine.AssetBundle> @awaiter = (ET.ETTask<UnityEngine.AssetBundle>)typeof(ET.ETTask<UnityEngine.AssetBundle>).CheckCLRTypes(__intp.RetriveObject(ptr_of_this_method, __mStack));
+            ET.ETTask<System.Boolean> @awaiter = (ET.ETTask<System.Boolean>)typeof(ET.ETTask<System.Boolean>).CheckCLRTypes(__intp.RetriveObject(ptr_of_this_method, __mStack));
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 3);
             ptr_of_this_method = ILIntepreter.GetObjectAndResolveReference(ptr_of_this_method);
-            ET.ETAsyncTaskMethodBuilder<UnityEngine.AssetBundle> instance_of_this_method = (ET.ETAsyncTaskMethodBuilder<UnityEngine.AssetBundle>)typeof(ET.ETAsyncTaskMethodBuilder<UnityEngine.AssetBundle>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            ET.ETAsyncTaskMethodBuilder<UnityEngine.TextAsset> instance_of_this_method = (ET.ETAsyncTaskMethodBuilder<UnityEngine.TextAsset>)typeof(ET.ETAsyncTaskMethodBuilder<UnityEngine.TextAsset>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
 
-            instance_of_this_method.AwaitUnsafeOnCompleted<ET.ETTask<UnityEngine.AssetBundle>, ET.IAsyncStateMachineClassInheritanceAdaptor.IAsyncStateMachineAdaptor>(ref @awaiter, ref @stateMachine);
+            instance_of_this_method.AwaitUnsafeOnCompleted<ET.ETTask<System.Boolean>, ET.IAsyncStateMachineClassInheritanceAdaptor.IAsyncStateMachineAdaptor>(ref @awaiter, ref @stateMachine);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
             switch(ptr_of_this_method->ObjectType)
@@ -354,7 +354,7 @@ namespace ILRuntime.Runtime.Generated
                     break;
                  case ObjectTypes.ArrayReference:
                     {
-                        var instance_of_arrayReference = __mStack[ptr_of_this_method->Value] as ET.ETTask<UnityEngine.AssetBundle>[];
+                        var instance_of_arrayReference = __mStack[ptr_of_this_method->Value] as ET.ETTask<System.Boolean>[];
                         instance_of_arrayReference[ptr_of_this_method->ValueLow] = @awaiter;
                     }
                     break;
@@ -380,7 +380,7 @@ namespace ILRuntime.Runtime.Generated
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
             ptr_of_this_method = ILIntepreter.GetObjectAndResolveReference(ptr_of_this_method);
-            ET.ETAsyncTaskMethodBuilder<UnityEngine.AssetBundle> instance_of_this_method = (ET.ETAsyncTaskMethodBuilder<UnityEngine.AssetBundle>)typeof(ET.ETAsyncTaskMethodBuilder<UnityEngine.AssetBundle>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            ET.ETAsyncTaskMethodBuilder<UnityEngine.TextAsset> instance_of_this_method = (ET.ETAsyncTaskMethodBuilder<UnityEngine.TextAsset>)typeof(ET.ETAsyncTaskMethodBuilder<UnityEngine.TextAsset>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
 
             instance_of_this_method.SetException(@exception);
 
@@ -398,12 +398,12 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 2);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            UnityEngine.AssetBundle @ret = (UnityEngine.AssetBundle)typeof(UnityEngine.AssetBundle).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            UnityEngine.TextAsset @ret = (UnityEngine.TextAsset)typeof(UnityEngine.TextAsset).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
             ptr_of_this_method = ILIntepreter.GetObjectAndResolveReference(ptr_of_this_method);
-            ET.ETAsyncTaskMethodBuilder<UnityEngine.AssetBundle> instance_of_this_method = (ET.ETAsyncTaskMethodBuilder<UnityEngine.AssetBundle>)typeof(ET.ETAsyncTaskMethodBuilder<UnityEngine.AssetBundle>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            ET.ETAsyncTaskMethodBuilder<UnityEngine.TextAsset> instance_of_this_method = (ET.ETAsyncTaskMethodBuilder<UnityEngine.TextAsset>)typeof(ET.ETAsyncTaskMethodBuilder<UnityEngine.TextAsset>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
 
             instance_of_this_method.SetResult(@ret);
 

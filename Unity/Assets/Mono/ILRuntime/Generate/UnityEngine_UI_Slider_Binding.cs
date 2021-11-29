@@ -58,7 +58,7 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 1);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            UnityEngine.UI.Slider instance_of_this_method = (UnityEngine.UI.Slider)typeof(UnityEngine.UI.Slider).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            UnityEngine.UI.Slider instance_of_this_method = (UnityEngine.UI.Slider)typeof(UnityEngine.UI.Slider).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             var result_of_this_method = instance_of_this_method.onValueChanged;
@@ -76,7 +76,7 @@ namespace ILRuntime.Runtime.Generated
             System.Boolean @value = ptr_of_this_method->Value == 1;
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            UnityEngine.UI.Slider instance_of_this_method = (UnityEngine.UI.Slider)typeof(UnityEngine.UI.Slider).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            UnityEngine.UI.Slider instance_of_this_method = (UnityEngine.UI.Slider)typeof(UnityEngine.UI.Slider).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             instance_of_this_method.wholeNumbers = value;
@@ -94,7 +94,7 @@ namespace ILRuntime.Runtime.Generated
             System.Single @value = *(float*)&ptr_of_this_method->Value;
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            UnityEngine.UI.Slider instance_of_this_method = (UnityEngine.UI.Slider)typeof(UnityEngine.UI.Slider).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            UnityEngine.UI.Slider instance_of_this_method = (UnityEngine.UI.Slider)typeof(UnityEngine.UI.Slider).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             instance_of_this_method.maxValue = value;
@@ -112,7 +112,7 @@ namespace ILRuntime.Runtime.Generated
             System.Single @value = *(float*)&ptr_of_this_method->Value;
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            UnityEngine.UI.Slider instance_of_this_method = (UnityEngine.UI.Slider)typeof(UnityEngine.UI.Slider).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            UnityEngine.UI.Slider instance_of_this_method = (UnityEngine.UI.Slider)typeof(UnityEngine.UI.Slider).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             instance_of_this_method.minValue = value;
@@ -127,7 +127,7 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 1);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            UnityEngine.UI.Slider instance_of_this_method = (UnityEngine.UI.Slider)typeof(UnityEngine.UI.Slider).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            UnityEngine.UI.Slider instance_of_this_method = (UnityEngine.UI.Slider)typeof(UnityEngine.UI.Slider).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             var result_of_this_method = instance_of_this_method.value;
@@ -144,7 +144,7 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 1);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            UnityEngine.UI.Slider instance_of_this_method = (UnityEngine.UI.Slider)typeof(UnityEngine.UI.Slider).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            UnityEngine.UI.Slider instance_of_this_method = (UnityEngine.UI.Slider)typeof(UnityEngine.UI.Slider).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             var result_of_this_method = instance_of_this_method.normalizedValue;
@@ -164,7 +164,7 @@ namespace ILRuntime.Runtime.Generated
             System.Single @value = *(float*)&ptr_of_this_method->Value;
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            UnityEngine.UI.Slider instance_of_this_method = (UnityEngine.UI.Slider)typeof(UnityEngine.UI.Slider).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            UnityEngine.UI.Slider instance_of_this_method = (UnityEngine.UI.Slider)typeof(UnityEngine.UI.Slider).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             instance_of_this_method.value = value;
@@ -182,7 +182,7 @@ namespace ILRuntime.Runtime.Generated
             System.Single @value = *(float*)&ptr_of_this_method->Value;
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            UnityEngine.UI.Slider instance_of_this_method = (UnityEngine.UI.Slider)typeof(UnityEngine.UI.Slider).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            UnityEngine.UI.Slider instance_of_this_method = (UnityEngine.UI.Slider)typeof(UnityEngine.UI.Slider).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             instance_of_this_method.normalizedValue = value;

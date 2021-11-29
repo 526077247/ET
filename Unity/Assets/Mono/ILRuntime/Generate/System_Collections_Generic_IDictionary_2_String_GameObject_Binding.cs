@@ -55,15 +55,15 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 3);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            UnityEngine.GameObject @value = (UnityEngine.GameObject)typeof(UnityEngine.GameObject).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            UnityEngine.GameObject @value = (UnityEngine.GameObject)typeof(UnityEngine.GameObject).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            System.String @key = (System.String)typeof(System.String).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            System.String @key = (System.String)typeof(System.String).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 3);
-            System.Collections.Generic.IDictionary<System.String, UnityEngine.GameObject> instance_of_this_method = (System.Collections.Generic.IDictionary<System.String, UnityEngine.GameObject>)typeof(System.Collections.Generic.IDictionary<System.String, UnityEngine.GameObject>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            System.Collections.Generic.IDictionary<System.String, UnityEngine.GameObject> instance_of_this_method = (System.Collections.Generic.IDictionary<System.String, UnityEngine.GameObject>)typeof(System.Collections.Generic.IDictionary<System.String, UnityEngine.GameObject>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             instance_of_this_method[key] = value;
@@ -78,11 +78,11 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 2);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.String @key = (System.String)typeof(System.String).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            System.String @key = (System.String)typeof(System.String).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            System.Collections.Generic.IDictionary<System.String, UnityEngine.GameObject> instance_of_this_method = (System.Collections.Generic.IDictionary<System.String, UnityEngine.GameObject>)typeof(System.Collections.Generic.IDictionary<System.String, UnityEngine.GameObject>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            System.Collections.Generic.IDictionary<System.String, UnityEngine.GameObject> instance_of_this_method = (System.Collections.Generic.IDictionary<System.String, UnityEngine.GameObject>)typeof(System.Collections.Generic.IDictionary<System.String, UnityEngine.GameObject>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             var result_of_this_method = instance_of_this_method.Remove(@key);
@@ -99,13 +99,13 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 3);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            UnityEngine.GameObject @value = (UnityEngine.GameObject)typeof(UnityEngine.GameObject).CheckCLRTypes(__intp.RetriveObject(ptr_of_this_method, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            UnityEngine.GameObject @value = (UnityEngine.GameObject)typeof(UnityEngine.GameObject).CheckCLRTypes(__intp.RetriveObject(ptr_of_this_method, __mStack));
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            System.String @key = (System.String)typeof(System.String).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            System.String @key = (System.String)typeof(System.String).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 3);
-            System.Collections.Generic.IDictionary<System.String, UnityEngine.GameObject> instance_of_this_method = (System.Collections.Generic.IDictionary<System.String, UnityEngine.GameObject>)typeof(System.Collections.Generic.IDictionary<System.String, UnityEngine.GameObject>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            System.Collections.Generic.IDictionary<System.String, UnityEngine.GameObject> instance_of_this_method = (System.Collections.Generic.IDictionary<System.String, UnityEngine.GameObject>)typeof(System.Collections.Generic.IDictionary<System.String, UnityEngine.GameObject>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
 
             var result_of_this_method = instance_of_this_method.TryGetValue(@key, out @value);
 
@@ -180,11 +180,11 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 2);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.String @key = (System.String)typeof(System.String).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            System.String @key = (System.String)typeof(System.String).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            System.Collections.Generic.IDictionary<System.String, UnityEngine.GameObject> instance_of_this_method = (System.Collections.Generic.IDictionary<System.String, UnityEngine.GameObject>)typeof(System.Collections.Generic.IDictionary<System.String, UnityEngine.GameObject>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            System.Collections.Generic.IDictionary<System.String, UnityEngine.GameObject> instance_of_this_method = (System.Collections.Generic.IDictionary<System.String, UnityEngine.GameObject>)typeof(System.Collections.Generic.IDictionary<System.String, UnityEngine.GameObject>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             var result_of_this_method = instance_of_this_method.ContainsKey(@key);
@@ -201,7 +201,7 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 1);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.Collections.Generic.IDictionary<System.String, UnityEngine.GameObject> instance_of_this_method = (System.Collections.Generic.IDictionary<System.String, UnityEngine.GameObject>)typeof(System.Collections.Generic.IDictionary<System.String, UnityEngine.GameObject>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            System.Collections.Generic.IDictionary<System.String, UnityEngine.GameObject> instance_of_this_method = (System.Collections.Generic.IDictionary<System.String, UnityEngine.GameObject>)typeof(System.Collections.Generic.IDictionary<System.String, UnityEngine.GameObject>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             var result_of_this_method = instance_of_this_method.Keys;
@@ -216,7 +216,7 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 1);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.Collections.Generic.IDictionary<System.String, UnityEngine.GameObject> instance_of_this_method = (System.Collections.Generic.IDictionary<System.String, UnityEngine.GameObject>)typeof(System.Collections.Generic.IDictionary<System.String, UnityEngine.GameObject>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            System.Collections.Generic.IDictionary<System.String, UnityEngine.GameObject> instance_of_this_method = (System.Collections.Generic.IDictionary<System.String, UnityEngine.GameObject>)typeof(System.Collections.Generic.IDictionary<System.String, UnityEngine.GameObject>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             var result_of_this_method = instance_of_this_method.Values;
@@ -231,11 +231,11 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 2);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.String @key = (System.String)typeof(System.String).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            System.String @key = (System.String)typeof(System.String).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            System.Collections.Generic.IDictionary<System.String, UnityEngine.GameObject> instance_of_this_method = (System.Collections.Generic.IDictionary<System.String, UnityEngine.GameObject>)typeof(System.Collections.Generic.IDictionary<System.String, UnityEngine.GameObject>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            System.Collections.Generic.IDictionary<System.String, UnityEngine.GameObject> instance_of_this_method = (System.Collections.Generic.IDictionary<System.String, UnityEngine.GameObject>)typeof(System.Collections.Generic.IDictionary<System.String, UnityEngine.GameObject>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             var result_of_this_method = instance_of_this_method[key];

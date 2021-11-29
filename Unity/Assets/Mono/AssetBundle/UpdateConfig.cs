@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
 namespace ET
 {
-    public enum ENV_ID:byte
+    public static class ENV_ID
     {
-        DEVELOP = 1,//开发|测试服
-        PUBLISH = 2, //预发布
-        ONLINE = 3, //正式服
+        public static int DEVELOP = 1;//开发|测试服
+        public static int PUBLISH = 2; //预发布
+        public static int ONLINE = 3; //正式服
     }
     public class WhiteConfig
     {
-        public ENV_ID env_id;
+        public int env_id;
         public string account;
     }
     public class Resver

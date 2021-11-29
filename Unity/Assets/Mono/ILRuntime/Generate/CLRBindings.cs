@@ -286,6 +286,7 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_KeyValuePair_2_String_Resver_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_Dictionary_2_String_Resver_Binding.Register(app);
             System_Char_Binding.Register(app);
+            ET_ENV_ID_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_Int32_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_List_1_GameObject_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_GameObject_String_Binding.Register(app);
@@ -337,6 +338,7 @@ namespace ILRuntime.Runtime.Generated
             System_Action_2_String_GameObject_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_GameObject_Binding.Register(app);
             System_Collections_Generic_IDictionary_2_String_ILTypeInstance_Binding.Register(app);
+            System_Collections_Generic_ICollection_1_KeyValuePair_2_String_ILTypeInstance_Binding.Register(app);
             System_Func_3_String_ILTypeInstance_Boolean_Binding.Register(app);
             System_Action_2_String_ILTypeInstance_Binding.Register(app);
         }

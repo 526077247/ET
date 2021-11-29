@@ -101,7 +101,7 @@ namespace ILRuntime.Runtime.Generated
             System.Int32 @result = ptr_of_this_method->Value;
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            ET.ETTask<System.Int32> instance_of_this_method = (ET.ETTask<System.Int32>)typeof(ET.ETTask<System.Int32>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            ET.ETTask<System.Int32> instance_of_this_method = (ET.ETTask<System.Int32>)typeof(ET.ETTask<System.Int32>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             instance_of_this_method.SetResult(@result);

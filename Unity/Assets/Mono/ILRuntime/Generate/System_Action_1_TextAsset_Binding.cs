@@ -37,11 +37,11 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 2);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            UnityEngine.TextAsset @obj = (UnityEngine.TextAsset)typeof(UnityEngine.TextAsset).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            UnityEngine.TextAsset @obj = (UnityEngine.TextAsset)typeof(UnityEngine.TextAsset).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            System.Action<UnityEngine.TextAsset> instance_of_this_method = (System.Action<UnityEngine.TextAsset>)typeof(System.Action<UnityEngine.TextAsset>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)8);
+            System.Action<UnityEngine.TextAsset> instance_of_this_method = (System.Action<UnityEngine.TextAsset>)typeof(System.Action<UnityEngine.TextAsset>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             instance_of_this_method.Invoke(@obj);

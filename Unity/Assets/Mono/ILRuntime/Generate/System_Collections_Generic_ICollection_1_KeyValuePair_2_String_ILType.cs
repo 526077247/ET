@@ -14,14 +14,14 @@ using ILRuntime.CLR.Utils;
 
 namespace ILRuntime.Runtime.Generated
 {
-    unsafe class System_Collections_Generic_ICollection_1_KeyValuePair_2_String_GameObject_Binding
+    unsafe class System_Collections_Generic_ICollection_1_KeyValuePair_2_String_ILTypeInstance_Binding
     {
         public static void Register(ILRuntime.Runtime.Enviorment.AppDomain app)
         {
             BindingFlags flag = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
             MethodBase method;
             Type[] args;
-            Type type = typeof(System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<System.String, UnityEngine.GameObject>>);
+            Type type = typeof(System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<System.String, ILRuntime.Runtime.Intepreter.ILTypeInstance>>);
             args = new Type[]{};
             method = type.GetMethod("get_Count", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, get_Count_0);
@@ -37,7 +37,7 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 1);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<System.String, UnityEngine.GameObject>> instance_of_this_method = (System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<System.String, UnityEngine.GameObject>>)typeof(System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<System.String, UnityEngine.GameObject>>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<System.String, ILRuntime.Runtime.Intepreter.ILTypeInstance>> instance_of_this_method = (System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<System.String, ILRuntime.Runtime.Intepreter.ILTypeInstance>>)typeof(System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<System.String, ILRuntime.Runtime.Intepreter.ILTypeInstance>>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             var result_of_this_method = instance_of_this_method.Count;
