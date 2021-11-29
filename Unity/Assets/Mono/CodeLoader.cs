@@ -1,6 +1,4 @@
-﻿#define ILRuntime
-
-using AssetBundles;
+﻿using AssetBundles;
 using System;
 using System.Collections.Generic;
 using UnityEditor;
@@ -8,7 +6,6 @@ using System.IO;
 using System.Reflection;
 using UnityEngine;
 using System.Linq;
-using AppDomain = ILRuntime.Runtime.Enviorment.AppDomain;
 
 namespace ET
 {
@@ -24,7 +21,7 @@ namespace ET
 		
 		private Type[] allTypes;
 		
-		private AppDomain appDomain;
+		private ILRuntime.Runtime.Enviorment.AppDomain appDomain;
 		private MemoryStream assStream ;
 		private MemoryStream pdbStream ;
 		private CodeLoader()
@@ -33,9 +30,9 @@ namespace ET
 		
 		public void Start()
 		{
-			switch (Define.CodeMode)
+			switch (Init.Instance.CodeMode)
 			{
-				case Define.CodeMode_Mono:
+				case CodeMode.Mono:
 				{
 #if !UNITY_EDITOR
                     var ab = AddressablesManager.Instance.SyncLoadAssetBundle("code_assets_all.bundle");
@@ -55,7 +52,7 @@ namespace ET
 #endif
 					break;
 				}
-				case Define.CodeMode_ILRuntime:
+				case CodeMode.ILRuntime:
 				{
 #if !UNITY_EDITOR
                     var ab = AddressablesManager.Instance.SyncLoadAssetBundle("code_assets_all.bundle");
@@ -67,7 +64,7 @@ namespace ET
 #endif
 					
 					if(appDomain!=null) appDomain.Dispose();
-					appDomain = new AppDomain();
+					appDomain = new ILRuntime.Runtime.Enviorment.AppDomain();
 					if(assStream!=null) assStream.Dispose();
 					if(pdbStream!=null) pdbStream.Dispose();
 					assStream = new MemoryStream(assBytes);
@@ -85,7 +82,7 @@ namespace ET
 					break;
 					
 				}
-				case Define.CodeMode_Reload:
+				case CodeMode.Reload:
 				{
 					byte[] assBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Data.dll"));
 					byte[] pdbBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Data.pdb"));
