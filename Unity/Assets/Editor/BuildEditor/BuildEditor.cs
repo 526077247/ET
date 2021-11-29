@@ -85,6 +85,7 @@ namespace ET
 
 				clearFolder = buildSettings.clearFolder;
 				isBuildExe = buildSettings.isBuildExe;
+				isInject = buildSettings.isInject;
 				isContainAB = buildSettings.isContainAB;
 				buildType = buildSettings.buildType;
 				buildAssetBundleOptions = buildSettings.buildAssetBundleOptions;
