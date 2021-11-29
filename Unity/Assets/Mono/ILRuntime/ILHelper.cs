@@ -68,7 +68,8 @@ namespace ET
             appdomain.DelegateManager.RegisterFunctionDelegate<int, int, int>();//Linq
             appdomain.DelegateManager.RegisterFunctionDelegate<KeyValuePair<int, List<int>>, bool>();
             appdomain.DelegateManager.RegisterFunctionDelegate<KeyValuePair<int, int>, KeyValuePair<int, int>, int>();
-            
+            appdomain.DelegateManager.RegisterFunctionDelegate<System.String, System.String, System.Int32>();
+
             appdomain.DelegateManager.RegisterDelegateConvertor<UnityEngine.Events.UnityAction>((act) =>
             {
                 return new UnityEngine.Events.UnityAction(() =>
@@ -84,6 +85,15 @@ namespace ET
                     return ((Func<KeyValuePair<int, int>, KeyValuePair<int, int>, int>)act)(x, y);
                 });
             });
+            
+            appdomain.DelegateManager.RegisterDelegateConvertor<System.Comparison<System.String>>((act) =>
+            {
+                return new System.Comparison<System.String>((x, y) =>
+                {
+                    return ((Func<System.String, System.String, System.Int32>)act)(x, y);
+                });
+            });
+
             
             // 注册适配器
             RegisterAdaptor(appdomain);
