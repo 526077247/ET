@@ -14,34 +14,34 @@ using ILRuntime.CLR.Utils;
 
 namespace ILRuntime.Runtime.Generated
 {
-    unsafe class UnityEngine_Networking_UnityWebRequestTexture_Binding
+    unsafe class UnityEngine_SceneManagement_SceneManager_Binding
     {
         public static void Register(ILRuntime.Runtime.Enviorment.AppDomain app)
         {
             BindingFlags flag = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
             MethodBase method;
             Type[] args;
-            Type type = typeof(UnityEngine.Networking.UnityWebRequestTexture);
+            Type type = typeof(UnityEngine.SceneManagement.SceneManager);
             args = new Type[]{typeof(System.String)};
-            method = type.GetMethod("GetTexture", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, GetTexture_0);
+            method = type.GetMethod("LoadSceneAsync", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, LoadSceneAsync_0);
 
 
         }
 
 
-        static StackObject* GetTexture_0(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* LoadSceneAsync_0(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
             StackObject* __ret = ILIntepreter.Minus(__esp, 1);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.String @uri = (System.String)typeof(System.String).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            System.String @sceneName = (System.String)typeof(System.String).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
 
-            var result_of_this_method = UnityEngine.Networking.UnityWebRequestTexture.GetTexture(@uri);
+            var result_of_this_method = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(@sceneName);
 
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
