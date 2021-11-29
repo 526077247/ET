@@ -39,6 +39,8 @@ namespace ET
 
 	public class BuildEditor : EditorWindow
 	{
+		private const string settingAsset = "Assets/Editor/BuildEditor/ETBuildSettings.asset";
+
 		private PlatformType activePlatform;
 		private PlatformType platformType;
 		private bool clearFolder;
@@ -48,6 +50,7 @@ namespace ET
 		private BuildType buildType;
 		private BuildOptions buildOptions;
 		private BuildAssetBundleOptions buildAssetBundleOptions = BuildAssetBundleOptions.None;
+		private ETBuildSettings buildSettings;
 
 		private Dictionary<string, string> config;
 		[MenuItem("Tools/打包工具")]
@@ -70,6 +73,27 @@ namespace ET
 			activePlatform = PlatformType.None;
 #endif
             platformType = activePlatform;
+
+			if (!File.Exists(settingAsset))
+            {
+				buildSettings = new ETBuildSettings();
+				AssetDatabase.CreateAsset(buildSettings, settingAsset);
+            }
+			else
+			{
+				buildSettings = AssetDatabase.LoadAssetAtPath<ETBuildSettings>(settingAsset);
+
+				clearFolder = buildSettings.clearFolder;
+				isBuildExe = buildSettings.isBuildExe;
+				isContainAB = buildSettings.isContainAB;
+				buildType = buildSettings.buildType;
+				buildAssetBundleOptions = buildSettings.buildAssetBundleOptions;
+			}
+        }
+
+        private void OnDisable()
+        {
+			SaveSettings();
         }
 
         private void OnGUI() 
@@ -139,6 +163,18 @@ namespace ET
 			}
 
 			GUILayout.Space(5);
+		}
+
+		private void SaveSettings()
+		{
+			buildSettings.clearFolder = clearFolder;
+			buildSettings.isBuildExe = isBuildExe;
+			buildSettings.isContainAB = isContainAB;
+			buildSettings.buildType = buildType;
+			buildSettings.buildAssetBundleOptions = buildAssetBundleOptions;
+
+			EditorUtility.SetDirty(buildSettings);
+			AssetDatabase.SaveAssets();
 		}
 	}
 }
