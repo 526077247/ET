@@ -29,6 +29,9 @@ namespace ILRuntime.Runtime.Generated
             args = new Type[]{};
             method = type.GetMethod("GetTypes", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, GetTypes_1);
+            args = new Type[]{};
+            method = type.GetMethod("ReStart", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, ReStart_2);
 
             field = type.GetField("Instance", flag);
             app.RegisterCLRFieldGetter(field, get_Instance_0);
@@ -79,6 +82,21 @@ namespace ILRuntime.Runtime.Generated
             var result_of_this_method = instance_of_this_method.GetTypes();
 
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
+        }
+
+        static StackObject* ReStart_2(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        {
+            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
+            StackObject* ptr_of_this_method;
+            StackObject* __ret = ILIntepreter.Minus(__esp, 1);
+
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
+            ET.CodeLoader instance_of_this_method = (ET.CodeLoader)typeof(ET.CodeLoader).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            __intp.Free(ptr_of_this_method);
+
+            instance_of_this_method.ReStart();
+
+            return __ret;
         }
 
 
