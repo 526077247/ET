@@ -54,7 +54,7 @@ namespace ET
         }
     }
 
-
+    [ObjectSystem]
     public class SceneManagerComponentDestroySystem : DestroySystem<SceneManagerComponent>
     {
         public override void Destroy(SceneManagerComponent self)

@@ -34,8 +34,8 @@ namespace ET
 	//	不管是销毁还是回收，都不要污染go，保证干净
 	//--]]
 	public class GameObjectPoolComponent : Entity
-    {
-        AddressablesManager AddressablesManager;
+	{
+		AddressablesManager AddressablesManager;
 		Transform __cacheTransRoot;
 		public static GameObjectPoolComponent Instance { get; set; }
 		LruCache<string, GameObject> __goPool;
@@ -76,53 +76,53 @@ namespace ET
 				var cnt = __goInstCountCache[path] - (__instCache.ContainsKey(path) ? __instCache[path].Count : 0);
 				if (cnt > 0)
 					Log.Info(string.Format("path={0} __goInstCountCache={1} __instCache={2}", path, __goInstCountCache[path], (__instCache[path] != null ? __instCache[path].Count : 0)));
-                return cnt == 0 && !__persistentPathCache.ContainsKey(path);
+				return cnt == 0 && !__persistentPathCache.ContainsKey(path);
 			});
 
 		}
 
 		// 初始化inst
 		void InitInst(GameObject inst)
-        {
+		{
 			if (inst != null)
-            {
+			{
 				inst.SetActive(true);
 			}
-        }
+		}
 
 		// 检测是否已经被缓存
 		public bool CheckHasCached(string path)
 		{
 			if (string.IsNullOrEmpty(path))
-            {
-                Log.Error("path err :\"" + path+"\"");
-                return false;
-            }
-            if (!path.EndsWith(".prefab"))
-            {
-                Log.Error("GameObject must be prefab : \"" + path + "\"");
-                return false;
-            }
+			{
+				Log.Error("path err :\"" + path + "\"");
+				return false;
+			}
+			if (!path.EndsWith(".prefab"))
+			{
+				Log.Error("GameObject must be prefab : \"" + path + "\"");
+				return false;
+			}
 
-            if (__instCache.ContainsKey(path) && __instCache[path].Count>0)
-            {
+			if (__instCache.ContainsKey(path) && __instCache[path].Count > 0)
+			{
 				return true;
-            }
+			}
 			return __goPool.ContainsKey(path);
 		}
 
 		//缓存并实例化GameObject
-		void CacheAndInstGameObject(string path,GameObject go,int inst_count)
-        {
+		void CacheAndInstGameObject(string path, GameObject go, int inst_count)
+		{
 			__goPool.Set(path, go);
 			__InitGoChildCount(path, go);
-            if (inst_count > 0)
-            {
+			if (inst_count > 0)
+			{
 				List<GameObject> cachedInst;
-				if (!__instCache.TryGetValue(path,out cachedInst))
+				if (!__instCache.TryGetValue(path, out cachedInst))
 					cachedInst = new List<GameObject>();
-                for (int i = 0; i < inst_count; i++)
-                {
+				for (int i = 0; i < inst_count; i++)
+				{
 					var inst = GameObject.Instantiate(go);
 					inst.transform.SetParent(__cacheTransRoot);
 					inst.SetActive(false);
@@ -140,7 +140,8 @@ namespace ET
 		{
 			go = null;
 			if (!CheckHasCached(path)) return false;
-			if (__instCache.TryGetValue(path, out var cachedInst)){
+			if (__instCache.TryGetValue(path, out var cachedInst))
+			{
 				if (cachedInst.Count > 0)
 				{
 					var inst = cachedInst[cachedInst.Count - 1];
@@ -154,50 +155,53 @@ namespace ET
 					return true;
 				}
 			}
-			if(__goPool.TryGet(path,out var pooledGo))
-            {
-                if (pooledGo != null)
-                {
+			if (__goPool.TryGet(path, out var pooledGo))
+			{
+				if (pooledGo != null)
+				{
 					var inst = GameObject.Instantiate(pooledGo);
 					__goInstCountCache[path] = __goInstCountCache[path] + 1;
 					__instPathCache[inst] = path;
 					go = inst;
 					return true;
 				}
-            }
+			}
 			return false;
 		}
 
 		//预加载：可提供初始实例化个数
-		public async ETTask PreLoadGameObjectAsync(string path,int inst_count, Action<float> progress_callback = null, Action callback =null)
-        {
-	        CoroutineLock coroutineLock = null;
-	        try
-	        {
-		        coroutineLock = await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Resources, path.GetHashCode());
-		        if (CheckHasCached(path))
-		        {
-			        callback?.Invoke();
-			        return;
-		        }
-		        var go = await ResourcesComponent.Instance.LoadAsync(path, typeof(GameObject), progress_callback);
-		        if (go != null)
-		        {
-			        CacheAndInstGameObject(path, go as GameObject, inst_count);
-		        }
-		        callback?.Invoke();
-	        }
-	        finally
-	        {
-		        coroutineLock?.Dispose();
-	        }
-        }
+		public async ETTask PreLoadGameObjectAsync(string path, int inst_count, Action<float> progress_callback = null, Action callback = null)
+		{
+			CoroutineLock coroutineLock = null;
+			try
+			{
+				coroutineLock = await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Resources, path.GetHashCode());
+				if (CheckHasCached(path))
+				{
+					callback?.Invoke();
+				}
+				else
+				{
+					var go = await ResourcesComponent.Instance.LoadAsync(path, typeof(GameObject), progress_callback);
+					if (go != null)
+					{
+						CacheAndInstGameObject(path, go as GameObject, inst_count);
+					}
+					callback?.Invoke();
+				}
+			}
+			finally
+			{
+				coroutineLock?.Dispose();
+			}
+		}
 
 
 		//异步获取：必要时加载
 		public async ETTask<GameObject> GetGameObjectAsync(string path, Action<float> progress_callback = null, Action<GameObject> callback = null)
-        {
-			if(TryGetFromCache(path,out var inst)){
+		{
+			if (TryGetFromCache(path, out var inst))
+			{
 				InitInst(inst);
 				callback?.Invoke(inst);
 				return inst;
@@ -213,8 +217,8 @@ namespace ET
 			return null;
 		}
 
-        public GameObject GetGameObject(string path)
-        {
+		public GameObject GetGameObject(string path)
+		{
 			if (TryGetFromCache(path, out var inst))
 			{
 				InitInst(inst);
@@ -224,27 +228,27 @@ namespace ET
 		}
 
 		//回收
-		public void RecycleGameObject(GameObject inst,bool isclear=false)
-        {
+		public void RecycleGameObject(GameObject inst, bool isclear = false)
+		{
 			if (!__instPathCache.ContainsKey(inst))
 			{
 				Log.Error("RecycleGameObject inst not found from __instPathCache");
 				return;
 			}
 			var path = __instPathCache[inst];
-            if (!isclear)
-            {
-				__CheckRecycleInstIsDirty(path, inst,null);
+			if (!isclear)
+			{
+				__CheckRecycleInstIsDirty(path, inst, null);
 				inst.transform.SetParent(__cacheTransRoot, false);
 				inst.SetActive(false);
-				if(!__instCache.ContainsKey(path))
-                {
+				if (!__instCache.ContainsKey(path))
+				{
 					__instCache[path] = new List<GameObject>();
 				}
 				__instCache[path].Add(inst);
-            }
-            else
-            {
+			}
+			else
+			{
 				DestroyGameObject(inst);
 			}
 
@@ -253,7 +257,7 @@ namespace ET
 		//检测回收的时候是否需要清理资源(这里是检测是否清空 inst和缓存的go)
 		//这里可以考虑加一个配置表来处理优先级问题，一些优先级较高的保留
 		public void CheckCleanRes(string path)
-        {
+		{
 			var cnt = __goInstCountCache[path] - (__instCache.ContainsKey(path) ? __instCache[path].Count : 0);
 			if (cnt == 0 && !__persistentPathCache.ContainsKey(path))
 				__ReleaseAsset(path);
@@ -262,40 +266,40 @@ namespace ET
 
 		//删除gameobject 所有从GameObjectPool中
 		void DestroyGameObject(GameObject inst)
-        {
-			if(__instPathCache.TryGetValue(inst,out string path))
-            {
-				if(__goInstCountCache.TryGetValue(path,out int count))
-                {
-                    if (count <= 0)
-                    {
+		{
+			if (__instPathCache.TryGetValue(inst, out string path))
+			{
+				if (__goInstCountCache.TryGetValue(path, out int count))
+				{
+					if (count <= 0)
+					{
 						Log.Error("__goInstCountCache[path] must > 0");
 					}
-                    else
-                    {
+					else
+					{
 						__CheckRecycleInstIsDirty(path, inst, () =>
 						{
 							GameObject.Destroy(inst);
 							__goInstCountCache[path] = __goInstCountCache[path] - 1;
 						});
 					}
-                }
-            }
-            else
-            {
+				}
+			}
+			else
+			{
 				Log.Error("DestroyGameObject inst not found from __instPathCache");
-            }
-        }
+			}
+		}
 		//添加需要持久化的资源
 		public void AddPersistentPrefabPath(string path)
-        {
+		{
 			__persistentPathCache[path] = true;
 
 		}
-		void __CheckRecycleInstIsDirty(string path, GameObject inst,Action callback)
-        {
-            if (!__IsOpenCheck())
-            {
+		void __CheckRecycleInstIsDirty(string path, GameObject inst, Action callback)
+		{
+			if (!__IsOpenCheck())
+			{
 				callback?.Invoke();
 				return;
 			}
@@ -305,7 +309,7 @@ namespace ET
 		}
 
 		async ETVoid __CheckAfter(string path, GameObject inst)
-        {
+		{
 			await TimerComponent.Instance.WaitAsync(2000);
 			if (inst != null && inst.transform != null && __CheckInstIsInPool(path, inst))
 			{
@@ -329,33 +333,35 @@ namespace ET
 			}
 		}
 
-		bool __CheckInstIsInPool(string path,GameObject inst)
-        {
-			if(__instCache.TryGetValue(path,out var inst_array))
-            {
-                foreach (var item in inst_array)
-                {
+		bool __CheckInstIsInPool(string path, GameObject inst)
+		{
+			if (__instCache.TryGetValue(path, out var inst_array))
+			{
+				foreach (var item in inst_array)
+				{
 					if (item == inst) return true;
-                }
-            }
+				}
+			}
 			return false;
-        }
+		}
 		void __InitGoChildCount(string path, GameObject go)
-        {
+		{
 			if (!__IsOpenCheck()) return;
-            if (!__goChildsCountPool.ContainsKey(path))
-            {
-				Dictionary<string,int> childsCountMap = new Dictionary<string, int>();
-				int total_child_count = RecursiveGetChildCount(go.transform, "",ref childsCountMap);
+			if (!__goChildsCountPool.ContainsKey(path))
+			{
+				Dictionary<string, int> childsCountMap = new Dictionary<string, int>();
+				int total_child_count = RecursiveGetChildCount(go.transform, "", ref childsCountMap);
 				__goChildsCountPool[path] = total_child_count;
 				__detailGoChildsCount[path] = childsCountMap;
 			}
-        }
+		}
 
 		// 释放资源
-		void __ReleaseAsset(string path) {
-			if (__instCache.ContainsKey(path)) {
-				for (int i = __instCache[path].Count-1;i>=0;i--)
+		void __ReleaseAsset(string path)
+		{
+			if (__instCache.ContainsKey(path))
+			{
+				for (int i = __instCache[path].Count - 1; i >= 0; i--)
 				{
 					__instPathCache.Remove(__instCache[path][i]);
 					GameObject.Destroy(__instCache[path][i]);
@@ -364,14 +370,14 @@ namespace ET
 				__instCache.Remove(path);
 				__goInstCountCache.Remove(path);
 			}
-			if(__goPool.TryOnlyGet(path,out var pooledGo) && __CheckNeedUnload(path))
-            {
+			if (__goPool.TryOnlyGet(path, out var pooledGo) && __CheckNeedUnload(path))
+			{
 				AddressablesManager.ReleaseAsset(pooledGo);
 				__goPool.Remove(path);
 			}
 		}
 		bool __IsOpenCheck()
-        {
+		{
 			return Define.Debug;
 		}
 
@@ -406,15 +412,15 @@ namespace ET
 			return total_child_count;
 		}
 		//清理缓存
-		public void Cleanup(bool includePooledGo = true, string[] excludePathArray=null)
-        {
+		public void Cleanup(bool includePooledGo = true, string[] excludePathArray = null)
+		{
 			Log.Info("GameObjectPool Cleanup ");
-            foreach (var item in __instCache)
-            {
-                foreach (var inst in item.Value)
-                {
-                    if (inst != null)
-                    {
+			foreach (var item in __instCache)
+			{
+				foreach (var inst in item.Value)
+				{
+					if (inst != null)
+					{
 						GameObject.Destroy(inst);
 						__goInstCountCache[item.Key] = __goInstCountCache[item.Key] - 1;
 					}
@@ -424,11 +430,11 @@ namespace ET
 			}
 			__instCache = new Dictionary<string, List<GameObject>>();
 
-            if (includePooledGo)
-            {
-				Dictionary<string, bool> dict_excludepath =null;
-                if (excludePathArray != null)
-                {
+			if (includePooledGo)
+			{
+				Dictionary<string, bool> dict_excludepath = null;
+				if (excludePathArray != null)
+				{
 					dict_excludepath = new Dictionary<string, bool>();
 					foreach (var item in excludePathArray)
 					{
@@ -436,25 +442,25 @@ namespace ET
 					}
 				}
 
-                List<string> keys = new List<string>();
-                foreach (var item in __goPool.Keys)
-                {
-                    keys.Add(item);
-                }
-                for (int i = keys.Count - 1; i >= 0; i--)
-                {
-                    var path = keys[i];
-                    if (dict_excludepath != null && !dict_excludepath.ContainsKey(path) && __goPool.TryOnlyGet(path, out var pooledGo))
-                    {
-                        if (pooledGo != null && __CheckNeedUnload(path))
-                        {
-                            AddressablesManager.ReleaseAsset(pooledGo);
-                            __goPool.Remove(path);
-                        }
-                    }
-                }
+				List<string> keys = new List<string>();
+				foreach (var item in __goPool.Keys)
+				{
+					keys.Add(item);
+				}
+				for (int i = keys.Count - 1; i >= 0; i--)
+				{
+					var path = keys[i];
+					if (dict_excludepath != null && !dict_excludepath.ContainsKey(path) && __goPool.TryOnlyGet(path, out var pooledGo))
+					{
+						if (pooledGo != null && __CheckNeedUnload(path))
+						{
+							AddressablesManager.ReleaseAsset(pooledGo);
+							__goPool.Remove(path);
+						}
+					}
+				}
 			}
-            Log.Info("GameObjectPool Cleanup Over");
+			Log.Info("GameObjectPool Cleanup Over");
 		}
 		//--释放asset
 		//--注意这里需要保证外面没有引用这些path的inst了，不然会出现材质丢失的问题
@@ -529,14 +535,14 @@ namespace ET
 			return true;
 		}
 		public GameObject GetCachedGoWithPath(string path)
-        {
-            if (__goPool.TryOnlyGet(path, out var res))
-            {
-                return res;
-            }
-            return null;
-        }
-        public override void Dispose()
+		{
+			if (__goPool.TryOnlyGet(path, out var res))
+			{
+				return res;
+			}
+			return null;
+		}
+		public override void Dispose()
 		{
 			if (this.IsDisposed)
 			{

@@ -15,7 +15,7 @@ namespace ET
             self.Awake();
         }
     }
-    public class MaterialComponent:Entity
+    public class MaterialComponent : Entity
     {
         public static MaterialComponent Instance { get; set; }
         Dictionary<string, Material> m_cacheMaterial;
@@ -25,25 +25,26 @@ namespace ET
             m_cacheMaterial = new Dictionary<string, Material>();
         }
 
-        public async ETTask<Material> LoadMaterialAsync(string address,Action<Material> callback = null)
+        public async ETTask<Material> LoadMaterialAsync(string address, Action<Material> callback = null)
         {
+            Material res;
             CoroutineLock coroutineLock = null;
             try
             {
                 coroutineLock = await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Resources, address.GetHashCode());
-                if (m_cacheMaterial.TryGetValue(address, out var res))
+                if (m_cacheMaterial.TryGetValue(address, out res))
                 {
                     res = await ResourcesComponent.Instance.LoadAsync<Material>(address);
                     if (res != null)
                         m_cacheMaterial[address] = res;
                 }
                 callback?.Invoke(res);
-                return res;
             }
             finally
             {
                 coroutineLock?.Dispose();
             }
+            return res;
         }
     }
 }

@@ -7,7 +7,7 @@ using System;
 
 namespace ET
 {
-    public class SpriteValue: Entity
+    public class SpriteValue : Entity
     {
         public Sprite asset;
         public int ref_count;
@@ -49,7 +49,8 @@ namespace ET
             InitSpriteAtlasCache(m_cacheSpriteAtlas);
         }
 
-        void InitSpriteAtlasCache(LruCache<string, SpriteAtlasValue> cache) {
+        void InitSpriteAtlasCache(LruCache<string, SpriteAtlasValue> cache)
+        {
             cache.SetCheckCanPopCallback((string key, SpriteAtlasValue value) => {
                 return value.ref_count == 0;
             });
@@ -82,6 +83,7 @@ namespace ET
         //异步加载图片 会自动识别图集：回调方式（image 和button已经封装 外部使用时候 谨慎使用）
         public async ETTask<Sprite> LoadImageAsync(string image_path, Action<Sprite> callback = null)
         {
+            Sprite res;
             CoroutineLock coroutineLock = null;
             try
             {
@@ -89,21 +91,23 @@ namespace ET
                 __GetSpriteLoadInfoByPath(image_path, out Type asset_type, out string asset_address, out string subasset_name);
                 if (asset_type == sprite_type)
                 {
-                    return await __LoadSingleImageAsyncInternal(m_cacheSingleSprite, asset_address, subasset_name, callback);
+                    res = await __LoadSingleImageAsyncInternal(m_cacheSingleSprite, asset_address, subasset_name, callback);
                 }
                 else
                 {
-                    return await __LoadSpriteImageAsyncInternal(m_cacheSpriteAtlas, asset_address, subasset_name, callback);
+                    res = await __LoadSpriteImageAsyncInternal(m_cacheSpriteAtlas, asset_address, subasset_name, callback);
                 }
             }
             finally
             {
                 coroutineLock?.Dispose();
             }
+            return res;
         }
 
         //释放图片
-        public void ReleaseImage(string image_path) {
+        public void ReleaseImage(string image_path)
+        {
             if (string.IsNullOrEmpty(image_path))
                 return;
             __GetSpriteLoadInfoByPath(image_path, out Type asset_type, out string asset_address, out string subasset_name);
@@ -144,46 +148,49 @@ namespace ET
 
 
         //异步加载图集： 回调方式，按理除了预加载的时候其余时候是不需要关心图集的
-        public async ETTask<Sprite> LoadAtlasImageAsync(string atlas_path, Action<float> progress_callback=null,Action<Sprite> callback =null)
+        public async ETTask<Sprite> LoadAtlasImageAsync(string atlas_path, Action<float> progress_callback = null, Action<Sprite> callback = null)
         {
+            Sprite res;
             CoroutineLock coroutineLock = null;
             try
             {
                 coroutineLock = await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Resources, atlas_path.GetHashCode());
-                var res = await __LoadAtlasImageAsyncInternal(atlas_path, null, progress_callback, callback);
+                res = await __LoadAtlasImageAsyncInternal(atlas_path, null, progress_callback, callback);
                 callback?.Invoke(res);
-                return res;
             }
             finally
             {
                 coroutineLock?.Dispose();
             }
+            return res;
         }
 
 
         //异步加载图片： 回调方式，按理除了预加载的时候其余时候是不需要关心图集的
         public async ETTask<Sprite> LoadSingleImageAsync(string atlas_path, Action<float> progress_callback = null, Action<Sprite> callback = null)
         {
+            Sprite res;
             CoroutineLock coroutineLock = null;
             try
             {
                 coroutineLock = await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Resources, atlas_path.GetHashCode());
-                var res = await __LoadSingleImageAsyncInternal(atlas_path, progress_callback, callback);
+                res = await __LoadSingleImageAsyncInternal(atlas_path, progress_callback, callback);
                 callback?.Invoke(res);
-                return res;
+
             }
             finally
             {
                 coroutineLock?.Dispose();
             }
+            return res;
         }
         #region private
 
-        async ETTask<Sprite> __LoadAtlasImageAsyncInternal(string asset_address,string subasset_name, Action<float> progress_callback =null, Action<Sprite> callback = null)
+        async ETTask<Sprite> __LoadAtlasImageAsyncInternal(string asset_address, string subasset_name, Action<float> progress_callback = null, Action<Sprite> callback = null)
         {
             var cacheCls = m_cacheSpriteAtlas;
             var asset_type = sprite_atlas_type;
-            if (cacheCls.TryGet(asset_address,out var value_c))
+            if (cacheCls.TryGet(asset_address, out var value_c))
             {
                 if (value_c.asset == null)
                 {
@@ -192,7 +199,7 @@ namespace ET
                 else
                 {
                     value_c.ref_count = value_c.ref_count + 1;
-                    if(value_c.subasset.TryGetValue(subasset_name,out var result))
+                    if (value_c.subasset.TryGetValue(subasset_name, out var result))
                     {
                         value_c.subasset[subasset_name].ref_count = value_c.subasset[subasset_name].ref_count + 1;
                         callback?.Invoke(result.asset);
@@ -203,7 +210,7 @@ namespace ET
                         var sp = value_c.asset.GetSprite(subasset_name);
                         if (sp == null)
                         {
-                            Log.Error("image not found:"+subasset_name);
+                            Log.Error("image not found:" + subasset_name);
                             callback?.Invoke(null);
                             return null;
                         }
@@ -287,12 +294,13 @@ namespace ET
             callback?.Invoke(null);
             return null;
         }
-        void __GetSpriteLoadInfoByPath(string image_path,out Type asset_type,out string asset_address,out string subasset_name)
+        void __GetSpriteLoadInfoByPath(string image_path, out Type asset_type, out string asset_address, out string subasset_name)
         {
             asset_address = image_path;
             subasset_name = "";
             var index = image_path.IndexOf(ATLAS_KEY);
-            if (index < 0) {
+            if (index < 0)
+            {
                 //没有找到/atlas/，则是散图
                 asset_type = sprite_type;
                 return;
@@ -321,18 +329,18 @@ namespace ET
 
                 var dotIndex = substr.LastIndexOf(".");
 
-                spriteName = substr.Substring(0, dotIndex );
+                spriteName = substr.Substring(0, dotIndex);
             }
             asset_address = atlasPath;
             subasset_name = spriteName;
         }
 
-        async ETTask<Sprite> __LoadSingleImageAsyncInternal(LruCache<string, SpriteValue> cacheCls, string asset_address,string subasset_name,Action<Sprite> callback)
+        async ETTask<Sprite> __LoadSingleImageAsyncInternal(LruCache<string, SpriteValue> cacheCls, string asset_address, string subasset_name, Action<Sprite> callback)
         {
             var cached = false;
-            if (cacheCls.TryGet(asset_address,out SpriteValue value_c))
+            if (cacheCls.TryGet(asset_address, out SpriteValue value_c))
             {
-                if(value_c.asset == null)
+                if (value_c.asset == null)
                 {
                     cacheCls.Remove(asset_address);
                 }
@@ -473,7 +481,7 @@ namespace ET
             {
                 if (m_cacheSpriteAtlas.TryOnlyGet(key, out var value))
                 {
-                    if(value.subasset != null)
+                    if (value.subasset != null)
                         foreach (var item in value.subasset)
                         {
                             GameObject.Destroy(item.Value.asset);
