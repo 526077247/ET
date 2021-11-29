@@ -9,10 +9,6 @@ using Object = UnityEngine.Object;
 
 namespace ET
 {
-    public class BundleInfo
-	{
-		public List<string> ParentPaths = new List<string>();
-	}
 	public class PlatformTypeComparer : IEqualityComparer<PlatformType>
 	{
 		public static PlatformTypeComparer Instance = new PlatformTypeComparer();
@@ -43,10 +39,6 @@ namespace ET
 
 	public class BuildEditor : EditorWindow
 	{
-        private const string settingAsset = "Assets/Editor/BuildEditor/ETBuildSettings.asset";
-
-        private readonly Dictionary<string, BundleInfo> dictionary = new Dictionary<string, BundleInfo>();
-
 		private PlatformType activePlatform;
 		private PlatformType platformType;
 		private bool clearFolder;
@@ -56,8 +48,6 @@ namespace ET
 		private BuildType buildType;
 		private BuildOptions buildOptions;
 		private BuildAssetBundleOptions buildAssetBundleOptions = BuildAssetBundleOptions.None;
-
-		private ETBuildSettings buildSettings;
 
 		private Dictionary<string, string> config;
 		[MenuItem("Tools/打包工具")]
@@ -80,28 +70,6 @@ namespace ET
 			activePlatform = PlatformType.None;
 #endif
             platformType = activePlatform;
-
-			if (!File.Exists(settingAsset))
-            {
-				buildSettings = new ETBuildSettings();
-				AssetDatabase.CreateAsset(buildSettings, settingAsset);
-            }
-			else
-			{
-				buildSettings = AssetDatabase.LoadAssetAtPath<ETBuildSettings>(settingAsset);
-
-				clearFolder = buildSettings.clearFolder;
-				isBuildExe = buildSettings.isBuildExe;
-				isContainAB = buildSettings.isContainAB;
-				isInject = buildSettings.isInject;
-				buildType = buildSettings.buildType;
-				buildAssetBundleOptions = buildSettings.buildAssetBundleOptions;
-			}
-        }
-
-        private void OnDisable()
-        {
-			SaveSettings();
         }
 
         private void OnGUI() 
@@ -137,7 +105,7 @@ namespace ET
 			switch (buildType)
 			{
 				case BuildType.Development:
-					this.buildOptions = BuildOptions.Development | BuildOptions.ConnectWithProfiler | BuildOptions.AllowDebugging;
+					this.buildOptions = BuildOptions.Development | BuildOptions.AllowDebugging;
 					break;
 				case BuildType.Release:
 					this.buildOptions = BuildOptions.None;
@@ -172,18 +140,5 @@ namespace ET
 
 			GUILayout.Space(5);
 		}
-
-		private void SaveSettings()
-        {
-	        if(buildSettings==null) return;
-			buildSettings.clearFolder = clearFolder;
-			buildSettings.isBuildExe = isBuildExe;
-			buildSettings.isContainAB = isContainAB;
-			buildSettings.buildType = buildType;
-			buildSettings.buildAssetBundleOptions = buildAssetBundleOptions;
-			buildSettings.isInject = isInject;
-			EditorUtility.SetDirty(buildSettings);
-			AssetDatabase.SaveAssets();
-        }
 	}
 }
