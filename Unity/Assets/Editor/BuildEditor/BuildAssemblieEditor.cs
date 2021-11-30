@@ -17,7 +17,10 @@ namespace ET
         [MenuItem("Tools/BuildCodeDebug _F5")]
         public static void BuildCodeDebug()
         {
-            BuildAssemblieEditor.BuildMuteAssembly("Code", new []
+            string jstr = File.ReadAllText("Assets/AssetsPackage/config.bytes");
+            var config = JsonHelper.FromJson<Dictionary<string, string>>(jstr);
+            string assemblyName = "Code" + config["ResVer"];
+            BuildAssemblieEditor.BuildMuteAssembly(assemblyName, new []
             {
                 "Codes/Model/",
                 "Codes/ModelView/",
@@ -25,14 +28,17 @@ namespace ET
                 "Codes/HotfixView/"
             }, Array.Empty<string>(), CodeOptimization.Debug);
 
-            AfterCompiling();
+            AfterCompiling(assemblyName);
             
         }
         
         [MenuItem("Tools/BuildCodeRelease _F6")]
         public static void BuildCodeRelease()
         {
-            BuildAssemblieEditor.BuildMuteAssembly("Code", new []
+            string jstr = File.ReadAllText("Assets/AssetsPackage/config.bytes");
+            var config = JsonHelper.FromJson<Dictionary<string, string>>(jstr);
+            string assemblyName = "Code" + config["ResVer"];
+            BuildAssemblieEditor.BuildMuteAssembly(assemblyName, new []
             {
                 "Codes/Model/",
                 "Codes/ModelView/",
@@ -40,7 +46,7 @@ namespace ET
                 "Codes/HotfixView/"
             }, Array.Empty<string>(), CodeOptimization.Release);
 
-            AfterCompiling();
+            AfterCompiling(assemblyName);
             
             AssetDatabase.Refresh();
         }
@@ -154,7 +160,7 @@ namespace ET
             }
         }
 
-        private static void AfterCompiling()
+        private static void AfterCompiling(string assemblyName)
         {
             while (EditorApplication.isCompiling)
             {
@@ -167,8 +173,9 @@ namespace ET
             Debug.Log("Compiling finish");
 
             Directory.CreateDirectory(CodeDir);
-            File.Copy(Path.Combine(Define.BuildOutputDir, "Code.dll"), Path.Combine(CodeDir, "Code.dll.bytes"), true);
-            File.Copy(Path.Combine(Define.BuildOutputDir, "Code.pdb"), Path.Combine(CodeDir, "Code.pdb.bytes"), true);
+            FileHelper.CleanDirectory(CodeDir);
+            File.Copy(Path.Combine(Define.BuildOutputDir, $"{assemblyName}.dll"), Path.Combine(CodeDir, $"{assemblyName}.dll.bytes"), true);
+            File.Copy(Path.Combine(Define.BuildOutputDir, $"{assemblyName}.pdb"), Path.Combine(CodeDir, $"{assemblyName}.pdb.bytes"), true);
             AssetDatabase.Refresh();
 
             Debug.Log("build success!");

@@ -36,11 +36,11 @@ namespace ET
 				{
 #if !UNITY_EDITOR
                     var ab = AddressablesManager.Instance.SyncLoadAssetBundle("code_assets_all.bundle");
-                    byte[] assBytes = ((TextAsset)ab.LoadAsset("Assets/AssetsPackage/Code/Code.dll.bytes", typeof(TextAsset))).bytes;
-                    byte[] pdbBytes = ((TextAsset)ab.LoadAsset("Assets/AssetsPackage/Code/Code.pdb.bytes", typeof(TextAsset))).bytes;
+                    byte[] assBytes = ((TextAsset)ab.LoadAsset($"Assets/AssetsPackage/Code/Code{AssetBundleConfig.Instance.ResVer}.dll.bytes", typeof(TextAsset))).bytes;
+                    byte[] pdbBytes = ((TextAsset)ab.LoadAsset($"Assets/AssetsPackage/Code/Code{AssetBundleConfig.Instance.ResVer}.pdb.bytes", typeof(TextAsset))).bytes;
 #else
-					byte[] assBytes = (AssetDatabase.LoadAssetAtPath("Assets/AssetsPackage/Code/Code.dll.bytes", typeof(TextAsset)) as TextAsset).bytes;
-					byte[] pdbBytes = (AssetDatabase.LoadAssetAtPath("Assets/AssetsPackage/Code/Code.pdb.bytes", typeof(TextAsset)) as TextAsset).bytes;
+						byte[] assBytes = (AssetDatabase.LoadAssetAtPath($"Assets/AssetsPackage/Code/Code{AssetBundleConfig.Instance.ResVer}.dll.bytes", typeof(TextAsset)) as TextAsset).bytes;
+					byte[] pdbBytes = (AssetDatabase.LoadAssetAtPath($"Assets/AssetsPackage/Code/Code{AssetBundleConfig.Instance.ResVer}.pdb.bytes", typeof(TextAsset)) as TextAsset).bytes;
 #endif
 					
 					assembly = Assembly.Load(assBytes, pdbBytes);
@@ -56,11 +56,11 @@ namespace ET
 				{
 #if !UNITY_EDITOR
                     var ab = AddressablesManager.Instance.SyncLoadAssetBundle("code_assets_all.bundle");
-                    byte[] assBytes = ((TextAsset)ab.LoadAsset("Assets/AssetsPackage/Code/Code.dll.bytes", typeof(TextAsset))).bytes;
-                    byte[] pdbBytes = ((TextAsset)ab.LoadAsset("Assets/AssetsPackage/Code/Code.pdb.bytes", typeof(TextAsset))).bytes;
+                    byte[] assBytes = ((TextAsset)ab.LoadAsset($"Assets/AssetsPackage/Code/Code{AssetBundleConfig.Instance.ResVer}.dll.bytes", typeof(TextAsset))).bytes;
+                    byte[] pdbBytes = ((TextAsset)ab.LoadAsset($"Assets/AssetsPackage/Code/Code{AssetBundleConfig.Instance.ResVer}.pdb.bytes", typeof(TextAsset))).bytes;
 #else
-					byte[] assBytes = (AssetDatabase.LoadAssetAtPath("Assets/AssetsPackage/Code/Code.dll.bytes", typeof(TextAsset)) as TextAsset).bytes;
-					byte[] pdbBytes = (AssetDatabase.LoadAssetAtPath("Assets/AssetsPackage/Code/Code.pdb.bytes", typeof(TextAsset)) as TextAsset).bytes;
+					byte[] assBytes = (AssetDatabase.LoadAssetAtPath($"Assets/AssetsPackage/Code/Code{AssetBundleConfig.Instance.ResVer}.dll.bytes", typeof(TextAsset)) as TextAsset).bytes;
+					byte[] pdbBytes = (AssetDatabase.LoadAssetAtPath($"Assets/AssetsPackage/Code/Code{AssetBundleConfig.Instance.ResVer}.pdb.bytes", typeof(TextAsset)) as TextAsset).bytes;
 #endif
 					
 					appDomain = new ILRuntime.Runtime.Enviorment.AppDomain();
