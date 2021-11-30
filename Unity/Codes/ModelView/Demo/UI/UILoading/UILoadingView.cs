@@ -3,10 +3,10 @@ using UnityEngine.UI;
 
 namespace ET
 {
-	public class UILoadingView : UIBaseView
+	public class UILoadingView : UIBaseComponent
 	{
 		public static UILoadingView Instance;
-		public override string PrefabPath => "UI/UILoading/Prefabs/UILoadingView.prefab";
+		public static string PrefabPath => "UI/UILoading/Prefabs/UILoadingView.prefab";
 		public UILoadingView()
         {
 			if (!SceneManagerComponent.Instance.ScenesChangeIgnoreClean.Contains(PrefabPath))

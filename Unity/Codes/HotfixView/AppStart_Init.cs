@@ -35,7 +35,7 @@ namespace ET
             Game.Scene.AddComponent<GlobalComponent>();
             Game.Scene.AddComponent<AIDispatcherComponent>();
             
-            await UIManagerComponent.Instance.OpenWindow<UIUpdateView>();//下载热更资源
+            await UIManagerComponent.Instance.OpenWindow<UIUpdateView>(UIUpdateView.PrefabPath);//下载热更资源
             await ETTask.CompletedTask;
         }
     }

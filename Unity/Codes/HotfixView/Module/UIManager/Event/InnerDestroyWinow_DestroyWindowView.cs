@@ -12,7 +12,7 @@ namespace ET
 		protected override async ETTask Run(UIEventType.InnerDestroyWindow args)
 		{
 			var target = args.target;
-			UIBaseView view = target.GetComponent(target.ViewType) as UIBaseView;
+			UIBaseComponent view = target.GetComponent(target.ViewType) as UIBaseComponent;
 			if (view != null)
 			{
 				var obj = view.gameObject;

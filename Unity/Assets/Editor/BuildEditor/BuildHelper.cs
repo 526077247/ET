@@ -124,7 +124,7 @@ namespace ET
                     break;
             }
             //打程序集
-            BuildAssemblieEditor.BuildCode();
+            BuildAssemblieEditor.BuildCodeRelease();
             if (isInject)
             {
                 //Inject

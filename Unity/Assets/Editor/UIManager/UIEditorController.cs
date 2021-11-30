@@ -74,9 +74,9 @@ public class UIScriptController
         strBuilder.AppendLine("namespace ET");
         strBuilder.AppendLine("{");
 
-        strBuilder.AppendFormat("\tpublic class {0} : UIBaseView\r\n", name);
+        strBuilder.AppendFormat("\tpublic class {0} : UIBaseComponent\r\n", name);
         strBuilder.AppendLine("\t{");
-        strBuilder.AppendFormat("\t\tpublic override string PrefabPath => \"{0}\";", path.Replace(addressable_path, ""))
+        strBuilder.AppendFormat("\t\tpublic static string PrefabPath => \"{0}\";", path.Replace(addressable_path, ""))
             .AppendLine();
         GenerateEntityChildCode(go.transform, "", strBuilder);
         strBuilder.AppendLine("\t\t \r\n");

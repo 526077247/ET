@@ -12,7 +12,7 @@ namespace ET
         {
             List<string> res = new List<string>();
             //加载VIEW_CONFIG里面配置的依赖
-            var view = target.GetComponent(target.ViewType) as UIBaseView;
+            var view = target.GetComponent(target.ViewType) as UIBaseComponent;
             //允许代码逻辑控制需要增加的依赖
             var res2 = view.OnPreload();
             if (res2 != null)
@@ -46,7 +46,7 @@ namespace ET
 			var trans = go.transform;
 			trans.SetParent(UIManagerComponent.Instance.GetComponent<UILayersComponent>().layers[target.Layer].transform, false);
 			trans.name = target.Name;
-			var view = target.GetComponent(target.ViewType) as UIBaseView;
+			var view = target.GetComponent(target.ViewType) as UIBaseComponent;
 			view.gameObject = go;
             UIEventSystem.Instance.OnCreate(view);
 			target.LoadingState = UIWindowLoadingState.LoadOver;

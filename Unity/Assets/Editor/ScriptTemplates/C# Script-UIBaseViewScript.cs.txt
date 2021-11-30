@@ -3,9 +3,9 @@ using UnityEngine.UI;
 
 namespace ET
 {
-	public class #NAME# : UIBaseView
+	public class #NAME# : UIBaseComponent
 	{
-		public override string PrefabPath => ;
+		public static string PrefabPath => ;
 		
         public override void OnCreate()
         {

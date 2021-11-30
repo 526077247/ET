@@ -7,7 +7,7 @@ namespace ET
         protected override async ETTask Run(UIEventType.LoadingBegin args)
         {
             //await UIHelper.Create(args.Scene, UIType.UILoading);
-            await UIManagerComponent.Instance.OpenWindow<UILoadingView>();
+            await UIManagerComponent.Instance.OpenWindow<UILoadingView>(UILoadingView.PrefabPath);
         }
     }
 }

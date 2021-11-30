@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ET
 {
-    public class UIUpdateView : UIBaseView
+    public class UIUpdateView : UIBaseComponent
     {
         public readonly int BTN_CANCEL = 1;
         public readonly int BTN_CONFIRM = 2;
@@ -17,7 +17,7 @@ namespace ET
         public float last_progress;
         public long download_size;
         public int overCount;
-        public override string PrefabPath => "UI/UIUpdate/Prefabs/UIUpdateView.prefab";
+        public static string PrefabPath => "UI/UIUpdate/Prefabs/UIUpdateView.prefab";
 
     }
 }

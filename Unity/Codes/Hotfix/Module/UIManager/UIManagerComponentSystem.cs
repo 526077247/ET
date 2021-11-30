@@ -82,6 +82,11 @@ namespace ET
             }
             return null;
         }
+        public static async ETTask CloseWindow(this UIManagerComponent self,UIBaseContainer window)
+        {
+            string ui_name = window.GetType().Name;
+            await self.CloseWindow(ui_name);
+        }
         public static async ETTask CloseWindow<T>(this UIManagerComponent self)
         {
             string ui_name = typeof(T).Name;
@@ -98,7 +103,10 @@ namespace ET
             self.__RemoveFromStack(target);
             self.__InnnerCloseWindow(target);
         }
-
+        public static async ETTask CloseSelf(this UIBaseContainer self)
+        {
+            await UIManagerComponent.Instance.CloseWindow(self);
+        }
         public static async ETTask CloseWindowByLayer(this UIManagerComponent self, UILayerNames layer, string[] except_ui_names = null)
         {
             Dictionary<string, bool> dict_ui_names = null;
@@ -144,13 +152,13 @@ namespace ET
             }
         }
         //打开窗口
-        public static async ETTask<T> OpenWindow<T>(this UIManagerComponent self, UILayerNames layer_name = UILayerNames.NormalLayer) where T : UIBaseContainer, new()
+        public static async ETTask<T> OpenWindow<T>(this UIManagerComponent self, string path, UILayerNames layer_name = UILayerNames.NormalLayer) where T : UIBaseContainer, new()
         {
             string ui_name = typeof(T).Name;
             var target = self.GetWindow(ui_name);
             if (target == null)
             {
-                target = await self.__InitWindow<T>(layer_name);
+                target = self.__InitWindow<T>(path,layer_name);
                 self.windows[ui_name] = target;
             }
             target.Layer = layer_name;
@@ -158,14 +166,14 @@ namespace ET
 
         }
         //打开窗口
-        public static async ETTask<T> OpenWindow<T, P1>(this UIManagerComponent self, P1 p1, UILayerNames layer_name = UILayerNames.NormalLayer) where T : UIBaseContainer, new()
+        public static async ETTask<T> OpenWindow<T, P1>(this UIManagerComponent self, string path, P1 p1, UILayerNames layer_name = UILayerNames.NormalLayer) where T : UIBaseContainer, new()
         {
 
             string ui_name = typeof(T).Name;
             var target = self.GetWindow(ui_name);
             if (target == null)
             {
-                target = await self.__InitWindow<T>(layer_name);
+                target = self.__InitWindow<T>(path, layer_name);
                 self.windows[ui_name] = target;
             }
             target.Layer = layer_name;
@@ -173,14 +181,14 @@ namespace ET
 
         }
         //打开窗口
-        public static async ETTask<T> OpenWindow<T, P1, P2>(this UIManagerComponent self, P1 p1, P2 p2, UILayerNames layer_name = UILayerNames.NormalLayer) where T : UIBaseContainer, new()
+        public static async ETTask<T> OpenWindow<T, P1, P2>(this UIManagerComponent self, string path, P1 p1, P2 p2, UILayerNames layer_name = UILayerNames.NormalLayer) where T : UIBaseContainer, new()
         {
 
             string ui_name = typeof(T).Name;
             var target = self.GetWindow(ui_name);
             if (target == null)
             {
-                target = await self.__InitWindow<T>(layer_name);
+                target = self.__InitWindow<T>(path, layer_name);
                 self.windows[ui_name] = target;
             }
             target.Layer = layer_name;
@@ -188,14 +196,14 @@ namespace ET
 
         }
         //打开窗口
-        public static async ETTask<T> OpenWindow<T, P1, P2, P3>(this UIManagerComponent self, P1 p1, P2 p2, P3 p3, UILayerNames layer_name = UILayerNames.NormalLayer) where T : UIBaseContainer, new()
+        public static async ETTask<T> OpenWindow<T, P1, P2, P3>(this UIManagerComponent self,string path, P1 p1, P2 p2, P3 p3, UILayerNames layer_name = UILayerNames.NormalLayer) where T : UIBaseContainer, new()
         {
 
             string ui_name = typeof(T).Name;
             var target = self.GetWindow(ui_name);
             if (target == null)
             {
-                target = await self.__InitWindow<T>(layer_name);
+                target = self.__InitWindow<T>(path,layer_name);
                 self.windows[ui_name] = target;
             }
             target.Layer = layer_name;
@@ -312,7 +320,7 @@ namespace ET
         /// <summary>
         /// 初始化window
         /// </summary>
-        static async ETTask<UIWindow> __InitWindow<T>(this UIManagerComponent self, UILayerNames layer_name) where T : UIBaseContainer, new()
+        static UIWindow __InitWindow<T>(this UIManagerComponent self, string path, UILayerNames layer_name) where T : UIBaseContainer, new()
         {
             UIWindow window = self.AddChild<UIWindow>();
             var type = typeof(T);
@@ -321,8 +329,8 @@ namespace ET
             window.ViewType = type;
             window.Layer = layer_name;
             window.LoadingState = UIWindowLoadingState.NotStart;
-            var uibaseview = window.AddComponent<T>();
-            await Game.EventSystem.Publish(new UIEventType.InitWindow() { uibaseview = uibaseview, window = window, name = type.Name });
+            window.PrefabPath = path;
+            window.AddComponent<T>();
             return window;
         }
 

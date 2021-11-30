@@ -18,13 +18,6 @@ namespace ET
             public UIWindow target;
         }
 
-        public struct InitWindow
-        {
-            public UIBaseContainer uibaseview;
-            public UIWindow window;
-            public string name;
-        }
-
         public struct InnerOpenWindow
         {
             public UIWindow window;

@@ -7,9 +7,9 @@ using UnityEngine.Events;
 
 namespace ET
 {
-	public class UIMsgBoxWin : UIBaseView
+	public class UIMsgBoxWin : UIBaseComponent
 	{
-		public override string PrefabPath => "UI/UIUpdate/Prefabs/UIMsgBoxWin.prefab";
+		public static string PrefabPath => "UI/UIUpdate/Prefabs/UIMsgBoxWin.prefab";
 		public UIText Text;
 		public UIButton btn_cancel;
 		public UIText CancelText;

@@ -68,7 +68,7 @@ namespace ET
             self.para.ConfirmText = confirmBtnText;
             self.para.CancelText = cancelBtnText;
             self.para.CancelCallback = cancelBtnFunc;
-            await UIManagerComponent.Instance.OpenWindow<UIMsgBoxWin, UIMsgBoxWin.MsgBoxPara>(self.para);
+            await UIManagerComponent.Instance.OpenWindow<UIMsgBoxWin, UIMsgBoxWin.MsgBoxPara>(UIMsgBoxWin.PrefabPath,self.para);
             var result = await tcs;
             await UIManagerComponent.Instance.CloseWindow<UIMsgBoxWin>();
             return result;

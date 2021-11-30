@@ -6,7 +6,7 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 namespace ET
 {
-	public class UILoginView: UIBaseView
+	public class UILoginView: UIBaseComponent
 	{
 		public UIButton loginBtn;
 		public UIInput password;
@@ -16,7 +16,7 @@ namespace ET
 		public List<UIButton> btns;
 		public Scene scene;
 
-        public override string PrefabPath => "UI/UILogin/Prefabs/UILoginView.prefab";
+        public static string PrefabPath => "UI/UILogin/Prefabs/UILoginView.prefab";
 
 	}
 }

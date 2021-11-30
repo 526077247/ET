@@ -10,7 +10,7 @@ namespace ET
 	{
 		protected override async ETTask Run(UIEventType.AddWindowToStack args)
 		{
-			var view = args.window.GetComponent(args.window.ViewType) as UIBaseView;
+			var view = args.window.GetComponent(args.window.ViewType) as UIBaseComponent;
 			if (view.transform)
 			{
 				view.transform.SetAsLastSibling();
