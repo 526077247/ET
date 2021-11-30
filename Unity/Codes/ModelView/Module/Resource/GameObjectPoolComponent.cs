@@ -134,7 +134,25 @@ namespace ET
 				__goInstCountCache[path] = __goInstCountCache[path] + inst_count;
 			}
 		}
-
+		//预加载一系列资源
+		public async ETTask LoadDependency(List<string> res)
+		{
+			if (res.Count <= 0) return;
+			ListComponent<ETTask> TaskScheduler= null;
+			try
+			{
+				TaskScheduler = ListComponent<ETTask>.Create();
+				foreach (var res_path in res)
+				{
+					TaskScheduler.List.Add(PreLoadGameObjectAsync(res_path, 1));
+				}
+				await ETTaskHelper.WaitAll(TaskScheduler.List);
+			}
+			finally
+			{
+				TaskScheduler?.Dispose();
+			}
+		}
 		//尝试从缓存中获取
 		public bool TryGetFromCache(string path, out GameObject go)
 		{

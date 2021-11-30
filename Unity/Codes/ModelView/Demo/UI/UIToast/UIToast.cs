@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 namespace ET
 {
-    public class UIToast : UIBaseComponent
+    public class UIToast : UIBaseContainer
 	{
-		public TMPro.TMP_Text Text;
+		public UITextmesh Text;
     }
 }

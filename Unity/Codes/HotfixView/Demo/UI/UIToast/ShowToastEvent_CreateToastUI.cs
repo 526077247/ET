@@ -14,12 +14,14 @@ namespace ET
         async ETTask Show(string Content, int seconds = 3)
         {
             GameObject gameObject = await GameObjectPoolComponent.Instance.GetGameObjectAsync("UI/UIToast/Prefabs/UIToast.prefab");
-            UIToast ui = ToastComponent.Instance.AddChild<UIToast, GameObject>(gameObject);
-            ui.transform = gameObject.transform;
-            ui.transform.SetParent(ToastComponent.Instance.root);
-            ui.transform.localPosition = Vector3.zero;
-            ui.transform.localRotation = Quaternion.identity;
-            ui.transform.localScale = new Vector3(1, 1, 1);
+            UIToast ui = ToastComponent.Instance.AddChild<UIToast>();
+            var transform = gameObject.transform;
+            ui.AddComponent<UITransform>("").__transform = transform;
+            transform = gameObject.transform;
+            transform.SetParent(ToastComponent.Instance.root);
+            transform.localPosition = Vector3.zero;
+            transform.localRotation = Quaternion.identity;
+            transform.localScale = new Vector3(1, 1, 1);
             UIEventSystem.Instance.OnCreate(ui);
             UIEventSystem.Instance.OnEnable(ui,Content);
             await TimerComponent.Instance.WaitAsync(seconds*1000);

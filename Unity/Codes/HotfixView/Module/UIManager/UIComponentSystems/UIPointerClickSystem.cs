@@ -18,7 +18,18 @@ namespace ET
     }
     public static class UIPointerClickSystem
     {
-
+        static void ActivatingComponent(this UIPointerClick self)
+        {
+            if (self.unity_pointerclick == null)
+            {
+                self.unity_pointerclick = self.GetGameObject().GetComponent<PointerClick>();
+                if (self.unity_pointerclick == null)
+                {
+                    self.unity_pointerclick = self.GetGameObject().AddComponent<PointerClick>();
+                    Log.Info($"添加UI侧组件UIPointerClick时，物体{self.GetGameObject().name}上没有找到PointerClick组件");
+                }
+            }
+        }
         //虚拟点击
         public static void Click(this UIPointerClick self)
         {
@@ -27,6 +38,7 @@ namespace ET
 
         public static void SetOnClick(this UIPointerClick self,UnityAction callback)
         {
+            self.ActivatingComponent();
             self.RemoveOnClick();
             self.__onclick = () =>
             {
@@ -45,6 +57,7 @@ namespace ET
 
         public static void SetEnabled(this UIPointerClick self,bool flag)
         {
+            self.ActivatingComponent();
             self.unity_pointerclick.enabled = flag;
         }
 

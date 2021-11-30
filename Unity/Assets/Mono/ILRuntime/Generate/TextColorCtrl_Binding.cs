@@ -14,14 +14,14 @@ using ILRuntime.CLR.Utils;
 
 namespace ILRuntime.Runtime.Generated
 {
-    unsafe class UITextColorCtrl_Binding
+    unsafe class TextColorCtrl_Binding
     {
         public static void Register(ILRuntime.Runtime.Enviorment.AppDomain app)
         {
             BindingFlags flag = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
             MethodBase method;
             Type[] args;
-            Type type = typeof(global::UITextColorCtrl);
+            Type type = typeof(global::TextColorCtrl);
             args = new Type[]{typeof(UnityEngine.GameObject)};
             method = type.GetMethod("Get", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, Get_0);
@@ -47,7 +47,7 @@ namespace ILRuntime.Runtime.Generated
             __intp.Free(ptr_of_this_method);
 
 
-            var result_of_this_method = global::UITextColorCtrl.Get(@go);
+            var result_of_this_method = global::TextColorCtrl.Get(@go);
 
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
@@ -63,7 +63,7 @@ namespace ILRuntime.Runtime.Generated
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            global::UITextColorCtrl instance_of_this_method = (global::UITextColorCtrl)typeof(global::UITextColorCtrl).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            global::TextColorCtrl instance_of_this_method = (global::TextColorCtrl)typeof(global::TextColorCtrl).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             instance_of_this_method.SetTextColor(@color);
@@ -78,7 +78,7 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 1);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            global::UITextColorCtrl instance_of_this_method = (global::UITextColorCtrl)typeof(global::UITextColorCtrl).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            global::TextColorCtrl instance_of_this_method = (global::TextColorCtrl)typeof(global::TextColorCtrl).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             instance_of_this_method.ClearTextColor();

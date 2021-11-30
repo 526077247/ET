@@ -63,9 +63,9 @@ namespace ET
 			self.ipaddr.SetText(ServerConfigManagerComponent.Instance.ChangeEnv(name.ToLower()).iplist[0]);
 		}
 
-		public static async void OnRegister(this UILoginView self)
+		public static void OnRegister(this UILoginView self)
 		{
-			
+			Game.EventSystem.Publish(new UIEventType.ShowToast() { Text = "测试OnRegister" });
 		}
 	}
 }

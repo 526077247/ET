@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UiFollowGO : MonoBehaviour
+public class FollowGO : MonoBehaviour
 {
     GameObject go;
     RectTransform rectTransform;
@@ -20,9 +20,9 @@ public class UiFollowGO : MonoBehaviour
         }
     }
 
-    private float height = 1.8f;//ÈËÎï¸ß¶È ÓÃÓÚ¶¨Î»Í·¶¥
-    private float offSet = 0;//UIËæ×ÅÓÎÏ·ÎïÌåÓë¾µÍ·µÄ¾àÀë²úÉúµÄÆ«ÒÆ
-    private double newBase = 1.1;//¼ÆËãUIÆ«ÒÆoffsetµÄ¶ÔÊýº¯ÊýµÄµ×Öµ
+    private float height = 1.8f;//ï¿½ï¿½ï¿½ï¿½ß¶ï¿½ ï¿½ï¿½ï¿½Ú¶ï¿½Î»Í·ï¿½ï¿½
+    private float offSet = 0;//UIï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï·ï¿½ï¿½ï¿½ï¿½ï¿½ë¾µÍ·ï¿½Ä¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ«ï¿½ï¿½
+    private double newBase = 1.1;//ï¿½ï¿½ï¿½ï¿½UIÆ«ï¿½ï¿½offsetï¿½Ä¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Äµï¿½Öµ
 
     // Start is called before the first frame update
     void Start()
@@ -36,7 +36,7 @@ public class UiFollowGO : MonoBehaviour
     {
         if (Go != null)
         {
-            Vector3 headPos = new Vector3(Go.transform.position.x, go.transform.position.y + height, go.transform.position.z);//ÈËÎïÍ·¶¥×ø±ê
+            Vector3 headPos = new Vector3(Go.transform.position.x, go.transform.position.y + height, go.transform.position.z);//ï¿½ï¿½ï¿½ï¿½Í·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             Vector2 screenCoo;
             if (IsInView(headPos, out screenCoo))
             {
@@ -56,7 +56,7 @@ public class UiFollowGO : MonoBehaviour
     {
         Transform camTransform = Camera.main.transform;
         Vector3 dir = (worldPos - camTransform.position).normalized;
-        float dot = Vector3.Dot(camTransform.forward, dir);     //ÅÐ¶ÏÎïÌåÊÇ·ñÔÚÏà»úÇ°Ãæ  
+        float dot = Vector3.Dot(camTransform.forward, dir);     //ï¿½Ð¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½  
         viewPos = Camera.main.WorldToViewportPoint(worldPos);
         if (dot > 0 && viewPos.x >= 0 && viewPos.x <= 1 && viewPos.y >= 0 && viewPos.y <= 1)
             return true;
@@ -65,13 +65,13 @@ public class UiFollowGO : MonoBehaviour
     }
 
     /// <summary>
-    /// ¸ù¾Ý¾àÀë¼ÆËãUIÆ«ÒÆ£¬Ô½Ô¶Ô½ÍùÉÏÆ«ÒÆ¡£Ê¹ÓÃ¶ÔÊýº¯Êý±£Ö¤×îÖÕÇ÷ÓÚÒ»¸öÎÈ¶¨µÄÖµ
+    /// ï¿½ï¿½ï¿½Ý¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½UIÆ«ï¿½Æ£ï¿½Ô½Ô¶Ô½ï¿½ï¿½ï¿½ï¿½Æ«ï¿½Æ¡ï¿½Ê¹ï¿½Ã¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½È¶ï¿½ï¿½ï¿½Öµ
     /// </summary>
     /// <param name="distance"></param>
     /// <returns></returns>
     float CalculateOffset(float distance)
     {
-        //Æ«ÒÆ×îµÍÎª0£¬ËùÒÔdistance×îÉÙÎª1
+        //Æ«ï¿½ï¿½ï¿½ï¿½ï¿½Îª0ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½distanceï¿½ï¿½ï¿½ï¿½Îª1
         distance = Math.Max(1, distance);
         return (float)Math.Log(distance,newBase);
     }

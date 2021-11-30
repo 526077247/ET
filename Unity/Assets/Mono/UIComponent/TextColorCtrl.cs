@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class UITextColorCtrl : MonoBehaviour {
+public class TextColorCtrl : MonoBehaviour {
 
     private Text m_text;
     private Color m_originTextColor;
@@ -58,12 +58,12 @@ public class UITextColorCtrl : MonoBehaviour {
         }
     }
 
-    public static UITextColorCtrl Get(GameObject go)
+    public static TextColorCtrl Get(GameObject go)
     {
-        var uiTextGrey = go.GetComponent<UITextColorCtrl>();
+        var uiTextGrey = go.GetComponent<TextColorCtrl>();
         if (uiTextGrey == null)
         {
-            uiTextGrey = go.AddComponent<UITextColorCtrl>();
+            uiTextGrey = go.AddComponent<TextColorCtrl>();
         }
 
         return uiTextGrey;

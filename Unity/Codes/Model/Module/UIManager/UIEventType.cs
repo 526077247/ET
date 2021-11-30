@@ -52,6 +52,15 @@ namespace ET
             public Scene Scene;
             public string Text;
         }
-
+        //新创建UI组件
+        public struct AddComponent
+        {
+            public UIBaseContainer entity;
+        } 
+        public struct SetActive
+        {
+            public UIBaseContainer entity;
+            public bool Active;
+        } 
     }
 }

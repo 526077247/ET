@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using System.Collections.Generic;
 
-public class UIEmpty4Raycast : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler
+public class Empty4Raycast : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler
 {
     //最大穿透层数 -1不设限
     public int maxCount = -1;

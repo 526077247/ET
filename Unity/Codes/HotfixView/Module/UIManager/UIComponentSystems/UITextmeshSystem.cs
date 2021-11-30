@@ -45,21 +45,34 @@ namespace ET
     }
     public static class UITextmeshSystem
     {
-
-
+        static void ActivatingComponent(this UITextmesh self)
+        {
+            if (self.unity_uitextmesh == null)
+            {
+                self.unity_uitextmesh = self.GetGameObject().GetComponent<TMPro.TMP_Text>();
+                if (self.unity_uitextmesh == null)
+                {
+                    self.unity_uitextmesh = self.GetGameObject().AddComponent<TMPro.TMP_Text>();
+                    Log.Info($"添加UI侧组件UITextmesh时，物体{self.GetGameObject().name}上没有找到TMPro.TMP_Text组件");
+                }
+                self.unity_i18ncomp_touched = self.GetGameObject().GetComponent<I18NText>();
+            }
+        }
         //当手动修改text的时候，需要将mono的i18textcomponent给禁用掉
         static void __DisableI18Component(this UITextmesh self,bool enable = false)
         {
+            self.ActivatingComponent();
             if (self.unity_i18ncomp_touched != null)
             {
                 self.unity_i18ncomp_touched.enabled = enable;
                 if(!enable)
-                    Log.Warning($"组件{self.gameObject.name}, text在Lua层进行了修改，所以应该去掉去预设里面的I18N组件，否则会被覆盖");
+                    Log.Warning($"组件{self.GetGameObject().name}, text在Lua层进行了修改，所以应该去掉去预设里面的I18N组件，否则会被覆盖");
             }
         }
 
         public static string GetText(this UITextmesh self)
         {
+            self.ActivatingComponent();
             return self.unity_uitextmesh.text;
         }
 
@@ -110,12 +123,14 @@ namespace ET
 
         public static void OnLanguageChange(this UITextmesh self)
         {
+            self.ActivatingComponent();
             if (self.__text_key !=null)
                 I18NComponent.Instance.I18NGetParamText(self.__text_key, self.keyParams);
         }
 
         public static void SetTextColor(this UITextmesh self, Color color)
         {
+            self.ActivatingComponent();
             self.unity_uitextmesh.color = color;
         }
 

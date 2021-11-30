@@ -119,7 +119,7 @@ namespace ET
 		{
 			foreach (var item in self.layers)
 			{
-				var obj = item.Value.gameObject;
+				var obj = item.Value.transform.gameObject;
 				GameObject.Destroy(obj);
 			}
 			self.layers.Clear();
@@ -162,12 +162,12 @@ namespace ET
 		}
 		
 
-		public static UIBaseComponent GetView(this UIManagerComponent self,string ui_name)
+		public static UIBaseContainer GetView(this UIManagerComponent self,string ui_name)
 		{
 			var res = self.GetWindow(ui_name);
 			if (res != null)
             {
-				return res.GetComponent<UIBaseComponent>();
+				return res.GetComponent<UIBaseContainer>();
             }
 			return null;
 		}

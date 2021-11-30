@@ -14,7 +14,7 @@ namespace ET
     }
 
     
-    public class UILayer : UIBaseComponent
+    public class UILayer : UIBaseContainer
     {
         public UILayerNames Name;
         public Canvas unity_canvas;
@@ -23,7 +23,32 @@ namespace ET
         public RectTransform rectTransform;
         public int top_window_order;
         public int min_window_order;
-
+        protected GameObject _gameObject;
+        protected Transform _transform;
+        public GameObject gameObject
+        {
+            get
+            {
+                return _gameObject;
+            }
+            set
+            {
+                _gameObject = value;
+                _transform = _gameObject.transform;
+            }
+        }
+        public Transform transform
+        {
+            get
+            {
+                return _transform;
+            }
+            set
+            {
+                _transform = value;
+                _gameObject = _transform.gameObject;
+            }
+        }
     }
 
 

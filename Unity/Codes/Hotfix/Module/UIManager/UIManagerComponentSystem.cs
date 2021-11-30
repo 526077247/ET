@@ -158,7 +158,7 @@ namespace ET
             var target = self.GetWindow(ui_name);
             if (target == null)
             {
-                target = self.__InitWindow<T>(path,layer_name);
+                target = await self.__InitWindow<T>(path,layer_name);
                 self.windows[ui_name] = target;
             }
             target.Layer = layer_name;
@@ -173,7 +173,7 @@ namespace ET
             var target = self.GetWindow(ui_name);
             if (target == null)
             {
-                target = self.__InitWindow<T>(path, layer_name);
+                target = await self.__InitWindow<T>(path, layer_name);
                 self.windows[ui_name] = target;
             }
             target.Layer = layer_name;
@@ -188,7 +188,7 @@ namespace ET
             var target = self.GetWindow(ui_name);
             if (target == null)
             {
-                target = self.__InitWindow<T>(path, layer_name);
+                target = await self.__InitWindow<T>(path, layer_name);
                 self.windows[ui_name] = target;
             }
             target.Layer = layer_name;
@@ -203,7 +203,7 @@ namespace ET
             var target = self.GetWindow(ui_name);
             if (target == null)
             {
-                target = self.__InitWindow<T>(path,layer_name);
+                target = await self.__InitWindow<T>(path,layer_name);
                 self.windows[ui_name] = target;
             }
             target.Layer = layer_name;
@@ -320,7 +320,7 @@ namespace ET
         /// <summary>
         /// 初始化window
         /// </summary>
-        static UIWindow __InitWindow<T>(this UIManagerComponent self, string path, UILayerNames layer_name) where T : UIBaseContainer, new()
+        static async ETTask<UIWindow> __InitWindow<T>(this UIManagerComponent self, string path, UILayerNames layer_name) where T : UIBaseContainer, new()
         {
             UIWindow window = self.AddChild<UIWindow>();
             var type = typeof(T);

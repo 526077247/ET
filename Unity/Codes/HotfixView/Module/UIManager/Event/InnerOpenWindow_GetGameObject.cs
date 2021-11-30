@@ -8,35 +8,13 @@ namespace ET
 {
     public class InnerOpenWindow_GetGameObject : AEvent<UIEventType.InnerOpenWindow>
     {
-        async ETTask LoadDependency( UIWindow target)
+	    protected override async ETTask Run(UIEventType.InnerOpenWindow args)
         {
-            List<string> res = new List<string>();
-            //加载VIEW_CONFIG里面配置的依赖
-            var view = target.GetComponent(target.ViewType) as UIBaseComponent;
-            //允许代码逻辑控制需要增加的依赖
-            var res2 = view.OnPreload();
-            if (res2 != null)
-                res.AddRange(res2);
-            if (res.Count <= 0) return;
-            ListComponent<ETTask> TaskScheduler= null;
-            try
-            {
-	            TaskScheduler = ListComponent<ETTask>.Create();
-	            foreach (var res_path in res)
-	            {
-		            TaskScheduler.List.Add(GameObjectPoolComponent.Instance.PreLoadGameObjectAsync(res_path, 1));
-	            }
-	            await ETTaskHelper.WaitAll(TaskScheduler.List);
-            }
-            finally
-            {
-	            TaskScheduler?.Dispose();
-            }
-        }
-        protected override async ETTask Run(UIEventType.InnerOpenWindow args)
-        {
-            await LoadDependency(args.window);
-            var target = args.window;
+	        var target = args.window;
+	        var view = target.GetComponent(target.ViewType) as UIBaseContainer;
+	        
+	        await UIEventSystem.Instance.OnViewInitializationSystem(view);
+            
 			var go = await GameObjectPoolComponent.Instance.GetGameObjectAsync(args.path);
 			if (go == null)
 			{
@@ -46,8 +24,8 @@ namespace ET
 			var trans = go.transform;
 			trans.SetParent(UIManagerComponent.Instance.GetComponent<UILayersComponent>().layers[target.Layer].transform, false);
 			trans.name = target.Name;
-			var view = target.GetComponent(target.ViewType) as UIBaseComponent;
-			view.gameObject = go;
+			
+			view.AddComponent<UITransform>("").__transform = trans;
             UIEventSystem.Instance.OnCreate(view);
 			target.LoadingState = UIWindowLoadingState.LoadOver;
 		}

@@ -74,7 +74,7 @@ public class UIScriptController
         strBuilder.AppendLine("namespace ET");
         strBuilder.AppendLine("{");
 
-        strBuilder.AppendFormat("\tpublic class {0} : UIBaseComponent\r\n", name);
+        strBuilder.AppendFormat("\tpublic class {0} : UIBaseContainer\r\n", name);
         strBuilder.AppendLine("\t{");
         strBuilder.AppendFormat("\t\tpublic static string PrefabPath => \"{0}\";", path.Replace(addressable_path, ""))
             .AppendLine();

@@ -46,20 +46,35 @@ namespace ET
 
     public static class UITextSystem 
     {
+        static void ActivatingComponent(this UIText self)
+        {
+            if (self.unity_uitext == null)
+            {
+                self.unity_uitext = self.GetGameObject().GetComponent<Text>();
+                if (self.unity_uitext == null)
+                {
+                    self.unity_uitext = self.GetGameObject().AddComponent<Text>();
+                    Log.Info($"添加UI侧组件UIText时，物体{self.GetGameObject().name}上没有找到Text组件");
+                }
+                self.unity_i18ncomp_touched = self.GetGameObject().GetComponent<I18NText>();
+            }
+        }
 
         //当手动修改text的时候，需要将mono的i18textcomponent给禁用掉
         static void __DisableI18Component(this UIText self,bool enable = false)
         {
+            self.ActivatingComponent();
             if (self.unity_i18ncomp_touched != null)
             {
                 self.unity_i18ncomp_touched.enabled = enable;
                 if (!enable)
-                    Log.Warning($"组件{self.gameObject.name}, text在Lua层进行了修改，所以应该去掉去预设里面的I18N组件，否则会被覆盖");
+                    Log.Warning($"组件{self.GetGameObject().name}, text在Lua层进行了修改，所以应该去掉去预设里面的I18N组件，否则会被覆盖");
             }
         }
 
         public static string GetText(this UIText self)
         {
+            self.ActivatingComponent();
             return self.unity_uitext.text;
         }
 
@@ -110,12 +125,14 @@ namespace ET
 
         public static void OnLanguageChange(this UIText self)
         {
+            self.ActivatingComponent();
             if (self.__text_key != null)
                 I18NComponent.Instance.I18NGetParamText(self.__text_key, self.keyParams);
         }
 
         public static void SetTextColor(this UIText self, Color color)
         {
+            self.ActivatingComponent();
             self.unity_uitext.color = color;
         }
 

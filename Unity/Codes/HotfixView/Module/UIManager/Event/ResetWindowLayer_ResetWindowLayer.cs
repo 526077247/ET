@@ -11,11 +11,12 @@ namespace ET
         protected override async ETTask Run(UIEventType.ResetWindowLayer args)
         {
             var target = args.window;
-            var view = target.GetComponent(target.ViewType) as UIBaseComponent;
-            if (view.transform)
+            var view = target.GetComponent(target.ViewType) as UIBaseContainer;
+            var uiTrans = view.GetComponent<UITransform>();
+            if (uiTrans!=null)
             {
                 var layer = UIManagerComponent.Instance.GetComponent<UILayersComponent>().layers[target.Layer];
-                view.transform.SetParent(layer.transform, false);
+                uiTrans.transform.SetParent(layer.transform, false);
             }
             await ETTask.CompletedTask;
         }

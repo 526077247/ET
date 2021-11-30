@@ -7,7 +7,7 @@ using UnityEngine.Events;
 
 namespace ET
 {
-	public class UIMsgBoxWin : UIBaseComponent
+	public class UIMsgBoxWin : UIBaseContainer
 	{
 		public static string PrefabPath => "UI/UIUpdate/Prefabs/UIMsgBoxWin.prefab";
 		public UIText Text;

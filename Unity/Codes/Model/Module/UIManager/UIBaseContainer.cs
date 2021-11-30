@@ -57,11 +57,6 @@ namespace ET
             Dispose();
         }
 
-        public List<string> OnPreload()
-        {
-            return null;
-        }
-
         //遍历：注意，这里是无序的
         protected void Walk(Action<UIBaseContainer> callback)
         {
@@ -100,7 +95,7 @@ namespace ET
         /// </summary>
         /// <typeparam name="T">类型</typeparam>
         /// <param name="path">路径</param>
-        public T AddComponent<T>(string path) where T : UIBaseContainer
+        public T AddComponent<T>(string path = "") where T : UIBaseContainer
         {
             Type type = typeof(T);
             T component_inst = AddChild<T>();
@@ -109,8 +104,9 @@ namespace ET
             {
                 __RemoveComponent<T>(path);
             };
-            UIEventSystem.Instance.OnCreate(component_inst);
             RecordComponent(path, type, component_inst);
+            Game.EventSystem.Publish(new UIEventType.AddComponent() { entity = component_inst }); 
+            UIEventSystem.Instance.OnCreate(component_inst);
             length++;
             return component_inst;
         }
@@ -129,6 +125,7 @@ namespace ET
             {
                 __RemoveComponent<T>(path);
             };
+            Game.EventSystem.Publish(new UIEventType.AddComponent() { entity = component_inst }); 
             UIEventSystem.Instance.OnCreate(component_inst,a);
 
             RecordComponent(path, type, component_inst);
@@ -149,6 +146,7 @@ namespace ET
             {
                 __RemoveComponent<T>(path);
             };
+            Game.EventSystem.Publish(new UIEventType.AddComponent() { entity = component_inst }); 
             UIEventSystem.Instance.OnCreate(component_inst, a,b);
 
             RecordComponent(path, type, component_inst);
@@ -169,14 +167,16 @@ namespace ET
             {
                 __RemoveComponent<T>(path);
             };
+            Game.EventSystem.Publish(new UIEventType.AddComponent() { entity = component_inst }); 
             UIEventSystem.Instance.OnCreate(component_inst, a, b,c);
 
             RecordComponent(path, type, component_inst);
             length++;
             return component_inst;
         }
-        public virtual void SetActive(bool active)
+        public void SetActive(bool active)
         {
+            Game.EventSystem.Publish(new UIEventType.SetActive() { entity = this,Active = active}); 
             if (active)
             {
                 UIEventSystem.Instance.OnEnable(this);
@@ -187,8 +187,9 @@ namespace ET
             }
         }
 
-        public virtual void SetActive<T>(bool active, T param1)
+        public void SetActive<T>(bool active, T param1)
         {
+            Game.EventSystem.Publish(new UIEventType.SetActive() { entity = this,Active = active}); 
             if (active)
             {
                 UIEventSystem.Instance.OnEnable(this,param1);
@@ -198,8 +199,9 @@ namespace ET
                 UIEventSystem.Instance.OnDisable(this,param1);
             }
         }
-        public virtual void SetActive<T, P>(bool active, T param1, P param2)
+        public void SetActive<T, P>(bool active, T param1, P param2)
         {
+            Game.EventSystem.Publish(new UIEventType.SetActive() { entity = this,Active = active}); 
             if (active)
             {
                 UIEventSystem.Instance.OnEnable(this, param1, param2);
@@ -209,8 +211,9 @@ namespace ET
                 UIEventSystem.Instance.OnDisable(this, param1, param2);
             }
         }
-        public virtual void SetActive<T, P, K>(bool active, T param1, P param2, K param3)
+        public void SetActive<T, P, K>(bool active, T param1, P param2, K param3)
         {
+            Game.EventSystem.Publish(new UIEventType.SetActive() { entity = this,Active = active}); 
             if (active)
             {
                 UIEventSystem.Instance.OnEnable(this, param1, param2, param3);
@@ -226,7 +229,7 @@ namespace ET
         /// <typeparam name="T"></typeparam>
         /// <param name="path"></param>
         /// <returns></returns>
-        protected T InnerGetComponent<T>(string path) where T : UIBaseContainer
+        public T GetComponent<T>(string path = "") where T : UIBaseContainer
         {
             if (components.TryGetValue(path, out var obj))
             {
@@ -244,9 +247,9 @@ namespace ET
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="path"></param>
-        protected void InnerRemoveComponent<T>(string path) where T : UIBaseContainer
+        protected void RemoveComponent<T>(string path = "") where T : UIBaseContainer
         {
-            var component = InnerGetComponent<T>(path);
+            var component = GetComponent<T>(path);
             if (component != null)
             {
                 UIEventSystem.Instance.OnDestroy(component);
@@ -261,7 +264,7 @@ namespace ET
         /// <param name="path"></param>
         void __RemoveComponent<T>(string path) where T : UIBaseContainer
         {
-            var component = InnerGetComponent<T>(path);
+            var component = GetComponent<T>(path);
             if (component != null)
             {
                 components[path].Remove(typeof(T));

@@ -12,7 +12,7 @@ namespace UnityEngine.Events
     public class UIRaycastEvent : UnityEvent<List<RaycastResult>> { }
 }
 
-public class UIDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
+public class Drager : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
 {
     private bool isDraging = false;
     public UIPointerEvent onBeginDrag = new UIPointerEvent();

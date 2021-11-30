@@ -15,7 +15,6 @@ namespace ET
         {
             self.Name = layer.Name;
             self.gameObject = gameObject;
-            self.transform = gameObject.transform;
             //canvas
             if (!self.gameObject.TryGetComponent(out self.unity_canvas))
             {
@@ -79,7 +78,7 @@ namespace ET
 
         public static int GetCanvasLayer(this UILayer self)
         {
-            return self.gameObject.layer;
+            return self.transform.gameObject.layer;
         }
 
         public static int PopWindowOder(this UILayer self)

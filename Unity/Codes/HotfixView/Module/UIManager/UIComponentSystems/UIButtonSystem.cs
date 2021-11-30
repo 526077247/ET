@@ -31,7 +31,27 @@ namespace ET
     }
     public static class UIButtonSystem
     {
-
+        static void ActivatingComponent(this UIButton self)
+        {
+            if (self.unity_uibutton == null)
+            {
+                self.unity_uibutton = self.GetGameObject().GetComponent<Button>();
+                if (self.unity_uibutton == null)
+                {
+                    self.unity_uibutton = self.GetGameObject().AddComponent<Button>();
+                    Log.Info($"添加UI侧组件UIButton时，物体{self.GetGameObject().name}上没有找到Button组件");
+                }
+            }
+            if (self.unity_uiimage == null)
+            {
+                self.unity_uiimage = self.GetGameObject().GetComponent<Image>();
+                if (self.unity_uiimage == null)
+                {
+                    self.unity_uiimage = self.GetGameObject().AddComponent<Image>();
+                    Log.Info($"添加UI侧组件UIButton时，物体{self.GetGameObject().name}上没有找到Image组件");
+                }
+            }
+        }
         //虚拟点击
         public static void Click(this UIButton self)
         {
@@ -40,6 +60,7 @@ namespace ET
 
         public static void SetOnClick(this UIButton self,Action callback)
         {
+            self.ActivatingComponent();
             self.RemoveOnClick();
             self.__onclick = () =>
             {
@@ -58,11 +79,13 @@ namespace ET
 
         public static void SetEnabled(this UIButton self,bool flag)
         {
+            self.ActivatingComponent();
             self.unity_uibutton.enabled = flag;
         }
 
         public static void SetInteractable(this UIButton self,bool flag)
         {
+            self.ActivatingComponent();
             self.unity_uibutton.interactable = flag;
         }
         /// <summary>
@@ -74,6 +97,7 @@ namespace ET
         public static async void SetBtnGray(this UIButton self,bool isGray, bool includeText = true, bool affectInteractable = true)
         {
             if (self.gray_state == isGray) return;
+            self.ActivatingComponent();
             self.gray_state = isGray;
             var mat = await MaterialComponent.Instance.LoadMaterialAsync("UI/UICommon/Materials/uigray.mat");
             if (affectInteractable)
@@ -85,7 +109,8 @@ namespace ET
 
         public static void SetBtnGray(this UIButton self,Material grayMaterial, bool isGray, bool includeText)
         {
-            GameObject go = self.gameObject;
+            self.ActivatingComponent();
+            GameObject go = self.GetGameObject();
             if (go == null)
             {
                 return;
@@ -106,7 +131,7 @@ namespace ET
                 var textComs = go.GetComponentsInChildren<Text>();
                 for (int i = 0; i < textComs.Length; i++)
                 {
-                    var uITextColorCtrl = UITextColorCtrl.Get(textComs[i].gameObject);
+                    var uITextColorCtrl = TextColorCtrl.Get(textComs[i].gameObject);
                     if (isGray)
                     {
                         uITextColorCtrl.SetTextColor(new Color(89 / 255f, 93 / 255f, 93 / 255f));
@@ -122,7 +147,7 @@ namespace ET
         {
             if (string.IsNullOrEmpty(sprite_path)) return;
             if (sprite_path == self.sprite_path) return;
-
+            self.ActivatingComponent();
             var base_sprite_path = self.sprite_path;
             self.sprite_path = sprite_path;
             var sprite =await ImageLoaderComponent.Instance.LoadImageAsync(sprite_path);
@@ -146,6 +171,7 @@ namespace ET
 
         public static void SetImageColor(this UIButton self,Color color)
         {
+            self.ActivatingComponent();
             self.unity_uiimage.color = color;
         }
 

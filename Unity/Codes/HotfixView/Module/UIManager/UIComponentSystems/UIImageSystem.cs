@@ -27,12 +27,23 @@ namespace ET
     }
     public static class UIImageSystem
     {
-
+        static void ActivatingComponent(this UIImage self)
+        {
+            if (self.unity_uiimage == null)
+            {
+                self.unity_uiimage = self.GetGameObject().GetComponent<Image>();
+                if (self.unity_uiimage == null)
+                {
+                    self.unity_uiimage = self.GetGameObject().AddComponent<Image>();
+                    Log.Info($"添加UI侧组件UIImage时，物体{self.GetGameObject().name}上没有找到Image组件");
+                }
+            }
+        }
         public static async ETTask SetSpritePath(this UIImage self,string sprite_path)
         {
             if (string.IsNullOrEmpty(sprite_path)) return;
             if (sprite_path == self.sprite_path) return;
-
+            self.ActivatingComponent();
             var base_sprite_path = self.sprite_path;
             self.sprite_path = sprite_path;
 	        var sprite = await ImageLoaderComponent.Instance.LoadImageAsync(sprite_path);
@@ -55,15 +66,18 @@ namespace ET
 
         public static void SetImageColor(this UIImage self,Color color)
         {
+            self.ActivatingComponent();
             self.unity_uiimage.color = color;
         }
 
         public static void SetEnabled(this UIImage self,bool flag)
         {
+            self.ActivatingComponent();
             self.unity_uiimage.enabled = flag;
         }
         public static async void SetImageGray(this UIImage self,bool isGray)
         {
+            self.ActivatingComponent();
             Material mt = null;
             if (isGray)
             {

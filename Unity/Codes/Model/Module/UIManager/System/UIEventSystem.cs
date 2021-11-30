@@ -506,22 +506,48 @@ namespace ET
 
 		public void OnLanguageChange(Entity component)
 		{
-			List<object> iOnCreateSystems = this.typeSystems.GetSystems(component.GetType(), typeof(IOnCreateSystem));
-			if (iOnCreateSystems == null)
+			List<object> iI18NSystems = this.typeSystems.GetSystems(component.GetType(), typeof(II18NSystem));
+			if (iI18NSystems == null)
 			{
 				return;
 			}
 
-			foreach (IOnCreateSystem aOnCreateSystem in iOnCreateSystems)
+			foreach (II18NSystem aI18NSystem in iI18NSystems)
 			{
-				if (aOnCreateSystem == null)
+				if (aI18NSystem == null)
 				{
 					continue;
 				}
 
 				try
 				{
-					aOnCreateSystem.Run(component);
+					aI18NSystem.Run(component);
+				}
+				catch (Exception e)
+				{
+					Log.Error(e);
+				}
+			}
+		}
+		
+		public async ETTask OnViewInitializationSystem(Entity component)
+		{
+			List<object> iOnViewInitializationSystems = this.typeSystems.GetSystems(component.GetType(), typeof(IOnViewInitializationSystem));
+			if (iOnViewInitializationSystems == null)
+			{
+				return;
+			}
+
+			foreach (IOnViewInitializationSystem aOnViewInitializationSystem in iOnViewInitializationSystems)
+			{
+				if (aOnViewInitializationSystem == null)
+				{
+					continue;
+				}
+
+				try
+				{
+					await aOnViewInitializationSystem.Run(component);
 				}
 				catch (Exception e)
 				{

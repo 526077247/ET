@@ -17,9 +17,21 @@ namespace ET
     }
     public static class UISliderSystem
     {
-
+        static void ActivatingComponent(this UISlider self)
+        {
+            if (self.unity_uislider == null)
+            {
+                self.unity_uislider = self.GetGameObject().GetComponent<Slider>();
+                if (self.unity_uislider == null)
+                {
+                    self.unity_uislider = self.GetGameObject().AddComponent<Slider>();
+                    Log.Info($"添加UI侧组件UISlider时，物体{self.GetGameObject().name}上没有找到Slider组件");
+                }
+            }
+        }
         public static void SetOnValueChanged(this UISlider self,UnityAction<float> callback)
         {
+            self.ActivatingComponent();
             self.RemoveOnValueChanged();
             self.__onValueChanged = callback;
             self.unity_uislider.onValueChanged.AddListener(self.__onValueChanged);
@@ -36,17 +48,20 @@ namespace ET
 
         public static void SetWholeNumbers(this UISlider self, bool wholeNumbers)
         {
+            self.ActivatingComponent();
             self.unity_uislider.wholeNumbers = wholeNumbers;
             self.isWholeNumbers = true;
         }
 
         public static void SetMaxValue(this UISlider self, float value)
         {
+            self.ActivatingComponent();
             self.unity_uislider.maxValue = value;
         }
 
         public static void SetMinValue(this UISlider self, float value)
         {
+            self.ActivatingComponent();
             self.unity_uislider.minValue = value;
         }
 
@@ -65,6 +80,7 @@ namespace ET
 
         public static object GetValue(this UISlider self)
         {
+            self.ActivatingComponent();
             if (self.isWholeNumbers)
             {
                 var index = (int)self.unity_uislider.value;
@@ -82,6 +98,7 @@ namespace ET
         /// <param name="value">wholeNumbers 时value是ui侧的index</param>
         public static void SetValue(this UISlider self, int value)
         {
+            self.ActivatingComponent();
             if (self.isWholeNumbers)
                 self.unity_uislider.value = value;
             else
@@ -93,6 +110,7 @@ namespace ET
         /// <param name="value"></param>
         public static void SetValue(this UISlider self, float value)
         {
+            self.ActivatingComponent();
             if (!self.isWholeNumbers)
                 self.unity_uislider.normalizedValue = value;
             else
