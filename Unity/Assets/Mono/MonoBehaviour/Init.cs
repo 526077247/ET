@@ -62,11 +62,13 @@ namespace ET
 			InitUnitySetting();
 			
 			Instance = this;
-			
-#if ENABLE_IL2CPP
+
+#if ENABLE_IL2CPP && (UNITY_IPHONE || UNITY_IOS)
 			this.CodeMode = CodeMode.ILRuntime;
+#elif UNITY_EDITOR
+			this.CodeMode = CodeMode.Reload;
 #endif
-			
+
 			System.AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
 			{
 				Log.Error(e.ExceptionObject.ToString());

@@ -141,8 +141,6 @@ namespace AssetBundles
                     listSkinAssetCaching.RemoveAt(i);
                 }
             }
-            configBundle.Unload(true);
-            configBundle = null;
             Debug.Log("ClearAssetsCache Over");
         }
 
@@ -410,7 +408,11 @@ namespace AssetBundles
             }
 #endif
         }
-
+        public void ClearConfigCache()
+        {
+            configBundle?.Unload(true);
+            configBundle = null;
+        }
         public TextAsset LoadTextAsset(string addressPath)
         {
             addressPath = "Assets/AssetsPackage/" + addressPath;

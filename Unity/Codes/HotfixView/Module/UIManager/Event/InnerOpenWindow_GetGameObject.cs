@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace ET
 {
@@ -25,7 +26,7 @@ namespace ET
 			trans.SetParent(UIManagerComponent.Instance.GetComponent<UILayersComponent>().layers[target.Layer].transform, false);
 			trans.name = target.Name;
 			
-			view.AddUIComponent<UITransform>("").__transform = trans;
+			view.AddUIComponent<UITransform,Transform>("", trans);
             UIEventSystem.Instance.OnCreate(view);
 			target.LoadingState = UIWindowLoadingState.LoadOver;
 		}

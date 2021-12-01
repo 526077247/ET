@@ -39,7 +39,7 @@ namespace ET
                 await TimerComponent.Instance.WaitAsync(1);
             }
             AddressablesManager.Instance.ClearAssetsCache();
-
+            AddressablesManager.Instance.ClearConfigCache();
             //÷ÿ–¬º”‘ÿ≈‰÷√
             AssetBundleConfig.Instance.SyncLoadGlobalAssetBundle();
 
