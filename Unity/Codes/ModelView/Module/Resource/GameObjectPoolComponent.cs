@@ -138,19 +138,13 @@ namespace ET
 		public async ETTask LoadDependency(List<string> res)
 		{
 			if (res.Count <= 0) return;
-			ListComponent<ETTask> TaskScheduler= null;
-			try
+			using (ListComponent<ETTask> TaskScheduler = ListComponent<ETTask>.Create())
 			{
-				TaskScheduler = ListComponent<ETTask>.Create();
 				foreach (var res_path in res)
 				{
 					TaskScheduler.Add(PreLoadGameObjectAsync(res_path, 1));
 				}
 				await ETTaskHelper.WaitAll(TaskScheduler);
-			}
-			finally
-			{
-				TaskScheduler?.Dispose();
 			}
 		}
 		//尝试从缓存中获取

@@ -25,8 +25,7 @@ namespace ET
                 self.unity_uislider = self.GetGameObject().GetComponent<Slider>();
                 if (self.unity_uislider == null)
                 {
-                    self.unity_uislider = self.GetGameObject().AddComponent<Slider>();
-                    Log.Info($"添加UI侧组件UISlider时，物体{self.GetGameObject().name}上没有找到Slider组件");
+                    Log.Error($"添加UI侧组件UISlider时，物体{self.GetGameObject().name}上没有找到Slider组件");
                 }
             }
         }

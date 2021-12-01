@@ -60,13 +60,10 @@ namespace ET
             {
                 tcs.SetResult(self.BTN_CANCEL);
             };
-            I18NComponent.Instance.I18NTryGetText(content, out content);
-            I18NComponent.Instance.I18NTryGetText(confirmBtnText, out confirmBtnText);
-            I18NComponent.Instance.I18NTryGetText(cancelBtnText, out cancelBtnText);
-            self.para.Content = content;
+            I18NComponent.Instance.I18NTryGetText(content, out self.para.Content);
+            I18NComponent.Instance.I18NTryGetText(confirmBtnText, out self.para.ConfirmText);
+            I18NComponent.Instance.I18NTryGetText(cancelBtnText, out self.para.CancelText);
             self.para.ConfirmCallback = confirmBtnFunc;
-            self.para.ConfirmText = confirmBtnText;
-            self.para.CancelText = cancelBtnText;
             self.para.CancelCallback = cancelBtnFunc;
             await UIManagerComponent.Instance.OpenWindow<UIMsgBoxWin, UIMsgBoxWin.MsgBoxPara>(UIMsgBoxWin.PrefabPath,self.para);
             var result = await tcs;

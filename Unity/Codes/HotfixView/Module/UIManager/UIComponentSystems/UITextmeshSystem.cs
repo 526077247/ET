@@ -66,7 +66,7 @@ namespace ET
             {
                 self.unity_i18ncomp_touched.enabled = enable;
                 if(!enable)
-                    Log.Warning($"组件{self.GetGameObject().name}, text在Lua层进行了修改，所以应该去掉去预设里面的I18N组件，否则会被覆盖");
+                    Log.Warning($"组件{self.GetGameObject().name}, text在逻辑层进行了修改，所以应该去掉去预设里面的I18N组件，否则会被覆盖");
             }
         }
 

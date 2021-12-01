@@ -116,10 +116,8 @@ namespace ET
                 foreach (var item in except_ui_names) dict_ui_names[item] = true;
             }
 
-            ListComponent<ETTask> TaskScheduler = null;
-            try
+            using (ListComponent<ETTask> TaskScheduler = ListComponent<ETTask>.Create())
             {
-                TaskScheduler = ListComponent<ETTask>.Create();
                 foreach (var item in self.windows)
                 {
                     if (item.Value.Layer == layer && dict_ui_names != null && !dict_ui_names.ContainsKey(item.Key))
@@ -128,10 +126,6 @@ namespace ET
                     }
                 }
                 await ETTaskHelper.WaitAll(TaskScheduler);
-            }
-            finally
-            {
-                TaskScheduler?.Dispose();
             }
         }
 
@@ -223,10 +217,8 @@ namespace ET
                 }
             }
             var keys = self.windows.Keys.ToArray();
-            ListComponent<ETTask> TaskScheduler = null;
-            try
+            using (ListComponent<ETTask> TaskScheduler = ListComponent<ETTask>.Create())
             {
-                TaskScheduler = ListComponent<ETTask>.Create();
                 for (int i = self.windows.Count - 1; i >= 0; i--)
                 {
                     if (!dict_ui_names.ContainsKey(keys[i]))
@@ -235,43 +227,30 @@ namespace ET
                     }
                 }
                 await ETTaskHelper.WaitAll(TaskScheduler);
-            }
-            finally
-            {
-                TaskScheduler?.Dispose();
-            }
+            } 
         }
         //销毁指定层级外层级所有窗口
         public static async ETTask DestroyWindowExceptLayer(this UIManagerComponent self, UILayerNames layer)
         {
             var keys = self.windows.Keys.ToArray();
-            ListComponent<ETTask> TaskScheduler = null;
-            try
+            using (ListComponent<ETTask> TaskScheduler = ListComponent<ETTask>.Create())
             {
-                TaskScheduler = ListComponent<ETTask>.Create();
                 for (int i = self.windows.Count - 1; i >= 0; i--)
                 {
                     if (self.windows[keys[i]].Layer != layer)
                     {
                         TaskScheduler.Add(self.DestroyWindow(keys[i]));
                     }
-
                 }
                 await ETTaskHelper.WaitAll(TaskScheduler);
-            }
-            finally
-            {
-                TaskScheduler?.Dispose();
             }
         }
         //销毁层级所有窗口
         public static async ETTask DestroyWindowByLayer(this UIManagerComponent self, UILayerNames layer)
         {
             var keys = self.windows.Keys.ToArray();
-            ListComponent<ETTask> TaskScheduler = null;
-            try
+            using (ListComponent<ETTask> TaskScheduler = ListComponent<ETTask>.Create())
             {
-                TaskScheduler = ListComponent<ETTask>.Create();
                 for (int i = self.windows.Count - 1; i >= 0; i--)
                 {
                     if (self.windows[keys[i]].Layer == layer)
@@ -281,27 +260,17 @@ namespace ET
                 }
                 await ETTaskHelper.WaitAll(TaskScheduler);
             }
-            finally
-            {
-                TaskScheduler?.Dispose();
-            }
         }
         public static async ETTask DestroyAllWindow(this UIManagerComponent self)
         {
             var keys = self.windows.Keys.ToArray();
-            ListComponent<ETTask> TaskScheduler = null;
-            try
+            using (ListComponent<ETTask> TaskScheduler = ListComponent<ETTask>.Create())
             {
-                TaskScheduler = ListComponent<ETTask>.Create();
                 for (int i = self.windows.Count - 1; i >= 0; i--)
                 {
                     TaskScheduler.Add(self.DestroyWindow(self.windows[keys[i]].Name));
                 }
                 await ETTaskHelper.WaitAll(TaskScheduler);
-            }
-            finally
-            {
-                TaskScheduler?.Dispose();
             }
         }
 

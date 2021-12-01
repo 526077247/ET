@@ -16,7 +16,7 @@ namespace ET
                 self.unity_uiinput = self.GetGameObject().GetComponent<InputField>();
                 if (self.unity_uiinput == null)
                 {
-                    Log.Info($"添加UI侧组件UIInput时，物体{self.GetGameObject().name}上没有找到InputField组件");
+                    Log.Error($"添加UI侧组件UIInput时，物体{self.GetGameObject().name}上没有找到InputField组件");
                 }
             }
         }

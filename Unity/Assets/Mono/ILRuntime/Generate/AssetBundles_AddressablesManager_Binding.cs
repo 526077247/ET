@@ -38,29 +38,32 @@ namespace ILRuntime.Runtime.Generated
             method = type.GetMethod("ClearAssetsCache", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, ClearAssetsCache_4);
             args = new Type[]{};
+            method = type.GetMethod("ClearConfigCache", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, ClearConfigCache_5);
+            args = new Type[]{};
             method = type.GetMethod("StartInjectFix", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, StartInjectFix_5);
+            app.RegisterCLRMethodRedirection(method, StartInjectFix_6);
             args = new Type[]{typeof(System.Collections.Generic.List<System.String>), typeof(System.Int32)};
             method = type.GetMethod("CheckUpdateContent", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, CheckUpdateContent_6);
+            app.RegisterCLRMethodRedirection(method, CheckUpdateContent_7);
             args = new Type[]{typeof(System.String)};
             method = type.GetMethod("GetDownloadSizeAsync", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, GetDownloadSizeAsync_7);
+            app.RegisterCLRMethodRedirection(method, GetDownloadSizeAsync_8);
             args = new Type[]{};
             method = type.GetMethod("CheckForCatalogUpdates", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, CheckForCatalogUpdates_8);
+            app.RegisterCLRMethodRedirection(method, CheckForCatalogUpdates_9);
             args = new Type[]{typeof(System.String)};
             method = type.GetMethod("UpdateCatalogs", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, UpdateCatalogs_9);
+            app.RegisterCLRMethodRedirection(method, UpdateCatalogs_10);
             args = new Type[]{typeof(UnityEngine.Object)};
             method = type.GetMethod("ReleaseAsset", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, ReleaseAsset_10);
+            app.RegisterCLRMethodRedirection(method, ReleaseAsset_11);
             args = new Type[]{typeof(System.String), typeof(System.Type)};
             method = type.GetMethod("LoadAssetAsync", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, LoadAssetAsync_11);
+            app.RegisterCLRMethodRedirection(method, LoadAssetAsync_12);
             args = new Type[]{typeof(System.String), typeof(System.Boolean)};
             method = type.GetMethod("LoadSceneAsync", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, LoadSceneAsync_12);
+            app.RegisterCLRMethodRedirection(method, LoadSceneAsync_13);
 
 
         }
@@ -147,7 +150,22 @@ namespace ILRuntime.Runtime.Generated
             return __ret;
         }
 
-        static StackObject* StartInjectFix_5(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* ClearConfigCache_5(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        {
+            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
+            StackObject* ptr_of_this_method;
+            StackObject* __ret = ILIntepreter.Minus(__esp, 1);
+
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
+            AssetBundles.AddressablesManager instance_of_this_method = (AssetBundles.AddressablesManager)typeof(AssetBundles.AddressablesManager).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            __intp.Free(ptr_of_this_method);
+
+            instance_of_this_method.ClearConfigCache();
+
+            return __ret;
+        }
+
+        static StackObject* StartInjectFix_6(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
@@ -162,7 +180,7 @@ namespace ILRuntime.Runtime.Generated
             return __ret;
         }
 
-        static StackObject* CheckUpdateContent_6(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* CheckUpdateContent_7(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
@@ -184,7 +202,7 @@ namespace ILRuntime.Runtime.Generated
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 
-        static StackObject* GetDownloadSizeAsync_7(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* GetDownloadSizeAsync_8(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
@@ -203,7 +221,7 @@ namespace ILRuntime.Runtime.Generated
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 
-        static StackObject* CheckForCatalogUpdates_8(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* CheckForCatalogUpdates_9(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
@@ -218,7 +236,7 @@ namespace ILRuntime.Runtime.Generated
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 
-        static StackObject* UpdateCatalogs_9(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* UpdateCatalogs_10(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
@@ -237,7 +255,7 @@ namespace ILRuntime.Runtime.Generated
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 
-        static StackObject* ReleaseAsset_10(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* ReleaseAsset_11(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
@@ -256,7 +274,7 @@ namespace ILRuntime.Runtime.Generated
             return __ret;
         }
 
-        static StackObject* LoadAssetAsync_11(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* LoadAssetAsync_12(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
@@ -279,7 +297,7 @@ namespace ILRuntime.Runtime.Generated
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 
-        static StackObject* LoadSceneAsync_12(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* LoadSceneAsync_13(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;

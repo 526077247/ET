@@ -63,7 +63,7 @@ namespace ET
 			
 			Instance = this;
 
-#if ENABLE_IL2CPP && (UNITY_IPHONE || UNITY_IOS)
+#if ENABLE_IL2CPP
 			this.CodeMode = CodeMode.ILRuntime;
 #elif UNITY_EDITOR
 			this.CodeMode = CodeMode.Reload;

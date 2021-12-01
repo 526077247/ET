@@ -14,7 +14,7 @@ namespace ET
         {
             I18NComponent.Instance = self;
             var res = I18NConfigCategory.Instance.GetAll();
-            self.curLangType = (I18NComponent.LangType)PlayerPrefs.GetInt(CacheKeys.CurLangType, 0);
+            self.curLangType = PlayerPrefs.GetInt(CacheKeys.CurLangType, 0);
             self.i18nTextDic = new Dictionary<int, I18NConfig>();
             self.i18nTextKeyDic = new Dictionary<string, I18NConfig>();
             self.I18NEntity = new Dictionary<long, Entity>();
@@ -136,10 +136,10 @@ namespace ET
         /// 切换语言,外部接口
         /// </summary>
         /// <param name="langType"></param>
-        public static void SwitchLanguage(this I18NComponent self, I18NComponent.LangType langType)
+        public static void SwitchLanguage(this I18NComponent self, int langType)
         {
             //修改当前语言
-            PlayerPrefs.SetInt(CacheKeys.CurLangType, (int)langType);
+            PlayerPrefs.SetInt(CacheKeys.CurLangType, langType);
             self.curLangType = langType;
             foreach (var item in self.i18nTextKeyDic)
             {

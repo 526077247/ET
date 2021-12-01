@@ -176,50 +176,55 @@ namespace ET
         }
         public void SetActive(bool active)
         {
-            Game.EventSystem.Publish(new UIEventType.SetActive() { entity = this,Active = active}); 
+            
             if (active)
             {
                 UIEventSystem.Instance.OnEnable(this);
+                Game.EventSystem.Publish(new UIEventType.SetActive() { entity = this, Active = active });
             }
             else
             {
+                Game.EventSystem.Publish(new UIEventType.SetActive() { entity = this, Active = active });
                 UIEventSystem.Instance.OnDisable(this);
             }
         }
 
         public void SetActive<T>(bool active, T param1)
         {
-            Game.EventSystem.Publish(new UIEventType.SetActive() { entity = this,Active = active}); 
             if (active)
             {
                 UIEventSystem.Instance.OnEnable(this,param1);
+                Game.EventSystem.Publish(new UIEventType.SetActive() { entity = this, Active = active });
             }
             else
             {
+                Game.EventSystem.Publish(new UIEventType.SetActive() { entity = this, Active = active });
                 UIEventSystem.Instance.OnDisable(this,param1);
             }
         }
         public void SetActive<T, P>(bool active, T param1, P param2)
         {
-            Game.EventSystem.Publish(new UIEventType.SetActive() { entity = this,Active = active}); 
             if (active)
             {
                 UIEventSystem.Instance.OnEnable(this, param1, param2);
+                Game.EventSystem.Publish(new UIEventType.SetActive() { entity = this, Active = active });
             }
             else
             {
+                Game.EventSystem.Publish(new UIEventType.SetActive() { entity = this, Active = active });
                 UIEventSystem.Instance.OnDisable(this, param1, param2);
             }
         }
         public void SetActive<T, P, K>(bool active, T param1, P param2, K param3)
         {
-            Game.EventSystem.Publish(new UIEventType.SetActive() { entity = this,Active = active}); 
             if (active)
             {
                 UIEventSystem.Instance.OnEnable(this, param1, param2, param3);
+                Game.EventSystem.Publish(new UIEventType.SetActive() { entity = this, Active = active });
             }
             else
             {
+                Game.EventSystem.Publish(new UIEventType.SetActive() { entity = this, Active = active });
                 UIEventSystem.Instance.OnDisable(this, param1, param2, param3);
             }
         }

@@ -15,7 +15,7 @@ namespace ET
                 self.unity_uiinput = self.GetGameObject().GetComponent<TMPro.TMP_InputField>();
                 if (self.unity_uiinput == null)
                 {
-                    Log.Info($"添加UI侧组件UIInputTextmesh时，物体{self.GetGameObject().name}上没有找到TMPro.TMP_InputField组件");
+                    Log.Error($"添加UI侧组件UIInputTextmesh时，物体{self.GetGameObject().name}上没有找到TMPro.TMP_InputField组件");
                 }
             }
         }

@@ -9,12 +9,12 @@ namespace ET
     {
         public static I18NComponent Instance;
         //语言类型枚举
-        public enum LangType:byte
+        public static class LangType
         {
-            Chinese,
-            English,
+            public const int Chinese = 0;
+            public const int English = 1;
         }
-        public LangType curLangType;
+        public int curLangType;
         public Dictionary<int, I18NConfig> i18nTextDic;
         public Dictionary<string, I18NConfig> i18nTextKeyDic;
         public Dictionary<long, Entity> I18NEntity;

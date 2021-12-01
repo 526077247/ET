@@ -34,8 +34,7 @@ namespace ET
                 self.unity_uiimage = self.GetGameObject().GetComponent<Image>();
                 if (self.unity_uiimage == null)
                 {
-                    self.unity_uiimage = self.GetGameObject().AddComponent<Image>();
-                    Log.Info($"添加UI侧组件UIImage时，物体{self.GetGameObject().name}上没有找到Image组件");
+                    Log.Error($"添加UI侧组件UIImage时，物体{self.GetGameObject().name}上没有找到Image组件");
                 }
             }
         }

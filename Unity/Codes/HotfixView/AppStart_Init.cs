@@ -34,9 +34,8 @@ namespace ET
             
             Game.Scene.AddComponent<GlobalComponent>();
             Game.Scene.AddComponent<AIDispatcherComponent>();
-            
+            //下方代码会初始化Addressables,手机关闭网络等情况访问不到cdn的时候,会卡10s左右。todo:游戏启动时在mono层检查网络
             await UIManagerComponent.Instance.OpenWindow<UIUpdateView>(UIUpdateView.PrefabPath);//下载热更资源
-            await ETTask.CompletedTask;
         }
     }
 }
