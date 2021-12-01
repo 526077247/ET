@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Runtime.CompilerServices;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -10,9 +11,12 @@ namespace ET
         [MenuItem("Tools/ILRuntime/通过自动分析热更DLL生成CLR绑定")]
         private static void GenerateCLRBindingByAnalysis()
         {
+            string jstr = File.ReadAllText("Assets/AssetsPackage/config.bytes");
+            var config = JsonHelper.FromJson<Dictionary<string, string>>(jstr);
+            string assemblyName = "Code" + config["ResVer"];
             //用新的分析热更dll调用引用来生成绑定代码
             ILRuntime.Runtime.Enviorment.AppDomain domain = new ILRuntime.Runtime.Enviorment.AppDomain();
-            using (System.IO.FileStream fs = new System.IO.FileStream(Path.Combine(Define.BuildOutputDir, "Code.dll"), System.IO.FileMode.Open,
+            using (System.IO.FileStream fs = new System.IO.FileStream(Path.Combine(Define.BuildOutputDir, $"{assemblyName}.dll"), System.IO.FileMode.Open,
                 System.IO.FileAccess.Read))
             {
                 domain.LoadAssembly(fs);

@@ -144,9 +144,9 @@ namespace ET
 				TaskScheduler = ListComponent<ETTask>.Create();
 				foreach (var res_path in res)
 				{
-					TaskScheduler.List.Add(PreLoadGameObjectAsync(res_path, 1));
+					TaskScheduler.Add(PreLoadGameObjectAsync(res_path, 1));
 				}
-				await ETTaskHelper.WaitAll(TaskScheduler.List);
+				await ETTaskHelper.WaitAll(TaskScheduler);
 			}
 			finally
 			{

@@ -124,10 +124,10 @@ namespace ET
                 {
                     if (item.Value.Layer == layer && dict_ui_names != null && !dict_ui_names.ContainsKey(item.Key))
                     {
-                        TaskScheduler.List.Add(self.CloseWindow(item.Key));
+                        TaskScheduler.Add(self.CloseWindow(item.Key));
                     }
                 }
-                await ETTaskHelper.WaitAll(TaskScheduler.List);
+                await ETTaskHelper.WaitAll(TaskScheduler);
             }
             finally
             {
@@ -231,10 +231,10 @@ namespace ET
                 {
                     if (!dict_ui_names.ContainsKey(keys[i]))
                     {
-                        TaskScheduler.List.Add(self.DestroyWindow(keys[i]));
+                        TaskScheduler.Add(self.DestroyWindow(keys[i]));
                     }
                 }
-                await ETTaskHelper.WaitAll(TaskScheduler.List);
+                await ETTaskHelper.WaitAll(TaskScheduler);
             }
             finally
             {
@@ -253,11 +253,11 @@ namespace ET
                 {
                     if (self.windows[keys[i]].Layer != layer)
                     {
-                        TaskScheduler.List.Add(self.DestroyWindow(keys[i]));
+                        TaskScheduler.Add(self.DestroyWindow(keys[i]));
                     }
 
                 }
-                await ETTaskHelper.WaitAll(TaskScheduler.List);
+                await ETTaskHelper.WaitAll(TaskScheduler);
             }
             finally
             {
@@ -276,10 +276,10 @@ namespace ET
                 {
                     if (self.windows[keys[i]].Layer == layer)
                     {
-                        TaskScheduler.List.Add(self.DestroyWindow(self.windows[keys[i]].Name));
+                        TaskScheduler.Add(self.DestroyWindow(self.windows[keys[i]].Name));
                     }
                 }
-                await ETTaskHelper.WaitAll(TaskScheduler.List);
+                await ETTaskHelper.WaitAll(TaskScheduler);
             }
             finally
             {
@@ -295,9 +295,9 @@ namespace ET
                 TaskScheduler = ListComponent<ETTask>.Create();
                 for (int i = self.windows.Count - 1; i >= 0; i--)
                 {
-                    TaskScheduler.List.Add(self.DestroyWindow(self.windows[keys[i]].Name));
+                    TaskScheduler.Add(self.DestroyWindow(self.windows[keys[i]].Name));
                 }
-                await ETTaskHelper.WaitAll(TaskScheduler.List);
+                await ETTaskHelper.WaitAll(TaskScheduler);
             }
             finally
             {
