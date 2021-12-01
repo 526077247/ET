@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 namespace ET
 {
+    [UISystem]
     public class UITransformOnCreateSystem: OnCreateSystem<UITransform,Transform>
     {
         public override void OnCreate(UITransform self,Transform transform)

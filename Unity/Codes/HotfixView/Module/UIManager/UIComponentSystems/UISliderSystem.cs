@@ -8,6 +8,7 @@ using UnityEngine.UI;
 
 namespace ET
 {
+    [UISystem]
     public class UISliderDestorySystem : DestroySystem<UISlider>
     {
         public override void Destroy(UISlider self)

@@ -7,6 +7,7 @@ using UnityEngine.Events;
 
 namespace ET
 {
+    [UISystem]
     public class UIPointerClickDestorySystem : DestroySystem<UIPointerClick>
     {
         public override void Destroy(UIPointerClick self)
