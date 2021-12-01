@@ -141,7 +141,7 @@ public class UIScriptController
 
         strBuilder.AppendLine("namespace ET");
         strBuilder.AppendLine("{");
-
+        strBuilder.AppendLine("\t[UISystem]");
         strBuilder.AppendFormat("\tpublic class {0}OnCreateSystem : OnCreateSystem<{1}>\r\n", name, name);
         strBuilder.AppendLine("\t{");
         strBuilder.AppendLine("");
@@ -186,7 +186,7 @@ public class UIScriptController
                     Component component = child.GetComponent(uiComponent.Key);
                     if (null != component)
                     {
-                        strBuilder.AppendFormat("\t\t\tself.{0} = self.AddComponent<{1}>(\"{2}\");", uisc.GetModuleName(), uiComponent.Value, strTemp)
+                        strBuilder.AppendFormat("\t\t\tself.{0} = self.AddUIComponent<{1}>(\"{2}\");", uisc.GetModuleName(), uiComponent.Value, strTemp)
                             .AppendLine();
                         break;
                     }
