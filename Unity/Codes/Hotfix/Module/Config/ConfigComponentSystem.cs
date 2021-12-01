@@ -62,7 +62,7 @@ namespace ET
 					listTasks.Add(task);
 				}
 
-				await Task.WhenAll(listTasks.List.ToArray());
+				await Task.WhenAll(listTasks.ToArray());
 			}
 		}
 

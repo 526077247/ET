@@ -19,15 +19,6 @@ namespace ET
     public partial class Entity: DisposeObject
     {
         [IgnoreDataMember]
-        private static readonly Pool<HashSet<Entity>> hashSetPool = new Pool<HashSet<Entity>>();
-
-        [IgnoreDataMember]
-        private static readonly Pool<Dictionary<Type, Entity>> dictPool = new Pool<Dictionary<Type, Entity>>();
-
-        [IgnoreDataMember]
-        private static readonly Pool<Dictionary<long, Entity>> childrenPool = new Pool<Dictionary<long, Entity>>();
-
-        [IgnoreDataMember]
         [BsonIgnore]
         public long InstanceId
         {
@@ -324,7 +315,7 @@ namespace ET
             {
                 if (this.children == null)
                 {
-                    this.children = childrenPool.Fetch();
+                    this.children = MonoPool.Instance.Fetch<Dictionary<long, Entity>>();
                 }
                 return this.children;
             }
@@ -347,7 +338,7 @@ namespace ET
 
             if (this.children.Count == 0)
             {
-                childrenPool.Recycle(this.children);
+                MonoPool.Instance.Recycle(this.children);
                 this.children = null;
             }
 
@@ -361,7 +352,7 @@ namespace ET
                 return;
             }
 
-            this.childrenDB = this.childrenDB ?? hashSetPool.Fetch();
+            this.childrenDB = this.childrenDB ?? MonoPool.Instance.Fetch<HashSet<Entity>>();
 
             this.childrenDB.Add(entity);
         }
@@ -384,7 +375,7 @@ namespace ET
             {
                 if (this.IsFromPool)
                 {
-                    hashSetPool.Recycle(this.childrenDB);
+                    MonoPool.Instance.Recycle(this.childrenDB);
                     this.childrenDB = null;
                 }
             }
@@ -407,7 +398,7 @@ namespace ET
             {
                 if (this.components == null)
                 {
-                    this.components = dictPool.Fetch();
+                    this.components = MonoPool.Instance.Fetch<Dictionary<Type, Entity>>();
                 }
                 return this.components;
             }
@@ -432,7 +423,7 @@ namespace ET
                 }
 
                 this.components.Clear();
-                dictPool.Recycle(this.components);
+                MonoPool.Instance.Recycle(this.components);
                 this.components = null;
 
                 // 从池中创建的才需要回到池中,从db中不需要回收
@@ -442,7 +433,7 @@ namespace ET
 
                     if (this.IsFromPool)
                     {
-                        hashSetPool.Recycle(this.componentsDB);
+                        MonoPool.Instance.Recycle(this.componentsDB);
                         this.componentsDB = null;
                     }
                 }
@@ -457,7 +448,7 @@ namespace ET
                 }
 
                 this.children.Clear();
-                childrenPool.Recycle(this.children);
+                MonoPool.Instance.Recycle(this.children);
                 this.children = null;
 
                 if (this.childrenDB != null)
@@ -466,7 +457,7 @@ namespace ET
                     // 从池中创建的才需要回到池中,从db中不需要回收
                     if (this.IsFromPool)
                     {
-                        hashSetPool.Recycle(this.childrenDB);
+                        MonoPool.Instance.Recycle(this.childrenDB);
                         this.childrenDB = null;
                     }
                 }
@@ -491,15 +482,12 @@ namespace ET
 
             this.parent = null;
 
+            base.Dispose();
+            
             if (this.IsFromPool)
             {
                 ObjectPool.Instance.Recycle(this);
             }
-            else
-            {
-                base.Dispose();
-            }
-
             status = EntityStatus.None;
         }
 
@@ -512,7 +500,7 @@ namespace ET
             
             if (this.componentsDB == null)
             {
-                this.componentsDB = hashSetPool.Fetch();
+                this.componentsDB = MonoPool.Instance.Fetch<HashSet<Entity>>();
             }
 
             this.componentsDB.Add(component);
@@ -533,7 +521,7 @@ namespace ET
             this.componentsDB.Remove(component);
             if (this.componentsDB.Count == 0 && this.IsFromPool)
             {
-                hashSetPool.Recycle(this.componentsDB);
+                MonoPool.Instance.Recycle(this.componentsDB);
                 this.componentsDB = null;
             }
         }
@@ -555,7 +543,7 @@ namespace ET
 
             if (this.components.Count == 0 && this.IsFromPool)
             {
-                dictPool.Recycle(this.components);
+                MonoPool.Instance.Recycle(this.components);
                 this.components = null;
             }
 
