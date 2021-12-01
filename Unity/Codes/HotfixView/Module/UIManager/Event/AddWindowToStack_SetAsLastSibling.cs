@@ -11,7 +11,7 @@ namespace ET
 		protected override async ETTask Run(UIEventType.AddWindowToStack args)
 		{
 			var view = args.window.GetComponent(args.window.ViewType) as UIBaseContainer;
-			var uiTrans = view.GetComponent<UITransform>();
+			var uiTrans = view.GetUIComponent<UITransform>();
 			if (uiTrans!=null)
 			{
 				uiTrans.transform.SetAsLastSibling();

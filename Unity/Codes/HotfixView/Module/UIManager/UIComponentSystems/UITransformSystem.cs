@@ -13,12 +13,12 @@ namespace ET
     {
         public static Transform GetTransform(this UIBaseContainer self)
         {
-            return self.GetComponent<UITransform>("").transform;
+            return self.GetUIComponent<UITransform>("").transform;
         }
         
         public static GameObject GetGameObject(this UIBaseContainer self)
         {
-            return self.GetComponent<UITransform>("").transform.gameObject;
+            return self.GetUIComponent<UITransform>("").transform.gameObject;
         }
     }
 }

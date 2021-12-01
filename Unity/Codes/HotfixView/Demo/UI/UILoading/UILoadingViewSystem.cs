@@ -9,7 +9,7 @@ namespace ET
 		public override void OnCreate(UILoadingView self)
 		{
 			UILoadingView.Instance = self;
-			self.slider = self.AddComponent<UISlider>("Loadingscreen/Slider");
+			self.slider = self.AddUIComponent<UISlider>("Loadingscreen/Slider");
 		}
 	}
 	[UISystem]

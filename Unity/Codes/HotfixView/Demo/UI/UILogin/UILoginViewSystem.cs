@@ -11,20 +11,20 @@ namespace ET
 	{
 		public override void OnCreate(UILoginView self)
 		{
-			self.loginBtn = self.AddComponent<UIButton>("Panel/LoginBtn");
-			self.registerBtn = self.AddComponent<UIButton>("Panel/RegisterBtn");
+			self.loginBtn = self.AddUIComponent<UIButton>("Panel/LoginBtn");
+			self.registerBtn = self.AddUIComponent<UIButton>("Panel/RegisterBtn");
 			self.loginBtn.SetOnClick(() => { self.OnLogin(); });
 			self.registerBtn.SetOnClick(() => { self.OnRegister(); });
-			self.account = self.AddComponent<UIInput>("Panel/Account");
-			self.password = self.AddComponent<UIInput>("Panel/Password");
-			self.ipaddr = self.AddComponent<UIInputTextmesh>("Panel/GM/InputField");
+			self.account = self.AddUIComponent<UIInput>("Panel/Account");
+			self.password = self.AddUIComponent<UIInput>("Panel/Password");
+			self.ipaddr = self.AddUIComponent<UIInputTextmesh>("Panel/GM/InputField");
 
-			var settings = self.AddComponent<UIBaseContainer>("Panel/GM/Setting");
+			var settings = self.AddUIComponent<UIBaseContainer>("Panel/GM/Setting");
 			self.btns = new List<UIButton>();
 			for (int i = 0; i < 2; i++)
 			{
 				string name = "Setting" + (i + 1);
-				var btn = settings.AddComponent<UIButton>(name);
+				var btn = settings.AddUIComponent<UIButton>(name);
 				btn.SetOnClick(() =>
 				{
 					self.OnBtnClick(name);

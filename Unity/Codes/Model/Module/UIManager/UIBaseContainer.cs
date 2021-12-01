@@ -73,7 +73,7 @@ namespace ET
         }
 
         //记录Component
-        protected void RecordComponent(string name, Type component_class, UIBaseContainer component)
+        void RecordUIComponent(string name, Type component_class, UIBaseContainer component)
         {
             if(components.TryGetValue(name,out var obj))
             {
@@ -95,16 +95,16 @@ namespace ET
         /// </summary>
         /// <typeparam name="T">类型</typeparam>
         /// <param name="path">路径</param>
-        public T AddComponent<T>(string path = "") where T : UIBaseContainer
+        public T AddUIComponent<T>(string path = "") where T : UIBaseContainer
         {
             Type type = typeof(T);
             T component_inst = AddChild<T>();
             component_inst.Path = path;
             component_inst.OnComponentDestroy = () =>
             {
-                __RemoveComponent<T>(path);
+                __RemoveUIComponent<T>(path);
             };
-            RecordComponent(path, type, component_inst);
+            RecordUIComponent(path, type, component_inst);
             Game.EventSystem.Publish(new UIEventType.AddComponent() { entity = component_inst }); 
             UIEventSystem.Instance.OnCreate(component_inst);
             length++;
@@ -116,19 +116,19 @@ namespace ET
         /// </summary>
         /// <typeparam name="T">类型</typeparam>
         /// <param name="path">相对路径</param>
-        public T AddComponent<T, A>(string path, A a) where T : UIBaseContainer
+        public T AddUIComponent<T, A>(string path, A a) where T : UIBaseContainer
         {
             Type type = typeof(T);
             T component_inst = AddChild<T>();
             component_inst.Path = path;
             component_inst.OnComponentDestroy = () =>
             {
-                __RemoveComponent<T>(path);
+                __RemoveUIComponent<T>(path);
             };
             Game.EventSystem.Publish(new UIEventType.AddComponent() { entity = component_inst }); 
             UIEventSystem.Instance.OnCreate(component_inst,a);
 
-            RecordComponent(path, type, component_inst);
+            RecordUIComponent(path, type, component_inst);
             length++;
             return component_inst;
         }
@@ -137,19 +137,19 @@ namespace ET
         /// </summary>
         /// <typeparam name="T">类型</typeparam>
         /// <param name="path">路径</param>
-        public T AddComponent<T, A, B>(string path, A a, B b) where T : UIBaseContainer
+        public T AddUIComponent<T, A, B>(string path, A a, B b) where T : UIBaseContainer
         {
             Type type = typeof(T);
             T component_inst = AddChild<T>();
             component_inst.Path = path;
             component_inst.OnComponentDestroy = () =>
             {
-                __RemoveComponent<T>(path);
+                __RemoveUIComponent<T>(path);
             };
             Game.EventSystem.Publish(new UIEventType.AddComponent() { entity = component_inst }); 
             UIEventSystem.Instance.OnCreate(component_inst, a,b);
 
-            RecordComponent(path, type, component_inst);
+            RecordUIComponent(path, type, component_inst);
             length++;
             return component_inst;
         }
@@ -158,19 +158,19 @@ namespace ET
         /// </summary>
         /// <typeparam name="T">类型</typeparam>
         /// <param name="path">路径</param>
-        public T AddComponent<T, A, B, C>(string path, A a, B b, C c) where T : UIBaseContainer
+        public T AddUIComponent<T, A, B, C>(string path, A a, B b, C c) where T : UIBaseContainer
         {
             Type type = typeof(T);
             T component_inst = AddChild<T>();
             component_inst.Path = path;
             component_inst.OnComponentDestroy = () =>
             {
-                __RemoveComponent<T>(path);
+                __RemoveUIComponent<T>(path);
             };
             Game.EventSystem.Publish(new UIEventType.AddComponent() { entity = component_inst }); 
             UIEventSystem.Instance.OnCreate(component_inst, a, b,c);
 
-            RecordComponent(path, type, component_inst);
+            RecordUIComponent(path, type, component_inst);
             length++;
             return component_inst;
         }
@@ -229,7 +229,7 @@ namespace ET
         /// <typeparam name="T"></typeparam>
         /// <param name="path"></param>
         /// <returns></returns>
-        public T GetComponent<T>(string path = "") where T : UIBaseContainer
+        public T GetUIComponent<T>(string path = "") where T : UIBaseContainer
         {
             if (components.TryGetValue(path, out var obj))
             {
@@ -247,9 +247,9 @@ namespace ET
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="path"></param>
-        protected void RemoveComponent<T>(string path = "") where T : UIBaseContainer
+        protected void RemoveUIComponent<T>(string path = "") where T : UIBaseContainer
         {
-            var component = GetComponent<T>(path);
+            var component = GetUIComponent<T>(path);
             if (component != null)
             {
                 UIEventSystem.Instance.OnDestroy(component);
@@ -262,9 +262,9 @@ namespace ET
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="path"></param>
-        void __RemoveComponent<T>(string path) where T : UIBaseContainer
+        void __RemoveUIComponent<T>(string path) where T : UIBaseContainer
         {
-            var component = GetComponent<T>(path);
+            var component = GetUIComponent<T>(path);
             if (component != null)
             {
                 components[path].Remove(typeof(T));

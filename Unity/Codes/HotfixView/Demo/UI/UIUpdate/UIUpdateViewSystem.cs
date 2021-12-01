@@ -14,7 +14,7 @@ namespace ET
     {
         public override void OnCreate(UIUpdateView self)
         {
-            self.m_slider = self.AddComponent<UISlider>("Loadingscreen/Slider");
+            self.m_slider = self.AddUIComponent<UISlider>("Loadingscreen/Slider");
         }
     }
     [UISystem]

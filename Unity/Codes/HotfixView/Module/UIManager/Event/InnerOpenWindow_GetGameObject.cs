@@ -25,7 +25,7 @@ namespace ET
 			trans.SetParent(UIManagerComponent.Instance.GetComponent<UILayersComponent>().layers[target.Layer].transform, false);
 			trans.name = target.Name;
 			
-			view.AddComponent<UITransform>("").__transform = trans;
+			view.AddUIComponent<UITransform>("").__transform = trans;
             UIEventSystem.Instance.OnCreate(view);
 			target.LoadingState = UIWindowLoadingState.LoadOver;
 		}

@@ -25,7 +25,7 @@ namespace ET
                 if (__ParentTransform == null)
                 {
                     var pui = this.Parent.Parent as UIBaseContainer;
-                    var uitrans = pui.GetComponent<UITransform>("");
+                    var uitrans = pui.GetUIComponent<UITransform>("");
                     if (uitrans == null)
                     {
                         Log.Error("ParentTransform is null Path:"+this.Path);

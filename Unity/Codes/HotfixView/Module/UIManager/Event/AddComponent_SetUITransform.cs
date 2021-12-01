@@ -6,7 +6,7 @@
         {
             if (args.entity.GetType() != typeof(UITransform))
             {
-                args.entity.AddComponent<UITransform>("");
+                args.entity.AddUIComponent<UITransform>("");
             }
             await ETTask.CompletedTask;
         }

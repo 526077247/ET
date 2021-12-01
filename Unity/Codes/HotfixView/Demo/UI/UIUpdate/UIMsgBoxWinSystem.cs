@@ -12,11 +12,11 @@ namespace ET
 
 		public override void OnCreate(UIMsgBoxWin self)
 		{
-			self.Text = self.AddComponent<UIText>("Text");
-			self.btn_cancel = self.AddComponent<UIButton>("btn_cancel");
-			self.CancelText = self.AddComponent<UIText>("btn_cancel/Text");
-			self.btn_confirm = self.AddComponent<UIButton>("btn_confirm");
-			self.ConfirmText = self.AddComponent<UIText>("btn_confirm/Text");
+			self.Text = self.AddUIComponent<UIText>("Text");
+			self.btn_cancel = self.AddUIComponent<UIButton>("btn_cancel");
+			self.CancelText = self.AddUIComponent<UIText>("btn_cancel/Text");
+			self.btn_confirm = self.AddUIComponent<UIButton>("btn_confirm");
+			self.ConfirmText = self.AddUIComponent<UIText>("btn_confirm/Text");
 		}
 
 	}

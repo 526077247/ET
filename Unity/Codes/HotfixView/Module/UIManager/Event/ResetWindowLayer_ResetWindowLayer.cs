@@ -12,7 +12,7 @@ namespace ET
         {
             var target = args.window;
             var view = target.GetComponent(target.ViewType) as UIBaseContainer;
-            var uiTrans = view.GetComponent<UITransform>();
+            var uiTrans = view.GetUIComponent<UITransform>();
             if (uiTrans!=null)
             {
                 var layer = UIManagerComponent.Instance.GetComponent<UILayersComponent>().layers[target.Layer];
