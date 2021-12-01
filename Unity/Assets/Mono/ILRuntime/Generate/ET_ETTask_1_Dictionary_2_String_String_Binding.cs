@@ -14,14 +14,14 @@ using ILRuntime.CLR.Utils;
 
 namespace ILRuntime.Runtime.Generated
 {
-    unsafe class ET_ETTask_1_AddressableUpdateAsyncOperation_Binding
+    unsafe class ET_ETTask_1_Dictionary_2_String_String_Binding
     {
         public static void Register(ILRuntime.Runtime.Enviorment.AppDomain app)
         {
             BindingFlags flag = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
             MethodBase method;
             Type[] args;
-            Type type = typeof(ET.ETTask<AssetBundles.AddressableUpdateAsyncOperation>);
+            Type type = typeof(ET.ETTask<System.Collections.Generic.Dictionary<System.String, System.String>>);
             args = new Type[]{};
             method = type.GetMethod("GetAwaiter", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, GetAwaiter_0);
@@ -43,7 +43,7 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 1);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            ET.ETTask<AssetBundles.AddressableUpdateAsyncOperation> instance_of_this_method = (ET.ETTask<AssetBundles.AddressableUpdateAsyncOperation>)typeof(ET.ETTask<AssetBundles.AddressableUpdateAsyncOperation>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            ET.ETTask<System.Collections.Generic.Dictionary<System.String, System.String>> instance_of_this_method = (ET.ETTask<System.Collections.Generic.Dictionary<System.String, System.String>>)typeof(ET.ETTask<System.Collections.Generic.Dictionary<System.String, System.String>>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             var result_of_this_method = instance_of_this_method.GetAwaiter();
@@ -58,7 +58,7 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 1);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            ET.ETTask<AssetBundles.AddressableUpdateAsyncOperation> instance_of_this_method = (ET.ETTask<AssetBundles.AddressableUpdateAsyncOperation>)typeof(ET.ETTask<AssetBundles.AddressableUpdateAsyncOperation>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            ET.ETTask<System.Collections.Generic.Dictionary<System.String, System.String>> instance_of_this_method = (ET.ETTask<System.Collections.Generic.Dictionary<System.String, System.String>>)typeof(ET.ETTask<System.Collections.Generic.Dictionary<System.String, System.String>>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             var result_of_this_method = instance_of_this_method.IsCompleted;
@@ -75,7 +75,7 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 1);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            ET.ETTask<AssetBundles.AddressableUpdateAsyncOperation> instance_of_this_method = (ET.ETTask<AssetBundles.AddressableUpdateAsyncOperation>)typeof(ET.ETTask<AssetBundles.AddressableUpdateAsyncOperation>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            ET.ETTask<System.Collections.Generic.Dictionary<System.String, System.String>> instance_of_this_method = (ET.ETTask<System.Collections.Generic.Dictionary<System.String, System.String>>)typeof(ET.ETTask<System.Collections.Generic.Dictionary<System.String, System.String>>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             var result_of_this_method = instance_of_this_method.GetResult();

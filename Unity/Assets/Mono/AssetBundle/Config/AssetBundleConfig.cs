@@ -34,7 +34,7 @@ namespace AssetBundles
         public string EngineVer { set; get; } = "";
         public string ResVer { set; get; } = "";
 
-        //@brief 同步加载global asset bundle, 不通过addressable直接进行加载
+        //同步加载global asset bundle, 不通过addressable直接进行加载
         public void SyncLoadGlobalAssetBundle()
         {
 #if !UNITY_EDITOR

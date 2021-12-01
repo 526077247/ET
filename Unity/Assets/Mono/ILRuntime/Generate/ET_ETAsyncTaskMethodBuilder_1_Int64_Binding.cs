@@ -14,14 +14,14 @@ using ILRuntime.CLR.Utils;
 
 namespace ILRuntime.Runtime.Generated
 {
-    unsafe class ET_ETAsyncTaskMethodBuilder_1_AddressableUpdateAsyncOperation_Binding
+    unsafe class ET_ETAsyncTaskMethodBuilder_1_Int64_Binding
     {
         public static void Register(ILRuntime.Runtime.Enviorment.AppDomain app)
         {
             BindingFlags flag = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
             MethodBase method;
             Type[] args;
-            Type type = typeof(ET.ETAsyncTaskMethodBuilder<AssetBundles.AddressableUpdateAsyncOperation>);
+            Type type = typeof(ET.ETAsyncTaskMethodBuilder<System.Int64>);
             args = new Type[]{};
             method = type.GetMethod("Create", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, Create_0);
@@ -56,12 +56,12 @@ namespace ILRuntime.Runtime.Generated
             args = new Type[]{};
             method = type.GetMethod("get_Task", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, get_Task_2);
-            args = new Type[]{typeof(ET.ETTask<AssetBundles.AddressableUpdateAsyncOperation>), typeof(ET.IAsyncStateMachineClassInheritanceAdaptor.IAsyncStateMachineAdaptor)};
+            args = new Type[]{typeof(ET.ETTask<System.Int64>), typeof(ET.IAsyncStateMachineClassInheritanceAdaptor.IAsyncStateMachineAdaptor)};
             if (genericMethods.TryGetValue("AwaitUnsafeOnCompleted", out lst))
             {
                 foreach(var m in lst)
                 {
-                    if(m.MatchGenericParameters(args, typeof(void), typeof(ET.ETTask<AssetBundles.AddressableUpdateAsyncOperation>).MakeByRefType(), typeof(ET.IAsyncStateMachineClassInheritanceAdaptor.IAsyncStateMachineAdaptor).MakeByRefType()))
+                    if(m.MatchGenericParameters(args, typeof(void), typeof(ET.ETTask<System.Int64>).MakeByRefType(), typeof(ET.IAsyncStateMachineClassInheritanceAdaptor.IAsyncStateMachineAdaptor).MakeByRefType()))
                     {
                         method = m.MakeGenericMethod(args);
                         app.RegisterCLRMethodRedirection(method, AwaitUnsafeOnCompleted_3);
@@ -87,19 +87,16 @@ namespace ILRuntime.Runtime.Generated
             args = new Type[]{typeof(System.Exception)};
             method = type.GetMethod("SetException", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, SetException_5);
-            args = new Type[]{typeof(AssetBundles.AddressableUpdateAsyncOperation)};
+            args = new Type[]{typeof(System.Int64)};
             method = type.GetMethod("SetResult", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, SetResult_6);
-            args = new Type[]{typeof(System.Runtime.CompilerServices.IAsyncStateMachine)};
-            method = type.GetMethod("SetStateMachine", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, SetStateMachine_7);
 
-            app.RegisterCLRCreateDefaultInstance(type, () => new ET.ETAsyncTaskMethodBuilder<AssetBundles.AddressableUpdateAsyncOperation>());
+            app.RegisterCLRCreateDefaultInstance(type, () => new ET.ETAsyncTaskMethodBuilder<System.Int64>());
 
 
         }
 
-        static void WriteBackInstance(ILRuntime.Runtime.Enviorment.AppDomain __domain, StackObject* ptr_of_this_method, IList<object> __mStack, ref ET.ETAsyncTaskMethodBuilder<AssetBundles.AddressableUpdateAsyncOperation> instance_of_this_method)
+        static void WriteBackInstance(ILRuntime.Runtime.Enviorment.AppDomain __domain, StackObject* ptr_of_this_method, IList<object> __mStack, ref ET.ETAsyncTaskMethodBuilder<System.Int64> instance_of_this_method)
         {
             ptr_of_this_method = ILIntepreter.GetObjectAndResolveReference(ptr_of_this_method);
             switch(ptr_of_this_method->ObjectType)
@@ -138,7 +135,7 @@ namespace ILRuntime.Runtime.Generated
                     break;
                  case ObjectTypes.ArrayReference:
                     {
-                        var instance_of_arrayReference = __mStack[ptr_of_this_method->Value] as ET.ETAsyncTaskMethodBuilder<AssetBundles.AddressableUpdateAsyncOperation>[];
+                        var instance_of_arrayReference = __mStack[ptr_of_this_method->Value] as ET.ETAsyncTaskMethodBuilder<System.Int64>[];
                         instance_of_arrayReference[ptr_of_this_method->ValueLow] = instance_of_this_method;
                     }
                     break;
@@ -151,7 +148,7 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 0);
 
 
-            var result_of_this_method = ET.ETAsyncTaskMethodBuilder<AssetBundles.AddressableUpdateAsyncOperation>.Create();
+            var result_of_this_method = ET.ETAsyncTaskMethodBuilder<System.Int64>.Create();
 
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
@@ -167,9 +164,9 @@ namespace ILRuntime.Runtime.Generated
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
             ptr_of_this_method = ILIntepreter.GetObjectAndResolveReference(ptr_of_this_method);
-            object instance_of_this_method = (ET.ETAsyncTaskMethodBuilder<AssetBundles.AddressableUpdateAsyncOperation>)typeof(ET.ETAsyncTaskMethodBuilder<AssetBundles.AddressableUpdateAsyncOperation>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            object instance_of_this_method = (ET.ETAsyncTaskMethodBuilder<System.Int64>)typeof(ET.ETAsyncTaskMethodBuilder<System.Int64>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
 
-            ((ET.ETAsyncTaskMethodBuilder<AssetBundles.AddressableUpdateAsyncOperation>)instance_of_this_method).Start<ET.IAsyncStateMachineClassInheritanceAdaptor.IAsyncStateMachineAdaptor>(ref @stateMachine);
+            ((ET.ETAsyncTaskMethodBuilder<System.Int64>)instance_of_this_method).Start<ET.IAsyncStateMachineClassInheritanceAdaptor.IAsyncStateMachineAdaptor>(ref @stateMachine);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
             switch(ptr_of_this_method->ObjectType)
@@ -239,7 +236,7 @@ namespace ILRuntime.Runtime.Generated
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
             ptr_of_this_method = ILIntepreter.GetObjectAndResolveReference(ptr_of_this_method);
-            ET.ETAsyncTaskMethodBuilder<AssetBundles.AddressableUpdateAsyncOperation> instance_of_this_method = (ET.ETAsyncTaskMethodBuilder<AssetBundles.AddressableUpdateAsyncOperation>)typeof(ET.ETAsyncTaskMethodBuilder<AssetBundles.AddressableUpdateAsyncOperation>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            ET.ETAsyncTaskMethodBuilder<System.Int64> instance_of_this_method = (ET.ETAsyncTaskMethodBuilder<System.Int64>)typeof(ET.ETAsyncTaskMethodBuilder<System.Int64>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
 
             var result_of_this_method = instance_of_this_method.Task;
 
@@ -260,13 +257,13 @@ namespace ILRuntime.Runtime.Generated
             ET.IAsyncStateMachineClassInheritanceAdaptor.IAsyncStateMachineAdaptor @stateMachine = (ET.IAsyncStateMachineClassInheritanceAdaptor.IAsyncStateMachineAdaptor)typeof(ET.IAsyncStateMachineClassInheritanceAdaptor.IAsyncStateMachineAdaptor).CheckCLRTypes(__intp.RetriveObject(ptr_of_this_method, __mStack));
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            ET.ETTask<AssetBundles.AddressableUpdateAsyncOperation> @awaiter = (ET.ETTask<AssetBundles.AddressableUpdateAsyncOperation>)typeof(ET.ETTask<AssetBundles.AddressableUpdateAsyncOperation>).CheckCLRTypes(__intp.RetriveObject(ptr_of_this_method, __mStack));
+            ET.ETTask<System.Int64> @awaiter = (ET.ETTask<System.Int64>)typeof(ET.ETTask<System.Int64>).CheckCLRTypes(__intp.RetriveObject(ptr_of_this_method, __mStack));
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 3);
             ptr_of_this_method = ILIntepreter.GetObjectAndResolveReference(ptr_of_this_method);
-            ET.ETAsyncTaskMethodBuilder<AssetBundles.AddressableUpdateAsyncOperation> instance_of_this_method = (ET.ETAsyncTaskMethodBuilder<AssetBundles.AddressableUpdateAsyncOperation>)typeof(ET.ETAsyncTaskMethodBuilder<AssetBundles.AddressableUpdateAsyncOperation>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            ET.ETAsyncTaskMethodBuilder<System.Int64> instance_of_this_method = (ET.ETAsyncTaskMethodBuilder<System.Int64>)typeof(ET.ETAsyncTaskMethodBuilder<System.Int64>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
 
-            instance_of_this_method.AwaitUnsafeOnCompleted<ET.ETTask<AssetBundles.AddressableUpdateAsyncOperation>, ET.IAsyncStateMachineClassInheritanceAdaptor.IAsyncStateMachineAdaptor>(ref @awaiter, ref @stateMachine);
+            instance_of_this_method.AwaitUnsafeOnCompleted<ET.ETTask<System.Int64>, ET.IAsyncStateMachineClassInheritanceAdaptor.IAsyncStateMachineAdaptor>(ref @awaiter, ref @stateMachine);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
             switch(ptr_of_this_method->ObjectType)
@@ -371,7 +368,7 @@ namespace ILRuntime.Runtime.Generated
                     break;
                  case ObjectTypes.ArrayReference:
                     {
-                        var instance_of_arrayReference = __mStack[ptr_of_this_method->Value] as ET.ETTask<AssetBundles.AddressableUpdateAsyncOperation>[];
+                        var instance_of_arrayReference = __mStack[ptr_of_this_method->Value] as ET.ETTask<System.Int64>[];
                         instance_of_arrayReference[ptr_of_this_method->ValueLow] = @awaiter;
                     }
                     break;
@@ -399,7 +396,7 @@ namespace ILRuntime.Runtime.Generated
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 3);
             ptr_of_this_method = ILIntepreter.GetObjectAndResolveReference(ptr_of_this_method);
-            ET.ETAsyncTaskMethodBuilder<AssetBundles.AddressableUpdateAsyncOperation> instance_of_this_method = (ET.ETAsyncTaskMethodBuilder<AssetBundles.AddressableUpdateAsyncOperation>)typeof(ET.ETAsyncTaskMethodBuilder<AssetBundles.AddressableUpdateAsyncOperation>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            ET.ETAsyncTaskMethodBuilder<System.Int64> instance_of_this_method = (ET.ETAsyncTaskMethodBuilder<System.Int64>)typeof(ET.ETAsyncTaskMethodBuilder<System.Int64>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
 
             instance_of_this_method.AwaitUnsafeOnCompleted<ET.ETTask<System.Int32>, ET.IAsyncStateMachineClassInheritanceAdaptor.IAsyncStateMachineAdaptor>(ref @awaiter, ref @stateMachine);
 
@@ -532,7 +529,7 @@ namespace ILRuntime.Runtime.Generated
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
             ptr_of_this_method = ILIntepreter.GetObjectAndResolveReference(ptr_of_this_method);
-            ET.ETAsyncTaskMethodBuilder<AssetBundles.AddressableUpdateAsyncOperation> instance_of_this_method = (ET.ETAsyncTaskMethodBuilder<AssetBundles.AddressableUpdateAsyncOperation>)typeof(ET.ETAsyncTaskMethodBuilder<AssetBundles.AddressableUpdateAsyncOperation>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            ET.ETAsyncTaskMethodBuilder<System.Int64> instance_of_this_method = (ET.ETAsyncTaskMethodBuilder<System.Int64>)typeof(ET.ETAsyncTaskMethodBuilder<System.Int64>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
 
             instance_of_this_method.SetException(@exception);
 
@@ -550,37 +547,13 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 2);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            AssetBundles.AddressableUpdateAsyncOperation @ret = (AssetBundles.AddressableUpdateAsyncOperation)typeof(AssetBundles.AddressableUpdateAsyncOperation).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
-            __intp.Free(ptr_of_this_method);
+            System.Int64 @ret = *(long*)&ptr_of_this_method->Value;
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
             ptr_of_this_method = ILIntepreter.GetObjectAndResolveReference(ptr_of_this_method);
-            ET.ETAsyncTaskMethodBuilder<AssetBundles.AddressableUpdateAsyncOperation> instance_of_this_method = (ET.ETAsyncTaskMethodBuilder<AssetBundles.AddressableUpdateAsyncOperation>)typeof(ET.ETAsyncTaskMethodBuilder<AssetBundles.AddressableUpdateAsyncOperation>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            ET.ETAsyncTaskMethodBuilder<System.Int64> instance_of_this_method = (ET.ETAsyncTaskMethodBuilder<System.Int64>)typeof(ET.ETAsyncTaskMethodBuilder<System.Int64>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
 
             instance_of_this_method.SetResult(@ret);
-
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            WriteBackInstance(__domain, ptr_of_this_method, __mStack, ref instance_of_this_method);
-
-            __intp.Free(ptr_of_this_method);
-            return __ret;
-        }
-
-        static StackObject* SetStateMachine_7(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
-        {
-            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            StackObject* ptr_of_this_method;
-            StackObject* __ret = ILIntepreter.Minus(__esp, 2);
-
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.Runtime.CompilerServices.IAsyncStateMachine @stateMachine = (System.Runtime.CompilerServices.IAsyncStateMachine)typeof(System.Runtime.CompilerServices.IAsyncStateMachine).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
-            __intp.Free(ptr_of_this_method);
-
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            ptr_of_this_method = ILIntepreter.GetObjectAndResolveReference(ptr_of_this_method);
-            ET.ETAsyncTaskMethodBuilder<AssetBundles.AddressableUpdateAsyncOperation> instance_of_this_method = (ET.ETAsyncTaskMethodBuilder<AssetBundles.AddressableUpdateAsyncOperation>)typeof(ET.ETAsyncTaskMethodBuilder<AssetBundles.AddressableUpdateAsyncOperation>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
-
-            instance_of_this_method.SetStateMachine(@stateMachine);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
             WriteBackInstance(__domain, ptr_of_this_method, __mStack, ref instance_of_this_method);

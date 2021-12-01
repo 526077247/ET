@@ -9,6 +9,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.ResourceManagement.ResourceProviders;
 
 namespace AssetBundles
 {
@@ -31,10 +32,6 @@ namespace AssetBundles
 
         private int processingAddressablesAsyncLoaderCount = 0;
 
-        AddressableUpdateAsyncOperation updateAsyncOpeartion = new AddressableUpdateAsyncOperation();
-
-
-
 
         public bool IsProsessRunning
         {
@@ -44,60 +41,125 @@ namespace AssetBundles
             }
         }
 
-        #region ==============> Addressable 相关接口提供
+        #region Addressable 相关接口提供
 
-        public async ETTask<AddressableUpdateAsyncOperation> CheckForCatalogUpdates()
+        //检查catalog的更新
+        public ETTask<string> CheckForCatalogUpdates()
         {
-            await updateAsyncOpeartion.CoCheckForCatalogUpdates();
-            return updateAsyncOpeartion;
+            ETTask<string> result = ETTask<string>.Create();
+            var handle = Addressables.CheckForCatalogUpdates(false);
+            handle.Completed += (res) =>
+            {
+                if (handle.Status == AsyncOperationStatus.Succeeded)
+                {
+                    if (handle.Result != null && handle.Result.Count > 0)
+                    {
+                        result.SetResult(handle.Result[0]);
+                    }
+                    else
+                    {
+                        Debug.LogError("handle.Result == null || handle.Result.Count == 0, Check catalog_1.hash is exist");
+                        result.SetResult(null);
+                    }
+                }
+                else
+                {
+                    Debug.LogError("handle.Status == AsyncOperationStatus.Succeeded");
+                    result.SetResult(null);
+                }
+                Addressables.Release(handle);
+            };
+            return result;
         }
 
-        public async ETTask<AddressableUpdateAsyncOperation> GetDownloadSizeAsync(string key)
+        //根据key来获取下载大小
+        public ETTask<long> GetDownloadSizeAsync(string key)
         {
-            await updateAsyncOpeartion.CoGetDownloadSizeAsync(key);
-            return updateAsyncOpeartion;
+            ETTask<long> result = ETTask<long>.Create();
+            var handle = Addressables.GetDownloadSizeAsync(key);
+            handle.Completed += (res) =>
+            {
+                Addressables.Release(handle);
+                if (handle.Status == AsyncOperationStatus.Failed)
+                    result.SetResult(-1);
+                else
+                    result.SetResult(handle.Result);
+            };
+            return result;
         }
-
-        public async ETTask<AddressableUpdateAsyncOperation> UpdateCatalogs(string catalog)
+        //下载catalogs
+        public ETTask<bool> UpdateCatalogs(string catalog)
         {
-            await updateAsyncOpeartion.CoUpdateCatalogs(catalog);
-            return updateAsyncOpeartion;
+            ETTask<bool> result = ETTask<bool>.Create();
+            var handle = Addressables.UpdateCatalogs(new string[] { catalog }, false);
+            handle.Completed += (res) =>
+            {
+                Addressables.Release(handle);
+                result.SetResult(handle.Status == AsyncOperationStatus.Succeeded);
+            };
+            return result;
         }
-
-        public async ETTask<AddressableUpdateAsyncOperation> DownloadDependenciesAsync(List<string> keys, int iMergeMode)
+        //下载更新资源
+        public ETTask<Dictionary<string, string>> CheckUpdateContent(List<string> keys, int iMergeMode)
         {
             Addressables.MergeMode mergeMode = (Addressables.MergeMode)iMergeMode;
-            await updateAsyncOpeartion.CoDownloadDependenciesAsync(keys, mergeMode);
-            return updateAsyncOpeartion;
-        }
-        public async ETTask<AddressableUpdateAsyncOperation> CheckUpdateContent(List<string> keys, int iMergeMode)
-        {
-            Addressables.MergeMode mergeMode = (Addressables.MergeMode)iMergeMode;
-            await updateAsyncOpeartion.CoCheckUpdateContent(keys, mergeMode);
-            return updateAsyncOpeartion;
-        }
-        public async ETTask<AddressableUpdateAsyncOperation> DownloadUpdateContent(List<string> keys, int iMergeMode)
-        {
-            Addressables.MergeMode mergeMode = (Addressables.MergeMode)iMergeMode;
-            await updateAsyncOpeartion.CoDownloadUpdateContent(keys, mergeMode);
-            return updateAsyncOpeartion;
+            ETTask<Dictionary<string, string>> result = ETTask<Dictionary<string, string>>.Create();
+            var handle = Addressables.LoadResourceLocationsAsync(keys, mergeMode);
+            handle.Completed += (res) =>
+            {
+                if (handle.Status == AsyncOperationStatus.Succeeded)
+                {
+                    if (handle.Result != null && handle.Result.Count > 0)
+                    {
+                        var downlocations = handle.Result;
+
+                        string bundleName3;
+                        string path;
+                        AssetBundleRequestOptions data;
+                        var needLoadInfo = new Dictionary<string, string>();
+                        if (downlocations != null && downlocations.Count > 0)
+                        {
+                            foreach (var item in downlocations)
+                            {
+                                if (item.HasDependencies)
+                                {
+                                    foreach (var dep in item.Dependencies)
+                                    {
+                                        bundleName3 = Path.GetFileName(dep.InternalId);
+                                        if (dep.Data != null)
+                                        {
+                                            data = dep.Data as AssetBundleRequestOptions;
+                                            path = AssetBundleMgr.GetInstance().TransformAssetBundleLocation(dep.InternalId, bundleName3, data.Hash);
+                                            if (UnityEngine.ResourceManagement.Util.ResourceManagerConfig.ShouldPathUseWebRequest(path))
+                                            {
+                                                needLoadInfo[bundleName3] = data.Hash;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        result.SetResult(needLoadInfo);
+                    }
+                    else
+                    {
+                        result.SetResult(null);
+                    }
+                }
+                else
+                {
+                    result.SetResult(null);
+                }
+                Addressables.Release(handle);
+                
+            };
+            return result;
+
         }
         
         #endregion
 
-        #region ============== clear asset and cache
-        public IEnumerator Cleanup()
-        {
-            // 等待所有请求完成
-            // 要是不等待Unity很多版本都有各种Bug
-            yield return new WaitUntil(() =>
-            {
-                return !IsProsessRunning;
-            });
-            ClearAssetsCache();
-
-            yield break;
-        }
+        #region clear asset and cache
 
         public void ClearAssetsCache(UnityEngine.Object[] excludeObjects = null)
         {
@@ -143,7 +205,14 @@ namespace AssetBundles
             }
             Debug.Log("ClearAssetsCache Over");
         }
-
+        /// <summary>
+        /// 清除配置ab包
+        /// </summary>
+        public void ClearConfigCache()
+        {
+            configBundle?.Unload(true);
+            configBundle = null;
+        }
         public void ReleaseAsset(UnityEngine.Object go)
         {
             if (go==null)
@@ -190,6 +259,7 @@ namespace AssetBundles
         }
         #endregion
 
+        #region LoadAssetAsync
         public ETTask<T> LoadAssetAsync<T>(string addressPath) where T: UnityEngine.Object
         {
             ETTask<T> tTask = ETTask<T>.Create();
@@ -216,7 +286,6 @@ namespace AssetBundles
             return tTask.GetAwaiter();
         }
 
-#region =============== LoadAssetAsync
         public BaseAssetAsyncLoader LoadAssetAsync(string addressPath, Type assetType)
         {
             var loader = AddressablesAsyncLoader.Get();
@@ -297,7 +366,7 @@ namespace AssetBundles
         }
 #endregion
 
-#region =============> skin change begin
+        #region skin change begin
         public void InitAssetSkinLabelText(string text)
         {
             string[] lines = GameUtility.StringToArrary(text);
@@ -363,7 +432,7 @@ namespace AssetBundles
         }
 #endregion
 
-#region sync load asset function 
+        #region sync load asset function 
 
         /*
          * @brief 之所以是有这些接口，是为了在启动时进行使用，加快启动速度，其他地方严禁调用这里的方法
@@ -408,11 +477,7 @@ namespace AssetBundles
             }
 #endif
         }
-        public void ClearConfigCache()
-        {
-            configBundle?.Unload(true);
-            configBundle = null;
-        }
+
         public TextAsset LoadTextAsset(string addressPath)
         {
             addressPath = "Assets/AssetsPackage/" + addressPath;

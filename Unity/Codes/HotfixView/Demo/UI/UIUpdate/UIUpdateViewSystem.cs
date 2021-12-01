@@ -245,9 +245,7 @@ namespace ET
 
             //检查更新版本
             Log.Info("begin  CheckCatalogUpdates");
-            var handler = await self.CheckCatalogUpdates();
-            if (handler == null) return false;
-            var catalog = handler.catalog;
+            var catalog = await self.CheckCatalogUpdates();
             Log.Info("CheckResUpdate CataLog = " + catalog);
 
             //1、先更新catalogs
@@ -261,9 +259,7 @@ namespace ET
 
             Log.Info("begin  GetDownloadSize");
             //获取需要更新的大小
-            handler = await self.GetDownloadSize();
-            if (handler == null) return false;
-            var size = handler.downloadSize;
+            var size = await self.GetDownloadSize();
 
             //提示给用户
             Log.Info("downloadSize " + size);
@@ -286,11 +282,9 @@ namespace ET
             //2、更新资源
 
             var merge_mode_union = 1;
-            handler =await AddressablesManager.Instance.CheckUpdateContent(new List<string>() { "default" }, merge_mode_union);
-
-            var needdownloadinfo = handler.GetNeedDownloadinfo();
-            Log.Info("needdownloadinfo: ", needdownloadinfo);
-            self.m_needdownloadinfo = SortDownloadInfo(JsonHelper.FromJson<Dictionary<string, string>>(needdownloadinfo));
+            var needdownloadinfo = await self.CheckUpdateContent(merge_mode_union);
+            Log.Info("needdownloadinfo count: ", needdownloadinfo.Count);
+            self.m_needdownloadinfo = SortDownloadInfo(needdownloadinfo);
 
             Log.Info("CheckResUpdate DownloadContent begin");
             bool result = await self.DownloadContent(size);
@@ -327,12 +321,10 @@ namespace ET
             return temp;
         }
 
-        async static ETTask<AddressableUpdateAsyncOperation> GetDownloadSize(this UIUpdateView self)
+        async static ETTask<long> GetDownloadSize(this UIUpdateView self)
         {
-            var handler = await AddressablesManager.Instance.GetDownloadSizeAsync("default");
-            if (handler.isSuccess)
-                return handler;
-            else
+            var size = await AddressablesManager.Instance.GetDownloadSizeAsync("default");
+            if (size<0)
             {
                 Log.Info("CoGetDownloadSize Get Download Size Async Faild");
                 var btnState = await self.ShowMsgBoxView("Update_Get_Fail", "Update_ReTry", "Btn_Exit");
@@ -341,16 +333,17 @@ namespace ET
                 else
                 {
                     GameUtility.Quit();
-                    return null;
+                    return 0;
                 }
             }
+            return size;
         }
 
         //检查更新Catalog
-        async static ETTask<AddressableUpdateAsyncOperation> CheckCatalogUpdates(this UIUpdateView self)
+        async static ETTask<string> CheckCatalogUpdates(this UIUpdateView self)
         {
-            var handler = await AddressablesManager.Instance.CheckForCatalogUpdates();
-            if (handler.isSuccess) return handler;
+            var catlog = await AddressablesManager.Instance.CheckForCatalogUpdates();
+            if (!string.IsNullOrEmpty(catlog)) return catlog;
             else
             {
                 Log.Info("CheckCatalogUpdates Check CataLog Failed");
@@ -369,11 +362,11 @@ namespace ET
         async static ETTask<bool> UpdateCatalogs(this UIUpdateView self,string catalog)
         {
             //这里可能连不上，导致认为UpdateCatalogs成功
-            var handler = await AddressablesManager.Instance.CheckForCatalogUpdates();
-            if (handler.isSuccess)
+            var res = await AddressablesManager.Instance.CheckForCatalogUpdates();
+            if (!string.IsNullOrEmpty(res))
             {
-                handler = await AddressablesManager.Instance.UpdateCatalogs(catalog);
-                if (handler.isSuccess) return true;
+                var updateRes = await AddressablesManager.Instance.UpdateCatalogs(catalog);
+                if (updateRes) return true;
                 else
                 {
                     Log.Info("CoUpdateCatalogs Update Catalog handler retry");
@@ -391,6 +384,24 @@ namespace ET
                     GameUtility.Quit();
                     return false;
 
+                }
+            }
+        }
+
+        async static ETTask<Dictionary<string,string>> CheckUpdateContent(this UIUpdateView self,int merge_mode_union)
+        {
+            var res = await AddressablesManager.Instance.CheckUpdateContent(new List<string>() { "default" }, merge_mode_union);
+            if (res!=null) return res;
+            else
+            {
+                Log.Info("CheckUpdateContent Failed");
+                var btnState = await self.ShowMsgBoxView("Update_Get_Fail", "Update_ReTry", "Btn_Exit");
+                if (btnState == self.BTN_CONFIRM)
+                    return await self.CheckUpdateContent(merge_mode_union);
+                else
+                {
+                    GameUtility.Quit();
+                    return null;
                 }
             }
         }

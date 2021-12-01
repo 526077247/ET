@@ -40,43 +40,17 @@ namespace ET
         }
 
         //异步加载Asset：协程形式
-        public async ETTask<TextAsset> LoadTextAsync(string path, Action<float> progress_callback = null, Action<TextAsset> callback = null,bool ignoreError = false)
+        public async ETTask<T> LoadAsync<T>(string path) where T: UnityEngine.Object
         {
             if (string.IsNullOrEmpty(path))
             {
                 Debug.LogError("path err : " + path);
-                callback?.Invoke(null);
-                return null;
-            }
-            var loader = AddressablesManager.LoadAssetAsync(path, typeof(TextAsset));
-
-            while (!loader.isDone)
-            {
-                await TimerComponent.Instance.WaitAsync(1);
-                progress_callback?.Invoke(loader.progress);
-            }
-            var asset = (TextAsset)loader.asset;
-            loader.Dispose();
-            if (asset == null &&!ignoreError)
-                Debug.LogError("Asset load err : " + path);
-            callback?.Invoke(asset);
-            return asset;
-
-        }
-        //异步加载Asset：协程形式
-        public async ETTask<T> LoadAsync<T>(string path, Action<T> callback = null) where T: UnityEngine.Object
-        {
-            if (string.IsNullOrEmpty(path))
-            {
-                Debug.LogError("path err : " + path);
-                callback?.Invoke(null);
                 return null;
             }
             var asset = await AddressablesManager.LoadAssetAsync<T>(path);
 
             if (asset == null)
                 Debug.LogError("Asset load err : " + path);
-            callback?.Invoke(asset);
             return asset;
 
         }
@@ -128,11 +102,6 @@ namespace ET
         public void ClearAssetsCache(UnityEngine.Object[] excludeClearAssets = null)
         {
             AddressablesManager.ClearAssetsCache(excludeClearAssets);
-            //AssetBundleManager: UnloadAllUnusedResidentAssetBundles()
-
-            // TODO：Lua脚本要重新加载，暂时吧，后面缓缓策略
-            //local luaAssetbundleName = CS.XLuaManager.Instance.AssetbundleName
-            //AssetBundleManager: AddAssetbundleAssetsCache(luaAssetbundleName)
         }
 
         public void ReleaseAsset(UnityEngine.Object pooledGo)

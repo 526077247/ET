@@ -148,7 +148,7 @@ namespace ILRuntime.Runtime.Generated
             ET_CodeLoader_Binding.Register(app);
             ET_ETTask_1_GameObject_Binding.Register(app);
             UnityEngine_Transform_Binding.Register(app);
-            ET_ETAsyncTaskMethodBuilder_1_AddressableUpdateAsyncOperation_Binding.Register(app);
+            ET_ETAsyncTaskMethodBuilder_1_Int64_Binding.Register(app);
             AssetBundles_AssetBundleConfig_Binding.Register(app);
             ET_ETTask_1_List_1_WhiteConfig_Binding.Register(app);
             ET_ETTask_1_UpdateConfig_Binding.Register(app);
@@ -159,12 +159,11 @@ namespace ILRuntime.Runtime.Generated
             ET_Resver_Binding.Register(app);
             ET_Define_Binding.Register(app);
             AssetBundleMgr_Binding.Register(app);
-            ET_ETTask_1_AddressableUpdateAsyncOperation_Binding.Register(app);
-            AssetBundles_AddressableUpdateAsyncOperation_Binding.Register(app);
+            ET_ETTask_1_Int64_Binding.Register(app);
             System_Int64_Binding.Register(app);
             System_Double_Binding.Register(app);
             System_Collections_Generic_List_1_String_Binding.Register(app);
-            ET_JsonHelper_Binding.Register(app);
+            ET_ETTask_1_Dictionary_2_String_String_Binding.Register(app);
             UnityEngine_Object_Binding.Register(app);
             UnityEngine_Animator_Binding.Register(app);
             UnityEngine_RuntimeAnimatorController_Binding.Register(app);
@@ -241,6 +240,7 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_IEnumerator_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Type_UnOrderMultiMap_2_Type_Object_Binding.Register(app);
             System_DateTime_Binding.Register(app);
+            ET_JsonHelper_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Type_Queue_1_ILTypeInstance_Binding.Register(app);
             System_Collections_Generic_Queue_1_ILTypeInstance_Binding.Register(app);
             ProtoBuf_Meta_RuntimeTypeModel_Binding.Register(app);
@@ -319,14 +319,12 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_Dictionary_2_String_Material_Binding.Register(app);
             ET_ETAsyncTaskMethodBuilder_1_Material_Binding.Register(app);
             System_Action_1_Material_Binding.Register(app);
-            ET_ETAsyncTaskMethodBuilder_1_TextAsset_Binding.Register(app);
             ET_ETAsyncTaskMethodBuilder_1_Object_Binding.Register(app);
             ET_ETAsyncTaskMethodBuilder_1_SpriteAtlas_Binding.Register(app);
-            System_Action_1_TextAsset_Binding.Register(app);
+            System_Action_1_Object_Binding.Register(app);
             AssetBundles_ResourceAsyncOperation_Binding.Register(app);
             System_Action_1_Single_Binding.Register(app);
             AssetBundles_BaseAssetAsyncLoader_Binding.Register(app);
-            System_Action_1_Object_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_Type_Binding_Enumerator_Binding.Register(app);
             System_Collections_Generic_KeyValuePair_2_String_Type_Binding.Register(app);
             System_Threading_ReaderWriterLockSlim_Binding.Register(app);
