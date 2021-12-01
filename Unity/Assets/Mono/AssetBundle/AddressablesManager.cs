@@ -141,6 +141,8 @@ namespace AssetBundles
                     listSkinAssetCaching.RemoveAt(i);
                 }
             }
+            configBundle.Unload(true);
+            configBundle = null;
             Debug.Log("ClearAssetsCache Over");
         }
 
