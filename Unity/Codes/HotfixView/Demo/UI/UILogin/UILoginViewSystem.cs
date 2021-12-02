@@ -23,11 +23,11 @@ namespace ET
 			self.btns = new List<UIButton>();
 			for (int i = 0; i < 2; i++)
 			{
-				string name = "Setting" + (i + 1);
-				var btn = settings.AddUIComponent<UIButton>(name);
+				int id = i + 1;
+				var btn = settings.AddUIComponent<UIButton>("Setting" + (i + 1));
 				btn.SetOnClick(() =>
 				{
-					self.OnBtnClick(name);
+					self.OnBtnClick(id);
 				});
 				self.btns.Add(btn);
 			}
@@ -39,7 +39,7 @@ namespace ET
 		public override void OnEnable(UILoginView self, Scene scene)
 		{
 			self.scene = scene;
-			self.ipaddr.SetText(ServerConfigManagerComponent.Instance.GetCurConfig().iplist[0]);
+			self.ipaddr.SetText(ServerConfigManagerComponent.Instance.GetCurConfig().RealmIp);
 			self.account.SetText(PlayerPrefs.GetString(CacheKeys.Account, ""));
 			self.password.SetText(PlayerPrefs.GetString(CacheKeys.Password, ""));
 		}
@@ -58,9 +58,9 @@ namespace ET
 				self.loginBtn.SetInteractable(true);
 			});
 		}
-		public static void OnBtnClick(this UILoginView self,string name)
+		public static void OnBtnClick(this UILoginView self,int id)
         {
-			self.ipaddr.SetText(ServerConfigManagerComponent.Instance.ChangeEnv(name.ToLower()).iplist[0]);
+			self.ipaddr.SetText(ServerConfigManagerComponent.Instance.ChangeEnv(id).RealmIp);
 		}
 
 		public static void OnRegister(this UILoginView self)

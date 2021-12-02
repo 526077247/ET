@@ -18,16 +18,17 @@ namespace ET
 	}
 	public class ServerConfigManagerComponent: Entity
     {
-		readonly string ServerKey = "Env";
+		readonly string ServerKey = "ServerId";
+		private readonly int defaultServer = 1;
 		ServerConfig cur_config;
 		public static ServerConfigManagerComponent Instance;
 		public void Awake()
 		{
 			Instance = this;
-			ServerConfig.config.TryGetValue(PlayerPrefs.GetString(ServerKey, ServerConfig.default_key),out cur_config);
+			cur_config = ServerConfigCategory.Instance.Get(PlayerPrefs.GetInt(ServerKey, defaultServer));
             if (cur_config == null)
             {
-				ServerConfig.config.TryGetValue(ServerConfig.default_key, out cur_config);
+	            cur_config = ServerConfigCategory.Instance.GetOne();
 			}
 		}
 
@@ -37,12 +38,13 @@ namespace ET
 
 		}
 
-		public ServerConfig ChangeEnv(string name)
+		public ServerConfig ChangeEnv(int id)
         {
-			if(ServerConfig.config.TryGetValue(name,out var conf))
+	        var conf = ServerConfigCategory.Instance.Get(id);
+			if(conf!=null)
             {
 				cur_config = conf;
-				PlayerPrefs.SetString(ServerKey, name);
+				PlayerPrefs.SetInt(ServerKey, id);
 			}
 			return cur_config;
 
@@ -50,23 +52,23 @@ namespace ET
 		//获取正式环境更新列表cdn地址
 		public string GetUpdateListCdnUrl()
         {
-			return cur_config.update_list_cdn_url;
+			return cur_config.UpdateListUrl;
 		}
 
 		// 获取客户端资源cdn地址
 		public string GetResCdnUrl()
 		{
-			return cur_config.res_cdn_url;
+			return cur_config.ResUrl;
 		}
 		//获取测试环境更新列表cdn地址
 		public string GetTestUpdateListCdnUrl()
         {
-			return cur_config.test_update_list_cdn_url;
+			return cur_config.TestUpdateListUrl;
 		}
 
 		public int GetEnvId()
         {
-			return cur_config.env_id;
+			return cur_config.EnvId;
 		}
 	}
 }

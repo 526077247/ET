@@ -30,7 +30,7 @@ namespace ET
         static async ETTask<string[]> GetRouterListFake()
         {
 #if !NOT_UNITY
-            return await HttpManager.Instance.HttpGetResult<string[]>(ServerConfigManagerComponent.Instance.GetCurConfig().router_list_cdn_url + "/router.list");
+            return await HttpManager.Instance.HttpGetResult<string[]>(ServerConfigManagerComponent.Instance.GetCurConfig().RouterListUrl + "/router.list");
 #else
             return new string[]{"172.22.213.58:10007", "172.22.213.58:10008", "172.22.213.58:10009", };
 #endif
