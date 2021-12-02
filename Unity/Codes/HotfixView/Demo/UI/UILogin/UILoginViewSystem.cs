@@ -18,7 +18,7 @@ namespace ET
 			self.account = self.AddUIComponent<UIInput>("Panel/Account");
 			self.password = self.AddUIComponent<UIInput>("Panel/Password");
 			self.ipaddr = self.AddUIComponent<UIInputTextmesh>("Panel/GM/InputField");
-
+			self.loginBtn.AddUIComponent<UIRedDotComponent, string>("","Test");
 			var settings = self.AddUIComponent<UIBaseContainer>("Panel/GM/Setting");
 			self.btns = new List<UIButton>();
 			for (int i = 0; i < 2; i++)
@@ -66,6 +66,7 @@ namespace ET
 		public static void OnRegister(this UILoginView self)
 		{
 			Game.EventSystem.Publish(new UIEventType.ShowToast() { Text = "测试OnRegister" });
+			RedDotComponent.Instance.RefreshRedDotViewCount("Test1", 1);
 		}
 	}
 }

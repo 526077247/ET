@@ -555,5 +555,31 @@ namespace ET
 				}
 			}
 		}
+		
+		public void OnChangeRedDotActive(Entity component,int count)
+		{
+			List<object> iRedDotSystems = this.typeSystems.GetSystems(component.GetType(), typeof(IRedDotSystem));
+			if (iRedDotSystems == null)
+			{
+				return;
+			}
+
+			foreach (IRedDotSystem aRedDotSystem in iRedDotSystems)
+			{
+				if (aRedDotSystem == null)
+				{
+					continue;
+				}
+
+				try
+				{
+					aRedDotSystem.Run(component,count);
+				}
+				catch (Exception e)
+				{
+					Log.Error(e);
+				}
+			}
+		}
 	}
 }

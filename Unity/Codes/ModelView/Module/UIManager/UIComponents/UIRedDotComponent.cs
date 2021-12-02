@@ -1,0 +1,19 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using UnityEngine;
+
+namespace ET
+{
+    public class UIRedDotComponent:UIBaseContainer
+    {
+        public GameObject TempObj;
+        public RedDotMonoView unity_target;
+        public Vector3 Scaler;
+        public Vector2 PositionOffset;
+        public string Target;
+        public bool isRedDotActive = false;
+    }
+}
