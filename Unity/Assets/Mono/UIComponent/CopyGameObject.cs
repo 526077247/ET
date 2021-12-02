@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ET
 {
-    public class ViewGameObjectPool : MonoBehaviour
+    public class CopyGameObject : MonoBehaviour
     {
         int? start_sibling_index;
         Action<int, GameObject> ongetitemcallback;
