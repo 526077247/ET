@@ -265,23 +265,14 @@ public class FindReferencesInProject2 : EditorWindow
 
                     if (showList[index])
                     {
-                        Rect r = EditorGUILayout.BeginVertical("Button");
                         foreach (var fileName in item.Value)
                         {
-                            // GUILayout.Label(fileName);
-                            if(string.Equals(Path.GetExtension(fileName), ".lua", System.StringComparison.OrdinalIgnoreCase))
-                            {
-                                GUILayout.Label(fileName);
-                            }
-                            else
-                            {
-                                assetPath = FindReferences.GetRelativeAssetsPath(fileName);
-                                assetObj = AssetDatabase.LoadAssetAtPath(assetPath, typeof(UnityEngine.Object));
-                                EditorGUILayout.BeginHorizontal();
-                                GUILayout.Label(assetPath,GUILayout.Width(350));
-                                EditorGUILayout.ObjectField("", assetObj, typeof(UnityEngine.Object), true,GUILayout.Width(120));
-                                EditorGUILayout.EndHorizontal();
-                            }
+                            assetPath = FindReferences.GetRelativeAssetsPath(fileName);
+                            assetObj = AssetDatabase.LoadAssetAtPath(assetPath, typeof(UnityEngine.Object));
+                            EditorGUILayout.BeginHorizontal();
+                            GUILayout.Label(assetPath,GUILayout.Width(350));
+                            EditorGUILayout.ObjectField("", assetObj, typeof(UnityEngine.Object), true,GUILayout.Width(120));
+                            EditorGUILayout.EndHorizontal();
                         }
                         EditorGUILayout.EndVertical();
                     }

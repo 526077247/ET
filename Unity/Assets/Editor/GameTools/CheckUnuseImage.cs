@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System;
 using System.Diagnostics;
+using Debug = UnityEngine.Debug;
 
 public class CheckUnuseImage : EditorWindow
 {
@@ -16,7 +17,6 @@ public class CheckUnuseImage : EditorWindow
     private static EditorApplication.CallbackFunction _updateDelegate;
     private Vector2 scrollPosition = Vector2.zero;
     private const int ThreadCount = 4;
-    private string curSelectTextKey = "";
 
     private Stopwatch watch = new Stopwatch();
 
@@ -24,7 +24,7 @@ public class CheckUnuseImage : EditorWindow
     public class ThreadPars
     {
         public List<string> assetContents = new List<string>();
-        public List<string> luaContents = new List<string>();
+        public List<string> codeContents = new List<string>();
         public List<string> imagePaths = new List<string>();
         public List<string> imageGUIDPaths = new List<string>();
     }
@@ -33,8 +33,6 @@ public class CheckUnuseImage : EditorWindow
     {
         if (par == null) return null;
         List<string> ret = new List<string>();
-        Dictionary<string,string> assetContents = new Dictionary<string,string>();
-        Dictionary<string, string> luaContents = new Dictionary<string, string>();
 
         for (int i = 0; i < par.imagePaths.Count; i++)
         {
@@ -53,10 +51,10 @@ public class CheckUnuseImage : EditorWindow
 
             if (isHas) continue;
 
-            //查找lua
+            //查找热更层代码
             string matchStr = GetMatchImagePath(par.imagePaths[i]);
-            //UnityEngine.Debug.Log(matchStr);
-            foreach (var fileContent in par.luaContents)
+
+            foreach (var fileContent in par.codeContents)
             {
                 if (Regex.IsMatch(fileContent, matchStr))
                 {
@@ -113,32 +111,33 @@ public class CheckUnuseImage : EditorWindow
 
         List<string> imagePaths = UIAssetUtils.GetAllImages(false);
         imagePaths = imagePaths.Where(s => !Regex.IsMatch(s, "ColorPokerCard")).Where(s => !Regex.IsMatch(s, "PokerCard")).ToList();
+        
 
-        //for (int i = 0; i < imagePaths.Count; i++)
-        //{
-        //    Debug.LogError(GetMatchImagePath(imagePaths[i]));
-        //}
-        //return;
-
-        List<string> withoutExtensions = new List<string>() { ".prefab", ".unity", ".mat" };
+        List<string> withoutExtensions = new List<string>() { ".prefab", ".unity", ".mat", ".cs" };
         string[] files = Directory.GetFiles(Path.Combine(Application.dataPath, "AssetsPackage"), "*.*", SearchOption.AllDirectories)
             .Where(s => withoutExtensions.Contains(Path.GetExtension(s).ToLower())).ToArray();
 
-        //预先都内容
+        //预先load内容
         List<string> assetContents = new List<string>();
-        List<string> luaContents = new List<string>();
+        
         foreach (var file in files)
         {
             assetContents.Add(File.ReadAllText(file));
         }
-
+        files = Directory.GetFiles("Codes", "*.*", SearchOption.AllDirectories)
+                .Where(s => withoutExtensions.Contains(Path.GetExtension(s).ToLower())).ToArray();
+        List<string> codeContents = new List<string>();
+        foreach (var file in files)
+        {
+            codeContents.Add(File.ReadAllText(file));
+        }
 
         ThreadPars[] threadParses = new ThreadPars[ThreadCount];
         for (int i = 0; i < ThreadCount; i++)//添加查找的范围内容
         {
             threadParses[i] = new ThreadPars();
             threadParses[i].assetContents = assetContents;
-            threadParses[i].luaContents = luaContents;
+            threadParses[i].codeContents = codeContents;
         }
 
         for (int i = 0; i < imagePaths.Count; i++)

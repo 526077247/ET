@@ -191,11 +191,6 @@ public class AssetImportMgr : AssetPostprocessor
             return false;
         }
 
-        //if (assetPath.Contains("Assets/" + AddressableTools.Assets_Package + "/" + XLuaManager.luaAssetbundleAssetName))
-        //{
-        //    return false;
-        //}
-
         if (Directory.Exists(assetPath))
         {
             return false;

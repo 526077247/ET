@@ -674,21 +674,13 @@ namespace IFix.Editor
             }
 
             ScriptCompilationResult scriptCompilationResult = PlayerBuildInterface.CompilePlayerScripts(scriptCompilationSettings, outputDir);
-            StringBuilder sb = new StringBuilder();
             foreach (var assembly in injectAssemblys)
             {
                 var path = string.Format("{0}{1}.patch.bytes", patchOutputDir, assembly);
                 if (File.Exists(path)) File.Delete(path);
-                if (GenPatch(assembly, string.Format("{0}/{1}.dll", outputDir, assembly),
-                    "./Assets/Plugins/IFix.Core.dll", path))
-                {
-                    sb.Append(assembly + ",");
-                }
+                GenPatch(assembly, string.Format("{0}/{1}.dll", outputDir, assembly), "./Assets/Plugins/IFix.Core.dll", path);
+
             }
-            var str = sb.ToString();
-            if (str.Length > 0)
-                str = str.Substring(0, str.Length - 1);
-            File.WriteAllText("Assets/AssetsPackage/Hotfix/HotfixInfo.bytes", str);
             AssetDatabase.Refresh();
 #else
             throw new NotImplementedException();
@@ -814,7 +806,7 @@ namespace IFix.Editor
         /// <param name="assemblyCSharpPath">程序集路径</param>
         /// <param name="corePath">IFix.Core.dll所在路径</param>
         /// <param name="patchPath">生成的patch的保存路径</param>
-        public static bool GenPatch(string assembly, string assemblyCSharpPath
+        public static void GenPatch(string assembly, string assemblyCSharpPath
             = "./Library/ScriptAssemblies/Assembly-CSharp.dll", 
             string corePath = "./Assets/Plugins/IFix.Core.dll", string patchPath = "Assembly-CSharp.patch.bytes")
         {
@@ -827,7 +819,7 @@ namespace IFix.Editor
 
             if (patchMethods.Count == 0)
             {
-                return false;
+                return;
             }
 
             var newMethods = Configure.GetTagMethods(typeof(InterpretAttribute), assembly).ToList();
@@ -872,14 +864,12 @@ namespace IFix.Editor
             File.Delete(processCfgPath);
 
             AssetDatabase.Refresh();
-            return true;
         }
 
         [MenuItem("InjectFix/Fix", false, 2)]
         public static void Patch()
         {
             EditorUtility.DisplayProgressBar("Generate Patch for Edtior", "patching...", 0);
-            StringBuilder sb = new StringBuilder();
             try
             {
                 foreach (var assembly in injectAssemblys)
@@ -887,20 +877,13 @@ namespace IFix.Editor
                     var path = string.Format("Assets/AssetsPackage/Hotfix/{0}.patch.bytes", assembly);
                     if(File.Exists(path)) File.Delete(path);
                     var assembly_path = string.Format("./Library/{0}/{1}.dll", GetScriptAssembliesFolder(), assembly);
-                    if(GenPatch(assembly, assembly_path, "./Assets/Plugins/IFix.Core.dll", path))
-                    {
-                        sb.Append(assembly + ",");
-                    }
+                    GenPatch(assembly, assembly_path, "./Assets/Plugins/IFix.Core.dll", path);
                 }
             }
             catch (Exception e)
             {
                 UnityEngine.Debug.LogError(e);
             }
-            var str = sb.ToString();
-            if (str.Length > 0)
-                str = str.Substring(0, str.Length - 1);
-            File.WriteAllText("Assets/AssetsPackage/Hotfix/HotfixInfo.bytes", str);
             EditorUtility.ClearProgressBar();
             AssetDatabase.Refresh();
         }

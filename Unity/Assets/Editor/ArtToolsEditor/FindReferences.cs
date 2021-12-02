@@ -162,7 +162,6 @@ public class FindReferences : EditorWindow
                     {
                         //Debug.Log("匹配结束");
                         //OutputUnuse(refDic);
-                        //FindLuaFileReferences();
                         FindCSFileReferences(allassetpaths,refDic);
                     }
                     else
@@ -173,33 +172,19 @@ public class FindReferences : EditorWindow
             };
         }
     }
-
-
-    //查找lua文件对资源的引用
-    static private void FindLuaFileReferences(string[] allassetpaths, Dictionary<string, System.Collections.Generic.List<string>> refDic)
-    {
-        string[] luaFiles = Directory.GetFiles( Path.Combine( Application.dataPath,".." , "..","lua_scripts","LuaScripts" ), "*.lua", SearchOption.AllDirectories).ToArray();
-        MatchFileContents(allassetpaths,allassetpaths.Length,luaFiles,refDic,3);
-    }
-
-    //查找 白名单 
-    static private void FindSpecialLuaFileReferences(string[] allassetpaths, Dictionary<string, System.Collections.Generic.List<string>> refDic)
-    {
-        string[] luaFiles = Directory.GetFiles( Path.Combine( Application.dataPath,".." , "..","lua_scripts","LuaEditor" ), "*.lua", SearchOption.AllDirectories).ToArray();
-        MatchFileContents(allassetpaths,allassetpaths.Length,luaFiles,refDic,0,true);
-    }
+    
 
     //查找CS文件对资源的引用
     static private void FindCSFileReferences(string[] allassetpaths, Dictionary<string, System.Collections.Generic.List<string>> refDic)
     {
-        string[] csFiles = Directory.GetFiles(Application.dataPath, "*.cs", SearchOption.AllDirectories)
+        string[] csFiles = Directory.GetFiles("Codes", "*.cs", SearchOption.AllDirectories)
             .Where(s => s.IndexOf("/editor/", System.StringComparison.OrdinalIgnoreCase) <0 ).ToArray();
         MatchFileContents(allassetpaths,allassetpaths.Length,csFiles,refDic,2);
     }
 
 
 
-    ///output 0 输出  1  CSFile 2 lua file  3 special lua file
+    ///output 0 输出  1  CSFile
     static private void MatchFileContents(string[] allassetpaths, int index, string[] files, Dictionary<string, System.Collections.Generic.List<string>> refDic,int output,bool isSpecial = false)
     {
         if (index > 0 && !string.IsNullOrEmpty(allassetpaths[index - 1]))
@@ -264,18 +249,7 @@ public class FindReferences : EditorWindow
                     if ((index - 1) == 0)
                     {
                         //Debug.Log("匹配结束");
-                        //OutputUnuse(refDic);
-                        if(output == 0)
-                        {
-                            OutputUnuse(refDic);
-                        }else if( output == 2)
-                        {
-                            FindLuaFileReferences(allassetpaths,refDic);
-                        }
-                        else
-                        {
-                            FindSpecialLuaFileReferences(allassetpaths,refDic);
-                        }
+                        OutputUnuse(refDic);
                     }
                     else
                     {
@@ -381,20 +355,12 @@ public class FindReferences : EditorWindow
                         Rect r = EditorGUILayout.BeginVertical("Button");
                         foreach (var fileName in item.Value)
                         {
-                            // GUILayout.Label(fileName);
-                            if(string.Equals(Path.GetExtension(fileName), ".lua", System.StringComparison.OrdinalIgnoreCase))
-                            {
-                                GUILayout.Label(fileName);
-                            }
-                            else
-                            {
-                                assetPath = GetRelativeAssetsPath(fileName);
-                                assetObj = AssetDatabase.LoadAssetAtPath(assetPath, typeof(Object));
-                                EditorGUILayout.BeginHorizontal();
-                                GUILayout.Label(assetPath,GUILayout.Width(350));
-                                EditorGUILayout.ObjectField("", assetObj, typeof(Object), true,GUILayout.Width(120));
-                                EditorGUILayout.EndHorizontal();
-                            }
+                            assetPath = GetRelativeAssetsPath(fileName);
+                            assetObj = AssetDatabase.LoadAssetAtPath(assetPath, typeof(Object));
+                            EditorGUILayout.BeginHorizontal();
+                            GUILayout.Label(assetPath,GUILayout.Width(350));
+                            EditorGUILayout.ObjectField("", assetObj, typeof(Object), true,GUILayout.Width(120));
+                            EditorGUILayout.EndHorizontal();
                         }
                         EditorGUILayout.EndVertical();
                     }

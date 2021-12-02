@@ -437,7 +437,6 @@ namespace ET
 						__goInstCountCache[item.Key] = __goInstCountCache[item.Key] - 1;
 					}
 					__instPathCache.Remove(inst);
-					//__instLuaCache.Remove(inst);
 				}
 			}
 			__instCache = new Dictionary<string, List<GameObject>>();
@@ -503,7 +502,6 @@ namespace ET
 							__goInstCountCache[item.Key] = __goInstCountCache[item.Key] - 1;
 						}
 						__instPathCache.Remove(inst);
-						//__instLuaCache.Remove(inst);
 					}
 				}
 			}

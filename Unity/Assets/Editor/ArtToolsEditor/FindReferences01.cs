@@ -24,7 +24,6 @@ public class FindReferences01 : EditorWindow
     {
         public List<string> CheckAssetList = new List<string>();
         public List<string> CheckCSList = new List<string>();
-        public List<string> CheckLuaList = new List<string>();
         public List<string> AssetGuidList = new List<string>();
         public List<string> AssetNameList = new List<string>();
         public List<string> CheckWihteList = new List<string>();
@@ -99,30 +98,7 @@ public class FindReferences01 : EditorWindow
                     }
                 }
             }
-
-            foreach (var file in par.CheckLuaList)
-            {
-                string fileContent = File.ReadAllText(file);
-                foreach (var aimName in par.AssetNameList)
-                {
-                    var checkName = Path.GetFileName(aimName);
-                    if (Regex.IsMatch(fileContent, checkName))
-                    {
-                        if (ret.ContainsKey(aimName))
-                        {
-                            ret[aimName].Add(file);
-                        }
-                        else
-                        {
-                            List<string> list = new List<string>();
-                            list.Add(file);
-                            ret.Add(aimName, list);
-                        }
-                    }
-                }
-            }
-
-
+            
         }
 
         return ret;
@@ -192,25 +168,7 @@ public class FindReferences01 : EditorWindow
                 int index = i % ThreadCount;
                 threadParses[index].CheckCSList.Add(csFiles[i]);
             }
-            var LUA_PATH = Path.Combine(Application.dataPath, "..", "..", "lua_scripts", "LuaScripts");
-            if (Directory.Exists(LUA_PATH))
-            {
-                string[] luaFiles = Directory.GetFiles(Path.Combine(Application.dataPath, "..", "..", "lua_scripts", "LuaScripts"), "*.lua", SearchOption.AllDirectories).ToArray();
-                for (int i = 0; i < luaFiles.Length; i++)//添加要查找的lua文件
-                {
-                    int index = i % ThreadCount;
-                    threadParses[index].CheckLuaList.Add(luaFiles[i]);
-                }
-                string wihteName = Path.Combine(Application.dataPath, "..", "..", "lua_scripts", "LuaEditor", "ResourceReferences.lua");
-                string content = File.ReadAllText(wihteName);
-                string[] contentList = content.Split(new string[] { ",\n" }, System.StringSplitOptions.RemoveEmptyEntries);
-                for (int i = 0; i < contentList.Length; i++)//添加要查找的白名单
-                {
-                    int index = i % ThreadCount;
-                    threadParses[index].CheckWihteList.Add(contentList[i]);
-                }
-            }
-            
+
             ThreadRun[] tRun = new ThreadRun[ThreadCount];
             int finishedState = ThreadCount;
 
@@ -224,7 +182,7 @@ public class FindReferences01 : EditorWindow
                     if (results[i].IsCompleted) ++finishedCount;
                 }
 
-                EditorUtility.DisplayProgressBar("匹配资源中", string.Format("进度：{0}", finishedCount), finishedCount * 1f / ThreadCount);
+                EditorUtility.DisplayProgressBar("匹配资源中", string.Format("进度：{0}", finishedCount), (float)finishedCount/ ThreadCount);
 
                 if (finishedCount >= finishedState)
                 {
@@ -251,12 +209,7 @@ public class FindReferences01 : EditorWindow
 
                         }
                     }
-
-                        /*foreach (var s in re)
-						{
-							Debug.Log(s, AssetDatabase.LoadAssetAtPath<Object>(GetRelativeAssetsPath(s)));
-						}*/
-
+                    
                     EditorUtility.ClearProgressBar();
                     EditorApplication.update -= _updateDelegate;
 
@@ -372,20 +325,12 @@ public class FindReferences01 : EditorWindow
                         Rect r = EditorGUILayout.BeginVertical("Button");
                         foreach (var fileName in item.Value)
                         {
-                            // GUILayout.Label(fileName);
-                            if (string.Equals(Path.GetExtension(fileName), ".lua",System.StringComparison.OrdinalIgnoreCase))
-                            {
-                                GUILayout.Label(fileName);
-                            }
-                            else
-                            {
-                                assetPath = GetRelativeAssetsPath(fileName);
-                                assetObj = AssetDatabase.LoadAssetAtPath(assetPath, typeof(Object));
-                                EditorGUILayout.BeginHorizontal();
-                                GUILayout.Label(assetPath, GUILayout.Width(350));
-                                EditorGUILayout.ObjectField("", assetObj, typeof(Object), true, GUILayout.Width(120));
-                                EditorGUILayout.EndHorizontal();
-                            }
+                            assetPath = GetRelativeAssetsPath(fileName);
+                            assetObj = AssetDatabase.LoadAssetAtPath(assetPath, typeof(Object));
+                            EditorGUILayout.BeginHorizontal();
+                            GUILayout.Label(assetPath, GUILayout.Width(350));
+                            EditorGUILayout.ObjectField("", assetObj, typeof(Object), true, GUILayout.Width(120));
+                            EditorGUILayout.EndHorizontal();
                         }
                         EditorGUILayout.EndVertical();
                     }

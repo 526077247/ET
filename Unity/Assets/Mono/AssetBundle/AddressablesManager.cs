@@ -307,8 +307,6 @@ namespace AssetBundles
          * loader加载资源完成后主动调用这个接口，来增加asset到cache中
          * note: 原来采用的方式是将loader加入到数组中，update的时候进行遍历，来判断loader是否完成
          * 原来的方式缺点: 1: 无效的检查太多，每帧都会调用update
-         *                          2:loader在lua层会引用，其加载资源后会判断loader是否IsDone， 如果完成后会调用Dispose(),将其返还给pool中
-         *                          当Lua层先调用dispose后loader返还给pool后，如果在update执行前又加载了新资源导致该loader内部值被修改后，则会出问题
          */
         public void OnAddressablesAsyncLoaderDone(AddressablesAsyncLoader loader)
         {
@@ -459,19 +457,13 @@ namespace AssetBundles
             if (AssetBundleMgr.GetInstance().IsCached(assetBundleName, "", true))
             {
                 var path = Path.Combine(AssetBundleMgr.PersistentAssetBundleFolder, assetBundleName);
-                var addressPath = "Assets/AssetsPackage/Hotfix/HotfixInfo.bytes";
                 var ab = AssetBundle.LoadFromFile(path, 0, (ulong)computeBundleOffset(assetBundleName));
-                TextAsset asset = (TextAsset)ab.LoadAsset(addressPath, typeof(TextAsset));
-                var Assemblys = asset.text.Split(',');
-                for (int i = 0; i < Assemblys.Length; i++)
+                var texts = ab.LoadAllAssets();
+                for (int i = 0; i < texts.Length; i++)
                 {
-                    if (string.IsNullOrEmpty(Assemblys[i])) continue;
-                    var bytes = (TextAsset)ab.LoadAsset("Assets/AssetsPackage/Hotfix/" + Assemblys[i] + ".patch.bytes", typeof(TextAsset));
-                    if (bytes != null)
-                    {
-                        Debug.Log("Start Patch " + Assemblys[i]);
-                        PatchManager.Load(new MemoryStream(bytes.bytes));
-                    }
+                    var bytes = (texts[i] as TextAsset).bytes;
+                    Debug.Log("Start Patch " + texts[i].name);
+                    PatchManager.Load(new MemoryStream(bytes));
                 }
                 ab.Unload(true);
             }

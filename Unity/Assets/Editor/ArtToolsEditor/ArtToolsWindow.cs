@@ -229,7 +229,7 @@ public class ArtToolsWindow : EditorWindow
 						if (results[j].IsCompleted) ++finishedCount;
 					}
 					
-					EditorUtility.DisplayProgressBar("匹配资源中",string.Format("进度：{0}",finishedCount),finishedCount *1f/ThreadCount);
+					EditorUtility.DisplayProgressBar("匹配资源中",string.Format("进度：{0}",finishedCount),(float)finishedCount/ThreadCount);
  
 					if (finishedCount >= finishedState)
 					{

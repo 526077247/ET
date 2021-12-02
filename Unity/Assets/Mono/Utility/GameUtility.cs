@@ -486,13 +486,6 @@ public class GameUtility
 
     public static string[] StringToArrary(string content)
     {
-        /*string luasSplitStr = "\r\n";
-        if (Application.platform == RuntimePlatform.IPhonePlayer)
-        {
-            luasSplitStr = "\n";
-        }
-        string[]  arr = content.Split(new string[] { luasSplitStr }, StringSplitOptions.RemoveEmptyEntries);
-        */
         List<string> list = new List<string>();
         using (StringReader sr = new StringReader(content))
         {
@@ -510,6 +503,5 @@ public class GameUtility
     {
         GC.Collect();
         Resources.UnloadUnusedAssets();
-        //XLuaManager.Instance.LuaGC();
     }
 }

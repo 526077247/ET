@@ -297,7 +297,6 @@ namespace ET
         {
             List<DownLoadInfo> temp = new List<DownLoadInfo>();
             DownLoadInfo global_ab = null;
-            DownLoadInfo lua_ab = null;
             if (needdownloadinfo!=null)
             {
                 foreach (var item in needdownloadinfo)
@@ -307,15 +306,11 @@ namespace ET
                     Log.Info("SortDownloadInfo check =" + name);
                     if (name == "global_assets_all.bundle")
                         global_ab = new DownLoadInfo { hash = hash, name = name };
-                    else if (name == "luascript_bytes_content_assets_all.bundle")
-                        lua_ab = new DownLoadInfo { hash = hash, name = name };
                     else
                         temp.Add(new DownLoadInfo { hash = hash, name = name });
                 }
             }
             //版本资源最后
-            if (lua_ab != null)
-                temp.Add(lua_ab);
             if (global_ab != null)
                 temp.Add(global_ab);
             return temp;

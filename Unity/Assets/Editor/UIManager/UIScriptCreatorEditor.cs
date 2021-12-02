@@ -31,7 +31,7 @@ public class UIScriptCreatorEditor : Editor
     }
 
     [MenuItem("GameObject/生成UI代码/生成代码", false, 23)]
-    static void CreateLuaModule(MenuCommand menuCommand)
+    static void CreateUIModule(MenuCommand menuCommand)
     {
         //GameObject go = menuCommand.context as GameObject;
         GameObject go = rootGo;
@@ -48,7 +48,7 @@ public class UIScriptCreatorEditor : Editor
     }
 
     [MenuItem("GameObject/生成UI代码/开始标记", false, 22)]
-    static void OpenMarkCreateLuaFilesPanel(MenuCommand menuCommand)
+    static void OpenMarkCreateUIFilesPanel(MenuCommand menuCommand)
     {
         if (IsMarking)
         {

@@ -412,7 +412,7 @@ public class AltasHelper
                 {
                     DirectoryInfo di = new DirectoryInfo(paths[i]);
 
-                    if (di.Name == "Tmp" || di.Name == "UI" || di.Name == "LuaScript_Bytes_Content" || di.Name == "Fonts" || di.Name == "FmodBanks" || di.Name == "Shaders")
+                    if (di.Name == "Tmp" || di.Name == "UI" || di.Name == "Fonts" || di.Name == "FmodBanks" || di.Name == "Shaders")
                     {
                         continue;
                     }
