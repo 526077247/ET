@@ -4,6 +4,7 @@ using System.Net;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using SuperScrollView;
 namespace ET
 {
 	[UISystem]
@@ -19,18 +20,8 @@ namespace ET
 			self.password = self.AddUIComponent<UIInput>("Panel/Password");
 			self.ipaddr = self.AddUIComponent<UIInputTextmesh>("Panel/GM/InputField");
 			self.loginBtn.AddUIComponent<UIRedDotComponent, string>("","Test");
-			var settings = self.AddUIComponent<UIBaseContainer>("Panel/GM/Setting");
-			self.btns = new List<UIButton>();
-			for (int i = 0; i < 2; i++)
-			{
-				int id = i + 1;
-				var btn = settings.AddUIComponent<UIButton>("Setting" + (i + 1));
-				btn.SetOnClick(() =>
-				{
-					self.OnBtnClick(id);
-				});
-				self.btns.Add(btn);
-			}
+			self.settingView = self.AddUIComponent<UILoopListView2>("Panel/GM/Setting");
+			self.settingView.InitListView(ServerConfigCategory.Instance.GetAll().Count, (a, b) => { return self.GetItemByIndex(a, b); });
 		}
 	}
 	[UISystem]
@@ -67,6 +58,25 @@ namespace ET
 		{
 			Game.EventSystem.Publish(new UIEventType.ShowToast() { Text = "测试OnRegister" });
 			RedDotComponent.Instance.RefreshRedDotViewCount("Test1", 1);
+		}
+
+		public static LoopListViewItem2 GetItemByIndex(this UILoginView self,LoopListView2 listView, int index)
+		{
+			if (index < 0 || index >= ServerConfigCategory.Instance.GetAll().Count)
+				return null;
+			var data = ServerConfigCategory.Instance.Get(index+1);//配置表从1开始的
+			var item = listView.NewListViewItem("SettingItem");
+			if (!item.IsInitHandlerCalled)
+			{
+				item.IsInitHandlerCalled = true;
+				self.settingView.AddItemViewComponent<UISettingItem>(item);
+			}
+			var uiitemview = self.settingView.GetUIItemView<UISettingItem>(item);
+			uiitemview.SetData(data,(id)=>
+			{
+				self.OnBtnClick(id);
+			});
+			return item;
 		}
 	}
 }

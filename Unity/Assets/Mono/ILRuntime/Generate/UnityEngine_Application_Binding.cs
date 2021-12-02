@@ -28,15 +28,6 @@ namespace ILRuntime.Runtime.Generated
             args = new Type[]{};
             method = type.GetMethod("get_version", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, get_version_1);
-            args = new Type[]{};
-            method = type.GetMethod("get_productName", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, get_productName_2);
-            args = new Type[]{};
-            method = type.GetMethod("get_isMobilePlatform", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, get_isMobilePlatform_3);
-            args = new Type[]{};
-            method = type.GetMethod("get_streamingAssetsPath", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, get_streamingAssetsPath_4);
 
 
         }
@@ -60,41 +51,6 @@ namespace ILRuntime.Runtime.Generated
 
 
             var result_of_this_method = UnityEngine.Application.version;
-
-            return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
-        }
-
-        static StackObject* get_productName_2(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
-        {
-            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            StackObject* __ret = ILIntepreter.Minus(__esp, 0);
-
-
-            var result_of_this_method = UnityEngine.Application.productName;
-
-            return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
-        }
-
-        static StackObject* get_isMobilePlatform_3(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
-        {
-            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            StackObject* __ret = ILIntepreter.Minus(__esp, 0);
-
-
-            var result_of_this_method = UnityEngine.Application.isMobilePlatform;
-
-            __ret->ObjectType = ObjectTypes.Integer;
-            __ret->Value = result_of_this_method ? 1 : 0;
-            return __ret + 1;
-        }
-
-        static StackObject* get_streamingAssetsPath_4(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
-        {
-            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            StackObject* __ret = ILIntepreter.Minus(__esp, 0);
-
-
-            var result_of_this_method = UnityEngine.Application.streamingAssetsPath;
 
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }

@@ -13,7 +13,7 @@ namespace ET
 		public UIInput account;
 		public UIInputTextmesh ipaddr;
 		public UIButton registerBtn;
-		public List<UIButton> btns;
+		public UILoopListView2 settingView;
 		public Scene scene;
 
         public static string PrefabPath => "UI/UILogin/Prefabs/UILoginView.prefab";

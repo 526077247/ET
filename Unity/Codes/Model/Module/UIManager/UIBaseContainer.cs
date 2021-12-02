@@ -14,7 +14,7 @@ namespace ET
         Dictionary<string, Dictionary<Type, UIBaseContainer>> components = new Dictionary<string, Dictionary<Type, UIBaseContainer>>();//[path]:[component_name:UIBaseContainer]
 
         int length = 1;
-        
+
         Action OnComponentDestroy;
         public string Path;
 
@@ -37,12 +37,12 @@ namespace ET
         public void BeforeOnDestroy()
         {
             var keys1 = components.Keys.ToList();
-            for (int i = keys1.Count-1; i >= 0; i--)
+            for (int i = keys1.Count - 1; i >= 0; i--)
             {
                 if (components[keys1[i]] != null)
                 {
                     var keys2 = components[keys1[i]].Keys.ToList();
-                    for (int j = keys2.Count-1; j >= 0; j--)
+                    for (int j = keys2.Count - 1; j >= 0; j--)
                     {
                         UIEventSystem.Instance.OnDestroy(components[keys1[i]][keys2[j]]);
                     }
@@ -75,9 +75,9 @@ namespace ET
         //记录Component
         void RecordUIComponent(string name, Type component_class, UIBaseContainer component)
         {
-            if(components.TryGetValue(name,out var obj))
+            if (components.TryGetValue(name, out var obj))
             {
-                if(obj.ContainsKey(component_class))
+                if (obj.ContainsKey(component_class))
                 {
                     Log.Error("Aready exist component_class : " + component_class.Name);
                     return;
@@ -88,6 +88,25 @@ namespace ET
                 components[name] = new Dictionary<Type, UIBaseContainer>();
             }
             components[name][component_class] = component;
+        }
+
+        /// <summary>
+        /// 添加组件
+        /// </summary>
+        /// <typeparam name="T">类型</typeparam>
+        /// <param name="name">游戏物体名称</param>
+        public T AddUIComponentNotCreate<T>(string name) where T : UIBaseContainer
+        {
+            Type type = typeof(T);
+            T component_inst = AddChild<T>();
+            component_inst.Path = name;
+            component_inst.OnComponentDestroy = () =>
+            {
+                __RemoveUIComponent<T>(name);
+            };
+            RecordUIComponent(name, type, component_inst);
+            length++;
+            return component_inst;
         }
 
         /// <summary>
@@ -105,7 +124,7 @@ namespace ET
                 __RemoveUIComponent<T>(path);
             };
             RecordUIComponent(path, type, component_inst);
-            Game.EventSystem.Publish(new UIEventType.AddComponent() { entity = component_inst }); 
+            Game.EventSystem.Publish(new UIEventType.AddComponent() { entity = component_inst });
             UIEventSystem.Instance.OnCreate(component_inst);
             length++;
             return component_inst;
@@ -125,8 +144,8 @@ namespace ET
             {
                 __RemoveUIComponent<T>(path);
             };
-            Game.EventSystem.Publish(new UIEventType.AddComponent() { entity = component_inst }); 
-            UIEventSystem.Instance.OnCreate(component_inst,a);
+            Game.EventSystem.Publish(new UIEventType.AddComponent() { entity = component_inst });
+            UIEventSystem.Instance.OnCreate(component_inst, a);
 
             RecordUIComponent(path, type, component_inst);
             length++;
@@ -146,8 +165,8 @@ namespace ET
             {
                 __RemoveUIComponent<T>(path);
             };
-            Game.EventSystem.Publish(new UIEventType.AddComponent() { entity = component_inst }); 
-            UIEventSystem.Instance.OnCreate(component_inst, a,b);
+            Game.EventSystem.Publish(new UIEventType.AddComponent() { entity = component_inst });
+            UIEventSystem.Instance.OnCreate(component_inst, a, b);
 
             RecordUIComponent(path, type, component_inst);
             length++;
@@ -167,8 +186,8 @@ namespace ET
             {
                 __RemoveUIComponent<T>(path);
             };
-            Game.EventSystem.Publish(new UIEventType.AddComponent() { entity = component_inst }); 
-            UIEventSystem.Instance.OnCreate(component_inst, a, b,c);
+            Game.EventSystem.Publish(new UIEventType.AddComponent() { entity = component_inst });
+            UIEventSystem.Instance.OnCreate(component_inst, a, b, c);
 
             RecordUIComponent(path, type, component_inst);
             length++;
@@ -176,7 +195,7 @@ namespace ET
         }
         public void SetActive(bool active)
         {
-            
+
             if (active)
             {
                 UIEventSystem.Instance.OnEnable(this);
@@ -193,13 +212,13 @@ namespace ET
         {
             if (active)
             {
-                UIEventSystem.Instance.OnEnable(this,param1);
+                UIEventSystem.Instance.OnEnable(this, param1);
                 Game.EventSystem.Publish(new UIEventType.SetActive() { entity = this, Active = active });
             }
             else
             {
                 Game.EventSystem.Publish(new UIEventType.SetActive() { entity = this, Active = active });
-                UIEventSystem.Instance.OnDisable(this,param1);
+                UIEventSystem.Instance.OnDisable(this, param1);
             }
         }
         public void SetActive<T, P>(bool active, T param1, P param2)

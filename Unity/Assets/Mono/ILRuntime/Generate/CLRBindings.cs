@@ -153,6 +153,9 @@ namespace ILRuntime.Runtime.Generated
             UnityEngine_Physics_Binding.Register(app);
             UnityEngine_RaycastHit_Binding.Register(app);
             ET_CodeLoader_Binding.Register(app);
+            SuperScrollView_LoopListView2_Binding.Register(app);
+            SuperScrollView_LoopListViewItem2_Binding.Register(app);
+            System_Action_1_Int32_Binding.Register(app);
             ET_ETTask_1_GameObject_Binding.Register(app);
             UnityEngine_Transform_Binding.Register(app);
             ET_ETAsyncTaskMethodBuilder_1_Int64_Binding.Register(app);
@@ -196,6 +199,7 @@ namespace ILRuntime.Runtime.Generated
             UnityEngine_UI_Image_Binding.Register(app);
             UnityEngine_UI_InputField_Binding.Register(app);
             TMPro_TMP_InputField_Binding.Register(app);
+            SuperScrollView_LoopGridView_Binding.Register(app);
             PointerClick_Binding.Register(app);
             UnityEngine_Sprite_Binding.Register(app);
             UnityEngine_UI_RawImage_Binding.Register(app);
@@ -294,7 +298,6 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_KeyValuePair_2_String_Resver_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_Dictionary_2_String_Resver_Binding.Register(app);
             System_Char_Binding.Register(app);
-            ET_ENV_ID_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_List_1_GameObject_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_GameObject_String_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_Dictionary_2_String_Int32_Binding.Register(app);
