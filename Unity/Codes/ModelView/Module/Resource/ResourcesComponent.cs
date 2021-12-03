@@ -40,7 +40,7 @@ namespace ET
         }
 
         //异步加载Asset：协程形式
-        public async ETTask<T> LoadAsync<T>(string path, Action<UnityEngine.Object> callback = null) where T: UnityEngine.Object
+        public async ETTask<T> LoadAsync<T>(string path, Action<T> callback = null) where T: UnityEngine.Object
         {
             if (string.IsNullOrEmpty(path))
             {
