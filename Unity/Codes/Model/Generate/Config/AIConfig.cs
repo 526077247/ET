@@ -77,7 +77,7 @@ namespace ET
 		public int Order { get; set; }
 		[ProtoMember(4)]
 		public string Name { get; set; }
-		[ProtoMember(6)]
+		[ProtoMember(5)]
 		public int[] NodeParams { get; set; }
 
 	}

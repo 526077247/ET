@@ -71,15 +71,15 @@ namespace ET
 	{
 		[ProtoMember(1)]
 		public int Id { get; set; }
-		[ProtoMember(3)]
+		[ProtoMember(2)]
 		public string Name { get; set; }
-		[ProtoMember(4)]
+		[ProtoMember(3)]
 		public string Desc { get; set; }
-		[ProtoMember(5)]
+		[ProtoMember(4)]
 		public int Position { get; set; }
-		[ProtoMember(6)]
+		[ProtoMember(5)]
 		public int Height { get; set; }
-		[ProtoMember(7)]
+		[ProtoMember(6)]
 		public int Weight { get; set; }
 		[ProtoMember(7)]
 		public string Perfab { get; set; }
