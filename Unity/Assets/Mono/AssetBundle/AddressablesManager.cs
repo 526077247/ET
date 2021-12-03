@@ -283,24 +283,21 @@ namespace AssetBundles
                     tTask.SetResult(obj);
                 };
             }
-            return tTask.GetAwaiter();
+            return tTask;
         }
 
-        public BaseAssetAsyncLoader LoadAssetAsync(string addressPath, Type assetType)
+        public ETTask LoadSceneAsync(string addressPath, bool isAdditive)
         {
-            var loader = AddressablesAsyncLoader.Get();
-            var label = GetAssetSkinLabel(addressPath);
+            ETTask tTask = ETTask.Create();
+            Addressables.LoadSceneAsync(addressPath, isAdditive ? UnityEngine.SceneManagement.LoadSceneMode.Additive : UnityEngine.SceneManagement.LoadSceneMode.Single).Completed +=
+                    (loader) =>
+                    {
+                        OnAddressablesAsyncLoaderDone(loader);
+                        tTask.SetResult();
+                    };
             processingAddressablesAsyncLoaderCount += 1;
-            loader.InitAssetLoader(addressPath, label, assetType);
-            return loader;
-        }
-
-        public BaseAssetAsyncLoader LoadSceneAsync(string addressPath, bool isAdditive)
-        {
-            var loader = AddressablesAsyncLoader.Get();
-            processingAddressablesAsyncLoaderCount += 1;
-            loader.InitSceneLoader(addressPath, isAdditive);
-            return loader;
+            
+            return tTask;
         }
 
         /*
@@ -308,29 +305,6 @@ namespace AssetBundles
          * note: 原来采用的方式是将loader加入到数组中，update的时候进行遍历，来判断loader是否完成
          * 原来的方式缺点: 1: 无效的检查太多，每帧都会调用update
          */
-        public void OnAddressablesAsyncLoaderDone(AddressablesAsyncLoader loader)
-        {
-            processingAddressablesAsyncLoaderCount -= 1;
-            if (loader.asset != null)
-            {
-                if (loader.isSkinLabelAsset)
-                {
-                    listSkinAssetCaching.Add(new KeyValuePair<UnityEngine.Object, object>(loader.asset, loader.result));
-                }
-                else
-                {
-                    int refCount;
-                    if (dictAssetCaching.TryGetValue(loader.asset, out refCount))
-                    {
-                        dictAssetCaching[loader.asset] = refCount + 1;
-                    }
-                    else
-                    {
-                        dictAssetCaching.Add(loader.asset, 1);
-                    }
-                }
-            }
-        }
 
         public T OnAddressablesAsyncLoaderDone<T>(AsyncOperationHandle<IList<T>> loader) 
         {
@@ -362,6 +336,7 @@ namespace AssetBundles
             }
             return default(T);
         }
+        
 #endregion
 
         #region skin change begin

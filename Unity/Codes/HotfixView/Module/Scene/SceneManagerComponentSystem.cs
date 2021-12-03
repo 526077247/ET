@@ -168,11 +168,7 @@ namespace ET
             await Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value });
             Log.Info("异步加载目标场景 Start");
             //异步加载目标场景
-            await ResourcesComponent.Instance.LoadSceneAsync(scene_config.SceneAddress, false, (progress) =>
-             {
-                 Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value + 0.65f * progress }).Coroutine();
-                 if (progress > 1) Log.Error("scene load waht's the fuck!");
-             });
+            await ResourcesComponent.Instance.LoadSceneAsync(scene_config.SceneAddress, false);
 
             slid_value += 0.65f;
             await Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value });

@@ -311,7 +311,6 @@ namespace ILRuntime.Runtime.Generated
             UnityEngine_Debug_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_GameObject_String_Binding_Enumerator_Binding.Register(app);
             System_Collections_Generic_KeyValuePair_2_GameObject_String_Binding.Register(app);
-            ET_ETTask_1_Object_Binding.Register(app);
             System_Action_1_GameObject_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_Int32_Binding_Enumerator_Binding.Register(app);
             System_Collections_Generic_KeyValuePair_2_String_Int32_Binding.Register(app);
@@ -327,14 +326,8 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_Dictionary_2_String_Material_Binding.Register(app);
             ET_ETAsyncTaskMethodBuilder_1_Material_Binding.Register(app);
             System_Action_1_Material_Binding.Register(app);
-            ET_ETAsyncTaskMethodBuilder_1_Object_Binding.Register(app);
             ET_ETAsyncTaskMethodBuilder_1_SpriteAtlas_Binding.Register(app);
-            System_Action_1_Object_Binding.Register(app);
-            AssetBundles_ResourceAsyncOperation_Binding.Register(app);
             System_Action_1_Single_Binding.Register(app);
-            AssetBundles_BaseAssetAsyncLoader_Binding.Register(app);
-            System_Collections_Generic_Dictionary_2_String_Type_Binding_Enumerator_Binding.Register(app);
-            System_Collections_Generic_KeyValuePair_2_String_Type_Binding.Register(app);
             System_Threading_ReaderWriterLockSlim_Binding.Register(app);
             System_Collections_Generic_IDictionary_2_String_GameObject_Binding.Register(app);
             System_Collections_Generic_LinkedListNode_1_String_Binding.Register(app);

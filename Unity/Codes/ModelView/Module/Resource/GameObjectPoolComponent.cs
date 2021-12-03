@@ -182,7 +182,7 @@ namespace ET
 		}
 
 		//预加载：可提供初始实例化个数
-		public async ETTask PreLoadGameObjectAsync(string path, int inst_count, Action<float> progress_callback = null, Action callback = null)
+		public async ETTask PreLoadGameObjectAsync(string path, int inst_count,Action callback = null)
 		{
 			CoroutineLock coroutineLock = null;
 			try
@@ -194,7 +194,7 @@ namespace ET
 				}
 				else
 				{
-					var go = await ResourcesComponent.Instance.LoadAsync(path, typeof(GameObject), progress_callback);
+					var go = await ResourcesComponent.Instance.LoadAsync<GameObject>(path);
 					if (go != null)
 					{
 						CacheAndInstGameObject(path, go as GameObject, inst_count);
@@ -210,7 +210,7 @@ namespace ET
 
 
 		//异步获取：必要时加载
-		public async ETTask<GameObject> GetGameObjectAsync(string path, Action<float> progress_callback = null, Action<GameObject> callback = null)
+		public async ETTask<GameObject> GetGameObjectAsync(string path,Action<GameObject> callback = null)
 		{
 			if (TryGetFromCache(path, out var inst))
 			{
@@ -218,7 +218,7 @@ namespace ET
 				callback?.Invoke(inst);
 				return inst;
 			}
-			await PreLoadGameObjectAsync(path, 1, progress_callback);
+			await PreLoadGameObjectAsync(path, 1);
 			if (TryGetFromCache(path, out inst))
 			{
 				InitInst(inst);

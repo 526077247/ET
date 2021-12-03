@@ -148,14 +148,14 @@ namespace ET
 
 
         //异步加载图集： 回调方式，按理除了预加载的时候其余时候是不需要关心图集的
-        public async ETTask<Sprite> LoadAtlasImageAsync(string atlas_path, Action<float> progress_callback = null, Action<Sprite> callback = null)
+        public async ETTask<Sprite> LoadAtlasImageAsync(string atlas_path, Action<Sprite> callback = null)
         {
             Sprite res;
             CoroutineLock coroutineLock = null;
             try
             {
                 coroutineLock = await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Resources, atlas_path.GetHashCode());
-                res = await __LoadAtlasImageAsyncInternal(atlas_path, null, progress_callback, callback);
+                res = await __LoadAtlasImageAsyncInternal(atlas_path, null, callback);
                 callback?.Invoke(res);
             }
             finally
@@ -167,14 +167,14 @@ namespace ET
 
 
         //异步加载图片： 回调方式，按理除了预加载的时候其余时候是不需要关心图集的
-        public async ETTask<Sprite> LoadSingleImageAsync(string atlas_path, Action<float> progress_callback = null, Action<Sprite> callback = null)
+        public async ETTask<Sprite> LoadSingleImageAsync(string atlas_path, Action<Sprite> callback = null)
         {
             Sprite res;
             CoroutineLock coroutineLock = null;
             try
             {
                 coroutineLock = await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Resources, atlas_path.GetHashCode());
-                res = await __LoadSingleImageAsyncInternal(atlas_path, progress_callback, callback);
+                res = await __LoadSingleImageAsyncInternal(atlas_path, callback);
                 callback?.Invoke(res);
 
             }
@@ -186,10 +186,9 @@ namespace ET
         }
         #region private
 
-        async ETTask<Sprite> __LoadAtlasImageAsyncInternal(string asset_address, string subasset_name, Action<float> progress_callback = null, Action<Sprite> callback = null)
+        async ETTask<Sprite> __LoadAtlasImageAsyncInternal(string asset_address, string subasset_name, Action<Sprite> callback = null)
         {
             var cacheCls = m_cacheSpriteAtlas;
-            var asset_type = sprite_atlas_type;
             if (cacheCls.TryGet(asset_address, out var value_c))
             {
                 if (value_c.asset == null)
@@ -222,7 +221,7 @@ namespace ET
                     }
                 }
             }
-            var asset = await ResourcesComponent.Instance.LoadAsync(asset_address, asset_type, progress_callback);
+            var asset = await ResourcesComponent.Instance.LoadAsync<SpriteAtlas>(asset_address);
             if (asset != null)
             {
                 if (cacheCls.TryGet(asset_address, out var value))
@@ -231,7 +230,7 @@ namespace ET
                 }
                 else
                 {
-                    value = new SpriteAtlasValue() { asset = asset as SpriteAtlas, ref_count = 1 };
+                    value = new SpriteAtlasValue() { asset = asset , ref_count = 1 };
                     cacheCls.Set(asset_address, value);
                 }
                 if (value.subasset.TryGetValue(subasset_name, out var result))
@@ -259,10 +258,9 @@ namespace ET
             callback?.Invoke(null);
             return null;
         }
-        async ETTask<Sprite> __LoadSingleImageAsyncInternal(string asset_address, Action<float> progress_callback, Action<Sprite> callback = null)
+        async ETTask<Sprite> __LoadSingleImageAsyncInternal(string asset_address, Action<Sprite> callback = null)
         {
             var cacheCls = m_cacheSingleSprite;
-            var asset_type = sprite_type;
             if (cacheCls.TryGet(asset_address, out var value_c))
             {
                 if (value_c.asset == null)
@@ -276,7 +274,7 @@ namespace ET
                     return value_c.asset;
                 }
             }
-            var asset = await ResourcesComponent.Instance.LoadAsync(asset_address, asset_type, progress_callback);
+            var asset = await ResourcesComponent.Instance.LoadAsync<Sprite>(asset_address);
             if (asset != null)
             {
                 if (cacheCls.TryGet(asset_address, out var value))
@@ -285,7 +283,7 @@ namespace ET
                 }
                 else
                 {
-                    value = new SpriteValue() { asset = asset as Sprite, ref_count = 1 };
+                    value = new SpriteValue() { asset = asset, ref_count = 1 };
                     cacheCls.Set(asset_address, value);
                     callback?.Invoke(value.asset);
                     return value.asset;

@@ -40,22 +40,7 @@ namespace ET
         }
 
         //异步加载Asset：协程形式
-        public async ETTask<T> LoadAsync<T>(string path) where T: UnityEngine.Object
-        {
-            if (string.IsNullOrEmpty(path))
-            {
-                Debug.LogError("path err : " + path);
-                return null;
-            }
-            var asset = await AddressablesManager.LoadAssetAsync<T>(path);
-
-            if (asset == null)
-                Debug.LogError("Asset load err : " + path);
-            return asset;
-
-        }
-        //异步加载Asset：协程形式
-        public async ETTask<UnityEngine.Object> LoadAsync(string path, Type res_type,  Action<float> progress_callback=null, Action<UnityEngine.Object> callback = null)
+        public async ETTask<T> LoadAsync<T>(string path, Action<UnityEngine.Object> callback = null) where T: UnityEngine.Object
         {
             if (string.IsNullOrEmpty(path))
             {
@@ -63,15 +48,8 @@ namespace ET
                 callback?.Invoke(null);
                 return null;
             }
-            var loader = AddressablesManager.LoadAssetAsync(path, res_type);
+            var asset = await AddressablesManager.LoadAssetAsync<T>(path);
 
-            while (!loader.isDone)
-            {
-                await TimerComponent.Instance.WaitAsync(1);
-                progress_callback?.Invoke(loader.progress);
-            }
-            var asset = loader.asset;
-            loader.Dispose();
             if (asset == null)
                 Debug.LogError("Asset load err : " + path);
             callback?.Invoke(asset);
@@ -79,22 +57,15 @@ namespace ET
 
         }
 
-        public async ETTask LoadSceneAsync(string path, bool isAdditive, Action<float> progress_callback = null, Action callback=null)
+
+        public async ETTask LoadSceneAsync(string path, bool isAdditive)
         {
             if (string.IsNullOrEmpty(path))
             {
                 Debug.LogError("path err : " + path);
-                callback?.Invoke();
                 return;
             }
-            var loader = AddressablesManager.LoadSceneAsync(path, isAdditive);
-            while (!loader.isDone)
-            {
-                await TimerComponent.Instance.WaitAsync(1);
-                progress_callback?.Invoke(loader.progress);
-            }
-            loader.Dispose();
-            callback?.Invoke();
+            await AddressablesManager.LoadSceneAsync(path, isAdditive);
         }
 
 

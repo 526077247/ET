@@ -13,9 +13,10 @@ namespace ET
         public override void Awake(SceneConfig scene_config)
         {
             base.Awake(scene_config);
+            this.PreLoadTask = ListComponent<ETTask>.Create();
             var role = UnitConfigCategory.Instance.GetAll();
             foreach (var item in role)
-                AddPreloadResource(item.Value.Perfab, typeof(GameObject), 1);
+                this.PreLoadTask.Add(AddPreloadGameObject(item.Value.Perfab, 1));
         }
     }
 }
