@@ -11,6 +11,7 @@ using UnityEngine.ResourceManagement.ResourceLocations;
 using UnityEngine.ResourceManagement.ResourceProviders;
 using UnityEngine.ResourceManagement.Util;
 using UnityEngine.Serialization;
+using AssetBundles;
 
 namespace AddressableExts
 {
@@ -115,8 +116,7 @@ namespace AddressableExts
         AssetBundleEncryptRequestOptions m_Options;
         int m_Retries;
         private int m_bundleOffset = 0;
-
-        private static int HEAD_LEN = 47;
+        
 
         UnityWebRequest CreateWebRequest(string url)
         {
@@ -169,7 +169,7 @@ namespace AddressableExts
         private int computeBundleOffset(string bundleName)
         {
             int hashCode = bundleName.ToLower().GetHashCode();
-            int offset = AssetBundleEncryptResource.HEAD_LEN + Math.Abs(hashCode) % 256;
+            int offset = AssetBundleConfig.HEAD_LEN + Math.Abs(hashCode) % 256;
             return offset;
         }
 

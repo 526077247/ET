@@ -26,7 +26,18 @@ namespace AssetBundles
         public static string VariantMapParttren = "Variant";
         public static string CommonMapPattren = ",";
         public static string CatalogFolderName = "com.unity.addressables";
-
+        /*
+          string(8)         signature                                AB文件头标识                         556e 6974 7946 5300 UnityFS
+          unt32(4)         version Archive                       version                                   0000 0006   6
+          string(6)        bundleVersion                        bundleVersion                       352e 782e 7800  5.x.x
+          string(8)         minimumRevision                   AB所需最低版本                    3230 3139 2e33 2e32 2019.3.2
+          uint64(8)        size                                          整个AB的大小                         0000 0000 0000 0790 1936
+          uint32(4)        compressedBlocksInfoSize      压缩后的BlockInfo大小          0000 0041   65
+          uint32 (4)       uncompressedBlocksInfoSize  压缩前的BlockInfo大小          0000 005B   91
+          uint32 (4)       flag                                           AB生成的一些标记                 00000043    
+        总共47个字节
+        */
+        public static int HEAD_LEN = 47;//头部长度
         public static string GlobalAssetBundleName = "global_assets_all.bundle";
         private AssetBundle globalAssetBundle;
         public string remote_cdn_url { set; get; } = "";

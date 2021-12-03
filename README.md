@@ -1,5 +1,11 @@
 # [English](https://github.com/egametang/Egametang/blob/master/README-EN.md) 
-# 在原有ET框架上，使用魔改版Addressables（实现了多渠道安装包分包配置功能）以及基于Addressables的资源管理系统、组件模式的UI框架替换掉了原有部分，渲染管线更改为URP，使用InjectFix实现了Mono部分代码热修复。后续将保持维护状态，与ET同步更新。
+# 和ET的区别
+1. 使用魔改版Addressables实现了资源热更新，包括一键标记等配套工具，多渠道安装包分包配置功能，统一下载入口等
+2. 使用了基于Addressables的资源管理系统替换了原有系统，包括对Unity内置SpriteAtlas图集功能的支持
+3. 使用组件模式的UI框架替换掉了原有部分，包括红点系统、多语言等，易于集成第三方插件
+4. 默认渲染管线更改为URP
+5. 使用InjectFix实现了ILRuntime不能热更的Mono部分代码热修复，以备不时之需
+6. 实现了服务端软路由
 
 # __讨论QQ群 : 474643097__  
 

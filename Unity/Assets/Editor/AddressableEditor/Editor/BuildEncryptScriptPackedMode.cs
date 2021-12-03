@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using AssetBundles;
 using UnityEditor.AddressableAssets.Build;
 using UnityEditor.AddressableAssets.Build.DataBuilders;
 using UnityEditor.AddressableAssets.Settings;
@@ -35,7 +36,7 @@ public class BuildEncryptScriptPackedMode : BuildScriptPackedMode
     protected void EncodeAssetBundleBySetOffset(string bundleName, string filePath)
     {
         int hashCode = bundleName.ToLower().GetHashCode();
-        int headLen = 47; //头部长度
+        int headLen = AssetBundleConfig.HEAD_LEN; //头部长度
         int offset = headLen + Math.Abs(hashCode) % 256;
         byte[] fileData = File.ReadAllBytes(filePath);
         offset = Math.Min(offset, fileData.Length);

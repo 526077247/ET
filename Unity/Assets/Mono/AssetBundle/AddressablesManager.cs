@@ -445,7 +445,7 @@ namespace AssetBundles
         private int computeBundleOffset(string bundleName)
         {
             int hashCode = bundleName.ToLower().GetHashCode();
-            int offset = 47 + Math.Abs(hashCode) % 256;
+            int offset = AssetBundleConfig.HEAD_LEN + Math.Abs(hashCode) % 256;
             return offset;
         }
 

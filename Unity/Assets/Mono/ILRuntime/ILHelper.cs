@@ -69,6 +69,8 @@ namespace ET
             appdomain.DelegateManager.RegisterFunctionDelegate<KeyValuePair<int, List<int>>, bool>();
             appdomain.DelegateManager.RegisterFunctionDelegate<KeyValuePair<int, int>, KeyValuePair<int, int>, int>();
             appdomain.DelegateManager.RegisterFunctionDelegate<System.String, System.String, System.Int32>();
+            appdomain.DelegateManager.RegisterFunctionDelegate<SuperScrollView.LoopListView2, System.Int32, SuperScrollView.LoopListViewItem2>();
+            appdomain.DelegateManager.RegisterFunctionDelegate<SuperScrollView.LoopGridView, System.Int32,System.Int32,System.Int32, SuperScrollView.LoopGridViewItem>();
 
             appdomain.DelegateManager.RegisterDelegateConvertor<UnityEngine.Events.UnityAction>((act) =>
             {
