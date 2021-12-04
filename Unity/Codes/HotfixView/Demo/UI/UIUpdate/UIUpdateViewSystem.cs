@@ -33,17 +33,17 @@ namespace ET
         private static async ETTask UpdateFinishAndStartGame(this UIUpdateView self)
         {
             Game.Scene.RemoveAllComponent();
-            // ÖØÆô×ÊÔ´¹ÜÀíÆ÷
+            // é‡å¯èµ„æºç®¡ç†å™¨
             while (AddressablesManager.Instance.IsProsessRunning)
             {
                 await TimerComponent.Instance.WaitAsync(1);
             }
             AddressablesManager.Instance.ClearAssetsCache();
             AddressablesManager.Instance.ClearConfigCache();
-            //ÖØĞÂ¼ÓÔØÅäÖÃ
+            //é‡æ–°åŠ è½½é…ç½®
             AssetBundleConfig.Instance.SyncLoadGlobalAssetBundle();
 
-            //ÈÈĞŞ¸´
+            //çƒ­ä¿®å¤
             AddressablesManager.Instance.StartInjectFix();
             CodeLoader.Instance.ReStart();
         }
@@ -72,7 +72,7 @@ namespace ET
         }
         public static async ETVoid StartCheckUpdate(this UIUpdateView self)
         {
-            //TODO ÍøÂç¼ì²é 
+            //TODO ç½‘ç»œæ£€æŸ¥ 
             await self.CheckIsInWhiteList();
 
             await self.CheckUpdateList();
@@ -83,12 +83,12 @@ namespace ET
             var isUpdateDone = await self.CheckResUpdate();
             if (isUpdateDone)
             {
-                Log.Info("¸üĞÂÍê³É£¬×¼±¸½øÈëÓÎÏ·");
+                Log.Info("æ›´æ–°å®Œæˆï¼Œå‡†å¤‡è¿›å…¥æ¸¸æˆ");
                 self.UpdateFinishAndStartGame().Coroutine();
             }
             else
             {
-                Log.Info("²»ĞèÒª¸üĞÂ£¬Ö±½Ó½øÈëÓÎÏ·");
+                Log.Info("ä¸éœ€è¦æ›´æ–°ï¼Œç›´æ¥è¿›å…¥æ¸¸æˆ");
                 Scene zoneScene = await SceneFactory.CreateZoneScene(1, "Game", Game.Scene);
 
                 await Game.EventSystem.Publish(new EventType.AppStartInitFinish() { ZoneScene = zoneScene });
@@ -187,7 +187,7 @@ namespace ET
             var verInfo = channel_app_update_list.app_ver[app_ver];
             Log.Info("CheckAppUpdate app_url = " + app_url);
 
-            var force_update = true;//Ä¬ÈÏÇ¿¸ü
+            var force_update = true;//é»˜è®¤å¼ºæ›´
             if (verInfo != null && verInfo.force_update == 0)
                 force_update = false;
 
@@ -198,7 +198,7 @@ namespace ET
             if (btnState == self.BTN_CONFIRM)
             {
                 GameUtility.OpenURL(app_url);
-                //ÎªÁË·ÀÖ¹ÇĞ»»µ½ÍøÒ³ºó»ØÀ´½øÈëÁËÓÎÏ·£¬ËùÒÔÕâÀïĞèÒª¼ÌĞø½øÈë¸ÃÁ÷³Ì
+                //ä¸ºäº†é˜²æ­¢åˆ‡æ¢åˆ°ç½‘é¡µåå›æ¥è¿›å…¥äº†æ¸¸æˆï¼Œæ‰€ä»¥è¿™é‡Œéœ€è¦ç»§ç»­è¿›å…¥è¯¥æµç¨‹
                 return await self.CheckAppUpdate();
             }
             else if(force_update)
@@ -210,7 +210,7 @@ namespace ET
             return false;
         }
 
-        //×ÊÔ´¸üĞÂ¼ì²é£¬²¢¸ù¾İ°æ±¾À´ĞŞ¸Ä×ÊÔ´cdnµØÖ·
+        //èµ„æºæ›´æ–°æ£€æŸ¥ï¼Œå¹¶æ ¹æ®ç‰ˆæœ¬æ¥ä¿®æ”¹èµ„æºcdnåœ°å€
         public static async ETTask<bool> CheckResUpdate(this UIUpdateView self)
         {
             var app_channel = PlatformUtil.GetAppChannel();
@@ -231,24 +231,24 @@ namespace ET
                 return false;
             }
 
-            // ±à¼­Æ÷ÏÂ²»ÄÜ²âÊÔÈÈ¸ü£¬µ«¿ÉÒÔ²âÊÔÏÂÔØ¡£
+            // ç¼–è¾‘å™¨ä¸‹ä¸èƒ½æµ‹è¯•çƒ­æ›´ï¼Œä½†å¯ä»¥æµ‹è¯•ä¸‹è½½ã€‚
             if (Define.IsEditor) return false;
 
-            //ÕÒµ½×îĞÂ°æ±¾£¬ÔòÉèÖÃµ±Ç°×ÊÔ´´æ·ÅµÄcdnµØÖ·
+            //æ‰¾åˆ°æœ€æ–°ç‰ˆæœ¬ï¼Œåˆ™è®¾ç½®å½“å‰èµ„æºå­˜æ”¾çš„cdnåœ°å€
             var url = BootConfig.Instance.GetUpdateCdnResUrlByVersion(maxVer);
             self.m_rescdn_url = url;
             Log.Info("CheckResUpdate res_cdn_url is " + url);
             AssetBundleMgr.GetInstance().SetAddressableRemoteResCdnUrl(self.m_rescdn_url);
 
-            //µÈÒ»»áµÈaddressablesµÄUpdate»Øµ÷Ö´ĞĞÍê
+            //ç­‰ä¸€ä¼šç­‰addressablesçš„Updateå›è°ƒæ‰§è¡Œå®Œ
             await TimerComponent.Instance.WaitAsync(1);
 
-            //¼ì²é¸üĞÂ°æ±¾
+            //æ£€æŸ¥æ›´æ–°ç‰ˆæœ¬
             Log.Info("begin  CheckCatalogUpdates");
             var catalog = await self.CheckCatalogUpdates();
             Log.Info("CheckResUpdate CataLog = " + catalog);
 
-            //1¡¢ÏÈ¸üĞÂcatalogs
+            //1ã€å…ˆæ›´æ–°catalogs
             if (!string.IsNullOrEmpty(catalog))
             {
                 Log.Info("begin  UpdateCatalogs");
@@ -258,13 +258,13 @@ namespace ET
             }
 
             Log.Info("begin  GetDownloadSize");
-            //»ñÈ¡ĞèÒª¸üĞÂµÄ´óĞ¡
+            //è·å–éœ€è¦æ›´æ–°çš„å¤§å°
             var size = await self.GetDownloadSize();
 
-            //ÌáÊ¾¸øÓÃ»§
+            //æç¤ºç»™ç”¨æˆ·
             Log.Info("downloadSize " + size);
             double size_mb = size / (1024f * 1024f);
-            Log.Info("CheckResUpdate res size_mb is " + size_mb);//²»ÆÁ±Î
+            Log.Info("CheckResUpdate res size_mb is " + size_mb);//ä¸å±è”½
             if (size_mb > 0 && size_mb < 0.01) size_mb = 0.01;
 
             var ct = I18NComponent.Instance.I18NGetParamText("Update_Info",size_mb.ToString("0.00"));
@@ -275,11 +275,11 @@ namespace ET
                 return false;
             }
 
-            //¿ªÊ¼½øĞĞ¸üĞÂ
+            //å¼€å§‹è¿›è¡Œæ›´æ–°
 
             self.last_progress = 0;
             self.SetProgress(0);
-            //2¡¢¸üĞÂ×ÊÔ´
+            //2ã€æ›´æ–°èµ„æº
 
             var merge_mode_union = 1;
             var needdownloadinfo = await self.CheckUpdateContent(merge_mode_union);
@@ -310,7 +310,7 @@ namespace ET
                         temp.Add(new DownLoadInfo { hash = hash, name = name });
                 }
             }
-            //°æ±¾×ÊÔ´×îºó
+            //ç‰ˆæœ¬èµ„æºæœ€å
             if (global_ab != null)
                 temp.Add(global_ab);
             return temp;
@@ -334,7 +334,7 @@ namespace ET
             return size;
         }
 
-        //¼ì²é¸üĞÂCatalog
+        //æ£€æŸ¥æ›´æ–°Catalog
         async static ETTask<string> CheckCatalogUpdates(this UIUpdateView self)
         {
             var catlog = await AddressablesManager.Instance.CheckForCatalogUpdates();
@@ -353,10 +353,10 @@ namespace ET
             }
         }
 
-        //¸üĞÂcatalogs
+        //æ›´æ–°catalogs
         async static ETTask<bool> UpdateCatalogs(this UIUpdateView self,string catalog)
         {
-            //ÕâÀï¿ÉÄÜÁ¬²»ÉÏ£¬µ¼ÖÂÈÏÎªUpdateCatalogs³É¹¦
+            //è¿™é‡Œå¯èƒ½è¿ä¸ä¸Šï¼Œå¯¼è‡´è®¤ä¸ºUpdateCatalogsæˆåŠŸ
             var res = await AddressablesManager.Instance.CheckForCatalogUpdates();
             if (!string.IsNullOrEmpty(res))
             {
@@ -462,7 +462,7 @@ namespace ET
             var url = string.Format("{0}/{1}", self.m_rescdn_url, downinfo.name);
             Log.Info("download ab ============, " + order + " = " + url);
             var savePath = AssetBundleMgr.GetInstance().getCachedAssetBundlePath(downinfo.name) + ".temp";
-            for (int i = 0; i < 3; i++)//ÖØÊÔ3´Î
+            for (int i = 0; i < 3; i++)//é‡è¯•3æ¬¡
             {
                 try
                 {
