@@ -84,6 +84,10 @@ namespace ET
             }
             self.unity_uiimage.material = mt;
         }
-
+        public static void SetFillAmount(this UIImage self, float value)
+        {
+            self.ActivatingComponent();
+            self.unity_uiimage.fillAmount = value;
+        }
     }
 }

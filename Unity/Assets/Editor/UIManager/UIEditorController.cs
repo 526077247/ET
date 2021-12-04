@@ -103,15 +103,23 @@ public class UIScriptController
             var uisc = child.GetComponent<UIScriptCreator>();
             if (uisc != null && uisc.isMarked)
             {
+                bool had = false;
                 foreach (var uiComponent in WidgetInterfaceList)
                 {
                     Component component = child.GetComponent(uiComponent.Key);
                     if (null != component)
                     {
+                        had = true;
                         strBuilder.AppendFormat("\t\tpublic {0} {1};", uiComponent.Value, uisc.GetModuleName())
                             .AppendLine();
                         break;
                     }
+                }
+
+                if (!had)
+                {
+                    strBuilder.AppendFormat("\t\tpublic UIBaseContainer {0};", uisc.GetModuleName())
+                            .AppendLine();
                 }
             }
 
@@ -186,11 +194,13 @@ public class UIScriptController
             var uisc = child.GetComponent<UIScriptCreator>();
             if (uisc != null && uisc.isMarked)
             {
+                bool had = false;
                 foreach (var uiComponent in WidgetInterfaceList)
                 {
                     Component component = child.GetComponent(uiComponent.Key);
                     if (null != component)
                     {
+                        had = true;
                         strBuilder.AppendFormat("\t\t\tself.{0} = self.AddUIComponent<{1}>(\"{2}\");", uisc.GetModuleName(), uiComponent.Value, strTemp)
                             .AppendLine();
                         if (uiComponent.Key == typeof(Button))
@@ -224,6 +234,12 @@ public class UIScriptController
                         }
                         break;
                     }
+                }
+
+                if (!had)
+                {
+                    strBuilder.AppendFormat("\t\t\tself.{0} = self.AddUIComponent<UIBaseContainer>(\"{1}\");", uisc.GetModuleName(), strTemp)
+                            .AppendLine();
                 }
             }
 
