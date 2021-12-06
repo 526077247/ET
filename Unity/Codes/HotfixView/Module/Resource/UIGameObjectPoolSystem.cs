@@ -14,7 +14,7 @@ namespace ET
             var obj = await self.GetGameObjectAsync(path);
             if (obj == null) return null;
             T res = self.AddChild<T>();
-            res.GetUIComponent<UITransform>("").__transform = obj.transform;
+            res.AddUIComponentNotCreate<UITransform>("").__transform = obj.transform;
             UIEventSystem.Instance.OnCreate(res);
             return res;
         }
