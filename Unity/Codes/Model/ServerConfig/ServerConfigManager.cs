@@ -25,10 +25,16 @@ namespace ET
 		public void Awake()
 		{
 			Instance = this;
-			cur_config = ServerConfigCategory.Instance.Get(PlayerPrefs.GetInt(ServerKey, defaultServer));
+			if(Define.Debug)
+				cur_config = ServerConfigCategory.Instance.Get(PlayerPrefs.GetInt(ServerKey, defaultServer));
             if (cur_config == null)
             {
-	            cur_config = ServerConfigCategory.Instance.GetOne();
+                foreach (var item in ServerConfigCategory.Instance.GetAll())
+                {
+					cur_config = item.Value;
+					if (item.Value.IsPriority==1)
+						return;
+				}
 			}
 		}
 
@@ -44,7 +50,8 @@ namespace ET
 			if(conf!=null)
             {
 				cur_config = conf;
-				PlayerPrefs.SetInt(ServerKey, id);
+				if (Define.Debug)
+					PlayerPrefs.SetInt(ServerKey, id);
 			}
 			return cur_config;
 

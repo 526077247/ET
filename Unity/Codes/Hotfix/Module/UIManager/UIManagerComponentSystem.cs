@@ -336,13 +336,12 @@ namespace ET
 
         static async ETTask<T> __InnerOpenWindow<T>(this UIManagerComponent self, UIWindow target) where T : UIBaseContainer
         {
-            T res;
             CoroutineLock coroutineLock = null;
             try
             {
                 coroutineLock = await CoroutineLockComponent.Instance.Wait(CoroutineLockType.UIManager, target.GetHashCode());
                 target.Active = true;
-                res = target.GetComponent(target.ViewType) as T;
+                T res = target.GetComponent(target.ViewType) as T;
                 var need_load = target.LoadingState == UIWindowLoadingState.NotStart;
                 if (need_load)
                 {
@@ -351,22 +350,22 @@ namespace ET
                 }
                 await Game.EventSystem.Publish(new UIEventType.ResetWindowLayer() { window = target });
                 await self.__AddWindowToStack(target);
+                return res;
             }
             finally
             {
                 coroutineLock?.Dispose();
             }
-            return res;
+           
         }
         static async ETTask<T> __InnerOpenWindow<T, P1>(this UIManagerComponent self, UIWindow target, P1 p1) where T : UIBaseContainer
         {
-            T res;
             CoroutineLock coroutineLock = null;
             try
             {
                 coroutineLock = await CoroutineLockComponent.Instance.Wait(CoroutineLockType.UIManager, target.GetHashCode());
                 target.Active = true;
-                res = target.GetComponent(target.ViewType) as T;
+                T res = target.GetComponent(target.ViewType) as T;
                 var need_load = target.LoadingState == UIWindowLoadingState.NotStart;
                 if (need_load)
                 {
@@ -375,22 +374,21 @@ namespace ET
                 }
                 await Game.EventSystem.Publish(new UIEventType.ResetWindowLayer() { window = target });
                 await self.__AddWindowToStack(target, p1);
+                return res;
             }
             finally
             {
                 coroutineLock?.Dispose();
             }
-            return res;
         }
         static async ETTask<T> __InnerOpenWindow<T, P1, P2>(this UIManagerComponent self, UIWindow target, P1 p1, P2 p2) where T : UIBaseContainer
         {
-            T res;
             CoroutineLock coroutineLock = null;
             try
             {
                 coroutineLock = await CoroutineLockComponent.Instance.Wait(CoroutineLockType.UIManager, target.GetHashCode());
                 target.Active = true;
-                res = target.GetComponent(target.ViewType) as T;
+                T res = target.GetComponent(target.ViewType) as T;
                 var need_load = target.LoadingState == UIWindowLoadingState.NotStart;
                 if (need_load)
                 {
@@ -399,22 +397,21 @@ namespace ET
                 }
                 await Game.EventSystem.Publish(new UIEventType.ResetWindowLayer() { window = target });
                 await self.__AddWindowToStack(target, p1, p2);
+                return res;
             }
             finally
             {
                 coroutineLock?.Dispose();
             }
-            return res;
         }
         static async ETTask<T> __InnerOpenWindow<T, P1, P2, P3>(this UIManagerComponent self, UIWindow target, P1 p1, P2 p2, P3 p3) where T : UIBaseContainer
         {
-            T res;
             CoroutineLock coroutineLock = null;
             try
             {
                 coroutineLock = await CoroutineLockComponent.Instance.Wait(CoroutineLockType.UIManager, target.GetHashCode());
                 target.Active = true;
-                res = target.GetComponent(target.ViewType) as T;
+                T res = target.GetComponent(target.ViewType) as T;
                 var need_load = target.LoadingState == UIWindowLoadingState.NotStart;
                 if (need_load)
                 {
@@ -423,12 +420,12 @@ namespace ET
                 }
                 await Game.EventSystem.Publish(new UIEventType.ResetWindowLayer() { window = target });
                 await self.__AddWindowToStack(target, p1, p2, p3);
+                return res;
             }
             finally
             {
                 coroutineLock?.Dispose();
             }
-            return res;
         }
 
         static void __InnnerCloseWindow(this UIManagerComponent self, UIWindow target)

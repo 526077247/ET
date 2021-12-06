@@ -47,8 +47,7 @@ namespace ET
             }, Array.Empty<string>(), CodeOptimization.Release);
 
             AfterCompiling(assemblyName);
-            
-            AssetDatabase.Refresh();
+
         }
         
         [MenuItem("Tools/BuildData _F7")]

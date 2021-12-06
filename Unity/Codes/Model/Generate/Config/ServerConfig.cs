@@ -85,6 +85,8 @@ namespace ET
 		public string TestUpdateListUrl { get; set; }
 		[ProtoMember(8)]
 		public int EnvId { get; set; }
+		[ProtoMember(9)]
+		public int IsPriority { get; set; }
 
 	}
 }
