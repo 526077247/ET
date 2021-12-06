@@ -14,7 +14,7 @@ namespace ILRuntime.Runtime.Stack
         StackObject* pointer;
         StackObject* endOfMemory;
         StackObject* valueTypePtr;
-        StackObjectAllocator allocator;
+
         IntPtr nativePointer;
 
 #if DEBUG && !DISABLE_ILRUNTIME_DEBUG
@@ -22,6 +22,7 @@ namespace ILRuntime.Runtime.Stack
 #else
         IList<object> managedStack = new UncheckedList<object>(32);
 #endif
+
         UncheckedStack<StackFrame> frames = new UncheckedStack<StackFrame>();
         public const int MAXIMAL_STACK_OBJECTS = 1024 * 16;
 
@@ -55,7 +56,7 @@ namespace ILRuntime.Runtime.Stack
             {
                 return valueTypePtr;
             }
-            internal set
+            private set
             {
                 if (value > ValueTypeStackBase)
                     throw new StackOverflowException();
@@ -123,8 +124,6 @@ namespace ILRuntime.Runtime.Stack
             int mStackBase = frame.ManagedStackBase;
             if (method.HasThis)
                 ret--;
-            if (allocator != null)
-                allocator.FreeBefore(frame.ValueTypeBasePointer);
             for (StackObject* ptr = ret; ptr < frame.LocalVarPointer; ptr++)
             {
                 if (ptr->ObjectType == ObjectTypes.ValueTypeObjectReference)
@@ -218,157 +217,36 @@ namespace ILRuntime.Runtime.Stack
             dst = endAddr;
         }
 
-        int CountValueTypeManaged(IType type)
-        {
-            int res = 0;
-            if (type is ILType)
-            {
-                ILType t = (ILType)type;
-                for (int i = 0; i < t.FieldTypes.Length; i++)
-                {
-                    var ft = t.FieldTypes[i];
-                    if (!ft.IsPrimitive && !ft.IsEnum)
-                    {
-                        if (ft.IsValueType)
-                        {
-                            if (!(ft is ILType) && ((CLRType)ft).ValueTypeBinder == null)
-                            {
-                                res++;
-                            }
-                        }
-                        else
-                        {
-                            res++;
-                        }
-                    }
-                }
-                if (type.BaseType != null && type.BaseType is ILType)
-                    res += CountValueTypeManaged((ILType)type.BaseType);
-            }
-            else
-            {
-                CLRType t = (CLRType)type;
-                var cnt = t.TotalFieldCount;
-                for (int i = 0; i < cnt; i++)
-                {
-                    var it = t.OrderedFieldTypes[i] as CLRType;
-                    if (!it.IsPrimitive && it.IsEnum)
-                    {
-                        if (it.IsValueType)
-                        {
-                            if (it.ValueTypeBinder == null)
-                            {
-                                res++;
-                            }
-                        }
-                        else
-                        {
-                            res++;
-                        }
-                    }
-                }
-            }
-            return res;
-        }
-
-        void AllocBlock(int size, out StackObject* dst, out int managedIdx)
-        {
-            dst = valueTypePtr;
-            valueTypePtr = ILIntepreter.Minus(valueTypePtr, size);
-            if (valueTypePtr <= StackBase)
-                throw new StackOverflowException();
-            managedIdx = managedStack.Count;            
-        }
-
-        public void ClearAllocator()
-        {
-            if (allocator != null)
-                allocator.Clear();
-        }
-
-        public void AllocValueTypeAndCopy(StackObject* ptr, StackObject* src)
-        {
-            var dst = ILIntepreter.ResolveReference(src);
-            var type = intepreter.AppDomain.GetTypeByIndex(dst->Value);
-            int size, managedCount;
-            type.GetValueTypeSize(out size, out managedCount);
-            if (allocator == null)
-                allocator = new StackObjectAllocator(AllocBlock);
-            StackObjectAllocation alloc;
-            if(allocator.AllocExisting(ptr, size, managedCount, out alloc))
-            {
-                if (dst != alloc.Address)
-                {
-                    dst = alloc.Address;
-                    ptr->ObjectType = ObjectTypes.ValueTypeObjectReference;
-                    *(long*)&ptr->Value = (long)dst;
-                    int managedIdx = alloc.ManagedIndex;
-                    InitializeValueTypeObject(type, dst, true, ref managedIdx, false);
-                    intepreter.CopyStackValueType(src, ptr, managedStack);
-                    FreeValueTypeObject(src);
-                }
-                else
-                {
-                    ptr->ObjectType = ObjectTypes.ValueTypeObjectReference;
-                    *(long*)&ptr->Value = (long)dst;
-                }
-            }
-            else
-            {
-                int start = int.MaxValue;
-                int end = int.MinValue;
-                StackObject* endAddr;
-                CountValueTypeManaged(src, ref start, ref end, &endAddr);
-                if (endAddr == valueTypePtr)
-                    valueTypePtr = dst;
-                allocator.RegisterAllocation(ptr, dst, size, start, managedCount);
-                ptr->ObjectType = ObjectTypes.ValueTypeObjectReference;
-                *(long*)&ptr->Value = (long)dst;
-            }
-        }
-
-        public void AllocValueType(StackObject* ptr, IType type, bool register = false, bool noInitialize = false)
+        public void AllocValueType(StackObject* ptr, IType type)
         {
             if (type.IsValueType)
             {
-                StackObject* dst;
-                int size, managedCount;
-                type.GetValueTypeSize(out size, out managedCount);
-                int managedIdx = -1;
-                if (register)
+                int fieldCount = 0;
+                if(type is ILType)
                 {
-                    if (allocator == null)
-                        allocator = new StackObjectAllocator(AllocBlock);
-                    var allocation = allocator.Alloc(ptr, size, managedCount);
-                    dst = allocation.Address;
-                    managedIdx = allocation.ManagedIndex;
+                    fieldCount = ((ILType)type).TotalFieldCount;
                 }
                 else
                 {
-                    dst = valueTypePtr;
-                    managedIdx = managedStack.Count;
-
-                    valueTypePtr = ILIntepreter.Minus(valueTypePtr, size);
-                    if (valueTypePtr <= StackBase)
-                        throw new StackOverflowException();
+                    fieldCount = ((CLRType)type).TotalFieldCount;
                 }
-
                 ptr->ObjectType = ObjectTypes.ValueTypeObjectReference;
+                var dst = valueTypePtr;
                 *(long*)&ptr->Value = (long)dst;
-                InitializeValueTypeObject(type, dst, register, ref managedIdx, noInitialize);
+                dst->ObjectType = ObjectTypes.ValueTypeDescriptor;
+                dst->Value = type.GetHashCode();
+                dst->ValueLow = fieldCount;
+                valueTypePtr = ILIntepreter.Minus(valueTypePtr, fieldCount + 1);
+                if (valueTypePtr <= StackBase)
+                    throw new StackOverflowException();
+                InitializeValueTypeObject(type, dst);
             }
             else
                 throw new ArgumentException(type.FullName + " is not a value type.", "type");
         }
 
-        internal void InitializeValueTypeObject(IType type, StackObject* ptr, bool register, ref int managedIdx, bool noInitialize)
+        void InitializeValueTypeObject(IType type, StackObject* ptr)
         {
-            ptr->ObjectType = ObjectTypes.ValueTypeDescriptor;
-            ptr->Value = type.TypeIndex;
-            ptr->ValueLow = type.TotalFieldCount;
-            StackObject* endPtr = ptr - (type.TotalFieldCount + 1);
-            if (noInitialize)
-                return;
             if (type is ILType)
             {
                 ILType t = (ILType)type;
@@ -376,94 +254,60 @@ namespace ILRuntime.Runtime.Stack
                 {
                     var ft = t.FieldTypes[i];
                     StackObject* val = ILIntepreter.Minus(ptr, t.FieldStartIndex + i + 1);
-                    if (ft.IsPrimitive)
-                        *val = ft.DefaultObject;
-                    else if (ft.IsEnum)
+                    if (ft.IsPrimitive || ft.IsEnum)
                         StackObject.Initialized(val, ft);
                     else
                     {
                         if (ft.IsValueType)
                         {
                             if (ft is ILType || ((CLRType)ft).ValueTypeBinder != null)
-                            {
-                                val->ObjectType = ObjectTypes.ValueTypeObjectReference;
-                                *(long*)&val->Value = (long)endPtr;
-                                InitializeValueTypeObject(ft, endPtr, register, ref managedIdx, noInitialize);
-                                int size, mCnt;
-                                ft.GetValueTypeSize(out size, out mCnt);
-                                endPtr -= size;
-                            }
+                                AllocValueType(val, ft);
                             else
                             {
                                 val->ObjectType = ObjectTypes.Object;
-                                val->Value = managedIdx;
-                                if (managedIdx < managedStack.Count)
-                                    managedStack[managedIdx] = ((CLRType)ft).CreateDefaultInstance();
-                                else
-                                    managedStack.Add(((CLRType)ft).CreateDefaultInstance());
-                                managedIdx++;
+                                val->Value = managedStack.Count;
+                                managedStack.Add(((CLRType)ft).CreateDefaultInstance());
                             }
                         }
                         else
                         {
                             val->ObjectType = ObjectTypes.Object;
-                            val->Value = managedIdx;
-                            if (managedIdx < managedStack.Count)
-                                managedStack[managedIdx] = null;
-                            else
-                                managedStack.Add(null);
-                            managedIdx++;
+                            val->Value = managedStack.Count;
+                            managedStack.Add(null);
                         }
                     }
                 }
                 if (type.BaseType != null && type.BaseType is ILType)
-                    InitializeValueTypeObject((ILType)type.BaseType, ptr, register, ref managedIdx, noInitialize);
+                    InitializeValueTypeObject((ILType)type.BaseType, ptr);
             }
             else
             {
                 CLRType t = (CLRType)type;
                 var cnt = t.TotalFieldCount;
-                for (int i = 0; i < cnt; i++)
+                for(int i = 0; i < cnt; i++)
                 {
                     var it = t.OrderedFieldTypes[i] as CLRType;
                     StackObject* val = ILIntepreter.Minus(ptr, i + 1);
-                    if (it.IsPrimitive)
-                        *val = it.DefaultObject;
-                    else if (it.IsEnum)
+                    if (it.IsPrimitive || it.IsEnum)
                         StackObject.Initialized(val, it);
                     else
                     {
                         if (it.IsValueType)
                         {
                             if (it.ValueTypeBinder != null)
-                            {
-                                val->ObjectType = ObjectTypes.ValueTypeObjectReference;
-                                *(long*)&val->Value = (long)endPtr;
-                                InitializeValueTypeObject(it, endPtr, register, ref managedIdx, noInitialize);
-                                int size, mCnt;
-                                it.GetValueTypeSize(out size, out mCnt);
-                                endPtr -= size;
-                            }
+                                AllocValueType(val, it);
                             else
                             {
                                 val->ObjectType = ObjectTypes.Object;
-                                val->Value = managedIdx;
-                                if (managedIdx < managedStack.Count)
-                                    managedStack[managedIdx] = it.CreateDefaultInstance();
-                                else
-                                    managedStack.Add(it.CreateDefaultInstance());
-                                managedIdx++;
+                                val->Value = managedStack.Count;
+                                managedStack.Add(it.CreateDefaultInstance());
                             }
                         }
                         else
                         {
                             val->ObjectType = ObjectTypes.Object;
-                            val->Value = managedIdx;
-                            if (managedIdx < managedStack.Count)
-                                managedStack[managedIdx] = null;
-                            else
-                                managedStack.Add(null);
-                            managedIdx++;
+                            val->Value = managedStack.Count;
+                            managedStack.Add(null);
                         }
                     }
                 }
@@ -543,7 +387,7 @@ namespace ILRuntime.Runtime.Stack
             }
         }
 
-        internal void RemoveManagedStackRange(int start, int end)
+        void RemoveManagedStackRange(int start, int end)
         {
             if (start != int.MaxValue)
             {
@@ -558,13 +402,6 @@ namespace ILRuntime.Runtime.Stack
                 else
                     throw new NotSupportedException();
             }
-        }
-
-        public void FreeRegisterValueType(StackObject* esp)
-        {
-            if (esp->ObjectType != ObjectTypes.ValueTypeObjectReference)
-                return;
-            allocator.Free(esp);
         }
 
         public void FreeValueTypeObject(StackObject* esp)
@@ -583,7 +420,7 @@ namespace ILRuntime.Runtime.Stack
             RemoveManagedStackRange(start, end);
         }
 
-        public void CountValueTypeManaged(StackObject* esp, ref int start, ref int end, StackObject** endAddr)
+        void CountValueTypeManaged(StackObject* esp, ref int start, ref int end, StackObject** endAddr)
         {
             StackObject* descriptor = ILIntepreter.ResolveReference(esp);
             int cnt = descriptor->ValueLow;

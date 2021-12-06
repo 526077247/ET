@@ -1,5 +1,4 @@
-﻿using ILRuntime.Runtime.Stack;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -36,7 +35,7 @@ namespace ILRuntime.CLR.TypeSystem
         {
             get
             {
-                return !isByRef && !isArray;
+                return !isByRef && !isArray; 
             }
         }
 
@@ -116,7 +115,7 @@ namespace ILRuntime.CLR.TypeSystem
                 byrefType.isByRef = true;
                 byrefType.elementType = this;
             }
-            return byrefType;
+            return this;
         }
 
 
@@ -192,11 +191,6 @@ namespace ILRuntime.CLR.TypeSystem
             return method;
         }
 
-        public void GetValueTypeSize(out int fieldCout, out int managedCount)
-        {
-            throw new NotImplementedException();
-        }
-
         public bool IsArray
         {
             get { return isArray; }
@@ -206,7 +200,7 @@ namespace ILRuntime.CLR.TypeSystem
         {
             get
             {
-                return isByRef;
+                return false;
             }
         }
 
@@ -228,24 +222,6 @@ namespace ILRuntime.CLR.TypeSystem
             get
             {
                 return null;
-            }
-        }
-
-        public int TotalFieldCount
-        {
-            get
-            {
-                return 0;
-            }
-        }
-
-        public StackObject DefaultObject { get { return default(StackObject); } }
-
-        public int TypeIndex
-        {
-            get
-            {
-                return -1;
             }
         }
     }

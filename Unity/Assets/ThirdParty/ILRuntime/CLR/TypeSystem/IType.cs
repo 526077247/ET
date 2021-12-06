@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 
 using ILRuntime.CLR.Method;
-using ILRuntime.Runtime.Stack;
 
 namespace ILRuntime.CLR.TypeSystem
 {
@@ -49,10 +48,6 @@ namespace ILRuntime.CLR.TypeSystem
 
         bool IsGenericParameter { get; }
 
-        StackObject DefaultObject { get; }
-
-        int TypeIndex { get; }
-
         ILRuntime.Runtime.Enviorment.AppDomain AppDomain { get; }
 
         /// <summary>
@@ -91,9 +86,5 @@ namespace ILRuntime.CLR.TypeSystem
         IType FindGenericArgument(string key);
 
         IType ResolveGenericType(IType contextType);
-
-        int TotalFieldCount { get; }
-
-        void GetValueTypeSize(out int fieldCout, out int managedCount);
     }
 }

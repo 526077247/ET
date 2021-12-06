@@ -14,9 +14,6 @@ using ILRuntime.Runtime.Intepreter;
 using ILRuntime.Runtime.Debugger;
 using ILRuntime.Runtime.Stack;
 using ILRuntime.Other;
-using ILRuntime.Runtime.Intepreter.RegisterVM;
-using System.Threading;
-
 namespace ILRuntime.Runtime.Enviorment
 {
     public unsafe delegate StackObject* CLRRedirectionDelegate(ILIntepreter intp, StackObject* esp, IList<object> mStack, CLRMethod method, bool isNewObj);
@@ -48,7 +45,6 @@ namespace ILRuntime.Runtime.Enviorment
         Dictionary<Type, ValueTypeBinder> valueTypeBinders = new Dictionary<Type, ValueTypeBinder>();
         ThreadSafeDictionary<string, IType> mapType = new ThreadSafeDictionary<string, IType>();
         Dictionary<Type, IType> clrTypeMapping = new Dictionary<Type, IType>(new ByReferenceKeyComparer<Type>());
-        List<IType> typesByIndex = new List<IType>();
         ThreadSafeDictionary<int, IType> mapTypeToken = new ThreadSafeDictionary<int, IType>();
         ThreadSafeDictionary<int, IMethod> mapMethod = new ThreadSafeDictionary<int, IMethod>();
         ThreadSafeDictionary<long, string> mapString = new ThreadSafeDictionary<long, string>();
@@ -59,13 +55,11 @@ namespace ILRuntime.Runtime.Enviorment
         Dictionary<Type, CLRMemberwiseCloneDelegate> memberwiseCloneMap = new Dictionary<Type, CLRMemberwiseCloneDelegate>(new ByReferenceKeyComparer<Type>());
         Dictionary<Type, CLRCreateDefaultInstanceDelegate> createDefaultInstanceMap = new Dictionary<Type, CLRCreateDefaultInstanceDelegate>(new ByReferenceKeyComparer<Type>());
         Dictionary<Type, CLRCreateArrayInstanceDelegate> createArrayInstanceMap = new Dictionary<Type, CLRCreateArrayInstanceDelegate>(new ByReferenceKeyComparer<Type>());
-        IType voidType, intType, longType, boolType, floatType, doubleType, objectType, jitAttributeType;
+        IType voidType, intType, longType, boolType, floatType, doubleType, objectType;
         DelegateManager dMgr;
         Assembly[] loadedAssemblies;
         Dictionary<string, byte[]> references = new Dictionary<string, byte[]>();
         DebugService debugService;
-        AsyncJITCompileWorker jitWorker = new AsyncJITCompileWorker();
-        int defaultJITFlags;
 
         /// <summary>
         /// Determine if invoking unbinded CLR method(using reflection) is allowed
@@ -79,12 +73,9 @@ namespace ILRuntime.Runtime.Enviorment
             return UnityMainThreadID != 0 && (UnityMainThreadID != System.Threading.Thread.CurrentThread.ManagedThreadId);
         }
 #endif
-
         internal bool SuppressStaticConstructor { get; set; }
 
-        public int DefaultJITFlags { get { return defaultJITFlags; } }
-
-        public unsafe AppDomain(int defaultJITFlags = ILRuntimeJITFlags.None)
+        public unsafe AppDomain()
         {
             AllowUnboundCLRMethod = true;
             InvocationContext.InitializeDefaultConverters();
@@ -163,16 +154,16 @@ namespace ILRuntime.Runtime.Enviorment
                 {
                     RegisterCLRMethodRedirection(i, CLRRedirections.EnumGetNames);
                 }
-                if (i.Name == "GetName")
+                if(i.Name == "GetName")
                 {
                     RegisterCLRMethodRedirection(i, CLRRedirections.EnumGetName);
                 }
 #if NET_4_6 || NET_STANDARD_2_0
-                if (i.Name == "HasFlag")
+                if(i.Name == "HasFlag")
                 {
                     RegisterCLRMethodRedirection(i, CLRRedirections.EnumHasFlag);
                 }
-                if (i.Name == "CompareTo")
+                if(i.Name == "CompareTo")
                 {
                     RegisterCLRMethodRedirection(i, CLRRedirections.EnumCompareTo);
                 }
@@ -195,13 +186,6 @@ namespace ILRuntime.Runtime.Enviorment
             RegisterCrossBindingAdaptor(new Adapters.AttributeAdapter());
 
             debugService = new Debugger.DebugService(this);
-            this.defaultJITFlags = defaultJITFlags & (ILRuntimeJITFlags.JITImmediately | ILRuntimeJITFlags.JITOnDemand);
-        }
-
-        public void Dispose()
-        {
-            debugService.StopDebugService();
-            jitWorker.Dispose();
         }
 
         public IType VoidType { get { return voidType; } }
@@ -212,165 +196,25 @@ namespace ILRuntime.Runtime.Enviorment
         public IType DoubleType { get { return doubleType; } }
         public IType ObjectType { get { return objectType; } }
 
-        public IType JITAttributeType { get { return jitAttributeType; } }
-
         /// <summary>
         /// Attention, this property isn't thread safe
         /// </summary>
         public Dictionary<string, IType> LoadedTypes { get { return mapType.InnerDictionary; } }
-
-        bool IsThreadBinding = false;
-        bool IsBindingDone = false;
-        static object bindingLockObject = new object();
-        internal Dictionary<MethodBase, CLRRedirectionDelegate> RedirectMap 
-        { 
-            get 
-            {
-                if (!IsThreadBinding && IsBindingDone)
-                {
-                    return redirectMap;
-                }
-                else
-                {
-                    lock(bindingLockObject)
-                    {
-                        return redirectMap;
-                    }
-                }
-            } 
-        }
-        internal Dictionary<FieldInfo, CLRFieldGetterDelegate> FieldGetterMap
-        {
-            get 
-            {
-                if (!IsThreadBinding && IsBindingDone)
-                {
-                    return fieldGetterMap;
-                }
-                else
-                {
-                    lock (bindingLockObject)
-                    {
-                        return fieldGetterMap;
-                    }
-                }
-            } 
-        }
-        internal Dictionary<FieldInfo, CLRFieldSetterDelegate> FieldSetterMap 
-        { 
-            get 
-            {
-                if (!IsThreadBinding && IsBindingDone)
-                {
-                    return fieldSetterMap;
-                }
-                else
-                {
-                    lock (bindingLockObject)
-                    {
-                        return fieldSetterMap;
-                    }
-                }
-            }
-        }
-        internal Dictionary<FieldInfo, KeyValuePair<CLRFieldBindingDelegate, CLRFieldBindingDelegate>> FieldBindingMap 
-        {
-            get 
-            {
-                if (!IsThreadBinding && IsBindingDone)
-                {
-                    return fieldBindingMap;
-                }
-                else
-                {
-                    lock (bindingLockObject)
-                    {
-                        return fieldBindingMap;
-                    }
-                }
-            }
-        }
-        internal Dictionary<Type, CLRMemberwiseCloneDelegate> MemberwiseCloneMap 
-        {
-            get 
-            {
-                if (!IsThreadBinding && IsBindingDone)
-                {
-                    return memberwiseCloneMap;
-                }
-                else
-                {
-                    lock (bindingLockObject)
-                    {
-                        return memberwiseCloneMap;
-                    }
-                }
-            }
-        }
-        internal Dictionary<Type, CLRCreateDefaultInstanceDelegate> CreateDefaultInstanceMap 
-        { 
-            get 
-            {
-                if (!IsThreadBinding && IsBindingDone)
-                {
-                    return createDefaultInstanceMap;
-                }
-                else
-                {
-                    lock (bindingLockObject)
-                    {
-                        return createDefaultInstanceMap;
-                    }
-                }
-            } 
-        }
-
-        internal Dictionary<Type, CLRCreateArrayInstanceDelegate> CreateArrayInstanceMap 
-        { 
-            get 
-            {
-                if (!IsThreadBinding && IsBindingDone)
-                {
-                    return createArrayInstanceMap;
-                }
-                else
-                {
-                    lock (bindingLockObject)
-                    {
-                        return createArrayInstanceMap;
-                    }
-                }
-            }
-        }
+        internal Dictionary<MethodBase, CLRRedirectionDelegate> RedirectMap { get { return redirectMap; } }
+        internal Dictionary<FieldInfo, CLRFieldGetterDelegate> FieldGetterMap { get { return fieldGetterMap; } }
+        internal Dictionary<FieldInfo, CLRFieldSetterDelegate> FieldSetterMap { get { return fieldSetterMap; } }
+        internal Dictionary<FieldInfo, KeyValuePair<CLRFieldBindingDelegate, CLRFieldBindingDelegate>> FieldBindingMap { get { return fieldBindingMap; } }
+        internal Dictionary<Type, CLRMemberwiseCloneDelegate> MemberwiseCloneMap { get { return memberwiseCloneMap; } }
+        internal Dictionary<Type, CLRCreateDefaultInstanceDelegate> CreateDefaultInstanceMap { get { return createDefaultInstanceMap; } }
+        internal Dictionary<Type, CLRCreateArrayInstanceDelegate> CreateArrayInstanceMap { get { return createArrayInstanceMap; } }
         internal Dictionary<Type, CrossBindingAdaptor> CrossBindingAdaptors { get { return crossAdaptors; } }
-
-        internal Dictionary<Type, ValueTypeBinder> ValueTypeBinders 
-        { 
-            get 
-            {
-                if (!IsThreadBinding && IsBindingDone)
-                {
-                    return valueTypeBinders;
-                }
-                else
-                {
-                    lock (bindingLockObject)
-                    {
-                        return valueTypeBinders;
-                    }
-                }
-            }
-        }
+        internal Dictionary<Type, ValueTypeBinder> ValueTypeBinders { get { return valueTypeBinders; } }
         public DebugService DebugService { get { return debugService; } }
         internal Dictionary<int, ILIntepreter> Intepreters { get { return intepreters; } }
         internal Queue<ILIntepreter> FreeIntepreters { get { return freeIntepreters; } }
 
         public DelegateManager DelegateManager { get { return dMgr; } }
 
-        internal void EnqueueJITCompileJob(ILMethod method)
-        {
-            jitWorker.QueueCompileJob(method);
-        }
 
         /// <summary>
         /// 加载Assembly 文件，从指定的路径
@@ -602,7 +446,6 @@ namespace ILRuntime.Runtime.Enviorment
                 floatType = GetType("System.Single");
                 doubleType = GetType("System.Double");
                 objectType = GetType("System.Object");
-                jitAttributeType = GetType("ILRuntime.Runtime.ILRuntimeJITAttribute");
             }
 #if DEBUG && !DISABLE_ILRUNTIME_DEBUG
             debugService.NotifyModuleLoaded(module.Name);
@@ -623,185 +466,55 @@ namespace ILRuntime.Runtime.Enviorment
         {
             if (mi == null)
                 return;
-
-            if (!IsThreadBinding)
-            {
-                if (!redirectMap.ContainsKey(mi))
-                    redirectMap[mi] = func;
-            }
-            else
-            {
-                lock (bindingLockObject)
-                {
-                    if (!redirectMap.ContainsKey(mi))
-                        redirectMap[mi] = func;
-                }
-            }
-            
+            if (!redirectMap.ContainsKey(mi))
+                redirectMap[mi] = func;
         }
 
         public void RegisterCLRFieldGetter(FieldInfo f, CLRFieldGetterDelegate getter)
         {
-            if (!IsThreadBinding)
-            {
-                if (!fieldGetterMap.ContainsKey(f))
-                    fieldGetterMap[f] = getter;
-            }
-            else
-            {
-                lock (bindingLockObject)
-                {
-                    if (!fieldGetterMap.ContainsKey(f))
-                        fieldGetterMap[f] = getter;
-                }
-            }
+            if (!fieldGetterMap.ContainsKey(f))
+                fieldGetterMap[f] = getter;
         }
 
         public void RegisterCLRFieldSetter(FieldInfo f, CLRFieldSetterDelegate setter)
         {
-            if (!IsThreadBinding)
-            {
-                if (!fieldSetterMap.ContainsKey(f))
-                    fieldSetterMap[f] = setter;
-            }
-            else
-            {
-                lock (bindingLockObject)
-                {
-                    if (!fieldSetterMap.ContainsKey(f))
-                        fieldSetterMap[f] = setter;
-                }
-            }
+            if (!fieldSetterMap.ContainsKey(f))
+                fieldSetterMap[f] = setter;
         }
 
         public void RegisterCLRFieldBinding(FieldInfo f, CLRFieldBindingDelegate copyToStack, CLRFieldBindingDelegate assignFromStack)
         {
-            if (!IsThreadBinding)
-            {
-                if (!fieldBindingMap.ContainsKey(f))
-                    fieldBindingMap[f] = new KeyValuePair<CLRFieldBindingDelegate, CLRFieldBindingDelegate>(copyToStack, assignFromStack);
-            }
-            else
-            {
-                lock (bindingLockObject)
-                {
-                    if (!fieldBindingMap.ContainsKey(f))
-                        fieldBindingMap[f] = new KeyValuePair<CLRFieldBindingDelegate, CLRFieldBindingDelegate>(copyToStack, assignFromStack);
-                }
-            }
+            if (!fieldBindingMap.ContainsKey(f))
+                fieldBindingMap[f] = new KeyValuePair<CLRFieldBindingDelegate, CLRFieldBindingDelegate>(copyToStack, assignFromStack);
         }
 
         public void RegisterCLRMemberwiseClone(Type t, CLRMemberwiseCloneDelegate memberwiseClone)
         {
-            if (!IsThreadBinding)
-            {
-                if (!memberwiseCloneMap.ContainsKey(t))
-                    memberwiseCloneMap[t] = memberwiseClone;
-            }
-            else
-            {
-                lock (bindingLockObject)
-                {
-                    if (!memberwiseCloneMap.ContainsKey(t))
-                        memberwiseCloneMap[t] = memberwiseClone;
-                }
-            }
+            if (!memberwiseCloneMap.ContainsKey(t))
+                memberwiseCloneMap[t] = memberwiseClone;
         }
 
         public void RegisterCLRCreateDefaultInstance(Type t, CLRCreateDefaultInstanceDelegate createDefaultInstance)
         {
-            if (!IsThreadBinding)
-            {
-                if (!createDefaultInstanceMap.ContainsKey(t))
-                    createDefaultInstanceMap[t] = createDefaultInstance;
-            }
-            else
-            {
-                lock (bindingLockObject)
-                {
-                    if (!createDefaultInstanceMap.ContainsKey(t))
-                        createDefaultInstanceMap[t] = createDefaultInstance;
-                }
-            }
+            if (!createDefaultInstanceMap.ContainsKey(t))
+                createDefaultInstanceMap[t] = createDefaultInstance;
         }
 
         public void RegisterCLRCreateArrayInstance(Type t, CLRCreateArrayInstanceDelegate createArray)
         {
-            if (!IsThreadBinding)
-            {
-                if (!createArrayInstanceMap.ContainsKey(t))
-                    createArrayInstanceMap[t] = createArray;
-            }
-            else
-            {
-                lock (bindingLockObject)
-                {
-                    if (!createArrayInstanceMap.ContainsKey(t))
-                        createArrayInstanceMap[t] = createArray;
-                }
-            }
+            if (!createArrayInstanceMap.ContainsKey(t))
+                createArrayInstanceMap[t] = createArray;
         }
 
         public void RegisterValueTypeBinder(Type t, ValueTypeBinder binder)
         {
-            if (!IsThreadBinding)
+            if (!valueTypeBinders.ContainsKey(t))
             {
-                if (!valueTypeBinders.ContainsKey(t))
-                {
-                    valueTypeBinders[t] = binder;
-                    binder.RegisterCLRRedirection(this);
+                valueTypeBinders[t] = binder;
+                binder.RegisterCLRRedirection(this);
 
-                    var ct = GetType(t) as CLRType;
-                    binder.CLRType = ct;
-                }
-            }
-            else
-            {
-                lock (bindingLockObject)
-                {
-                    if (!valueTypeBinders.ContainsKey(t))
-                    {
-                        valueTypeBinders[t] = binder;
-                        binder.RegisterCLRRedirection(this);
-
-                        var ct = GetType(t) as CLRType;
-                        binder.CLRType = ct;
-                    }
-                }
-            }
-            
-        }
-
-        /// <summary>
-        /// 初始化注册Bindings(开启线程做binding没完成时，获取CLR重定向方法会有些消耗)
-        /// </summary>
-        /// <param name="isThread"></param>
-        public void InitializeBindings(bool isThread = false)
-        {
-            if (IsBindingDone) 
-                return;
-
-            IsThreadBinding = isThread;
-
-            if (isThread)
-            {
-                Thread thread = new Thread(() =>
-                {
-                    CLRBinding.CLRBindingUtils.Initialize(this);
-
-                    IsBindingDone = true;   //这里线程没有竞争写
-
-#if DEBUG && !NO_PROFILER
-                    UnityEngine.Debug.Log("CLRBindingUtils.Initialize Done in thread..");
-#endif
-                });
-                thread.Name = $"CLRBindings-Thread #{thread.ManagedThreadId}";
-                thread.Start();
-            }
-            else
-            {
-                CLRBinding.CLRBindingUtils.Initialize(this);
-                IsBindingDone = true;
+                var ct = GetType(t) as CLRType;
+                binder.CLRType = ct;
             }
         }
 
@@ -828,7 +541,8 @@ namespace ILRuntime.Runtime.Enviorment
             byte rank;
             ParseGenericType(fullname, out baseType, out genericParams, out isArray, out rank);
 
-            bool isByRef = !string.IsNullOrEmpty(baseType) && baseType[baseType.Length - 1] == '&';
+
+            bool isByRef = baseType.EndsWith("&");
             if (isByRef)
                 baseType = baseType.Substring(0, baseType.Length - 1);
             if (genericParams != null || isArray || isByRef)
@@ -942,8 +656,7 @@ namespace ILRuntime.Runtime.Enviorment
             rank = 0;
             baseType = "";
             genericParams = null;
-
-            if (fullname.Length > 2 && fullname[fullname.Length - 2] == '[' && fullname[fullname.Length - 1] == ']')
+            if (fullname.Length > 2 && fullname.Substring(fullname.Length - 2) == "[]")
             {
                 fullname = fullname.Substring(0, fullname.Length - 2);
                 rank = 1;
@@ -951,21 +664,7 @@ namespace ILRuntime.Runtime.Enviorment
             }
             else
                 isArray = false;
-            if (fullname.Length > 2 && fullname[fullname.Length - 2] == '[' && fullname[fullname.Length - 1] == ']')
-            {
-                baseType = fullname;
-                return;
-            }
-            bool isGenericType = false;
-            foreach (var i in fullname)
-            {
-                if (i == '<' || i == '[')
-                {
-                    isGenericType = true;
-                    break;
-                }
-            }
-            if (isGenericType)
+            if (fullname.Contains('<') || fullname.Contains('['))
             {
                 foreach (var i in fullname)
                 {
@@ -1039,21 +738,6 @@ namespace ILRuntime.Runtime.Enviorment
         string GetAssemblyName(IMetadataScope scope)
         {
             return scope is AssemblyNameReference ? ((AssemblyNameReference)scope).FullName : null;
-        }
-
-        internal int AllocTypeIndex(IType type)
-        {
-            lock (typesByIndex)
-            {
-                int index = typesByIndex.Count;
-                typesByIndex.Add(type);
-                return index;
-            }
-        }
-
-        internal IType GetTypeByIndex(int index)
-        {
-            return typesByIndex[index];
         }
 
         internal IType GetType(object token, IType contextType, IMethod contextMethod)
@@ -1412,7 +1096,7 @@ namespace ILRuntime.Runtime.Enviorment
             return null;
         }
 
-        internal ILIntepreter RequestILIntepreter()
+        ILIntepreter RequestILIntepreter()
         {
             ILIntepreter inteptreter = null;
             lock (freeIntepreters)
@@ -1457,7 +1141,6 @@ namespace ILRuntime.Runtime.Enviorment
 #endif
                 inteptreter.Stack.ManagedStack.Clear();
                 inteptreter.Stack.Frames.Clear();
-                inteptreter.Stack.ClearAllocator();
                 freeIntepreters.Enqueue(inteptreter);
 #if DEBUG && !DISABLE_ILRUNTIME_DEBUG
                 //debugService.ThreadEnded(inteptreter);
@@ -1502,22 +1185,6 @@ namespace ILRuntime.Runtime.Enviorment
             else
                 throw new NotSupportedException("Cannot invoke CLRMethod");
         }
-        
-
-        bool IsInvalidMethodReference(MethodReference _ref)
-        {
-            if ((_ref.DeclaringType.Name == "Object" || _ref.DeclaringType.Name == "Attribute")
-                    && _ref.Name == ".ctor"
-                    && _ref.DeclaringType.Namespace == "System"
-                    && _ref.ReturnType.Name == "Void"
-                    && _ref.ReturnType.Namespace == "System")
-            {
-                return true;
-            }
-            return false;
-        }
-        
-        
         internal IMethod GetMethod(object token, ILType contextType, ILMethod contextMethod, out bool invalidToken)
         {
             string methodname = null;
@@ -1535,13 +1202,16 @@ namespace ILRuntime.Runtime.Enviorment
             if (token is Mono.Cecil.MethodReference)
             {
                 Mono.Cecil.MethodReference _ref = (token as Mono.Cecil.MethodReference);
-
-                if(IsInvalidMethodReference(_ref))
+                if (_ref.FullName == "System.Void System.Object::.ctor()")
                 {
                     mapMethod[hashCode] = null;
                     return null;
                 }
-                
+                if (_ref.FullName == "System.Void System.Attribute::.ctor()")
+                {
+                    mapMethod[hashCode] = null;
+                    return null;
+                }
                 methodname = _ref.Name;
                 var typeDef = _ref.DeclaringType;
                 type = GetType(typeDef, contextType, contextMethod);
@@ -1585,7 +1255,7 @@ namespace ILRuntime.Runtime.Enviorment
                     GenericInstanceType gim = (GenericInstanceType)typeDef;
                     for (int i = 0; i < gim.GenericArguments.Count; i++)
                     {
-                        if (gim.GenericArguments[i].ContainsGenericParameter)
+                        if (gim.GenericArguments[0].IsGenericParameter)
                         {
                             invalidToken = true;
                             break;

@@ -19,6 +19,5 @@ namespace ILRuntime.Runtime.Stack
         public StackObject* ValueTypeBasePointer;
         public IntegerReference Address;
         public int ManagedStackBase;
-        public bool IsRegister;
     }
 }

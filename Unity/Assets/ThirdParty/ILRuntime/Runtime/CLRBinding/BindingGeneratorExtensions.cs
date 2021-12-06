@@ -4,7 +4,6 @@ using System.Reflection;
 using System.Linq;
 using System.Text;
 using ILRuntime.Runtime.Enviorment;
-using ILRuntime.CLR.Utils;
 
 namespace ILRuntime.Runtime.CLRBinding
 {
@@ -180,7 +179,7 @@ namespace ILRuntime.Runtime.CLRBinding
                     }
                     else
                     {
-                        sb.AppendLine(string.Format("            {0} @{1} = ({0})typeof({0}).CheckCLRTypes(__intp.RetriveObject(ptr_of_this_method, __mStack), (CLR.Utils.Extensions.TypeFlags){2});", realClsName, name, (int)p.GetTypeFlagsRecursive()));
+                        sb.AppendLine(string.Format("            {0} @{1} = ({0})typeof({0}).CheckCLRTypes(__intp.RetriveObject(ptr_of_this_method, __mStack));", realClsName, name));
                     }
 
                 }
@@ -251,12 +250,18 @@ namespace ILRuntime.Runtime.CLRBinding
                 {
                     return "*(ulong*)&ptr_of_this_method->Value";
                 }
+                else if (type == typeof(IntPtr))
+                {
+                    return string.Format("({0})typeof({0}).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack))", realClsName);
+
+                    //return "*(long*)&ptr_of_this_method->Value";
+                }
                 else
                     throw new NotImplementedException();
             }
             else
             {
-                return string.Format("({0})typeof({0}).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags){1})", realClsName, (int)type.GetTypeFlagsRecursive());
+                return string.Format("({0})typeof({0}).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack))", realClsName);
             }
         }
 
@@ -443,12 +448,28 @@ namespace ILRuntime.Runtime.CLRBinding
                     sb.AppendLine("            __ret->ObjectType = ObjectTypes.Long;");
                     sb.AppendLine("            *(ulong*)&__ret->Value = result_of_this_method;");
                 }
+                else if (type == typeof(IntPtr))
+                {
+                    // goto GoArea;
+                    string isBox;
+                    if (type == typeof(object))
+                        isBox = ", true";
+                    else
+                        isBox = "";
+                    sb.AppendLine(string.Format("            return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method{0});", isBox));
+                    return;
+                    //sb.AppendLine("            __ret->ObjectType = ObjectTypes.Long;");
+                    //sb.AppendLine("            *(long*)&__ret->Value = result_of_this_method;");
+                }
                 else
                     throw new NotImplementedException();
                 sb.AppendLine("            return __ret + 1;");
 
             }
-            else
+            else 
+
+           // else
+          // GoArea:
             {
                 string isBox;
                 if (type == typeof(object))
@@ -475,6 +496,7 @@ namespace ILRuntime.Runtime.CLRBinding
                     
                 }
                 sb.AppendLine(string.Format("            return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method{0});", isBox));
+                return;
             }
         }
 
