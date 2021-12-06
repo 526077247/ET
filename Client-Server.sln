@@ -51,6 +51,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.Addressables.Editor",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.ResourceManager", "Unity\Unity.ResourceManager.csproj", "{1BDCB91F-3387-2FBB-CFA6-F06CE7A5C783}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileServer", "Tools\FileServer\FileServer.csproj", "{83599CE8-D203-4D44-B0AA-E972D826BFB9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -289,6 +291,18 @@ Global
 		{1BDCB91F-3387-2FBB-CFA6-F06CE7A5C783}.Release|x64.Build.0 = Release|Any CPU
 		{1BDCB91F-3387-2FBB-CFA6-F06CE7A5C783}.Release|x86.ActiveCfg = Release|Any CPU
 		{1BDCB91F-3387-2FBB-CFA6-F06CE7A5C783}.Release|x86.Build.0 = Release|Any CPU
+		{83599CE8-D203-4D44-B0AA-E972D826BFB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83599CE8-D203-4D44-B0AA-E972D826BFB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83599CE8-D203-4D44-B0AA-E972D826BFB9}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{83599CE8-D203-4D44-B0AA-E972D826BFB9}.Debug|x64.Build.0 = Debug|Any CPU
+		{83599CE8-D203-4D44-B0AA-E972D826BFB9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{83599CE8-D203-4D44-B0AA-E972D826BFB9}.Debug|x86.Build.0 = Debug|Any CPU
+		{83599CE8-D203-4D44-B0AA-E972D826BFB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83599CE8-D203-4D44-B0AA-E972D826BFB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83599CE8-D203-4D44-B0AA-E972D826BFB9}.Release|x64.ActiveCfg = Release|Any CPU
+		{83599CE8-D203-4D44-B0AA-E972D826BFB9}.Release|x64.Build.0 = Release|Any CPU
+		{83599CE8-D203-4D44-B0AA-E972D826BFB9}.Release|x86.ActiveCfg = Release|Any CPU
+		{83599CE8-D203-4D44-B0AA-E972D826BFB9}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -313,6 +327,7 @@ Global
 		{A9BBD26B-A748-6C2F-695E-DC9903B302F2} = {914C77C9-212A-4DD0-8D9A-074620E77FAA}
 		{9CE689E2-5395-D69A-DC5B-B46A6DB654DB} = {914C77C9-212A-4DD0-8D9A-074620E77FAA}
 		{1BDCB91F-3387-2FBB-CFA6-F06CE7A5C783} = {914C77C9-212A-4DD0-8D9A-074620E77FAA}
+		{83599CE8-D203-4D44-B0AA-E972D826BFB9} = {7B755614-03A1-4EDB-8596-4CEDE942336E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EABC01E3-3EB5-47EF-B46E-AAD8BB3585F1}
