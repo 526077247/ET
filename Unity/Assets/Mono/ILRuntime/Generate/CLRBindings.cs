@@ -141,6 +141,7 @@ namespace ILRuntime.Runtime.Generated
             ET_ListComponent_1_ETTask_Binding.Register(app);
             System_Collections_Generic_List_1_ETTask_Binding.Register(app);
             ET_ETTaskHelper_Binding.Register(app);
+            System_Array_Binding.Register(app);
             AssetBundles_AddressablesManager_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_TextAsset_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_TextAsset_Binding_Enumerator_Binding.Register(app);

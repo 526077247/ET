@@ -107,10 +107,10 @@ namespace ET
         {
             await UIManagerComponent.Instance.CloseWindow(self);
         }
-        public static async ETTask CloseWindowByLayer(this UIManagerComponent self, UILayerNames layer, string[] except_ui_names = null)
+        public static async ETTask CloseWindowByLayer(this UIManagerComponent self, UILayerNames layer,params string[] except_ui_names)
         {
             Dictionary<string, bool> dict_ui_names = null;
-            if (except_ui_names != null)
+            if (except_ui_names != null&& except_ui_names.Length>0)
             {
                 dict_ui_names = new Dictionary<string, bool>();
                 foreach (var item in except_ui_names) dict_ui_names[item] = true;
@@ -152,7 +152,7 @@ namespace ET
             var target = self.GetWindow(ui_name);
             if (target == null)
             {
-                target = await self.__InitWindow<T>(path,layer_name);
+                target = self.__InitWindow<T>(path,layer_name);
                 self.windows[ui_name] = target;
             }
             target.Layer = layer_name;
@@ -167,7 +167,7 @@ namespace ET
             var target = self.GetWindow(ui_name);
             if (target == null)
             {
-                target = await self.__InitWindow<T>(path, layer_name);
+                target = self.__InitWindow<T>(path, layer_name);
                 self.windows[ui_name] = target;
             }
             target.Layer = layer_name;
@@ -182,7 +182,7 @@ namespace ET
             var target = self.GetWindow(ui_name);
             if (target == null)
             {
-                target = await self.__InitWindow<T>(path, layer_name);
+                target = self.__InitWindow<T>(path, layer_name);
                 self.windows[ui_name] = target;
             }
             target.Layer = layer_name;
@@ -197,7 +197,7 @@ namespace ET
             var target = self.GetWindow(ui_name);
             if (target == null)
             {
-                target = await self.__InitWindow<T>(path,layer_name);
+                target = self.__InitWindow<T>(path,layer_name);
                 self.windows[ui_name] = target;
             }
             target.Layer = layer_name;
@@ -289,7 +289,7 @@ namespace ET
         /// <summary>
         /// 初始化window
         /// </summary>
-        static async ETTask<UIWindow> __InitWindow<T>(this UIManagerComponent self, string path, UILayerNames layer_name) where T : UIBaseContainer, new()
+        static UIWindow __InitWindow<T>(this UIManagerComponent self, string path, UILayerNames layer_name) where T : UIBaseContainer, new()
         {
             UIWindow window = self.AddChild<UIWindow>();
             var type = typeof(T);
@@ -454,8 +454,8 @@ namespace ET
                 //如果是背景layer，则销毁所有的normal层|BackgroudLayer
                 await self.CloseWindowByLayer(UILayerNames.NormalLayer);
                 await self.CloseWindowByLayer(UILayerNames.GameLayer);
-                await self.CloseWindowByLayer(UILayerNames.BackgroudLayer, new string[] { ui_name });
-                await self.CloseWindowByLayer(UILayerNames.GameBackgroudLayer, new string[] { ui_name });
+                await self.CloseWindowByLayer(UILayerNames.BackgroudLayer, ui_name);
+                await self.CloseWindowByLayer(UILayerNames.GameBackgroudLayer, ui_name);
             }
         }
         static async ETTask __AddWindowToStack<P1>(this UIManagerComponent self, UIWindow target, P1 p1)
@@ -476,8 +476,8 @@ namespace ET
                 //如果是背景layer，则销毁所有的normal层|BackgroudLayer
                 await self.CloseWindowByLayer(UILayerNames.NormalLayer);
                 await self.CloseWindowByLayer(UILayerNames.GameLayer);
-                await self.CloseWindowByLayer(UILayerNames.BackgroudLayer, new string[] { ui_name });
-                await self.CloseWindowByLayer(UILayerNames.GameBackgroudLayer, new string[] { ui_name });
+                await self.CloseWindowByLayer(UILayerNames.BackgroudLayer, ui_name);
+                await self.CloseWindowByLayer(UILayerNames.GameBackgroudLayer, ui_name);
             }
         }
         static async ETTask __AddWindowToStack<P1, P2>(this UIManagerComponent self, UIWindow target, P1 p1, P2 p2)
@@ -498,8 +498,8 @@ namespace ET
                 //如果是背景layer，则销毁所有的normal层|BackgroudLayer
                 await self.CloseWindowByLayer(UILayerNames.NormalLayer);
                 await self.CloseWindowByLayer(UILayerNames.GameLayer);
-                await self.CloseWindowByLayer(UILayerNames.BackgroudLayer, new string[] { ui_name });
-                await self.CloseWindowByLayer(UILayerNames.GameBackgroudLayer, new string[] { ui_name });
+                await self.CloseWindowByLayer(UILayerNames.BackgroudLayer, ui_name);
+                await self.CloseWindowByLayer(UILayerNames.GameBackgroudLayer, ui_name);
             }
         }
         static async ETTask __AddWindowToStack<P1, P2, P3>(this UIManagerComponent self, UIWindow target, P1 p1, P2 p2, P3 p3)
@@ -520,8 +520,8 @@ namespace ET
                 //如果是背景layer，则销毁所有的normal层|BackgroudLayer
                 await self.CloseWindowByLayer(UILayerNames.NormalLayer);
                 await self.CloseWindowByLayer(UILayerNames.GameLayer);
-                await self.CloseWindowByLayer(UILayerNames.BackgroudLayer, new string[] { ui_name });
-                await self.CloseWindowByLayer(UILayerNames.GameBackgroudLayer, new string[] { ui_name });
+                await self.CloseWindowByLayer(UILayerNames.BackgroudLayer, ui_name);
+                await self.CloseWindowByLayer(UILayerNames.GameBackgroudLayer, ui_name);
             }
         }
 

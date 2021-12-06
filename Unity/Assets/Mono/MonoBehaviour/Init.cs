@@ -65,8 +65,8 @@ namespace ET
 
 #if ENABLE_IL2CPP
 			this.CodeMode = CodeMode.ILRuntime;
-#elif UNITY_EDITOR
-			this.CodeMode = CodeMode.Reload;
+//#elif UNITY_EDITOR
+//			this.CodeMode = CodeMode.Reload;
 #endif
 
 			System.AppDomain.CurrentDomain.UnhandledException += (sender, e) =>

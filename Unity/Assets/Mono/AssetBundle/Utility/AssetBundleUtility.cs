@@ -12,55 +12,6 @@ namespace AssetBundles
 {
     public class AssetBundleUtility
     {
-        private static string GetPlatformName(RuntimePlatform platform)
-        {
-            switch (platform)
-            {
-                case RuntimePlatform.Android:
-                    return "Android";
-                case RuntimePlatform.IPhonePlayer:
-                    return "iOS";
-                default:
-                    Debug.LogError("Error platform!!!");
-                    return null;
-            }
-        }
-       
-        public static string GetStreamingAssetsFilePath(string assetPath = null)
-        {
-#if UNITY_EDITOR
-            string outputPath = Path.Combine("file://" + Application.streamingAssetsPath, AssetBundleConfig.AssetBundlesFolderName);
-#else
-#if UNITY_IPHONE || UNITY_IOS
-            string outputPath = Path.Combine("file://" + Application.streamingAssetsPath, AssetBundleConfig.AssetBundlesFolderName);
-#elif UNITY_ANDROID
-            string outputPath = Path.Combine(Application.streamingAssetsPath, AssetBundleConfig.AssetBundlesFolderName);
-#else
-            Debug.LogError("Unsupported platform!!!");
-            string outputPath = Path.Combine("file://" + Application.streamingAssetsPath, AssetBundleConfig.AssetBundlesFolderName);
-#endif
-#endif
-            if (!string.IsNullOrEmpty(assetPath))
-            {
-                outputPath = Path.Combine(outputPath, assetPath);
-            }
-            return outputPath;
-        }
-
-        public static string GetStreamingAssetsDataPath(string assetPath = null)
-        {
-            string outputPath = Path.Combine(Application.streamingAssetsPath, AssetBundleConfig.AssetBundlesFolderName);
-            if (!string.IsNullOrEmpty(assetPath))
-            {
-                outputPath = Path.Combine(outputPath, assetPath);
-            }
-            return outputPath;
-        }
-
-        public static string GetPersistentFilePath(string assetPath = null)
-        {
-            return "file://" + GetPersistentDataPath(assetPath);
-        }
 
         public static string GetPersistentDataPath(string assetPath = null)
         {
@@ -91,45 +42,6 @@ namespace AssetBundles
 #endif
         }
 
-        public static bool CheckPersistentFileExsits(string filePath)
-        {
-            var path = GetPersistentDataPath(filePath);
-            return File.Exists(path);
-        }
-
-        // 注意：这个路径是给WWW读文件使用的url，如果要直接磁盘写persistentDataPath，使用GetPlatformPersistentDataPath
-        public static string GetAssetBundleFileUrl(string filePath)
-        {
-            if (CheckPersistentFileExsits(filePath))
-            {
-                return GetPersistentFilePath(filePath);
-            }
-            else
-            {
-                return GetStreamingAssetsFilePath(filePath);
-            }
-        }
-        
-        public static string AssetBundlePathToAssetBundleName(string assetPath)
-        {
-            if (!string.IsNullOrEmpty(assetPath))
-            {
-                if (assetPath.StartsWith("Assets/"))
-                {
-                    assetPath = AssetsPathToPackagePath(assetPath);
-                }
-                //no " "
-                assetPath = assetPath.Replace(" ", "");
-                //there should not be any '.' in the assetbundle name
-                //otherwise the variant handling in client may go wrong
-                assetPath = assetPath.Replace(".", "_");
-                //add after suffix ".assetbundle" to the end
-                assetPath = assetPath + AssetBundleConfig.AssetBundleSuffix;
-                return assetPath.ToLower();
-            }
-            return null;
-        }
-        
         public static string PackagePathToAssetsPath(string assetPath)
         {
             return "Assets/" + AssetBundleConfig.AssetsFolderName + "/" + assetPath;
