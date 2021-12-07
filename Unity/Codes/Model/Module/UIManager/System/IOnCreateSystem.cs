@@ -28,7 +28,7 @@ namespace ET
     }
 
     [UISystem]
-    public abstract class OnCreateSystem<T> : IOnCreateSystem where T :UIBaseContainer
+    public abstract class OnCreateSystem<T> : IOnCreateSystem where T : UIBaseContainer
     {
         public Type Type()
         {
@@ -109,5 +109,26 @@ namespace ET
         }
 
         public abstract void OnCreate(T self, A a, B b, C c);
+    }
+
+    [UISystem]
+    public abstract class OnCreateSystem<T, A, B, C, D> : IOnCreateSystem<A, B, C, D> where T : UIBaseContainer
+    {
+        public Type Type()
+        {
+            return typeof(T);
+        }
+
+        public Type SystemType()
+        {
+            return typeof(IOnCreateSystem<A, B, C, D>);
+        }
+
+        public void Run(object o, A a, B b, C c, D d)
+        {
+            this.OnCreate((T)o, a, b, c, d);
+        }
+
+        public abstract void OnCreate(T self, A a, B b, C c, D d);
     }
 }

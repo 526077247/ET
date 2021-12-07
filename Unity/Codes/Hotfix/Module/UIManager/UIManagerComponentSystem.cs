@@ -204,7 +204,21 @@ namespace ET
             return await self.__InnerOpenWindow<T, P1, P2, P3>(target, p1, p2, p3);
 
         }
+        //打开窗口
+        public static async ETTask<T> OpenWindow<T, P1, P2, P3, P4>(this UIManagerComponent self, string path, P1 p1, P2 p2, P3 p3, P4 p4, UILayerNames layer_name = UILayerNames.NormalLayer) where T : UIBaseContainer, new()
+        {
 
+            string ui_name = typeof(T).Name;
+            var target = self.GetWindow(ui_name);
+            if (target == null)
+            {
+                target = self.__InitWindow<T>(path, layer_name);
+                self.windows[ui_name] = target;
+            }
+            target.Layer = layer_name;
+            return await self.__InnerOpenWindow<T, P1, P2, P3, P4>(target, p1, p2, p3, p4);
+
+        }
         //销毁指定窗口所有窗口
         public static async ETTask DestroyWindowExceptNames(this UIManagerComponent self, string[] type_names = null)
         {
@@ -326,7 +340,12 @@ namespace ET
             view.SetActive(true, p1, p2, p3);
 
         }
+        static void __ActivateWindow<T, P, K, V>(UIWindow target, T p1, P p2, K p3, V p4)
+        {
+            var view = target.GetComponent(target.ViewType) as UIBaseContainer;
+            view.SetActive(true, p1, p2, p3, p4);
 
+        }
         static void __Deactivate(UIWindow target)
         {
             var view = target.GetComponent(target.ViewType) as UIBaseContainer;
@@ -427,7 +446,29 @@ namespace ET
                 coroutineLock?.Dispose();
             }
         }
-
+        static async ETTask<T> __InnerOpenWindow<T, P1, P2, P3, P4>(this UIManagerComponent self, UIWindow target, P1 p1, P2 p2, P3 p3, P4 p4) where T : UIBaseContainer
+        {
+            CoroutineLock coroutineLock = null;
+            try
+            {
+                coroutineLock = await CoroutineLockComponent.Instance.Wait(CoroutineLockType.UIManager, target.GetHashCode());
+                target.Active = true;
+                T res = target.GetComponent(target.ViewType) as T;
+                var need_load = target.LoadingState == UIWindowLoadingState.NotStart;
+                if (need_load)
+                {
+                    target.LoadingState = UIWindowLoadingState.Loading;
+                    await Game.EventSystem.Publish(new UIEventType.InnerOpenWindow() { path = target.PrefabPath, window = target });
+                }
+                await Game.EventSystem.Publish(new UIEventType.ResetWindowLayer() { window = target });
+                await self.__AddWindowToStack(target, p1, p2, p3, p4);
+                return res;
+            }
+            finally
+            {
+                coroutineLock?.Dispose();
+            }
+        }
         static void __InnnerCloseWindow(this UIManagerComponent self, UIWindow target)
         {
             if (target.Active)
@@ -524,7 +565,28 @@ namespace ET
                 await self.CloseWindowByLayer(UILayerNames.GameBackgroudLayer, ui_name);
             }
         }
-
+        static async ETTask __AddWindowToStack<P1, P2, P3, P4>(this UIManagerComponent self, UIWindow target, P1 p1, P2 p2, P3 p3, P4 p4)
+        {
+            var ui_name = target.Name;
+            var layer_name = target.Layer;
+            bool isFirst = true;
+            if (self.window_stack[layer_name].Contains(ui_name))
+            {
+                isFirst = false;
+                self.window_stack[layer_name].Remove(ui_name);
+            }
+            self.window_stack[layer_name].AddFirst(ui_name);
+            await Game.EventSystem.Publish(new UIEventType.AddWindowToStack() { window = target });
+            __ActivateWindow(target, p1, p2, p3, p4);
+            if (isFirst && (layer_name == UILayerNames.BackgroudLayer || layer_name == UILayerNames.GameBackgroudLayer))
+            {
+                //如果是背景layer，则销毁所有的normal层|BackgroudLayer
+                await self.CloseWindowByLayer(UILayerNames.NormalLayer);
+                await self.CloseWindowByLayer(UILayerNames.GameLayer);
+                await self.CloseWindowByLayer(UILayerNames.BackgroudLayer, ui_name);
+                await self.CloseWindowByLayer(UILayerNames.GameBackgroudLayer, ui_name);
+            }
+        }
         /// <summary>
         /// 移除
         /// </summary>

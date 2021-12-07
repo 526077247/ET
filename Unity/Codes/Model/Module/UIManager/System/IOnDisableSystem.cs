@@ -28,7 +28,7 @@ namespace ET
     }
 
     [UISystem]
-    public abstract class OnDisableSystem<T> : IOnDisableSystem where T :UIBaseContainer
+    public abstract class OnDisableSystem<T> : IOnDisableSystem where T : UIBaseContainer
     {
         public Type Type()
         {
@@ -109,5 +109,26 @@ namespace ET
         }
 
         public abstract void OnDisable(T self, A a, B b, C c);
+    }
+
+    [UISystem]
+    public abstract class OnDisableSystem<T, A, B, C, D> : IOnDisableSystem<A, B, C, D> where T : UIBaseContainer
+    {
+        public Type Type()
+        {
+            return typeof(T);
+        }
+
+        public Type SystemType()
+        {
+            return typeof(IOnDisableSystem<A, B, C, D>);
+        }
+
+        public void Run(object o, A a, B b, C c, D d)
+        {
+            this.OnDisable((T)o, a, b, c, d);
+        }
+
+        public abstract void OnDisable(T self, A a, B b, C c, D d);
     }
 }

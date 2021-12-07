@@ -247,6 +247,20 @@ namespace ET
                 UIEventSystem.Instance.OnDisable(this, param1, param2, param3);
             }
         }
+
+        public void SetActive<T, P, K, V>(bool active, T param1, P param2, K param3, V param4)
+        {
+            if (active)
+            {
+                UIEventSystem.Instance.OnEnable(this, param1, param2, param3, param4);
+                Game.EventSystem.Publish(new UIEventType.SetActive() { entity = this, Active = active });
+            }
+            else
+            {
+                Game.EventSystem.Publish(new UIEventType.SetActive() { entity = this, Active = active });
+                UIEventSystem.Instance.OnDisable(this, param1, param2, param3, param4);
+            }
+        }
         /// <summary>
         /// 获取组件
         /// </summary>
