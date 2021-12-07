@@ -61,7 +61,7 @@ namespace AssetBundles
         public void CheckAddressablePath(DirectoryInfo di,string is_atlas_model,Dictionary<string,List<string>> groupDi)
         {
             //Logger.LogError("===========CheckAddressablePath===========" + di.Name);
-            if (di.Name == "LaunchScene")//LaunchScene场景直接放到Scenes in build里
+            if (di.Name == "InitScene")//InitScene场景直接放到Scenes in build里
             {
                 return;
             }

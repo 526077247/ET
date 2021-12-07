@@ -9,7 +9,6 @@ namespace ET
 	public enum SceneNames:byte
     {
 		None,
-        Init,
         Loading,
         Login,
         Map,

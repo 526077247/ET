@@ -42,7 +42,7 @@ public static class CheckAssetBundles
         assebundleNames = AssetDatabase.GetAllAssetBundleNames();
         if (assebundleNames.Length != 0)
         {
-            Logger.LogError("Something wrong!!!");
+            Debug.LogError("Something wrong!!!");
         }
     }
 

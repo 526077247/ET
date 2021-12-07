@@ -17,13 +17,6 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 53732dbd61d672b459e59eb395fc8341
   m_SerializeEntries:
-  - m_GUID: a616d93b858b5e8478549c9cb7af3280
-    m_Address: Fonts/DefaultFont.asset
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - default
-    m_MainAsset: {fileID: 0}
-    m_TargetAsset: {fileID: 0}
   - m_GUID: 5c6670460ff4d7949a514e3c2ad48a2f
     m_Address: Fonts/Mangal SDF.asset
     m_ReadOnly: 0

@@ -13,11 +13,6 @@ namespace ET
     {
         Dictionary<SceneNames,SceneConfig> GetSceneConfig()
         {
-            SceneConfig InitScene = new SceneConfig
-            {
-                SceneAddress = "Scenes/InitScene/Init.unity",
-                Name = SceneNames.Init,
-            };
             SceneConfig LoadingScene = new SceneConfig
             {
                 SceneAddress = "Scenes/LoadingScene/Loading.unity",
@@ -35,7 +30,6 @@ namespace ET
             };
 
             var res = new Dictionary<SceneNames, SceneConfig>();
-            res.Add(InitScene.Name,InitScene);
             res.Add(LoadingScene.Name, LoadingScene);
             res.Add(MapScene.Name, MapScene);
             res.Add(LoginScene.Name, LoginScene);

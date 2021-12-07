@@ -30,7 +30,7 @@ public class AddressableTools
         {
             if (group == null)
             {
-                Logger.LogError("addressable坏了");
+                Debug.LogError("addressable坏了");
             }
         }
 
@@ -490,7 +490,7 @@ public class AddressableTools
         }
         else
         {
-            Logger.LogError("file path error:" + path);
+            Debug.LogError("file path error:" + path);
         }
     }
 
