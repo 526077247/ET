@@ -16,7 +16,7 @@ EditorSettings:
   m_EtcTextureNormalCompressor: 2
   m_EtcTextureBestCompressor: 5
   m_ProjectGenerationIncludedExtensions: txt;xml;fnt;cd;asmdef;asmref
-  m_ProjectGenerationRootNamespace: 
+  m_ProjectGenerationRootNamespace: ET
   m_EnableTextureStreamingInEditMode: 1
   m_EnableTextureStreamingInPlayMode: 1
   m_AsyncShaderCompilation: 1
@@ -30,6 +30,7 @@ EditorSettings:
   m_UseLegacyProbeSampleCount: 1
   m_SerializeInlineMappingsOnOneLine: 0
   m_DisableCookiesInLightmapper: 1
+  m_UseCloudEnlightenBake: 0
   m_AssetPipelineMode: 1
   m_CacheServerMode: 0
   m_CacheServerEndpoint: 
