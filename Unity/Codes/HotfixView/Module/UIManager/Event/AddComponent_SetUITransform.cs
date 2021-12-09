@@ -6,7 +6,7 @@
         {
             if (args.entity.GetType() != typeof(UITransform))
             {
-                args.entity.AddUIComponent<UITransform>("");
+                args.entity.AddUIComponent<UITransform>("").Path = args.Path;
             }
             await ETTask.CompletedTask;
         }

@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace ET
 {
-    public class UIImage:UIBaseContainer
+    public class UIImage:Entity
     {
         public string sprite_path;
         public Image unity_uiimage;

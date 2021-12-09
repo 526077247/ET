@@ -28,7 +28,7 @@ namespace ET
     }
 
     [UISystem]
-    public abstract class OnEnableSystem<T> : IOnEnableSystem where T : UIBaseContainer
+    public abstract class OnEnableSystem<T> : IOnEnableSystem where T : Entity
     {
         public Type Type()
         {
@@ -49,7 +49,7 @@ namespace ET
     }
 
     [UISystem]
-    public abstract class OnEnableSystem<T, A> : IOnEnableSystem<A> where T : UIBaseContainer
+    public abstract class OnEnableSystem<T, A> : IOnEnableSystem<A> where T : Entity
     {
         public Type Type()
         {
@@ -70,7 +70,7 @@ namespace ET
     }
 
     [UISystem]
-    public abstract class OnEnableSystem<T, A, B> : IOnEnableSystem<A, B> where T : UIBaseContainer
+    public abstract class OnEnableSystem<T, A, B> : IOnEnableSystem<A, B> where T : Entity
     {
         public Type Type()
         {
@@ -91,7 +91,7 @@ namespace ET
     }
 
     [UISystem]
-    public abstract class OnEnableSystem<T, A, B, C> : IOnEnableSystem<A, B, C> where T : UIBaseContainer
+    public abstract class OnEnableSystem<T, A, B, C> : IOnEnableSystem<A, B, C> where T : Entity
     {
         public Type Type()
         {
@@ -112,7 +112,7 @@ namespace ET
     }
 
     [UISystem]
-    public abstract class OnEnableSystem<T, A, B, C, D> : IOnEnableSystem<A, B, C, D> where T : UIBaseContainer
+    public abstract class OnEnableSystem<T, A, B, C, D> : IOnEnableSystem<A, B, C, D> where T : Entity
     {
         public Type Type()
         {

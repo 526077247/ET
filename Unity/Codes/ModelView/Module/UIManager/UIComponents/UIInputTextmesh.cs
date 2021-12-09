@@ -1,7 +1,7 @@
 ﻿
 namespace ET
 {
-    public class UIInputTextmesh:UIBaseContainer
+    public class UIInputTextmesh:Entity
     {
         public TMPro.TMP_InputField unity_uiinput;
     }

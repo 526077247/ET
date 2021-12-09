@@ -15,7 +15,7 @@ namespace ET
     /// </summary>
     /// <typeparam name="T"></typeparam>
     [UISystem]
-    public abstract class OnViewInitializationSystem<T> : IOnViewInitializationSystem where T :UIBaseContainer
+    public abstract class OnViewInitializationSystem<T> : IOnViewInitializationSystem where T :Entity
     {
         public Type Type()
         {

@@ -14,7 +14,7 @@ namespace ET
     }
 
     
-    public class UILayer : UIBaseContainer
+    public class UILayer : Entity
     {
         public UILayerNames Name;
         public Canvas unity_canvas;

@@ -9,7 +9,7 @@ using UnityEngine.UI;
 namespace ET
 {
    
-    public class UIRawImage: UIBaseContainer
+    public class UIRawImage: Entity
     {
         public string sprite_path;
         public RawImage unity_uiimage;

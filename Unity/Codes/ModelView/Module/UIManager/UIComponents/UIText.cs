@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace ET
 {
-    public class UIText : UIBaseContainer
+    public class UIText : Entity
     {
         public Text unity_uitext;
         public I18NText unity_i18ncomp_touched;

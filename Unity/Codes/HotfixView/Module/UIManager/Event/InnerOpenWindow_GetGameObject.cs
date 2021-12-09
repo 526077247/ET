@@ -12,7 +12,7 @@ namespace ET
 	    protected override async ETTask Run(UIEventType.InnerOpenWindow args)
         {
 	        var target = args.window;
-	        var view = target.GetComponent(target.ViewType) as UIBaseContainer;
+	        var view = target.GetComponent(target.ViewType);
 	        
 	        await UIEventSystem.Instance.OnViewInitializationSystem(view);
             

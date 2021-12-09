@@ -2,13 +2,14 @@
 
 namespace ET
 {
-    public interface IOnDestroySystem : ISystemType
+    public interface II18NSystem : ISystemType
     {
         void Run(object o);
     }
 
+    
     [UISystem]
-    public abstract class OnDestroySystem<T> : IOnDestroySystem where T :UIBaseContainer
+    public abstract class I18NSystem<T> : II18NSystem where T :Entity
     {
         public Type Type()
         {
@@ -17,15 +18,16 @@ namespace ET
 
         public Type SystemType()
         {
-            return typeof(IOnDestroySystem);
+            return typeof(II18NSystem);
         }
 
         public void Run(object o)
         {
-            this.OnDestroy((T)o);
+            this.OnLanguageChange((T)o);
         }
 
-        public abstract void OnDestroy(T self);
+        public abstract void OnLanguageChange(T self);
     }
 
+   
 }

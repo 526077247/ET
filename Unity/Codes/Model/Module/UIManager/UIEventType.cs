@@ -55,11 +55,12 @@ namespace ET
         //新创建UI组件
         public struct AddComponent
         {
-            public UIBaseContainer entity;
+            public string Path;
+            public Entity entity;
         } 
         public struct SetActive
         {
-            public UIBaseContainer entity;
+            public Entity entity;
             public bool Active;
         } 
     }

@@ -77,7 +77,7 @@ public class UIScriptController
         strBuilder.AppendLine("namespace ET");
         strBuilder.AppendLine("{");
 
-        strBuilder.AppendFormat("\tpublic class {0} : UIBaseContainer\r\n", name);
+        strBuilder.AppendFormat("\tpublic class {0} : Entity\r\n", name);
         strBuilder.AppendLine("\t{");
         strBuilder.AppendFormat("\t\tpublic static string PrefabPath => \"{0}\";", path.Replace(addressable_path, ""))
             .AppendLine();
@@ -118,7 +118,7 @@ public class UIScriptController
 
                 if (!had)
                 {
-                    strBuilder.AppendFormat("\t\tpublic UIBaseContainer {0};", uisc.GetModuleName())
+                    strBuilder.AppendFormat("\t\tpublic Entity {0};", uisc.GetModuleName())
                             .AppendLine();
                 }
             }
@@ -238,7 +238,7 @@ public class UIScriptController
 
                 if (!had)
                 {
-                    strBuilder.AppendFormat("\t\t\tself.{0} = self.AddUIComponent<UIBaseContainer>(\"{1}\");", uisc.GetModuleName(), strTemp)
+                    strBuilder.AppendFormat("\t\t\tself.{0} = self.AddUIComponent<Entity>(\"{1}\");", uisc.GetModuleName(), strTemp)
                             .AppendLine();
                 }
             }

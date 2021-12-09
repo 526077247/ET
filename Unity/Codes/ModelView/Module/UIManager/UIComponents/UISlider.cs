@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace ET
 {
-    public class UISlider: UIBaseContainer
+    public class UISlider: Entity
     {
         public Slider unity_uislider;
         public UnityAction<float> __onValueChanged;

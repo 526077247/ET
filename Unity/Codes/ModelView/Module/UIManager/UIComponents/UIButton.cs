@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 namespace ET
 {
-    public class UIButton : UIBaseContainer
+    public class UIButton : Entity
     {
         public UnityAction __onclick;
         public bool gray_state;

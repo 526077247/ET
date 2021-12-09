@@ -222,7 +222,7 @@ namespace ET
 					}
 				}
 			}
-			(component as UIBaseContainer).AfterOnEnable();
+			component.AfterOnEnable();
 
 		}
 
@@ -250,7 +250,7 @@ namespace ET
 			}
 
 			
-			(component as UIBaseContainer).AfterOnEnable();
+			component.AfterOnEnable();
 		}
 
 		public void OnEnable<P1, P2>(Entity component, P1 p1, P2 p2)
@@ -277,7 +277,7 @@ namespace ET
 			}
 
 			
-			(component as UIBaseContainer).AfterOnEnable();
+			component.AfterOnEnable();
 		}
 
 		public void OnEnable<P1, P2, P3>(Entity component, P1 p1, P2 p2, P3 p3)
@@ -304,7 +304,7 @@ namespace ET
 			}
 
 			
-			(component as UIBaseContainer).AfterOnEnable();
+			component.AfterOnEnable();
 		}
 
 		public void OnEnable<P1, P2, P3, P4>(Entity component, P1 p1, P2 p2, P3 p3, P4 p4)
@@ -331,7 +331,7 @@ namespace ET
 			}
 
 			
-			(component as UIBaseContainer).AfterOnEnable();
+			component.AfterOnEnable();
 		}
 
 		#endregion
@@ -339,7 +339,7 @@ namespace ET
 		#region OnDisable
 		public void OnDisable(Entity component)
 		{
-			(component as UIBaseContainer).BeforeOnDisable();
+			component.BeforeOnDisable();
 			List<object> iOnDisableSystems = this.typeSystems.GetSystems(component.GetType(), typeof(IOnDisableSystem));
 			if (iOnDisableSystems == null)
 			{
@@ -366,7 +366,7 @@ namespace ET
 
 		public void OnDisable<P1>(Entity component, P1 p1)
 		{
-			(component as UIBaseContainer).BeforeOnDisable();
+			component.BeforeOnDisable();
 			List<object> iOnDisableSystems = this.typeSystems.GetSystems(component.GetType(), typeof(IOnDisableSystem<P1>));
 			if (iOnDisableSystems == null)
 			{
@@ -393,7 +393,7 @@ namespace ET
 
 		public void OnDisable<P1, P2>(Entity component, P1 p1, P2 p2)
 		{
-			(component as UIBaseContainer).BeforeOnDisable();
+			component.BeforeOnDisable();
 			List<object> iOnDisableSystems = this.typeSystems.GetSystems(component.GetType(), typeof(IOnDisableSystem<P1, P2>));
 			if (iOnDisableSystems == null)
 			{
@@ -420,7 +420,7 @@ namespace ET
 
 		public void OnDisable<P1, P2, P3>(Entity component, P1 p1, P2 p2, P3 p3)
 		{
-			(component as UIBaseContainer).BeforeOnDisable();
+			component.BeforeOnDisable();
 			List<object> iOnDisableSystems = this.typeSystems.GetSystems(component.GetType(), typeof(IOnDisableSystem<P1, P2, P3>));
 			if (iOnDisableSystems == null)
 			{
@@ -447,7 +447,7 @@ namespace ET
 
 		public void OnDisable<P1, P2, P3, P4>(Entity component, P1 p1, P2 p2, P3 p3, P4 p4)
 		{
-			(component as UIBaseContainer).BeforeOnDisable();
+			component.BeforeOnDisable();
 			List<object> iOnDisableSystems = this.typeSystems.GetSystems(component.GetType(), typeof(IOnDisableSystem<P1, P2, P3, P4>));
 			if (iOnDisableSystems == null)
 			{
@@ -477,7 +477,7 @@ namespace ET
 		#region OnDestroy
 		public void OnDestroy(Entity component)
 		{
-			(component as UIBaseContainer).BeforeOnDestroy();
+			component.BeforeOnDestroy();
 			List<object> iOnDestroySystems = this.typeSystems.GetSystems(component.GetType(), typeof(IOnDestroySystem));
 			if (iOnDestroySystems == null)
 			{

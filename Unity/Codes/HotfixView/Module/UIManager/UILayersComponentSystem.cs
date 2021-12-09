@@ -162,12 +162,12 @@ namespace ET
 		}
 		
 
-		public static UIBaseContainer GetView(this UIManagerComponent self,string ui_name)
+		public static Entity GetView(this UIManagerComponent self,string ui_name)
 		{
 			var res = self.GetWindow(ui_name);
 			if (res != null)
             {
-				return res.GetComponent<UIBaseContainer>();
+				return res.GetComponent<Entity>();
             }
 			return null;
 		}

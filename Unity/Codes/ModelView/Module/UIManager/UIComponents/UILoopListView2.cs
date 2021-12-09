@@ -9,7 +9,7 @@ using UnityEngine.EventSystems;
 
 namespace ET
 {
-    public class UILoopListView2: UIBaseContainer
+    public class UILoopListView2: Entity
     {
         public LoopListView2 unity_uilooplistview;
     }

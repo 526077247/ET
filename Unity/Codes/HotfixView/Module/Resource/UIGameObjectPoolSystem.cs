@@ -9,17 +9,17 @@ namespace ET
 {
     public static class UIGameObjectPoolSystem
     {
-        public static async ETTask<T> GetUIGameObjectAsync<T>(this GameObjectPoolComponent self, string path) where T : UIBaseContainer
+        public static async ETTask<T> GetUIGameObjectAsync<T>(this GameObjectPoolComponent self, string path) where T : Entity
         {
             var obj = await self.GetGameObjectAsync(path);
             if (obj == null) return null;
             T res = self.AddChild<T>();
-            res.AddUIComponentNotCreate<UITransform>("").__transform = obj.transform;
+            res.AddUIComponent<UITransform,Transform>("", obj.transform);
             UIEventSystem.Instance.OnCreate(res);
             return res;
         }
 
-        public static void RecycleUIGameObject<T>(this GameObjectPoolComponent self, T obj,bool isClear = false) where T : UIBaseContainer
+        public static void RecycleUIGameObject<T>(this GameObjectPoolComponent self, T obj,bool isClear = false) where T : Entity
         {
             var uiTrans = obj.GetUIComponent<UITransform>();
             self.RecycleGameObject(uiTrans.transform.gameObject, isClear);

@@ -114,7 +114,7 @@ namespace ET
         /// <param name="self"></param>
         /// <param name="target"></param>
         /// <param name="uiRedDotComponent"></param>
-        public static void AddUIRedDotComponent(this RedDotComponent self, string target, UIBaseContainer uiRedDotComponent)
+        public static void AddUIRedDotComponent(this RedDotComponent self, string target, Entity uiRedDotComponent)
         {
             self.RedDotMonoViewDict[target] = uiRedDotComponent;
         }
@@ -124,7 +124,7 @@ namespace ET
         /// <param name="self"></param>
         /// <param name="target"></param>
         /// <param name="uiRedDotComponent"></param>
-        public static void RemoveUIRedDotComponent(this RedDotComponent self, string target,out UIBaseContainer uiRedDotComponent)
+        public static void RemoveUIRedDotComponent(this RedDotComponent self, string target,out Entity uiRedDotComponent)
         {
             if (self.RedDotMonoViewDict.TryGetValue(target, out uiRedDotComponent))
             {
@@ -156,7 +156,7 @@ namespace ET
                 return;
             }
             
-            self.RedDotMonoViewDict.TryGetValue(target, out UIBaseContainer uiRedDotComponent);
+            self.RedDotMonoViewDict.TryGetValue(target, out Entity uiRedDotComponent);
 
             self.RetainViewCount[target] = Count;
 

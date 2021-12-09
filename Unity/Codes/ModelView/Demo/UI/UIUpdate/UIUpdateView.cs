@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ET
 {
-    public class UIUpdateView : UIBaseContainer
+    public class UIUpdateView : Entity
     {
         public readonly int BTN_CANCEL = 1;
         public readonly int BTN_CONFIRM = 2;

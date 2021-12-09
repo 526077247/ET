@@ -431,7 +431,7 @@ namespace ET
 
         async static ETTask DownloadAllAssetBundle(this UIUpdateView self, long size)
         {
-            var downloadTool = (self as Entity).AddComponent<UnityWebRequestRenewalAsync>();
+            var downloadTool = self.AddComponent<UnityWebRequestRenewalAsync>();
             var total_count = self.m_needdownloadinfo.Count;
             Log.Info("DownloadAllAssetBundle count = " + total_count);
             if (total_count <= 0)
@@ -457,7 +457,7 @@ namespace ET
         }
         static async ETTask DownloadResinfoAsync(this UIUpdateView self, int order)
         {
-            var downloadTool = (self as Entity).GetComponent<UnityWebRequestRenewalAsync>();
+            var downloadTool = self.GetComponent<UnityWebRequestRenewalAsync>();
             var downinfo = self.m_needdownloadinfo[order];
             var url = string.Format("{0}/{1}", self.m_rescdn_url, downinfo.name);
             Log.Info("download ab ============, " + order + " = " + url);

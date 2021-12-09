@@ -9,7 +9,7 @@ namespace ET
 
     
     [UISystem]
-    public abstract class RedDotSystem<T> : IRedDotSystem where T :UIBaseContainer
+    public abstract class RedDotSystem<T> : IRedDotSystem where T :Entity
     {
         public Type Type()
         {

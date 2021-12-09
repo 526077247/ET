@@ -15,8 +15,7 @@ namespace ET
             self.windows = new Dictionary<string, UIWindow>();
             self.window_stack = new Dictionary<UILayerNames, LinkedList<string>>();
             Game.EventSystem.Publish(new UIEventType.AfterUIManagerCreate()).Coroutine();
-            self.UIEventSystem = new UIEventSystem();
-            UIEventSystem.Instance = self.UIEventSystem;
+            UIEventSystem.Instance = new UIEventSystem();
             UIEventSystem.Instance.Awake();
         }
     }
@@ -31,7 +30,6 @@ namespace ET
             self.window_stack.Clear();
             self.window_stack = null;
             UIEventSystem.Instance = null;
-            self.UIEventSystem = null;
             UIManagerComponent.Instance = null;
             Log.Info("UIManagerComponent Dispose");
         }
@@ -69,7 +67,7 @@ namespace ET
 
         /// <param name="active">1打开，-1关闭,0不做限制</param>
         /// <returns></returns>
-        public static T GetWindow<T>(this UIManagerComponent self, int active = 0) where T : UIBaseContainer
+        public static T GetWindow<T>(this UIManagerComponent self, int active = 0) where T : Entity
         {
             string ui_name = typeof(T).Name;
             if (self.windows.TryGetValue(ui_name, out var target))
@@ -82,7 +80,7 @@ namespace ET
             }
             return null;
         }
-        public static async ETTask CloseWindow(this UIManagerComponent self, UIBaseContainer window)
+        public static async ETTask CloseWindow(this UIManagerComponent self, Entity window)
         {
             string ui_name = window.GetType().Name;
             await self.CloseWindow(ui_name);
@@ -103,7 +101,7 @@ namespace ET
             self.__RemoveFromStack(target);
             self.__InnnerCloseWindow(target);
         }
-        public static async ETTask CloseSelf(this UIBaseContainer self)
+        public static async ETTask CloseSelf(this Entity self)
         {
             await UIManagerComponent.Instance.CloseWindow(self);
         }
@@ -146,7 +144,7 @@ namespace ET
             }
         }
         //打开窗口
-        public static async ETTask<T> OpenWindow<T>(this UIManagerComponent self, string path, UILayerNames layer_name = UILayerNames.NormalLayer) where T : UIBaseContainer, new()
+        public static async ETTask<T> OpenWindow<T>(this UIManagerComponent self, string path, UILayerNames layer_name = UILayerNames.NormalLayer) where T : Entity, new()
         {
             string ui_name = typeof(T).Name;
             var target = self.GetWindow(ui_name);
@@ -160,7 +158,7 @@ namespace ET
 
         }
         //打开窗口
-        public static async ETTask<T> OpenWindow<T, P1>(this UIManagerComponent self, string path, P1 p1, UILayerNames layer_name = UILayerNames.NormalLayer) where T : UIBaseContainer, new()
+        public static async ETTask<T> OpenWindow<T, P1>(this UIManagerComponent self, string path, P1 p1, UILayerNames layer_name = UILayerNames.NormalLayer) where T : Entity, new()
         {
 
             string ui_name = typeof(T).Name;
@@ -175,7 +173,7 @@ namespace ET
 
         }
         //打开窗口
-        public static async ETTask<T> OpenWindow<T, P1, P2>(this UIManagerComponent self, string path, P1 p1, P2 p2, UILayerNames layer_name = UILayerNames.NormalLayer) where T : UIBaseContainer, new()
+        public static async ETTask<T> OpenWindow<T, P1, P2>(this UIManagerComponent self, string path, P1 p1, P2 p2, UILayerNames layer_name = UILayerNames.NormalLayer) where T : Entity, new()
         {
 
             string ui_name = typeof(T).Name;
@@ -190,7 +188,7 @@ namespace ET
 
         }
         //打开窗口
-        public static async ETTask<T> OpenWindow<T, P1, P2, P3>(this UIManagerComponent self, string path, P1 p1, P2 p2, P3 p3, UILayerNames layer_name = UILayerNames.NormalLayer) where T : UIBaseContainer, new()
+        public static async ETTask<T> OpenWindow<T, P1, P2, P3>(this UIManagerComponent self, string path, P1 p1, P2 p2, P3 p3, UILayerNames layer_name = UILayerNames.NormalLayer) where T : Entity, new()
         {
 
             string ui_name = typeof(T).Name;
@@ -205,7 +203,7 @@ namespace ET
 
         }
         //打开窗口
-        public static async ETTask<T> OpenWindow<T, P1, P2, P3, P4>(this UIManagerComponent self, string path, P1 p1, P2 p2, P3 p3, P4 p4, UILayerNames layer_name = UILayerNames.NormalLayer) where T : UIBaseContainer, new()
+        public static async ETTask<T> OpenWindow<T, P1, P2, P3, P4>(this UIManagerComponent self, string path, P1 p1, P2 p2, P3 p3, P4 p4, UILayerNames layer_name = UILayerNames.NormalLayer) where T : Entity, new()
         {
 
             string ui_name = typeof(T).Name;
@@ -289,7 +287,7 @@ namespace ET
         }
 
         //判断窗口是否打开
-        public static bool IsActiveWindow<T>(this UIManagerComponent self) where T : UIBaseContainer
+        public static bool IsActiveWindow<T>(this UIManagerComponent self) where T : Entity
         {
             string ui_name = typeof(T).Name;
             var target = self.GetWindow(ui_name);
@@ -303,7 +301,7 @@ namespace ET
         /// <summary>
         /// 初始化window
         /// </summary>
-        static UIWindow __InitWindow<T>(this UIManagerComponent self, string path, UILayerNames layer_name) where T : UIBaseContainer, new()
+        static UIWindow __InitWindow<T>(this UIManagerComponent self, string path, UILayerNames layer_name) where T : Entity, new()
         {
             UIWindow window = self.AddChild<UIWindow>();
             var type = typeof(T);
@@ -319,41 +317,41 @@ namespace ET
 
         static void __ActivateWindow(UIWindow target)
         {
-            var view = target.GetComponent(target.ViewType) as UIBaseContainer;
+            var view = target.GetComponent(target.ViewType);
             view.SetActive(true);
         }
         static void __ActivateWindow<T>(UIWindow target, T p1)
         {
-            var view = target.GetComponent(target.ViewType) as UIBaseContainer;
+            var view = target.GetComponent(target.ViewType);
             view.SetActive(true, p1);
 
         }
         static void __ActivateWindow<T, P>(UIWindow target, T p1, P p2)
         {
-            var view = target.GetComponent(target.ViewType) as UIBaseContainer;
+            var view = target.GetComponent(target.ViewType);
             view.SetActive(true, p1, p2);
 
         }
         static void __ActivateWindow<T, P, K>(UIWindow target, T p1, P p2, K p3)
         {
-            var view = target.GetComponent(target.ViewType) as UIBaseContainer;
+            var view = target.GetComponent(target.ViewType);
             view.SetActive(true, p1, p2, p3);
 
         }
         static void __ActivateWindow<T, P, K, V>(UIWindow target, T p1, P p2, K p3, V p4)
         {
-            var view = target.GetComponent(target.ViewType) as UIBaseContainer;
+            var view = target.GetComponent(target.ViewType);
             view.SetActive(true, p1, p2, p3, p4);
 
         }
         static void __Deactivate(UIWindow target)
         {
-            var view = target.GetComponent(target.ViewType) as UIBaseContainer;
+            var view = target.GetComponent(target.ViewType);
             if (view != null)
                 view.SetActive(false);
         }
 
-        static async ETTask<T> __InnerOpenWindow<T>(this UIManagerComponent self, UIWindow target) where T : UIBaseContainer
+        static async ETTask<T> __InnerOpenWindow<T>(this UIManagerComponent self, UIWindow target) where T : Entity
         {
             CoroutineLock coroutineLock = null;
             try
@@ -377,7 +375,7 @@ namespace ET
             }
 
         }
-        static async ETTask<T> __InnerOpenWindow<T, P1>(this UIManagerComponent self, UIWindow target, P1 p1) where T : UIBaseContainer
+        static async ETTask<T> __InnerOpenWindow<T, P1>(this UIManagerComponent self, UIWindow target, P1 p1) where T : Entity
         {
             CoroutineLock coroutineLock = null;
             try
@@ -400,7 +398,7 @@ namespace ET
                 coroutineLock?.Dispose();
             }
         }
-        static async ETTask<T> __InnerOpenWindow<T, P1, P2>(this UIManagerComponent self, UIWindow target, P1 p1, P2 p2) where T : UIBaseContainer
+        static async ETTask<T> __InnerOpenWindow<T, P1, P2>(this UIManagerComponent self, UIWindow target, P1 p1, P2 p2) where T : Entity
         {
             CoroutineLock coroutineLock = null;
             try
@@ -423,7 +421,7 @@ namespace ET
                 coroutineLock?.Dispose();
             }
         }
-        static async ETTask<T> __InnerOpenWindow<T, P1, P2, P3>(this UIManagerComponent self, UIWindow target, P1 p1, P2 p2, P3 p3) where T : UIBaseContainer
+        static async ETTask<T> __InnerOpenWindow<T, P1, P2, P3>(this UIManagerComponent self, UIWindow target, P1 p1, P2 p2, P3 p3) where T : Entity
         {
             CoroutineLock coroutineLock = null;
             try
@@ -446,7 +444,7 @@ namespace ET
                 coroutineLock?.Dispose();
             }
         }
-        static async ETTask<T> __InnerOpenWindow<T, P1, P2, P3, P4>(this UIManagerComponent self, UIWindow target, P1 p1, P2 p2, P3 p3, P4 p4) where T : UIBaseContainer
+        static async ETTask<T> __InnerOpenWindow<T, P1, P2, P3, P4>(this UIManagerComponent self, UIWindow target, P1 p1, P2 p2, P3 p3, P4 p4) where T : Entity
         {
             CoroutineLock coroutineLock = null;
             try

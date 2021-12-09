@@ -13,6 +13,6 @@ namespace ET
         
         public Dictionary<string, string> ToParentDict = new Dictionary<string, string>();
 
-        public Dictionary<string, UIBaseContainer> RedDotMonoViewDict = new Dictionary<string, UIBaseContainer>();
+        public Dictionary<string, Entity> RedDotMonoViewDict = new Dictionary<string, Entity>();
     }
 }

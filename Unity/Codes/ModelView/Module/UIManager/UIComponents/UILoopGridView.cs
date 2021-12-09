@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 
 namespace ET
 {
-    public class UILoopGridView : UIBaseContainer
+    public class UILoopGridView : Entity
     {
         public LoopGridView unity_uiloopgridview;
     }

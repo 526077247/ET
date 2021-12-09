@@ -1,7 +1,7 @@
 ﻿using System;
 namespace ET
 {
-    public class UISettingItem:UIBaseContainer
+    public class UISettingItem:Entity
     {
         public UIButton Button;
         public UIText Text;

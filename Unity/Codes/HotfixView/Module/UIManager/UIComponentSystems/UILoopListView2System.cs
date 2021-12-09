@@ -38,7 +38,7 @@ namespace ET
 
 
         //item是Unity侧的item对象，在这里创建相应的UI对象
-        public static void AddItemViewComponent<T>(this UILoopListView2 self, LoopListViewItem2 item) where T : UIBaseContainer
+        public static void AddItemViewComponent<T>(this UILoopListView2 self, LoopListViewItem2 item) where T : Entity
         {
             //保证名字不能相同 不然没法cache
             item.gameObject.name = item.gameObject.name + item.ItemId;
@@ -48,7 +48,7 @@ namespace ET
         }
 
         //根据Unity侧item获取UI侧的item
-        public static T GetUIItemView<T>(this UILoopListView2 self, LoopListViewItem2 item) where T : UIBaseContainer
+        public static T GetUIItemView<T>(this UILoopListView2 self, LoopListViewItem2 item) where T : Entity
         {
             return self.GetUIComponent<T>(item.gameObject.name);
         }
