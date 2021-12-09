@@ -304,7 +304,7 @@ namespace ET
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="path"></param>
-        public static void InnerRemoveUIComponent(this Entity self, Entity component, string path)
+        static void InnerRemoveUIComponent(this Entity self, Entity component, string path)
         {
             if (component != null)
             {

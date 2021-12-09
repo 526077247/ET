@@ -118,7 +118,7 @@ public class UIScriptController
 
                 if (!had)
                 {
-                    strBuilder.AppendFormat("\t\tpublic Entity {0};", uisc.GetModuleName())
+                    strBuilder.AppendFormat("\t\tpublic UIEmptyGameobject {0};", uisc.GetModuleName())
                             .AppendLine();
                 }
             }
@@ -238,7 +238,7 @@ public class UIScriptController
 
                 if (!had)
                 {
-                    strBuilder.AppendFormat("\t\t\tself.{0} = self.AddUIComponent<Entity>(\"{1}\");", uisc.GetModuleName(), strTemp)
+                    strBuilder.AppendFormat("\t\t\tself.{0} = self.AddUIComponent<UIEmptyGameobject>(\"{1}\");", uisc.GetModuleName(), strTemp)
                             .AppendLine();
                 }
             }

@@ -14,29 +14,26 @@ using ILRuntime.CLR.Utils;
 
 namespace ILRuntime.Runtime.Generated
 {
-    unsafe class System_Collections_Generic_Dictionary_2_Type_List_1_Object_Binding
+    unsafe class System_Collections_Generic_Dictionary_2_Int64_String_Binding
     {
         public static void Register(ILRuntime.Runtime.Enviorment.AppDomain app)
         {
             BindingFlags flag = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
             MethodBase method;
             Type[] args;
-            Type type = typeof(System.Collections.Generic.Dictionary<System.Type, System.Collections.Generic.List<System.Object>>);
-            args = new Type[]{typeof(System.Type), typeof(System.Collections.Generic.List<System.Object>).MakeByRefType()};
+            Type type = typeof(System.Collections.Generic.Dictionary<System.Int64, System.String>);
+            args = new Type[]{typeof(System.Int64), typeof(System.String).MakeByRefType()};
             method = type.GetMethod("TryGetValue", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, TryGetValue_0);
-            args = new Type[]{};
-            method = type.GetMethod("Clear", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, Clear_1);
-            args = new Type[]{typeof(System.Type)};
-            method = type.GetMethod("ContainsKey", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, ContainsKey_2);
-            args = new Type[]{typeof(System.Type), typeof(System.Collections.Generic.List<System.Object>)};
-            method = type.GetMethod("Add", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, Add_3);
-            args = new Type[]{typeof(System.Type)};
+            args = new Type[]{typeof(System.Int64)};
+            method = type.GetMethod("Remove", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, Remove_1);
+            args = new Type[]{typeof(System.Int64), typeof(System.String)};
+            method = type.GetMethod("set_Item", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, set_Item_2);
+            args = new Type[]{typeof(System.Int64)};
             method = type.GetMethod("get_Item", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, get_Item_4);
+            app.RegisterCLRMethodRedirection(method, get_Item_3);
 
             args = new Type[]{};
             method = type.GetConstructor(flag, null, args, null);
@@ -52,13 +49,13 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 3);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.Collections.Generic.List<System.Object> @value = (System.Collections.Generic.List<System.Object>)typeof(System.Collections.Generic.List<System.Object>).CheckCLRTypes(__intp.RetriveObject(ptr_of_this_method, __mStack));
+            System.String @value = (System.String)typeof(System.String).CheckCLRTypes(__intp.RetriveObject(ptr_of_this_method, __mStack));
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            System.Type @key = (System.Type)typeof(System.Type).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            System.Int64 @key = *(long*)&ptr_of_this_method->Value;
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 3);
-            System.Collections.Generic.Dictionary<System.Type, System.Collections.Generic.List<System.Object>> instance_of_this_method = (System.Collections.Generic.Dictionary<System.Type, System.Collections.Generic.List<System.Object>>)typeof(System.Collections.Generic.Dictionary<System.Type, System.Collections.Generic.List<System.Object>>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            System.Collections.Generic.Dictionary<System.Int64, System.String> instance_of_this_method = (System.Collections.Generic.Dictionary<System.Int64, System.String>)typeof(System.Collections.Generic.Dictionary<System.Int64, System.String>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
 
             var result_of_this_method = instance_of_this_method.TryGetValue(@key, out @value);
 
@@ -110,7 +107,7 @@ namespace ILRuntime.Runtime.Generated
                     break;
                  case ObjectTypes.ArrayReference:
                     {
-                        var instance_of_arrayReference = __mStack[ptr_of_this_method->Value] as System.Collections.Generic.List<System.Object>[];
+                        var instance_of_arrayReference = __mStack[ptr_of_this_method->Value] as System.String[];
                         instance_of_arrayReference[ptr_of_this_method->ValueLow] = @value;
                     }
                     break;
@@ -126,77 +123,59 @@ namespace ILRuntime.Runtime.Generated
             return __ret + 1;
         }
 
-        static StackObject* Clear_1(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
-        {
-            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            StackObject* ptr_of_this_method;
-            StackObject* __ret = ILIntepreter.Minus(__esp, 1);
-
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.Collections.Generic.Dictionary<System.Type, System.Collections.Generic.List<System.Object>> instance_of_this_method = (System.Collections.Generic.Dictionary<System.Type, System.Collections.Generic.List<System.Object>>)typeof(System.Collections.Generic.Dictionary<System.Type, System.Collections.Generic.List<System.Object>>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
-            __intp.Free(ptr_of_this_method);
-
-            instance_of_this_method.Clear();
-
-            return __ret;
-        }
-
-        static StackObject* ContainsKey_2(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* Remove_1(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
             StackObject* __ret = ILIntepreter.Minus(__esp, 2);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.Type @key = (System.Type)typeof(System.Type).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
-            __intp.Free(ptr_of_this_method);
+            System.Int64 @key = *(long*)&ptr_of_this_method->Value;
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            System.Collections.Generic.Dictionary<System.Type, System.Collections.Generic.List<System.Object>> instance_of_this_method = (System.Collections.Generic.Dictionary<System.Type, System.Collections.Generic.List<System.Object>>)typeof(System.Collections.Generic.Dictionary<System.Type, System.Collections.Generic.List<System.Object>>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            System.Collections.Generic.Dictionary<System.Int64, System.String> instance_of_this_method = (System.Collections.Generic.Dictionary<System.Int64, System.String>)typeof(System.Collections.Generic.Dictionary<System.Int64, System.String>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
-            var result_of_this_method = instance_of_this_method.ContainsKey(@key);
+            var result_of_this_method = instance_of_this_method.Remove(@key);
 
             __ret->ObjectType = ObjectTypes.Integer;
             __ret->Value = result_of_this_method ? 1 : 0;
             return __ret + 1;
         }
 
-        static StackObject* Add_3(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* set_Item_2(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
             StackObject* __ret = ILIntepreter.Minus(__esp, 3);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.Collections.Generic.List<System.Object> @value = (System.Collections.Generic.List<System.Object>)typeof(System.Collections.Generic.List<System.Object>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            System.String @value = (System.String)typeof(System.String).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            System.Type @key = (System.Type)typeof(System.Type).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
-            __intp.Free(ptr_of_this_method);
+            System.Int64 @key = *(long*)&ptr_of_this_method->Value;
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 3);
-            System.Collections.Generic.Dictionary<System.Type, System.Collections.Generic.List<System.Object>> instance_of_this_method = (System.Collections.Generic.Dictionary<System.Type, System.Collections.Generic.List<System.Object>>)typeof(System.Collections.Generic.Dictionary<System.Type, System.Collections.Generic.List<System.Object>>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            System.Collections.Generic.Dictionary<System.Int64, System.String> instance_of_this_method = (System.Collections.Generic.Dictionary<System.Int64, System.String>)typeof(System.Collections.Generic.Dictionary<System.Int64, System.String>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
-            instance_of_this_method.Add(@key, @value);
+            instance_of_this_method[key] = value;
 
             return __ret;
         }
 
-        static StackObject* get_Item_4(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* get_Item_3(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
             StackObject* __ret = ILIntepreter.Minus(__esp, 2);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.Type @key = (System.Type)typeof(System.Type).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
-            __intp.Free(ptr_of_this_method);
+            System.Int64 @key = *(long*)&ptr_of_this_method->Value;
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            System.Collections.Generic.Dictionary<System.Type, System.Collections.Generic.List<System.Object>> instance_of_this_method = (System.Collections.Generic.Dictionary<System.Type, System.Collections.Generic.List<System.Object>>)typeof(System.Collections.Generic.Dictionary<System.Type, System.Collections.Generic.List<System.Object>>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            System.Collections.Generic.Dictionary<System.Int64, System.String> instance_of_this_method = (System.Collections.Generic.Dictionary<System.Int64, System.String>)typeof(System.Collections.Generic.Dictionary<System.Int64, System.String>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             var result_of_this_method = instance_of_this_method[key];
@@ -210,7 +189,7 @@ namespace ILRuntime.Runtime.Generated
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* __ret = ILIntepreter.Minus(__esp, 0);
 
-            var result_of_this_method = new System.Collections.Generic.Dictionary<System.Type, System.Collections.Generic.List<System.Object>>();
+            var result_of_this_method = new System.Collections.Generic.Dictionary<System.Int64, System.String>();
 
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
