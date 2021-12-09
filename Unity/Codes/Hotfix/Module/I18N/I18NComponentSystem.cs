@@ -13,18 +13,28 @@ namespace ET
         public override void Awake(I18NComponent self)
         {
             I18NComponent.Instance = self;
-            var res = I18NConfigCategory.Instance.GetAll();
             self.curLangType = PlayerPrefs.GetInt(CacheKeys.CurLangType, 0);
-            self.i18nTextDic = new Dictionary<int, I18NConfig>();
-            self.i18nTextKeyDic = new Dictionary<string, I18NConfig>();
             self.I18NEntity = new Dictionary<long, Entity>();
-            I18NBridge.Instance.i18nTextKeyDic = new Dictionary<string, string>();
+
+            var res = I18NConfigCategory.Instance.GetAll();
+            self.i18nTextKeyDic = new Dictionary<string, string>();
             foreach (var item in res)
             {
-                self.i18nTextDic.Add(item.Key, item.Value);
-                self.i18nTextKeyDic.Add(item.Value.Key, item.Value);
-                I18NBridge.Instance.i18nTextKeyDic.Add(item.Value.Key,self.I18NGetText(item.Value.Key));
+                switch (self.curLangType)
+                {
+                    case I18NComponent.LangType.Chinese:
+                        self.i18nTextKeyDic.Add(item.Value.Key, item.Value.Chinese);
+                        break;
+                    case I18NComponent.LangType.English:
+                        self.i18nTextKeyDic.Add(item.Value.Key, item.Value.English);
+                        break;
+                    default:
+                        self.i18nTextKeyDic.Add(item.Value.Key, item.Value.Chinese);
+                        break;
+                }
             }
+
+            I18NBridge.Instance.i18nTextKeyDic = self.i18nTextKeyDic;
         }
     }
     [ObjectSystem]
@@ -33,9 +43,7 @@ namespace ET
         public override void Destroy(I18NComponent self)
         {
             I18NComponent.Instance = null;
-            self.i18nTextDic.Clear();
             self.i18nTextKeyDic.Clear();
-            self.i18nTextDic = null;
             self.i18nTextKeyDic = null;
             I18NBridge.Instance.i18nTextKeyDic = null;
         }
@@ -46,37 +54,13 @@ namespace ET
         {
             if (!self.i18nTextKeyDic.TryGetValue(key, out var value))
             {
-                value = self.i18nTextDic[0];
+                return key;
             }
-            switch (self.curLangType)
-            {
-                case I18NComponent.LangType.Chinese:
-                    return value.Chinese;
-                case I18NComponent.LangType.English:
-                    return value.English;
-                default:
-                    return value.Chinese;
-            }
+            return value;
         }
 
-        public static string I18NGetText(this I18NComponent self, int id)
-        {
-            if (!self.i18nTextDic.TryGetValue(id, out var value))
-            {
-                value = self.i18nTextDic[0];
-            }
-            switch (self.curLangType)
-            {
-                case I18NComponent.LangType.Chinese:
-                    return value.Chinese;
-                case I18NComponent.LangType.English:
-                    return value.English;
-                default:
-                    return value.Chinese;
-            }
-        }
         /// <summary>
-        /// 根据key取多语言取不到返回默认id0的
+        /// 根据key取多语言取不到返回key
         /// </summary>
         /// <param name="self"></param>
         /// <param name="key"></param>
@@ -86,25 +70,12 @@ namespace ET
         {
             if (!self.i18nTextKeyDic.TryGetValue(key, out var value))
             {
-                value = self.i18nTextDic[0];
-            }
-            string val;
-            switch (self.curLangType)
-            {
-                case I18NComponent.LangType.Chinese:
-                    val = value.Chinese;
-                    break;
-                case I18NComponent.LangType.English:
-                    val = value.English;
-                    break;
-                default:
-                    val = value.Chinese;
-                    break;
+                return key;
             }
             if (paras != null)
-                return string.Format(val, paras);
+                return string.Format(value, paras);
             else
-                return val;
+                return value;
         }
         /// <summary>
         /// 取不到返回key
@@ -114,23 +85,12 @@ namespace ET
         /// <returns></returns>
         public static bool I18NTryGetText(this I18NComponent self, string key, out string result)
         {
-            if (!self.i18nTextKeyDic.TryGetValue(key, out var value))
+            if (!self.i18nTextKeyDic.TryGetValue(key, out result))
             {
                 result = key;
                 return false;
             }
-            switch (self.curLangType)
-            {
-                case I18NComponent.LangType.Chinese:
-                    result = value.Chinese;
-                    return true;
-                case I18NComponent.LangType.English:
-                    result = value.English;
-                    return true;
-                default:
-                    result = value.Chinese;
-                    return true;
-            }
+            return true;
         }
         /// <summary>
         /// 切换语言,外部接口
@@ -141,9 +101,22 @@ namespace ET
             //修改当前语言
             PlayerPrefs.SetInt(CacheKeys.CurLangType, langType);
             self.curLangType = langType;
-            foreach (var item in self.i18nTextKeyDic)
+            var res = I18NConfigCategory.Instance.GetAll();
+            self.i18nTextKeyDic.Clear();
+            foreach (var item in res)
             {
-                I18NBridge.Instance.i18nTextKeyDic.Add(item.Value.Key,self.I18NGetText(item.Value.Key));
+                switch (self.curLangType)
+                {
+                    case I18NComponent.LangType.Chinese:
+                        self.i18nTextKeyDic.Add(item.Value.Key, item.Value.Chinese);
+                        break;
+                    case I18NComponent.LangType.English:
+                        self.i18nTextKeyDic.Add(item.Value.Key, item.Value.English);
+                        break;
+                    default:
+                        self.i18nTextKeyDic.Add(item.Value.Key, item.Value.Chinese);
+                        break;
+                }
             }
 
             var values = self.I18NEntity.Values;

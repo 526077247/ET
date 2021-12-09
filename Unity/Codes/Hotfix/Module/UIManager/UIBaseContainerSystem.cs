@@ -62,7 +62,12 @@ namespace ET
             }
             self.SetLength(self.GetLength()-1);
             if (self.GetLength() <= 0)
-                (self.Parent as Entity).InnerRemoveUIComponent(self,UIManagerComponent.Instance.pathMap[self.Id]);
+            {
+                if (UIManagerComponent.Instance.pathMap.TryGetValue(self.Id, out var path))
+                    self.Parent.InnerRemoveUIComponent(self, path);
+                else
+                    Log.Info("Close window here, type name: "+self.GetType().Name);
+            }    
             else
                 Log.Error("OnDestroy fail, length != 0");
             UIManagerComponent.Instance.componentsMap.Remove(self.Id);

@@ -41,12 +41,16 @@ namespace ET
         }
         public static Transform GetTransform(this Entity self)
         {
-            return self.GetUIComponent<UITransform>("").transform;
+            var uitrans = self.GetUIComponent<UITransform>("");
+            uitrans.ActivatingComponent();
+            return uitrans.transform;
         }
         
         public static GameObject GetGameObject(this Entity self)
         {
-            return self.GetUIComponent<UITransform>("").transform.gameObject;
+            var uitrans = self.GetUIComponent<UITransform>("");
+            uitrans.ActivatingComponent();
+            return uitrans.transform.gameObject;
         }
     }
 }

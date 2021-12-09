@@ -15,8 +15,7 @@ namespace ET
             public const int English = 1;
         }
         public int curLangType;
-        public Dictionary<int, I18NConfig> i18nTextDic;
-        public Dictionary<string, I18NConfig> i18nTextKeyDic;
+        public Dictionary<string, string> i18nTextKeyDic;
         public Dictionary<long, Entity> I18NEntity;
     }
 
