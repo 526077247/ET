@@ -66,6 +66,8 @@ namespace ET
             else
                 Log.Error("OnDestroy fail, length != 0");
             UIManagerComponent.Instance.componentsMap.Remove(self.Id);
+            UIManagerComponent.Instance.lengthMap.Remove(self.Id);
+            UIManagerComponent.Instance.pathMap.Remove(self.Id);
             self.Dispose();
         }
 
