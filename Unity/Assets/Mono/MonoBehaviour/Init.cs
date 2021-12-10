@@ -57,7 +57,6 @@ namespace ET
 
 			InitUnitySetting();
 			
-			Instance = this;
 
 #if ENABLE_IL2CPP
 			this.CodeMode = CodeMode.ILRuntime;
@@ -100,7 +99,7 @@ namespace ET
 
 		private void LateUpdate()
 		{
-			CodeLoader.Instance?.Invoke();
+			CodeLoader.Instance.LateUpdate?.Invoke();
 		}
 
 		private void OnApplicationQuit()
