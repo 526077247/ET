@@ -17,10 +17,6 @@ namespace ET
 	
 	public class Init: MonoBehaviour
 	{
-		public static Init Instance;
-		
-		private CodeLoader codeLoader;
-
 		public CodeMode CodeMode = CodeMode.Mono;
 		
 		private void Awake()
@@ -82,34 +78,34 @@ namespace ET
 
 			Options.Instance = new Options();
 
-			this.codeLoader = CodeLoader.Instance;
+			CodeLoader.Instance.CodeMode = this.CodeMode;
 		}
 
 		private void Start()
 		{
-			this.codeLoader.Start();
+			CodeLoader.Instance.Start();
 		}
 
 		private void Update()
 		{
-			this.codeLoader.Update?.Invoke();
-			if (this.codeLoader.isReStart)
+			CodeLoader.Instance.Update?.Invoke();
+			if (CodeLoader.Instance.isReStart)
 			{
 				Log.Debug("ReStart");
-				this.codeLoader.OnApplicationQuit();
-				this.codeLoader.Start();
-				this.codeLoader.isReStart = false;
+				CodeLoader.Instance.OnApplicationQuit();
+				CodeLoader.Instance.Start();
+				CodeLoader.Instance.isReStart = false;
 			}
 		}
 
 		private void LateUpdate()
 		{
-			this.codeLoader.LateUpdate?.Invoke();
+			CodeLoader.Instance?.Invoke();
 		}
 
 		private void OnApplicationQuit()
 		{
-			this.codeLoader.OnApplicationQuit();
+			CodeLoader.Instance.OnApplicationQuit();
 		}
 		
 		// 一些unity的设置项目

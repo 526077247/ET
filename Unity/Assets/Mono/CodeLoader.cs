@@ -24,13 +24,16 @@ namespace ET
 		private ILRuntime.Runtime.Enviorment.AppDomain appDomain;
 		private MemoryStream assStream ;
 		private MemoryStream pdbStream ;
+		
+		public CodeMode CodeMode { get; set; }
+
 		private CodeLoader()
 		{
 		}
 		
 		public void Start()
 		{
-			switch (Init.Instance.CodeMode)
+			switch (this.CodeMode)
 			{
 				case CodeMode.Mono:
 				{
@@ -87,7 +90,7 @@ namespace ET
 					byte[] pdbBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Data.pdb"));
 					
 					assembly = Assembly.Load(assBytes, pdbBytes);
-					LoadHotfix();
+					this.LoadLogic();
 					IStaticMethod start = new MonoStaticMethod(assembly, "ET.Entry", "Start");
 					start.Run();
 					break;
@@ -96,11 +99,16 @@ namespace ET
 		}
 
 		// 热重载调用下面三个方法
-		// CodeLoader.Instance.LoadHotfix();
+		// CodeLoader.Instance.LoadLogic();
 		// Game.EventSystem.Add(CodeLoader.Instance.GetTypes());
 		// Game.EventSystem.Load();
-		public void LoadHotfix()
+		public void LoadLogic()
 		{
+			if (this.CodeMode != CodeMode.Reload)
+			{
+				throw new Exception("CodeMode != Reload!");
+			}
+			
 			// 傻屌Unity在这里搞了个傻逼优化，认为同一个路径的dll，返回的程序集就一样。所以这里每次编译都要随机名字
 			string[] logicFiles = Directory.GetFiles(Define.BuildOutputDir, "Logic_*.dll");
 			if (logicFiles.Length != 1)
