@@ -2,14 +2,14 @@
 namespace ET
 {
     [UISystem]
-    public class UITransformOnCreateSystem: OnCreateSystem<UITransform,Transform>
+    public class UITransformOnCreateSystem : OnCreateSystem<UITransform, Transform>
     {
-        public override void OnCreate(UITransform self,Transform transform)
+        public override void OnCreate(UITransform self, Transform transform)
         {
             self.transform = transform;
         }
     }
-    
+
     public static class UITransformSystem
     {
         public static Transform ActivatingComponent(this UITransform self)
@@ -41,14 +41,22 @@ namespace ET
         }
         public static Transform GetTransform(this Entity self)
         {
-            var uitrans = self.GetUIComponent<UITransform>("");
+            UITransform uitrans;
+            if (self.GetType() != typeof(UITransform))
+                uitrans = self.GetUIComponent<UITransform>("");
+            else
+                uitrans = self as UITransform;
             uitrans.ActivatingComponent();
             return uitrans.transform;
         }
-        
+
         public static GameObject GetGameObject(this Entity self)
         {
-            var uitrans = self.GetUIComponent<UITransform>("");
+            UITransform uitrans;
+            if (self.GetType() != typeof(UITransform))
+                uitrans = self.GetUIComponent<UITransform>("");
+            else
+                uitrans = self as UITransform;
             uitrans.ActivatingComponent();
             return uitrans.transform.gameObject;
         }

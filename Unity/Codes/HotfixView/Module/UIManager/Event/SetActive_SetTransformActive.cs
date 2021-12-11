@@ -4,11 +4,7 @@
     {
         protected override async ETTask Run(UIEventType.SetActive args)
         {
-            var uitrans = args.entity.GetUIComponent<UITransform>();
-            if (uitrans!=null)
-            {
-                uitrans.transform?.gameObject.SetActive(args.Active);
-            }
+            args.entity.GetGameObject()?.SetActive(args.Active);
             await ETTask.CompletedTask;
         }
     }

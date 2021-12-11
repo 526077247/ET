@@ -43,6 +43,13 @@ namespace ET
             var insid = new InstanceIdStruct(gateid);
             uint localConn = (uint)((ulong)channelid & uint.MaxValue);
             var routerlist = await GetRouterListFake();
+            if (routerlist == null)
+            {
+                self.Tcs?.SetResult("");
+                self.Tcs = null;
+                Log.Error("从cdn获取路由失败");
+                return;
+            }
             Log.Debug("路由数量:" + routerlist.Length.ToString());
             Log.Debug("gateid:" + insid.Value.ToString());
             byte[] buffer = self.cache;
