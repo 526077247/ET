@@ -70,7 +70,7 @@ namespace ET
             await UIManagerComponent.Instance.CloseWindow<UIMsgBoxWin>();
             return result;
         }
-        public static async ETVoid StartCheckUpdate(this UIUpdateView self)
+        public static async ETTask StartCheckUpdate(this UIUpdateView self)
         {
             //TODO 网络检查 
             await self.CheckIsInWhiteList();

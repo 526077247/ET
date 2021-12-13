@@ -23,7 +23,7 @@ namespace ET
     /// </summary>
     public class SwitchRouterComponent : Entity
     {
-        public async ETVoid ChangeRouter()
+        public async ETTask ChangeRouter()
         {
             Session session = GetParent<Session>();
             session.RemoveComponent<SessionIdleCheckerComponent>();

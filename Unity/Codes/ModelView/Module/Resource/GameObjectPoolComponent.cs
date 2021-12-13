@@ -320,7 +320,7 @@ namespace ET
 			callback?.Invoke();
 		}
 
-		async ETVoid __CheckAfter(string path, GameObject inst)
+		async ETTask __CheckAfter(string path, GameObject inst)
 		{
 			await TimerComponent.Instance.WaitAsync(2000);
 			if (inst != null && inst.transform != null && __CheckInstIsInPool(path, inst))

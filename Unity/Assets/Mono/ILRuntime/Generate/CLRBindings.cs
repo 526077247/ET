@@ -52,9 +52,8 @@ namespace ILRuntime.Runtime.Generated
             ET_Log_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Int32_ILTypeInstance_Binding.Register(app);
             ET_TimeHelper_Binding.Register(app);
-            ET_AsyncETVoidMethodBuilder_Binding.Register(app);
-            ET_ETTask_1_Int32_Binding.Register(app);
             ET_ETAsyncTaskMethodBuilder_Binding.Register(app);
+            ET_ETTask_1_Int32_Binding.Register(app);
             ET_ETTask_1_ILTypeInstance_Binding.Register(app);
             ET_ETTask_Binding.Register(app);
             ET_NetworkHelper_Binding.Register(app);
@@ -89,7 +88,6 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_SortedDictionary_2_Int32_ILTypeInstance_Binding_ValueCollection_Binding.Register(app);
             System_Collections_Generic_SortedDictionary_2_Int32_ILTypeInstance_Binding_ValueCollection_Binding_Enumerator_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_ILTypeInstance_Binding.Register(app);
-            ET_ETVoid_Binding.Register(app);
             System_Type_Binding.Register(app);
             System_Collections_Generic_HashSet_1_Type_Binding.Register(app);
             System_Collections_Generic_HashSet_1_Type_Binding_Enumerator_Binding.Register(app);
@@ -202,13 +200,13 @@ namespace ILRuntime.Runtime.Generated
             UnityEngine_Rendering_Universal_UniversalAdditionalCameraData_Binding.Register(app);
             System_Collections_Generic_List_1_Camera_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Byte_ILTypeInstance_Binding.Register(app);
-            UnityEngine_Component_Binding.Register(app);
             UnityEngine_UI_Button_Binding.Register(app);
             UnityEngine_Events_UnityEvent_Binding.Register(app);
             UnityEngine_Events_UnityAction_Binding.Register(app);
             UnityEngine_Behaviour_Binding.Register(app);
             UnityEngine_UI_Selectable_Binding.Register(app);
             UnityEngine_UI_Graphic_Binding.Register(app);
+            UnityEngine_Component_Binding.Register(app);
             TextColorCtrl_Binding.Register(app);
             UnityEngine_Color_Binding.Register(app);
             ET_ETTask_1_Material_Binding.Register(app);

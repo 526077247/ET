@@ -35,7 +35,7 @@ namespace ET
             return new string[]{"172.22.213.58:10007", "172.22.213.58:10008", "172.22.213.58:10009", };
 #endif
         }
-        private static async ETVoid SynAsync(GetRouterComponent self, long gateid, long channelid)
+        private static async ETTask SynAsync(GetRouterComponent self, long gateid, long channelid)
         {
             self.CancellationToken = new ETCancellationToken();
             self.Tcs = ETTask<string>.Create();

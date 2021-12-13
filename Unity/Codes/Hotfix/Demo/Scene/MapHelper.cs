@@ -5,7 +5,7 @@ namespace ET
 {
     public static class MapHelper
     {
-        public static async ETVoid EnterMapAsync(Scene zoneScene)
+        public static async ETTask EnterMapAsync(Scene zoneScene)
         {
             try
             {
