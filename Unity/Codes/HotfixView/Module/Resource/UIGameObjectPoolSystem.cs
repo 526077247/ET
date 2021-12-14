@@ -23,6 +23,7 @@ namespace ET
         {
             var uiTrans = obj.GetUIComponent<UITransform>();
             self.RecycleGameObject(uiTrans.transform.gameObject, isClear);
+            obj.BeforeOnDestroy();
             UIEventSystem.Instance.OnDestroy(obj);
         }
     }

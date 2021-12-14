@@ -23,6 +23,7 @@ namespace ET
 					else
 						GameObjectPoolComponent.Instance.RecycleGameObject(obj);
 				}
+				view.BeforeOnDestroy();
 				UIEventSystem.Instance.OnDestroy(view);
 			}
 			await ETTask.CompletedTask;

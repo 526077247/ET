@@ -25,6 +25,7 @@ namespace ET
             UIEventSystem.Instance.OnCreate(ui);
             UIEventSystem.Instance.OnEnable(ui,Content);
             await TimerComponent.Instance.WaitAsync(seconds*1000);
+            ui.BeforeOnDestroy();
             UIEventSystem.Instance.OnDestroy(ui);
             GameObjectPoolComponent.Instance.RecycleGameObject(gameObject);
         }
