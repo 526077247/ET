@@ -13,57 +13,49 @@ namespace ET
     {
         public override void Awake(CameraManagerComponent self)
         {
-            self.Awake();
+            CameraManagerComponent.Instance = self;
         }
     }
-    public class CameraManagerComponent:Entity
-    {
-        public static CameraManagerComponent Instance;
-        GameObject m_scene_main_camera_go;
-        Camera m_scene_main_camera;
-        public void Awake()
-        {
-            Instance = this;
 
+    [ObjectSystem]
+    public class CameraManagerComponentDestroySystem : DestroySystem<CameraManagerComponent>
+    {
+        public override void Destroy(CameraManagerComponent self)
+        {
+            CameraManagerComponent.Instance = null;
         }
+    }
+    public static class CameraManagerComponentSystem
+    {
+        
         //在场景loading开始时设置camera statck
         //loading时场景被销毁，这个时候需要将UI摄像机从overlay->base
-        public void SetCameraStackAtLoadingStart()
+        public static void SetCameraStackAtLoadingStart(this CameraManagerComponent self)
         {
             var ui_camera = UIManagerComponent.Instance.GetUICamera();
             ui_camera.GetUniversalAdditionalCameraData().renderType = CameraRenderType.Base;
-            ResetSceneCamera();
+            self.ResetSceneCamera();
         }
 
-        public void  ResetSceneCamera()
+        public static void  ResetSceneCamera(this CameraManagerComponent self)
         {
-            m_scene_main_camera_go = null;
-            m_scene_main_camera = null;
+            self.m_scene_main_camera_go = null;
+            self.m_scene_main_camera = null;
         }
-        public void SetCameraStackAtLoadingDone()
+        public static void SetCameraStackAtLoadingDone(this CameraManagerComponent self)
         {
-            m_scene_main_camera_go = GameObject.Find("Main Camera");
-            m_scene_main_camera = m_scene_main_camera_go.GetComponent<Camera>();
+            self.m_scene_main_camera_go = GameObject.Find("Main Camera");
+            self.m_scene_main_camera = self.m_scene_main_camera_go.GetComponent<Camera>();
             var ui_camera = UIManagerComponent.Instance.GetUICamera();
-            m_scene_main_camera.GetUniversalAdditionalCameraData().renderType = CameraRenderType.Base;
-            __AddOverlayCamera(m_scene_main_camera, ui_camera);
+            self.m_scene_main_camera.GetUniversalAdditionalCameraData().renderType = CameraRenderType.Base;
+            __AddOverlayCamera(self.m_scene_main_camera, ui_camera);
         }
 
 
-        void __AddOverlayCamera(Camera baseCamera, Camera overlayCamera)
+        static void __AddOverlayCamera(Camera baseCamera, Camera overlayCamera)
         {
             overlayCamera.GetUniversalAdditionalCameraData().renderType = CameraRenderType.Overlay;
             baseCamera.GetUniversalAdditionalCameraData().cameraStack.Add(overlayCamera);
-        }
-        public override void Dispose()
-        {
-            if (this.IsDisposed)
-            {
-                return;
-            }
-            base.Dispose();
-
-            Instance = null;
         }
     }
 }
