@@ -85,8 +85,8 @@
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_Dictionary_2_Int32_Int64_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_Dictionary_2_String_Boolean_Binding.cs" />
      <Compile Include="Assets\Mono\UIComponent\TextColorCtrl.cs" />
-     <Compile Include="Assets\Mono\ILRuntime\Generate\System_Action_1_Material_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\ET_ETTask_1_Int64_Binding.cs" />
+     <Compile Include="Assets\Mono\ILRuntime\Generate\System_Action_1_Material_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_KeyValuePair_2_Byte_ILTypeInstance_Binding.cs" />
      <Compile Include="Assets\Mono\AssetBundle\Utility\AssetBundleUtility.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\UnityEngine_Networking_DownloadHandler_Binding.cs" />
@@ -712,17 +712,8 @@
  <Reference Include="IFix.Core">
  <HintPath>E:/GitProject/ET_Framwork/Unity/Assets/Plugins/IFix.Core.dll</HintPath>
  </Reference>
- <Reference Include="ILRuntime.Mono.Cecil">
- <HintPath>E:/GitProject/ET_Framwork/Unity/Assets/ThirdParty/ILRuntime/Plugins/ILRuntime.Mono.Cecil.dll</HintPath>
- </Reference>
- <Reference Include="ILRuntime.Mono.Cecil.Mdb">
- <HintPath>E:/GitProject/ET_Framwork/Unity/Assets/ThirdParty/ILRuntime/Plugins/ILRuntime.Mono.Cecil.Mdb.dll</HintPath>
- </Reference>
  <Reference Include="CommandLine">
  <HintPath>E:/GitProject/ET_Framwork/Unity/Assets/Plugins/CommandLine.dll</HintPath>
- </Reference>
- <Reference Include="ILRuntime.Mono.Cecil.Pdb">
- <HintPath>E:/GitProject/ET_Framwork/Unity/Assets/ThirdParty/ILRuntime/Plugins/ILRuntime.Mono.Cecil.Pdb.dll</HintPath>
  </Reference>
  <Reference Include="EPPlus">
  <HintPath>E:/GitProject/ET_Framwork/Unity/Assets/Editor/ArtToolsEditor/EPPlus.dll</HintPath>
@@ -732,6 +723,15 @@
  </Reference>
  <Reference Include="ICSharpCode.SharpZipLib">
  <HintPath>E:/GitProject/ET_Framwork/Unity/Assets/Plugins/ICSharpCode.SharpZipLib.dll</HintPath>
+ </Reference>
+ <Reference Include="ILRuntime.Mono.Cecil">
+ <HintPath>E:/GitProject/ET_Framwork/Unity/Assets/ThirdParty/ILRuntime/Plugins/ILRuntime.Mono.Cecil.dll</HintPath>
+ </Reference>
+ <Reference Include="ILRuntime.Mono.Cecil.Pdb">
+ <HintPath>E:/GitProject/ET_Framwork/Unity/Assets/ThirdParty/ILRuntime/Plugins/ILRuntime.Mono.Cecil.Pdb.dll</HintPath>
+ </Reference>
+ <Reference Include="ILRuntime.Mono.Cecil.Mdb">
+ <HintPath>E:/GitProject/ET_Framwork/Unity/Assets/ThirdParty/ILRuntime/Plugins/ILRuntime.Mono.Cecil.Mdb.dll</HintPath>
  </Reference>
  <Reference Include="mscorlib">
  <HintPath>C:/Program Files/Unity/Hub/Editor/2020.3.22f1/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>
