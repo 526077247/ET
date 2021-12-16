@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace ET
 {
-	public class CodeLoader: IDisposable
+	public class CodeLoader
 	{
 		public static CodeLoader Instance = new CodeLoader();
 
@@ -18,8 +18,6 @@ namespace ET
 		public Action OnApplicationQuit;
 
 		private Assembly assembly;
-
-		private ILRuntime.Runtime.Enviorment.AppDomain appDomain;
 		
 		private Type[] allTypes;
 		
@@ -31,11 +29,6 @@ namespace ET
 
 		private CodeLoader()
 		{
-		}
-
-		public void Dispose()
-		{
-			this.appDomain?.Dispose();
 		}
 		
 		public void Start()
