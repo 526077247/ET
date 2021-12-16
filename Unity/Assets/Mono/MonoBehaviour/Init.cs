@@ -107,6 +107,7 @@ namespace ET
 		private void OnApplicationQuit()
 		{
 			CodeLoader.Instance.OnApplicationQuit();
+			CodeLoader.Instance.Dispose();
 		}
 		
 		// 一些unity的设置项目
