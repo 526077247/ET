@@ -9,10 +9,7 @@ using System.Threading;
 [Serializable]
 [DebuggerDisplay("Count = {Count}")]
 [ComVisible(false)]
-public class UncheckedStack<T> : IEnumerable<T>, IEnumerable, ICollection
-#if NET_4_6 || NET_STANDARD_2_0
-	, IReadOnlyCollection<T>
-#endif
+public class UncheckedStack<T> : IEnumerable<T>, IEnumerable, ICollection, IReadOnlyCollection<T>
 {
 	[Serializable]
 	public struct Enumerator : IEnumerator<T>, IDisposable, IEnumerator
