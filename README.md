@@ -6,6 +6,7 @@
 4. 默认渲染管线更改为URP
 5. 使用InjectFix实现了ILRuntime不能热更的Mono部分代码热修复，以备不时之需
 6. 实现了服务端软路由
+7. ILRuntime使用1.6版本(也修复了try中return 无catch finally中代码不执行等问题)，2.0先观望一下，后面再升
 
 # __讨论QQ群 : 474643097__  
 
