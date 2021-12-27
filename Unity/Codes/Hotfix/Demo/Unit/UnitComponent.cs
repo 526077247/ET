@@ -55,7 +55,7 @@ namespace ET
 
 		public static void Clear(this UnitComponent self)
 		{
-			self.MyUnit = null;
+			self.MyId = 0;
 			foreach (Unit unit in self.idUnits.Values)
 			{
 				unit.Dispose();
