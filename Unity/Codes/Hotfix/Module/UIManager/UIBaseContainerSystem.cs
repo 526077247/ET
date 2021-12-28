@@ -141,7 +141,7 @@ namespace ET
             UIManagerComponent.Instance.pathMap[component_inst.Id] = path;
 
             self.RecordUIComponent(path, type, component_inst);
-            Game.EventSystem.Publish(new UIEventType.AddComponent() { Path = path, entity = component_inst }).Coroutine();
+            Game.EventSystem.Publish(new UIEventType.AddComponent() { Path = path, entity = component_inst });
             UIEventSystem.Instance.OnCreate(component_inst);
             self.SetLength(self.GetLength() + 1);
             return component_inst;
@@ -158,7 +158,7 @@ namespace ET
             T component_inst = self.AddChild<T>();
             UIManagerComponent.Instance.pathMap[component_inst.Id] = path;
 
-            Game.EventSystem.Publish(new UIEventType.AddComponent() { Path = path, entity = component_inst }).Coroutine();
+            Game.EventSystem.Publish(new UIEventType.AddComponent() { Path = path, entity = component_inst });
             UIEventSystem.Instance.OnCreate(component_inst, a);
 
             self.RecordUIComponent(path, type, component_inst);
@@ -176,7 +176,7 @@ namespace ET
             T component_inst = self.AddChild<T>();
             UIManagerComponent.Instance.pathMap[component_inst.Id] = path;
 
-            Game.EventSystem.Publish(new UIEventType.AddComponent() { Path = path, entity = component_inst }).Coroutine();
+            Game.EventSystem.Publish(new UIEventType.AddComponent() { Path = path, entity = component_inst });
             UIEventSystem.Instance.OnCreate(component_inst, a, b);
 
             self.RecordUIComponent(path, type, component_inst);
@@ -194,7 +194,7 @@ namespace ET
             T component_inst = self.AddChild<T>();
             UIManagerComponent.Instance.pathMap[component_inst.Id] = path;
 
-            Game.EventSystem.Publish(new UIEventType.AddComponent() {Path = path, entity = component_inst }).Coroutine();
+            Game.EventSystem.Publish(new UIEventType.AddComponent() {Path = path, entity = component_inst });
             UIEventSystem.Instance.OnCreate(component_inst, a, b, c);
 
             self.RecordUIComponent(path, type, component_inst);
@@ -208,11 +208,11 @@ namespace ET
             {
                 UIEventSystem.Instance.OnEnable(self);
                 self.AfterOnEnable();
-                Game.EventSystem.Publish(new UIEventType.SetActive() { entity = self, Active = active }).Coroutine();
+                Game.EventSystem.Publish(new UIEventType.SetActive() { entity = self, Active = active });
             }
             else
             {
-                Game.EventSystem.Publish(new UIEventType.SetActive() { entity = self, Active = active }).Coroutine();
+                Game.EventSystem.Publish(new UIEventType.SetActive() { entity = self, Active = active });
                 self.BeforeOnDisable();
                 UIEventSystem.Instance.OnDisable(self);
             }
@@ -224,11 +224,11 @@ namespace ET
             {
                 UIEventSystem.Instance.OnEnable(self, param1);
                 self.AfterOnEnable();
-                Game.EventSystem.Publish(new UIEventType.SetActive() { entity = self, Active = active }).Coroutine();
+                Game.EventSystem.Publish(new UIEventType.SetActive() { entity = self, Active = active });
             }
             else
             {
-                Game.EventSystem.Publish(new UIEventType.SetActive() { entity = self, Active = active }).Coroutine();
+                Game.EventSystem.Publish(new UIEventType.SetActive() { entity = self, Active = active });
                 self.BeforeOnDisable();
                 UIEventSystem.Instance.OnDisable(self, param1);
             }
@@ -239,11 +239,11 @@ namespace ET
             {
                 UIEventSystem.Instance.OnEnable(self, param1, param2);
                 self.AfterOnEnable();
-                Game.EventSystem.Publish(new UIEventType.SetActive() { entity = self, Active = active }).Coroutine();
+                Game.EventSystem.Publish(new UIEventType.SetActive() { entity = self, Active = active });
             }
             else
             {
-                Game.EventSystem.Publish(new UIEventType.SetActive() { entity = self, Active = active }).Coroutine();
+                Game.EventSystem.Publish(new UIEventType.SetActive() { entity = self, Active = active });
                 self.BeforeOnDisable();
                 UIEventSystem.Instance.OnDisable(self, param1, param2);
             }
@@ -254,11 +254,11 @@ namespace ET
             {
                 UIEventSystem.Instance.OnEnable(self, param1, param2, param3);
                 self.AfterOnEnable();
-                Game.EventSystem.Publish(new UIEventType.SetActive() { entity = self, Active = active }).Coroutine();
+                Game.EventSystem.Publish(new UIEventType.SetActive() { entity = self, Active = active });
             }
             else
             {
-                Game.EventSystem.Publish(new UIEventType.SetActive() { entity = self, Active = active }).Coroutine();
+                Game.EventSystem.Publish(new UIEventType.SetActive() { entity = self, Active = active });
                 self.BeforeOnDisable();
                 UIEventSystem.Instance.OnDisable(self, param1, param2, param3);
             }
@@ -270,11 +270,11 @@ namespace ET
             {
                 UIEventSystem.Instance.OnEnable(self, param1, param2, param3, param4);
                 self.AfterOnEnable();
-                Game.EventSystem.Publish(new UIEventType.SetActive() { entity = self, Active = active }).Coroutine();
+                Game.EventSystem.Publish(new UIEventType.SetActive() { entity = self, Active = active });
             }
             else
             {
-                Game.EventSystem.Publish(new UIEventType.SetActive() { entity = self, Active = active }).Coroutine();
+                Game.EventSystem.Publish(new UIEventType.SetActive() { entity = self, Active = active });
                 self.BeforeOnDisable();
                 UIEventSystem.Instance.OnDisable(self, param1, param2, param3, param4);
             }
