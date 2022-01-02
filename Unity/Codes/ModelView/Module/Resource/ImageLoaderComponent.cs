@@ -311,12 +311,12 @@ namespace ET
             if (subIndex >= 0)
             {
                 //有子目录
-                var prefix = image_path.Substring(0, index);
-                var name = substr.Substring(0, subIndex - 1);
+                var prefix = image_path.Substring(0, index + 1);
+                var name = substr.Substring(0, subIndex);
                 atlasPath = string.Format("{0}{1}.spriteatlas", prefix, "Atlas_" + name);
                 var dotIndex = substr.LastIndexOf(".");
                 var lastSlashIndex = substr.LastIndexOf('/');
-                spriteName = substr.Substring(lastSlashIndex, dotIndex);
+                spriteName = substr.Substring(lastSlashIndex + 1, dotIndex - lastSlashIndex - 1);
             }
             else
             {
