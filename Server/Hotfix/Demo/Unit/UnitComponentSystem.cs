@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace ET
 {
     [ObjectSystem]
@@ -14,7 +12,6 @@ namespace ET
     {
         public override void Destroy(UnitComponent self)
         {
-            self.idUnits.Clear();
         }
     }
     
@@ -22,31 +19,18 @@ namespace ET
     {
         public static void Add(this UnitComponent self, Unit unit)
         {
-            self.idUnits.Add(unit.Id, unit);
         }
 
         public static Unit Get(this UnitComponent self, long id)
         {
-            self.idUnits.TryGetValue(id, out Unit unit);
+            Unit unit = self.GetChild<Unit>(id);
             return unit;
         }
 
         public static void Remove(this UnitComponent self, long id)
         {
-            Unit unit;
-            self.idUnits.TryGetValue(id, out unit);
-            self.idUnits.Remove(id);
+            Unit unit = self.GetChild<Unit>(id);
             unit?.Dispose();
-        }
-
-        public static void RemoveNoDispose(this UnitComponent self, long id)
-        {
-            self.idUnits.Remove(id);
-        }
-
-        public static Unit[] GetAll(this UnitComponent self)
-        {
-            return self.idUnits.Values.ToArray();
         }
     }
 }
