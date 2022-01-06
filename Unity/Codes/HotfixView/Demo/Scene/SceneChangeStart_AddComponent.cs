@@ -7,24 +7,8 @@ namespace ET
             await ETTask.CompletedTask;
 
             Scene zoneScene = args.ZoneScene;
-            
-            // 加载场景资源
-            await ResourcesComponent.Instance.LoadBundleAsync("map.unity3d");
-            // 切换到map场景
-
-            SceneChangeComponent sceneChangeComponent = null;
-            try
-            {
-                sceneChangeComponent = Game.Scene.AddComponent<SceneChangeComponent>();
-                {
-                    await sceneChangeComponent.ChangeSceneAsync("Map");
-                }
-            }
-            finally
-            {
-                sceneChangeComponent?.Dispose();
-            }
-			
+            if(args.Name=="Map")
+                await SceneManagerComponent.Instance.SwitchScene<MapScene>(SceneNames.Map);
 
             args.ZoneScene.AddComponent<OperaComponent>();
         }

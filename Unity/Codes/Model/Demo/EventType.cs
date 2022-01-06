@@ -11,6 +11,7 @@ namespace ET
         public struct SceneChangeStart
         {
             public Scene ZoneScene;
+            public string Name;
         }
         
         

@@ -89,7 +89,7 @@ namespace ET
             else
             {
                 Log.Info("不需要更新，直接进入游戏");
-                Scene zoneScene = await SceneFactory.CreateZoneScene(1, "Game", Game.Scene);
+                Scene zoneScene = SceneFactory.CreateZoneScene(1, "Game", Game.Scene);
 
                 await Game.EventSystem.PublishAsync(new EventType.AppStartInitFinish() { ZoneScene = zoneScene });
                 self.CloseSelf();

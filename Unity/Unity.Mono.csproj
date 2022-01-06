@@ -144,6 +144,7 @@
     <Compile Include="Assets\Mono\ILRuntime\IDisposableAdapter.cs" />
     <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_Dictionary_2_String_Resver_Binding_Enumera.cs" />
     <Compile Include="Assets\Mono\MonoBehaviour\UIScriptCreator.cs" />
+    <Compile Include="Assets\Mono\Module\NetworkTCP\WChannel.cs" />
     <Compile Include="Assets\Mono\ILRuntime\Generate\ET_ErrorCore_Binding.cs" />
     <Compile Include="Assets\Mono\UIComponent\CopyGameObject.cs" />
     <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_Dictionary_2_Int32_ILTypeInstance_Binding__t2.cs" />
@@ -235,6 +236,7 @@
     <Compile Include="Assets\Mono\ILRuntime\Generate\ET_Log_Binding.cs" />
     <Compile Include="Assets\Mono\MonoBehaviour\ComponentView.cs" />
     <Compile Include="Assets\Mono\Core\Options.cs" />
+    <Compile Include="Assets\Mono\Module\NetworkTCP\WService.cs" />
     <Compile Include="Assets\Mono\UIComponent\Empty4Raycast.cs" />
     <Compile Include="Assets\Mono\AssetBundle\Runtime\AssetBundleMgr.cs" />
     <Compile Include="Assets\Mono\SuperScrollView\Common\CommonDefine.cs" />

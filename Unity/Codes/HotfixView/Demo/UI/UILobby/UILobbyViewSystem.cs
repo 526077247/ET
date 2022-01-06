@@ -25,7 +25,7 @@ namespace ET
         
         public static void OnEnterBtnClick(this UILobbyView self)
         {
-            MapHelper.EnterMapAsync(self.zoneScene).Coroutine();
+	        EnterMapHelper.EnterMapAsync(self.zoneScene).Coroutine();
         }
     }
 }

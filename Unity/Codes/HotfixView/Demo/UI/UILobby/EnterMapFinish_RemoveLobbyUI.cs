@@ -6,7 +6,6 @@
 		{
             Scene zoneScene = args.ZoneScene;
             await SceneManagerComponent.Instance.SwitchScene<MapScene>(SceneNames.Map);
-            zoneScene.AddComponent<OperaComponent>();
             //container.AddComponent<CameraComponent>();
             await UIManagerComponent.Instance.DestroyWindow<UILoadingView>();
 
