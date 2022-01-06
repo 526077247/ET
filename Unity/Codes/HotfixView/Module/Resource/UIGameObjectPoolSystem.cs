@@ -9,7 +9,7 @@ namespace ET
 {
     public static class UIGameObjectPoolSystem
     {
-        public static async ETTask<T> GetUIGameObjectAsync<T>(this GameObjectPoolComponent self, string path) where T : Entity
+        public static async ETTask<T> GetUIGameObjectAsync<T>(this GameObjectPoolComponent self, string path) where T : Entity,IAwake
         {
             var obj = await self.GetGameObjectAsync(path);
             if (obj == null) return null;

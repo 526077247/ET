@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace ET
 {
-    public class UIRedDotComponent:Entity
+    public class UIRedDotComponent:Entity,IAwake
     {
         public GameObject TempObj;
         public RedDotMonoView unity_target;

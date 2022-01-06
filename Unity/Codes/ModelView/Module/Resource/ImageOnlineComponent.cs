@@ -23,7 +23,7 @@ namespace ET
             self.Awake();
         }
     }
-    public class ImageOnlineComponent:Entity
+    public class ImageOnlineComponent:Entity,IAwake
     {
         public static ImageOnlineComponent Instance { get; set; }
         Dictionary<string, ImageOnlineInfo> m_cacheOnlineSprite;

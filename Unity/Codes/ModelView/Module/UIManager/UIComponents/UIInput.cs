@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace ET
 {
-    public class UIInput: Entity
+    public class UIInput: Entity,IAwake
     {
         public InputField unity_uiinput;
     }

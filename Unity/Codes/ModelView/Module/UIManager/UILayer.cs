@@ -14,7 +14,7 @@ namespace ET
     }
 
     
-    public class UILayer : Entity
+    public class UILayer : Entity,IAwake<UILayerDefine, GameObject>,IDestroy
     {
         public UILayerNames Name;
         public Canvas unity_canvas;

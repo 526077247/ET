@@ -1,7 +1,7 @@
 ﻿using System;
 namespace ET
 {
-    public class SceneLoadComponent:Entity
+    public class SceneLoadComponent:Entity,IAwake,IDestroy
     {
         //场景配置
         public ListComponent<ETTask> PreLoadTask;

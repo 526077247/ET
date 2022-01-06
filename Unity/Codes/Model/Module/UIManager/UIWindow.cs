@@ -12,7 +12,7 @@ namespace ET
 		Loading, //加载中
 		LoadOver, //加载完成
     }
-	public class UIWindow : Entity
+	public class UIWindow : Entity,IAwake
 	{
 		/// <summary>
 		/// 窗口名字

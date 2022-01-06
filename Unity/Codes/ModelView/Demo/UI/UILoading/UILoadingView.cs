@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 namespace ET
 {
-	public class UILoadingView : Entity
+	public class UILoadingView : Entity,IAwake
 	{
 		public static UILoadingView Instance;
 		public static string PrefabPath => "UI/UILoading/Prefabs/UILoadingView.prefab";

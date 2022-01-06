@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace ET
 {
-    public class UIToast : Entity
+    public class UIToast : Entity,IAwake
 	{
 		public UITextmesh Text;
     }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ET
 {
-    public class UIEmptyGameobject:Entity
+    public class UIEmptyGameobject:Entity,IAwake
     {
     }
 }

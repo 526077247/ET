@@ -9,9 +9,9 @@ using UnityEngine.UI;
 namespace ET
 {
     [UISystem]
-    public class UISliderDestorySystem : DestroySystem<UISlider>
+    public class UISliderDestorySystem : OnDestroySystem<UISlider>
     {
-        public override void Destroy(UISlider self)
+        public override void OnDestroy(UISlider self)
         {
             self.RemoveOnValueChanged();
         }

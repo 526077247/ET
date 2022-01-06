@@ -8,7 +8,7 @@ using UnityEngine;
 namespace ET
 {
 	
-	public class UILayersComponent : Entity
+	public class UILayersComponent : Entity,IAwake,IDestroy
     {
 		public static UILayersComponent Instance;
 		public string UIRootPath;//UIRoot路径

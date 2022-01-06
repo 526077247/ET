@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ET
 {
-    public class SceneManagerComponent:Entity
+    public class SceneManagerComponent:Entity,IAwake,IDestroy
     {
         public List<string> ScenesChangeIgnoreClean ;
         public List<string> DestroyWindowExceptNames;

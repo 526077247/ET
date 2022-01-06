@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace ET
 {
-    public class UISlider: Entity
+    public class UISlider: Entity,IAwake
     {
         public Slider unity_uislider;
         public UnityAction<float> __onValueChanged;

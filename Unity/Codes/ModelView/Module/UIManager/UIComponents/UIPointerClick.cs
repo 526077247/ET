@@ -7,7 +7,7 @@ using UnityEngine.Events;
 
 namespace ET
 {
-    public class UIPointerClick : Entity
+    public class UIPointerClick : Entity,IAwake
     {
         public UnityAction __onclick;
         public PointerClick unity_pointerclick;

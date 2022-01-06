@@ -47,7 +47,7 @@ namespace ET
     /// <summary>
     /// 软路由服务组件
     /// </summary>
-    public sealed class RouterServiceComponent : Entity
+    public sealed class RouterServiceComponent : Entity,IAwake<IPEndPoint>,IUpdate,IDestroy
     {
         // RouterService创建的时间
         public long StartTime;

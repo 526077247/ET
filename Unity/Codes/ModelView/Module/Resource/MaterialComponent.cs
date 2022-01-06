@@ -15,7 +15,7 @@ namespace ET
             self.Awake();
         }
     }
-    public class MaterialComponent : Entity
+    public class MaterialComponent : Entity,IAwake
     {
         public static MaterialComponent Instance { get; set; }
         Dictionary<string, Material> m_cacheMaterial;

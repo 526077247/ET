@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace ET
 {
-    public class CameraManagerComponent: Entity
+    public class CameraManagerComponent: Entity,IAwake,IDestroy
     {
         public static CameraManagerComponent Instance;
         public GameObject m_scene_main_camera_go;

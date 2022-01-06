@@ -7,7 +7,7 @@ namespace ET
     /// <summary>
     /// 初始获取路由组件
     /// </summary>
-    public class GetRouterComponent : Entity
+    public class GetRouterComponent : Entity,IAwake<long,long>,IUpdate,IDestroy
     {
         public int ChangeTimes;
         public Socket socket;

@@ -33,7 +33,7 @@ namespace ET
 
 	//	不管是销毁还是回收，都不要污染go，保证干净
 	//--]]
-	public class GameObjectPoolComponent : Entity
+	public class GameObjectPoolComponent : Entity,IAwake
 	{
 		AddressablesManager AddressablesManager;
 		Transform __cacheTransRoot;

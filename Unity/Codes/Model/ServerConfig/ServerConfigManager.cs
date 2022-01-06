@@ -16,7 +16,7 @@ namespace ET
 			self.Awake();
 		}
 	}
-	public class ServerConfigManagerComponent: Entity
+	public class ServerConfigManagerComponent: Entity,IAwake
     {
 		readonly string ServerKey = "ServerId";
 		private readonly int defaultServer = 1;

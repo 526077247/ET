@@ -27,7 +27,7 @@ namespace ET
             self.Awake();
         }
     }
-    public class ImageLoaderComponent : Entity
+    public class ImageLoaderComponent : Entity,IAwake
     {
         const string ATLAS_KEY = "/Atlas/";
         Type sprite_type = typeof(Sprite);

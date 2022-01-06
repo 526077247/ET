@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace ET
 {
-    public class ToastComponent:Entity
+    public class ToastComponent:Entity,IAwake,IDestroy
     {
         public static ToastComponent Instance;
         public Transform root; 

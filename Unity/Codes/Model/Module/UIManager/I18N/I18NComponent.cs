@@ -5,7 +5,7 @@ using System;
 
 namespace ET
 {
-    public class I18NComponent : Entity
+    public class I18NComponent : Entity,IAwake,IDestroy
     {
         public static I18NComponent Instance;
         //语言类型枚举

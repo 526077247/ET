@@ -10,9 +10,9 @@ using UnityEngine.EventSystems;
 namespace ET
 {
     [UISystem]
-    public class UILoopGridViewDestorySystem : DestroySystem<UILoopGridView>
+    public class UILoopGridViewDestorySystem : OnDestroySystem<UILoopGridView>
     {
-        public override void Destroy(UILoopGridView self)
+        public override void OnDestroy(UILoopGridView self)
         {
             self.unity_uiloopgridview?.ClearListView();
             self.unity_uiloopgridview = null;
@@ -41,7 +41,7 @@ namespace ET
         }
 
         //item是Unity侧的item对象，在这里创建相应的UI对象
-        public static void AddItemViewComponent<T>(this UILoopGridView self, LoopGridViewItem item) where T : Entity
+        public static void AddItemViewComponent<T>(this UILoopGridView self, LoopGridViewItem item) where T : Entity,IAwake
         {
             //保证名字不能相同 不然没法cache
             item.gameObject.name = item.gameObject.name + item.ItemId;
@@ -51,7 +51,7 @@ namespace ET
         }
 
         //根据Unity侧item获取UI侧的item
-        public static T GetUIItemView<T>(this UILoopGridView self, LoopGridViewItem item) where T : Entity
+        public static T GetUIItemView<T>(this UILoopGridView self, LoopGridViewItem item) where T : Entity,IAwake
         {
             return self.GetUIComponent<T>(item.gameObject.name);
         }

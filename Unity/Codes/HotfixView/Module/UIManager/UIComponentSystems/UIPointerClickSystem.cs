@@ -8,9 +8,9 @@ using UnityEngine.Events;
 namespace ET
 {
     [UISystem]
-    public class UIPointerClickDestorySystem : DestroySystem<UIPointerClick>
+    public class UIPointerClickDestorySystem : OnDestroySystem<UIPointerClick>
     {
-        public override void Destroy(UIPointerClick self)
+        public override void OnDestroy(UIPointerClick self)
         {
             if (self.__onclick != null)
                 self.unity_pointerclick.onClick.RemoveListener(self.__onclick);

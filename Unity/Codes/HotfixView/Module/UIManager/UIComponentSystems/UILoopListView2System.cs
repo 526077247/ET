@@ -6,9 +6,9 @@ using UnityEngine.EventSystems;
 namespace ET
 {
     [UISystem]
-    public class UILoopListView2DestorySystem : DestroySystem<UILoopListView2>
+    public class UILoopListView2DestorySystem : OnDestroySystem<UILoopListView2>
     {
-        public override void Destroy(UILoopListView2 self)
+        public override void OnDestroy(UILoopListView2 self)
         {
             self.unity_uilooplistview?.ClearListView();
             self.unity_uilooplistview = null;
@@ -38,7 +38,7 @@ namespace ET
 
 
         //item是Unity侧的item对象，在这里创建相应的UI对象
-        public static void AddItemViewComponent<T>(this UILoopListView2 self, LoopListViewItem2 item) where T : Entity
+        public static void AddItemViewComponent<T>(this UILoopListView2 self, LoopListViewItem2 item) where T : Entity,IAwake
         {
             //保证名字不能相同 不然没法cache
             item.gameObject.name = item.gameObject.name + item.ItemId;
@@ -48,7 +48,7 @@ namespace ET
         }
 
         //根据Unity侧item获取UI侧的item
-        public static T GetUIItemView<T>(this UILoopListView2 self, LoopListViewItem2 item) where T : Entity
+        public static T GetUIItemView<T>(this UILoopListView2 self, LoopListViewItem2 item) where T : Entity,IAwake
         {
             return self.GetUIComponent<T>(item.gameObject.name);
         }

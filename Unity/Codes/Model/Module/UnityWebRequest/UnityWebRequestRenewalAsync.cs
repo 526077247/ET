@@ -6,6 +6,7 @@ using UnityEngine.Networking;
 
 namespace ET
 {
+    [ObjectSystem]
     public class UnityWebRequestRenewalUpdateSystem: UpdateSystem<UnityWebRequestRenewalAsync>
     {
         public override void Update(UnityWebRequestRenewalAsync self)
@@ -17,7 +18,7 @@ namespace ET
     /// <summary>
     /// 断点续传实现
     /// </summary>
-    public class UnityWebRequestRenewalAsync: Entity, IUpdate
+    public class UnityWebRequestRenewalAsync: Entity,IAwake, IUpdate
     {
         public static AcceptAllCertificate certificateHandler = new AcceptAllCertificate();
 

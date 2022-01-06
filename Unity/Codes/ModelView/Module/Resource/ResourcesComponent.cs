@@ -23,7 +23,7 @@ namespace ET
     //-- 2、对于串行执行一连串的异步操作，建议使用协程（用同步形式的代码写异步逻辑），回调方式会使代码难读
     //-- 3、理论上做到逻辑层脚本对AB名字是完全透明的，所有资源只有packagePath的概念，这里对路径进行处理
     //--]]
-    public class ResourcesComponent: Entity
+    public class ResourcesComponent: Entity,IAwake
     {
         public static ResourcesComponent Instance { get; set; }
         AddressablesManager AddressablesManager;
