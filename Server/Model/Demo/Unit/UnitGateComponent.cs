@@ -9,7 +9,7 @@
 		}
 	}
 
-	public class UnitGateComponent : Entity, ITransfer
+	public class UnitGateComponent : Entity, IAwake<long>, ITransfer
 	{
 		public long GateSessionActorId;
 
