@@ -42,9 +42,8 @@ namespace ET
             self.ScenesChangeIgnoreClean = new List<string>();
             self.DestroyWindowExceptNames = new List<string>();
             SceneManagerComponent.Instance = self;
-            self.scenes = new Dictionary<SceneNames, BaseScene>();
             self.SceneConfigs = GetSceneConfig();
-
+            self.current_scene = SceneNames.None;
         }
     }
 
@@ -53,8 +52,6 @@ namespace ET
     {
         public override void Destroy(SceneManagerComponent self)
         {
-            self.scenes.Clear();
-            self.scenes = null;
             self.ScenesChangeIgnoreClean = null;
             self.DestroyWindowExceptNames = null;
             self.SceneConfigs = null;
@@ -71,7 +68,7 @@ namespace ET
     {
         
         //切换场景
-        async static ETTask InnerSwitchScene<T>(this SceneManagerComponent self,SceneConfig scene_config,bool needclean = false) where T: BaseScene,new()
+        async static ETTask InnerSwitchScene(this SceneManagerComponent self,SceneConfig scene_config,bool needclean = false,SceneLoadComponent slc = null)
         {
             float slid_value = 0;
             Log.Info("InnerSwitchScene start open uiloading");
@@ -88,11 +85,7 @@ namespace ET
                 await TimerComponent.Instance.WaitAsync(1);
             }
             //清理旧场景
-            if (self.current_scene!=null)
-            {
-                self.current_scene.CoOnLeave();
-            }
-            
+
             slid_value += 0.01f;
             Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value });
             await TimerComponent.Instance.WaitAsync(1);
@@ -151,12 +144,7 @@ namespace ET
             await Game.EventSystem.PublishAsync(new UIEventType.LoadingProgress { Progress = slid_value });
             Log.Info("初始化目标场景 Start");
             //初始化目标场景
-            if (!self.scenes.TryGetValue(scene_config.Name,out var logic_scene))
-            {
-                logic_scene = self.AddChild<T,SceneConfig>(scene_config);
-                self.scenes[scene_config.Name] = logic_scene;
-            }
-            logic_scene.OnEnter();
+            
 
             slid_value += 0.02f;
             await Game.EventSystem.PublishAsync(new UIEventType.LoadingProgress { Progress = slid_value });
@@ -167,17 +155,20 @@ namespace ET
             slid_value += 0.65f;
             await Game.EventSystem.PublishAsync(new UIEventType.LoadingProgress { Progress = slid_value });
             //准备工作：预加载资源等
-            await logic_scene.OnPrepare((progress) =>
+            if (slc != null)
             {
-                Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value + 0.15f * progress });
-                if (progress > 1) Log.Error("scene load waht's the fuck!");
-            });
+                await slc.OnPrepare((progress) =>
+                {
+                    Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value + 0.15f * progress });
+                    if (progress > 1) Log.Error("scene load waht's the fuck!");
+                });
+            }
 
             slid_value += 0.15f;
             await Game.EventSystem.PublishAsync(new UIEventType.LoadingProgress { Progress = slid_value });
             CameraManagerComponent.Instance.SetCameraStackAtLoadingDone();
-            self.current_scene = logic_scene;
-            logic_scene.CoOnComplete();
+            self.current_scene = scene_config.Name;
+
             slid_value = 1;
             await Game.EventSystem.PublishAsync(new UIEventType.LoadingProgress { Progress = slid_value });
             //等久点，跳的太快
@@ -187,58 +178,48 @@ namespace ET
             //释放loading界面引用的资源
             GameObjectPoolComponent.Instance.CleanupWithPathArray(true, cleanup_besides_path);
             self.busing = false;
-            logic_scene.OnSwitchSceneEnd();
+
         }
         //切换场景
-        public static async ETTask SwitchScene<T>(this SceneManagerComponent self, SceneConfig scene_config,bool needclean = false) where T : BaseScene, new()
+        public static async ETTask SwitchScene(this SceneManagerComponent self, SceneConfig scene_config,bool needclean = false,SceneLoadComponent slc = null)
         {
             if (self.busing) return;
             if (scene_config==null) return;
-            if (self.current_scene != null && self.current_scene.scene_config.Name == scene_config.Name)
+            if (self.current_scene == scene_config.Name)
                 return;
             self.busing = true;
-            await self.InnerSwitchScene<T>(scene_config,needclean);
+            await self.InnerSwitchScene(scene_config,needclean,slc);
         }
         //切换场景
-        public static async ETTask SwitchScene<T>(this SceneManagerComponent self, SceneNames scene_name, bool needclean = false) where T : BaseScene, new()
+        public static async ETTask SwitchScene(this SceneManagerComponent self, SceneNames scene_name, bool needclean = false,SceneLoadComponent slc = null)
         {
             if (self.busing) return;
             var scene_config = self.GetSceneConfigByName(scene_name);
             if (scene_config == null) return;
-            if (self.current_scene != null && self.current_scene.scene_config.Name == scene_config.Name)
+            if (self.current_scene == scene_config.Name)
                 return;
             self.busing = true;
-            await self.InnerSwitchScene<T>(scene_config, needclean);
+            await self.InnerSwitchScene(scene_config,needclean,slc);
         }
         //切换场景
-        public static async ETTask SwitchScene<T>(this SceneManagerComponent self, int scene_id, bool needclean = false) where T : BaseScene, new()
+        public static async ETTask SwitchScene(this SceneManagerComponent self, int scene_id, bool needclean = false,SceneLoadComponent slc = null)
         {
             if (self.busing) return;
             var scene_config = self.GetSceneConfigById(scene_id);
             if (scene_config == null) return;
-            if (self.current_scene != null && self.current_scene.scene_config.Name == scene_config.Name)
+            if (self.current_scene == scene_config.Name)
                 return;
             self.busing = true;
-            await self.InnerSwitchScene<T>(scene_config, needclean);
+            await self.InnerSwitchScene(scene_config,needclean,slc);
         }
-        //获取当前场景
-        public static BaseScene GetCurrentScene(this SceneManagerComponent self)
+        public static SceneNames GetCurrentSceneName(this SceneManagerComponent self)
         {
             return self.current_scene;
         }
 
-        public static SceneNames GetCurrentSceneName(this SceneManagerComponent self)
-        {
-            if (self.current_scene != null)
-            {
-                return self.current_scene.scene_config.Name;
-            }
-            return SceneNames.None;
-        }
-
         public static bool IsInTargetScene(this SceneManagerComponent self,SceneConfig scene_config)
         {
-            return self.current_scene != null && self.current_scene.scene_config.Name == scene_config.Name;
+            return self.current_scene == scene_config.Name;
         }
 
         public static SceneConfig GetSceneConfigByName(this SceneManagerComponent self, SceneNames name)

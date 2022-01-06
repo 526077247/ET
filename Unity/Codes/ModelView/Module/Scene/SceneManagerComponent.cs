@@ -14,11 +14,9 @@ namespace ET
 
         public Dictionary<SceneNames, SceneConfig> SceneConfigs;
         //当前场景
-        public BaseScene current_scene;
+        public SceneNames current_scene;
         //是否忙
         public bool busing = false;
-        //场景对象
-        public Dictionary<SceneNames, BaseScene> scenes;
 
     }
 }

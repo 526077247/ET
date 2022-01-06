@@ -23,23 +23,38 @@ namespace ILRuntime.Runtime.Generated
             Type[] args;
             Type type = typeof(ET.ETTask<UnityEngine.Material>);
             args = new Type[]{};
+            method = type.GetMethod("Coroutine", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, Coroutine_0);
+            args = new Type[]{};
             method = type.GetMethod("GetAwaiter", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, GetAwaiter_0);
+            app.RegisterCLRMethodRedirection(method, GetAwaiter_1);
             args = new Type[]{};
             method = type.GetMethod("get_IsCompleted", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, get_IsCompleted_1);
+            app.RegisterCLRMethodRedirection(method, get_IsCompleted_2);
             args = new Type[]{};
             method = type.GetMethod("GetResult", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, GetResult_2);
-            args = new Type[]{};
-            method = type.GetMethod("Coroutine", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, Coroutine_3);
+            app.RegisterCLRMethodRedirection(method, GetResult_3);
 
 
         }
 
 
-        static StackObject* GetAwaiter_0(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* Coroutine_0(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        {
+            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
+            StackObject* ptr_of_this_method;
+            StackObject* __ret = ILIntepreter.Minus(__esp, 1);
+
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
+            ET.ETTask<UnityEngine.Material> instance_of_this_method = (ET.ETTask<UnityEngine.Material>)typeof(ET.ETTask<UnityEngine.Material>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            __intp.Free(ptr_of_this_method);
+
+            instance_of_this_method.Coroutine();
+
+            return __ret;
+        }
+
+        static StackObject* GetAwaiter_1(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
@@ -54,7 +69,7 @@ namespace ILRuntime.Runtime.Generated
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 
-        static StackObject* get_IsCompleted_1(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* get_IsCompleted_2(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
@@ -71,7 +86,7 @@ namespace ILRuntime.Runtime.Generated
             return __ret + 1;
         }
 
-        static StackObject* GetResult_2(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* GetResult_3(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
@@ -84,21 +99,6 @@ namespace ILRuntime.Runtime.Generated
             var result_of_this_method = instance_of_this_method.GetResult();
 
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
-        }
-
-        static StackObject* Coroutine_3(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
-        {
-            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            StackObject* ptr_of_this_method;
-            StackObject* __ret = ILIntepreter.Minus(__esp, 1);
-
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            ET.ETTask<UnityEngine.Material> instance_of_this_method = (ET.ETTask<UnityEngine.Material>)typeof(ET.ETTask<UnityEngine.Material>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
-            __intp.Free(ptr_of_this_method);
-
-            instance_of_this_method.Coroutine();
-
-            return __ret;
         }
 
 

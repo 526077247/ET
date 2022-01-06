@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ET
 {
-    public partial class SceneConfig
+    public class SceneConfig
     {
         public string SceneAddress;
         public SceneNames Name; 
