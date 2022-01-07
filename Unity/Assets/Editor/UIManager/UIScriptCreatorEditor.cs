@@ -47,7 +47,7 @@ public class UIScriptCreatorEditor : Editor
         Debug.Log("生成完成");
     }
 
-    [MenuItem("GameObject/生成UI代码/开始标记", false, 22)]
+    [MenuItem("GameObject/生成UI代码/开始或取消标记", false, 22)]
     static void OpenMarkCreateUIFilesPanel(MenuCommand menuCommand)
     {
         if (IsMarking)

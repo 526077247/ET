@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEditor;
 using System.IO;
+using ET;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -39,15 +40,16 @@ public class UIScriptController
         WidgetInterfaceList = new Dictionary<Type, string>();
         WidgetInterfaceList.Add(typeof(SuperScrollView.LoopListView2), "UILoopListView2");
         WidgetInterfaceList.Add(typeof(SuperScrollView.LoopGridView), "UILoopGridView");
+        WidgetInterfaceList.Add(typeof(CopyGameObject), "UICopyGameObject");
+        WidgetInterfaceList.Add(typeof(PointerClick), "UIPointerClick");
         WidgetInterfaceList.Add(typeof(Button), "UIButton");
-        WidgetInterfaceList.Add(typeof(Text), "UIText");
         WidgetInterfaceList.Add(typeof(InputField), "UIInput");
         WidgetInterfaceList.Add(typeof(Slider), "UISlider");
         WidgetInterfaceList.Add(typeof(Image), "UIImage");
         WidgetInterfaceList.Add(typeof(RawImage), "UIRawImage");
+        WidgetInterfaceList.Add(typeof(Text), "UIText");
         WidgetInterfaceList.Add(typeof(TMPro.TMP_Text), "UITextmesh");
         WidgetInterfaceList.Add(typeof(TMPro.TMP_InputField), "UIInputTextmesh");
-        WidgetInterfaceList.Add(typeof(PointerClick), "UIPointerClick");
     }
 
     static void GenerateEntityCode(GameObject go, string path)
@@ -216,7 +218,7 @@ public class UIScriptController
                         {
                             strBuilder.AppendFormat("\t\t\tself.{0}.InitListView(0,(a,b)=>{{return self.Get{1}ItemByIndex(a,b);}});", uisc.GetModuleName(), uisc.GetModuleName())
                                     .AppendLine();
-                            tempBuilder.AppendFormat("\t\tpublic static LoopListViewItem2 Get{0}ItemByIndex(this {1} self,LoopListView2 listView, int index)", uisc.GetModuleName(), name)
+                            tempBuilder.AppendFormat("\t\tpublic static LoopListViewItem2 Get{0}ItemByIndex(this {1} self, LoopListView2 listView, int index)", uisc.GetModuleName(), name)
                                     .AppendLine();
                             tempBuilder.AppendLine("\t\t{");
                             tempBuilder.AppendLine("\t\t\treturn null;");
@@ -226,10 +228,19 @@ public class UIScriptController
                         {
                             strBuilder.AppendFormat("\t\t\tself.{0}.InitGridView(0,(a,b,c,d)=>{{return self.Get{1}ItemByIndex(a,b,c,d);}});", uisc.GetModuleName(), uisc.GetModuleName())
                                     .AppendLine();
-                            tempBuilder.AppendFormat("\t\tpublic static LoopGridViewItem Get{0}ItemByIndex(this {1} self,LoopGridView gridview,int index, int row, int column)", uisc.GetModuleName(), name)
+                            tempBuilder.AppendFormat("\t\tpublic static LoopGridViewItem Get{0}ItemByIndex(this {1} self, LoopGridView gridview, int index, int row, int column)", uisc.GetModuleName(), name)
                                     .AppendLine();
                             tempBuilder.AppendLine("\t\t{");
                             tempBuilder.AppendLine("\t\t\treturn null;");
+                            tempBuilder.AppendLine("\t\t}");
+                        }
+                        else if (uiComponent.Key == typeof(CopyGameObject))
+                        {
+                            strBuilder.AppendFormat("\t\t\tself.{0}.InitListView(0,(a,b)=>{{self.Get{1}ItemByIndex(a,b);}});", uisc.GetModuleName(), uisc.GetModuleName())
+                                    .AppendLine();
+                            tempBuilder.AppendFormat("\t\tpublic static void Get{0}ItemByIndex(this {1} self, int index, GameObject obj)", uisc.GetModuleName(), name)
+                                    .AppendLine();
+                            tempBuilder.AppendLine("\t\t{");
                             tempBuilder.AppendLine("\t\t}");
                         }
                         break;
