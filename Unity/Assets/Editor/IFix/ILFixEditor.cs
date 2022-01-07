@@ -144,7 +144,7 @@ namespace IFix.Editor
             }
         }
 
-        [MenuItem("InjectFix/Inject", false, 1)]
+        [MenuItem("Tools/InjectFix/Inject")]
         public static void InjectAssemblys()
         {
             if (EditorApplication.isCompiling || Application.isPlaying)
@@ -866,7 +866,7 @@ namespace IFix.Editor
             AssetDatabase.Refresh();
         }
 
-        [MenuItem("InjectFix/Fix", false, 2)]
+        [MenuItem("Tools/InjectFix/Fix")]
         public static void Patch()
         {
             EditorUtility.DisplayProgressBar("Generate Patch for Edtior", "patching...", 0);
@@ -889,7 +889,7 @@ namespace IFix.Editor
         }
 
 #if UNITY_2018_3_OR_NEWER
-        [MenuItem("InjectFix/Fix(Android)", false, 3)]
+        [MenuItem("Tools/InjectFix/Fix(Android)")]
         public static void CompileToAndroid()
         {
             EditorUtility.DisplayProgressBar("Generate Patch for Android", "patching...", 0);
@@ -904,7 +904,7 @@ namespace IFix.Editor
             EditorUtility.ClearProgressBar();
         }
 
-        [MenuItem("InjectFix/Fix(IOS)", false, 4)]
+        [MenuItem("Tools/InjectFix/Fix(IOS)")]
         public static void CompileToIOS()
         {
             EditorUtility.DisplayProgressBar("Generate Patch for IOS", "patching...", 0);
