@@ -205,7 +205,7 @@ public class UIScriptController
                         had = true;
                         strBuilder.AppendFormat("\t\t\tself.{0} = self.AddUIComponent<{1}>(\"{2}\");", uisc.GetModuleName(), uiComponent.Value, strTemp)
                             .AppendLine();
-                        if (uiComponent.Key == typeof(Button))
+                        if (uiComponent.Key == typeof(Button) || uiComponent.Key == typeof(PointerClick))
                         {
                             strBuilder.AppendFormat("\t\t\tself.{0}.SetOnClick(()=>{{self.OnClick{1}();}});", uisc.GetModuleName(), uisc.GetModuleName())
                                     .AppendLine();
@@ -240,7 +240,7 @@ public class UIScriptController
                                     .AppendLine();
                             tempBuilder.AppendFormat("\t\tpublic static void Get{0}ItemByIndex(this {1} self, int index, GameObject obj)", uisc.GetModuleName(), name)
                                     .AppendLine();
-                            tempBuilder.AppendLine("\t\t{");
+                            tempBuilder.AppendLine("\t\t{").AppendLine();;
                             tempBuilder.AppendLine("\t\t}");
                         }
                         break;
