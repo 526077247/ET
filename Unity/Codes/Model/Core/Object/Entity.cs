@@ -672,9 +672,9 @@ namespace ET
             }
 
             // 如果有IGetComponent接口，则触发GetComponentSystem
-            if (component is IGetComponent)
+            if (this is IGetComponent)
             {
-                EventSystem.Instance.GetComponent(component);
+                EventSystem.Instance.GetComponent(this, component);
             }
 
             return (K) component;
@@ -694,9 +694,9 @@ namespace ET
             }
             
             // 如果有IGetComponent接口，则触发GetComponentSystem
-            if (component is IGetComponent)
+            if (this is IGetComponent)
             {
-                EventSystem.Instance.GetComponent(component);
+                EventSystem.Instance.GetComponent(this, component);
             }
 
             return component;
@@ -729,6 +729,11 @@ namespace ET
             }
 
             component.ComponentParent = this;
+
+            if (this is IAddComponent)
+            {
+                EventSystem.Instance.AddComponent(this, component);
+            }
             return component;
         }
 
@@ -743,6 +748,11 @@ namespace ET
             component.Id = this.Id;
             component.ComponentParent = this;
             EventSystem.Instance.Awake(component);
+            
+            if (this is IAddComponent)
+            {
+                EventSystem.Instance.AddComponent(this, component);
+            }
             return component;
         }
 
@@ -758,6 +768,11 @@ namespace ET
             component.Id = this.Id;
             component.ComponentParent = this;
             EventSystem.Instance.Awake(component);
+            
+            if (this is IAddComponent)
+            {
+                EventSystem.Instance.AddComponent(this, component);
+            }
             return component as K;
         }
 
@@ -773,6 +788,11 @@ namespace ET
             component.Id = this.Id;
             component.ComponentParent = this;
             EventSystem.Instance.Awake(component, p1);
+            
+            if (this is IAddComponent)
+            {
+                EventSystem.Instance.AddComponent(this, component);
+            }
             return component as K;
         }
 
@@ -788,6 +808,11 @@ namespace ET
             component.Id = this.Id;
             component.ComponentParent = this;
             EventSystem.Instance.Awake(component, p1, p2);
+            
+            if (this is IAddComponent)
+            {
+                EventSystem.Instance.AddComponent(this, component);
+            }
             return component as K;
         }
 
@@ -803,6 +828,11 @@ namespace ET
             component.Id = this.Id;
             component.ComponentParent = this;
             EventSystem.Instance.Awake(component, p1, p2, p3);
+            
+            if (this is IAddComponent)
+            {
+                EventSystem.Instance.AddComponent(this, component);
+            }
             return component as K;
         }
         
