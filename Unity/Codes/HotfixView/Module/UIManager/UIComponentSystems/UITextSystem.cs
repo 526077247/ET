@@ -126,8 +126,11 @@ namespace ET
         public static void OnLanguageChange(this UIText self)
         {
             self.ActivatingComponent();
-            if (self.__text_key != null)
-                I18NComponent.Instance.I18NGetParamText(self.__text_key, self.keyParams);
+            {
+                if (I18NComponent.Instance.I18NTryGetText(self.__text_key, out var text) && self.keyParams != null)
+                    text = string.Format(text, self.keyParams);
+                self.unity_uitext.text = text;
+            }
         }
 
         public static void SetTextColor(this UIText self, Color color)
