@@ -6,28 +6,12 @@ using MongoDB.Driver;
 namespace ET
 {
 	[ObjectSystem]
-	public class DBComponentAwakeSystem : AwakeSystem<DBComponent, string, string>
+	public class DBComponentAwakeSystem : AwakeSystem<DBComponent, string, string, int>
 	{
-		public override void Awake(DBComponent self, string dbConnection, string dbName)
+		public override void Awake(DBComponent self, string dbConnection, string dbName, int zone)
 		{
 			self.mongoClient = new MongoClient(dbConnection);
 			self.database = self.mongoClient.GetDatabase(dbName);
-			
-			self.Transfers.Clear();
-			foreach (Type type in Game.EventSystem.GetTypes().Values)
-			{
-				if (type == typeof (IDBCollection))
-				{
-					continue;
-				}
-				if (!typeof(IDBCollection).IsAssignableFrom(type))
-				{
-					continue;
-				}
-				self.Transfers.Add(type.Name);
-			}
-			
-			DBComponent.Instance = self;
 		}
 	}
 	[ObjectSystem]
@@ -35,8 +19,6 @@ namespace ET
     {
         public override void Destroy(DBComponent self)
         {
-	        DBComponent.Instance = null;
-	        self.Transfers.Clear();
         }
     }
 	
