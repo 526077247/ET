@@ -23,15 +23,20 @@ namespace ET
                 SceneAddress = "Scenes/LoginScene/Login.unity",
                 Name = SceneNames.Login,
             };
-            SceneConfig MapScene = new SceneConfig
+            SceneConfig Map1Scene = new SceneConfig
             {
-                SceneAddress = "Scenes/MapScene/Map.unity",
-                Name = SceneNames.Map,
+                SceneAddress = "Scenes/MapScene/Map1.unity",
+                Name = SceneNames.Map1,
             };
-
+            SceneConfig Map2Scene = new SceneConfig
+            {
+                SceneAddress = "Scenes/MapScene/Map2.unity",
+                Name = SceneNames.Map2,
+            };
             var res = new Dictionary<SceneNames, SceneConfig>();
             res.Add(LoadingScene.Name, LoadingScene);
-            res.Add(MapScene.Name, MapScene);
+            res.Add(Map1Scene.Name, Map1Scene);
+            res.Add(Map2Scene.Name, Map2Scene);
             res.Add(LoginScene.Name, LoginScene);
             return res;
         }

@@ -38,11 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 520}
-<<<<<<< HEAD:Unity/Assets/AssetsPackage/Scenes/MapScene/Map.unity
-  m_IndirectSpecularColor: {r: 0.44300535, g: 0.49219644, b: 0.5719254, a: 1}
-=======
   m_IndirectSpecularColor: {r: 0.44294932, g: 0.49212795, b: 0.5718688, a: 1}
->>>>>>> upstream/master:Unity/Assets/AssetsPackage/Scenes/MapScene/Map1.unity
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &4
 LightmapSettings:
@@ -101,13 +97,9 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 112000000, guid: 1ba6771e5d8abc6449e944314b0c77df,
+  m_LightingDataAsset: {fileID: 112000000, guid: f8a01642c22145f4f8bff04cec2d8240,
     type: 2}
-<<<<<<< HEAD:Unity/Assets/AssetsPackage/Scenes/MapScene/Map.unity
-  m_LightingSettings: {fileID: 4890085278179872738, guid: 254de00ad84d26d40adba1bed3fb7c32,
-=======
   m_LightingSettings: {fileID: 4890085278179872738, guid: 4836a445dcf1a044d90ff116828a0704,
->>>>>>> upstream/master:Unity/Assets/AssetsPackage/Scenes/MapScene/Map1.unity
     type: 2}
 --- !u!1 &5
 GameObject:
@@ -1682,6 +1674,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
   m_RenderPostProcessing: 0
   m_Antialiasing: 0
   m_AntialiasingQuality: 2

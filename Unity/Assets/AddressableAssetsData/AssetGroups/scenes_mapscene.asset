@@ -17,36 +17,29 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 1f83e1b931bd0864199313bd09c951a0
   m_SerializeEntries:
-  - m_GUID: a5294483f20f40d449699101bb428cda
-    m_Address: Scenes/MapScene/Map.unity
+  - m_GUID: 863d6716d9fcee74c9cff756d561c09a
+    m_Address: Scenes/MapScene/Map1.unity
     m_ReadOnly: 0
     m_SerializedLabels:
     - default
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
-  - m_GUID: 1ba6771e5d8abc6449e944314b0c77df
-    m_Address: Scenes/MapScene/Map/LightingData.asset
+  - m_GUID: 4836a445dcf1a044d90ff116828a0704
+    m_Address: Scenes/MapScene/Map1Settings.lighting
     m_ReadOnly: 0
     m_SerializedLabels:
     - default
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
-  - m_GUID: ab3027117b6819848bae7b1746588d06
-    m_Address: Scenes/MapScene/Map/Lightmap-0_comp_light.exr
+  - m_GUID: 064123f1e5067b249a9fd8967ddbde09
+    m_Address: Scenes/MapScene/Map2.unity
     m_ReadOnly: 0
     m_SerializedLabels:
     - default
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
-  - m_GUID: 02bc6af578f699249a101b704d189b5a
-    m_Address: Scenes/MapScene/Map/ReflectionProbe-0.exr
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - default
-    m_MainAsset: {fileID: 0}
-    m_TargetAsset: {fileID: 0}
-  - m_GUID: 254de00ad84d26d40adba1bed3fb7c32
-    m_Address: Scenes/MapScene/MapSettings.lighting
+  - m_GUID: c78b5af2c87902e4aba73014819bd1a7
+    m_Address: Scenes/MapScene/Map2Settings.lighting
     m_ReadOnly: 0
     m_SerializedLabels:
     - default

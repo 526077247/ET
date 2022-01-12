@@ -11,6 +11,7 @@ namespace ET
 		None,
         Loading,
         Login,
-        Map,
+        Map1,
+        Map2,
     }
 }

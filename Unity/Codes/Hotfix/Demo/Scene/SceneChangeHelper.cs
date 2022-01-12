@@ -13,7 +13,7 @@
             UnitComponent unitComponent = currentScene.AddComponent<UnitComponent>();
          
             // 可以订阅这个事件中创建Loading界面
-            Game.EventSystem.Publish(new EventType.SceneChangeStart() {ZoneScene = zoneScene});
+            Game.EventSystem.Publish(new EventType.SceneChangeStart() {ZoneScene = zoneScene,Name = sceneName});
 
             // 等待CreateMyUnit的消息
             WaitType.Wait_CreateMyUnit waitCreateMyUnit = await zoneScene.GetComponent<ObjectWait>().Wait<WaitType.Wait_CreateMyUnit>();
@@ -21,7 +21,7 @@
             Unit unit = UnitFactory.Create(currentScene, m2CCreateMyUnit.Unit);
             unitComponent.Add(unit);
             
-            zoneScene.RemoveComponent<AIComponent>();
+            zoneScene.AddComponent<AIComponent,int>(1);
             
             Game.EventSystem.Publish(new EventType.SceneChangeFinish() {ZoneScene = zoneScene});
 
