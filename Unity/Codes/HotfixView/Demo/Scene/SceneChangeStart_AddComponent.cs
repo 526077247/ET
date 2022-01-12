@@ -4,15 +4,13 @@ namespace ET
     {
         protected override async ETTask Run(EventType.SceneChangeStart args)
         {
-            await ETTask.CompletedTask;
-            
-            Scene zoneScene = args.ZoneScene;
+            Scene currentScene = args.ZoneScene.CurrentScene();
             SceneLoadComponent slc = EnterMap(zoneScene);
             if(args.Name=="Map")
                 await SceneManagerComponent.Instance.SwitchScene(SceneNames.Map,slc:slc);
 
             await UIManagerComponent.Instance.DestroyWindow<UILoadingView>();
-            args.ZoneScene.AddComponent<OperaComponent>();
+            currentScene.AddComponent<OperaComponent>();
             slc.Dispose();
         }
 
