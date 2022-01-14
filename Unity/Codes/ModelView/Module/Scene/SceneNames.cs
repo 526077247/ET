@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace ET
 {
-	public enum SceneNames:byte
-    {
-		None,
-        Loading,
-        Login,
-        Map1,
-        Map2,
-    }
+	public static class SceneNames
+	{
+		public static string None = "None";
+		public static string Loading = "Loading";
+		public static string Login= "Login";
+		public static string Map1="Map1";
+		public static string Map2="Map2";
+	}
 }

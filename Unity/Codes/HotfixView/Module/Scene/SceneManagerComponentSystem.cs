@@ -11,7 +11,7 @@ namespace ET
     [ObjectSystem]
     public class SceneManagerComponentAwakeSystem : AwakeSystem<SceneManagerComponent>
     {
-        Dictionary<SceneNames,SceneConfig> GetSceneConfig()
+        Dictionary<string,SceneConfig> GetSceneConfig()
         {
             SceneConfig LoadingScene = new SceneConfig
             {
@@ -33,7 +33,7 @@ namespace ET
                 SceneAddress = "Scenes/MapScene/Map2.unity",
                 Name = SceneNames.Map2,
             };
-            var res = new Dictionary<SceneNames, SceneConfig>();
+            var res = new Dictionary<string, SceneConfig>();
             res.Add(LoadingScene.Name, LoadingScene);
             res.Add(Map1Scene.Name, Map1Scene);
             res.Add(Map2Scene.Name, Map2Scene);
@@ -196,7 +196,7 @@ namespace ET
             await self.InnerSwitchScene(scene_config,needclean,slc);
         }
         //切换场景
-        public static async ETTask SwitchScene(this SceneManagerComponent self, SceneNames scene_name, bool needclean = false,SceneLoadComponent slc = null)
+        public static async ETTask SwitchScene(this SceneManagerComponent self, string scene_name, bool needclean = false,SceneLoadComponent slc = null)
         {
             if (self.busing) return;
             var scene_config = self.GetSceneConfigByName(scene_name);
@@ -206,18 +206,8 @@ namespace ET
             self.busing = true;
             await self.InnerSwitchScene(scene_config,needclean,slc);
         }
-        //切换场景
-        public static async ETTask SwitchScene(this SceneManagerComponent self, int scene_id, bool needclean = false,SceneLoadComponent slc = null)
-        {
-            if (self.busing) return;
-            var scene_config = self.GetSceneConfigById(scene_id);
-            if (scene_config == null) return;
-            if (self.current_scene == scene_config.Name)
-                return;
-            self.busing = true;
-            await self.InnerSwitchScene(scene_config,needclean,slc);
-        }
-        public static SceneNames GetCurrentSceneName(this SceneManagerComponent self)
+
+        public static string GetCurrentSceneName(this SceneManagerComponent self)
         {
             return self.current_scene;
         }
@@ -227,7 +217,7 @@ namespace ET
             return self.current_scene == scene_config.Name;
         }
 
-        public static SceneConfig GetSceneConfigByName(this SceneManagerComponent self, SceneNames name)
+        public static SceneConfig GetSceneConfigByName(this SceneManagerComponent self, string name)
         {
             if (self.SceneConfigs.TryGetValue(name, out var res))
             {
@@ -235,15 +225,6 @@ namespace ET
             }
             return null;
         }
-
-        public static SceneConfig GetSceneConfigById(this SceneManagerComponent self, int id)
-        {
-            SceneNames name = (SceneNames)id;
-            if (self.SceneConfigs.TryGetValue(name, out var res))
-            {
-                return res;
-            }
-            return null;
-        }
+        
     }
 }

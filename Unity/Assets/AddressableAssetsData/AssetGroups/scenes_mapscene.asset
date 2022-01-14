@@ -45,6 +45,62 @@ MonoBehaviour:
     - default
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
+  - m_GUID: f8a01642c22145f4f8bff04cec2d8240
+    m_Address: Scenes/MapScene/Map1/LightingData.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: eeeb8730251ee1b469b9b070c7efb1cf
+    m_Address: Scenes/MapScene/Map1/Lightmap-0_comp_dir.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 2a885f3bd0a4c4342a547c1145db43ee
+    m_Address: Scenes/MapScene/Map1/Lightmap-0_comp_light.exr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 0a644f777dd61db438b4a935df192a96
+    m_Address: Scenes/MapScene/Map1/ReflectionProbe-0.exr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: e7b86a45dc154ae40a2f51144799b7bf
+    m_Address: Scenes/MapScene/Map2/LightingData.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 62a71c4ca03e7434ca6ff4bba65ffb45
+    m_Address: Scenes/MapScene/Map2/Lightmap-0_comp_dir.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 0d7da8dd669b0d8488a81fcb41451b21
+    m_Address: Scenes/MapScene/Map2/Lightmap-0_comp_light.exr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 1f1694b2c0d992047b551ad028dd5347
+    m_Address: Scenes/MapScene/Map2/ReflectionProbe-0.exr
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: dd1f300d6062fee48bf00a13907517b6, type: 2}
   m_SchemaSet:

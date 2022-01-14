@@ -12,9 +12,9 @@ namespace ET
         public List<string> DestroyWindowExceptNames;
         public static SceneManagerComponent Instance;
 
-        public Dictionary<SceneNames, SceneConfig> SceneConfigs;
+        public Dictionary<string, SceneConfig> SceneConfigs;
         //当前场景
-        public SceneNames current_scene;
+        public string current_scene;
         //是否忙
         public bool busing = false;
 

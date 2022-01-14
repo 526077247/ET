@@ -9,6 +9,6 @@ namespace ET
     public class SceneConfig
     {
         public string SceneAddress;
-        public SceneNames Name; 
+        public string Name; 
     }
 }
