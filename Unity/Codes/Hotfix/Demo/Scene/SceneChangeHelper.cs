@@ -23,7 +23,7 @@
             
             zoneScene.AddComponent<AIComponent,int>(1);
             
-            Game.EventSystem.Publish(new EventType.SceneChangeFinish() {ZoneScene = zoneScene});
+            Game.EventSystem.Publish(new EventType.SceneChangeFinish() {ZoneScene = zoneScene, CurrentScene = currentScene});
 
             // 通知等待场景切换的协程
             zoneScene.GetComponent<ObjectWait>().Notify(new WaitType.Wait_SceneChangeFinish());
