@@ -9,7 +9,7 @@ using UnityEngine.UI;
 namespace ET
 {
    
-    public class UIRawImage: Entity,IAwake
+    public class UIRawImage: Entity,IAwake,IOnCreate,IOnCreate<string>,IOnEnable
     {
         public string sprite_path;
         public RawImage unity_uiimage;

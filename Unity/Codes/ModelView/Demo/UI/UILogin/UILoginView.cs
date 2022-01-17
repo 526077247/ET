@@ -6,7 +6,7 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 namespace ET
 {
-	public class UILoginView: Entity,IAwake
+	public class UILoginView: Entity,IAwake,IOnCreate,IOnEnable<Scene>
 	{
 		public UIButton loginBtn;
 		public UIInput password;

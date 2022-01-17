@@ -127,7 +127,7 @@ namespace ET
             }
         }
 
-        public static async ETTask DestroyWindow<T>(this UIManagerComponent self)
+        public static async ETTask DestroyWindow<T>(this UIManagerComponent self) where T:Entity
         {
             string ui_name = typeof(T).Name;
             await self.DestroyWindow(ui_name);
@@ -144,7 +144,8 @@ namespace ET
             }
         }
         //打开窗口
-        public static async ETTask<T> OpenWindow<T>(this UIManagerComponent self, string path, UILayerNames layer_name = UILayerNames.NormalLayer) where T : Entity,IAwake, new()
+        public static async ETTask<T> OpenWindow<T>(this UIManagerComponent self, string path, 
+            UILayerNames layer_name = UILayerNames.NormalLayer) where T : Entity,IAwake,IOnCreate,IOnEnable, new()
         {
             string ui_name = typeof(T).Name;
             var target = self.GetWindow(ui_name);
@@ -158,7 +159,8 @@ namespace ET
 
         }
         //打开窗口
-        public static async ETTask<T> OpenWindow<T, P1>(this UIManagerComponent self, string path, P1 p1, UILayerNames layer_name = UILayerNames.NormalLayer) where T : Entity,IAwake, new()
+        public static async ETTask<T> OpenWindow<T, P1>(this UIManagerComponent self, string path, P1 p1, 
+            UILayerNames layer_name = UILayerNames.NormalLayer) where T : Entity,IAwake,IOnCreate,IOnEnable<P1>, new()
         {
 
             string ui_name = typeof(T).Name;
@@ -173,7 +175,8 @@ namespace ET
 
         }
         //打开窗口
-        public static async ETTask<T> OpenWindow<T, P1, P2>(this UIManagerComponent self, string path, P1 p1, P2 p2, UILayerNames layer_name = UILayerNames.NormalLayer) where T : Entity,IAwake, new()
+        public static async ETTask<T> OpenWindow<T, P1, P2>(this UIManagerComponent self, string path, P1 p1, P2 p2, 
+            UILayerNames layer_name = UILayerNames.NormalLayer) where T : Entity,IAwake,IOnCreate,IOnEnable<P1,P2>, new()
         {
 
             string ui_name = typeof(T).Name;
@@ -188,7 +191,8 @@ namespace ET
 
         }
         //打开窗口
-        public static async ETTask<T> OpenWindow<T, P1, P2, P3>(this UIManagerComponent self, string path, P1 p1, P2 p2, P3 p3, UILayerNames layer_name = UILayerNames.NormalLayer) where T : Entity,IAwake, new()
+        public static async ETTask<T> OpenWindow<T, P1, P2, P3>(this UIManagerComponent self, string path, P1 p1, P2 p2, P3 p3, 
+            UILayerNames layer_name = UILayerNames.NormalLayer) where T : Entity,IAwake,IOnCreate,IOnEnable<P1,P2,P3>, new()
         {
 
             string ui_name = typeof(T).Name;
@@ -203,7 +207,8 @@ namespace ET
 
         }
         //打开窗口
-        public static async ETTask<T> OpenWindow<T, P1, P2, P3, P4>(this UIManagerComponent self, string path, P1 p1, P2 p2, P3 p3, P4 p4, UILayerNames layer_name = UILayerNames.NormalLayer) where T : Entity,IAwake, new()
+        public static async ETTask<T> OpenWindow<T, P1, P2, P3, P4>(this UIManagerComponent self, string path, P1 p1, P2 p2, P3 p3, P4 p4, 
+            UILayerNames layer_name = UILayerNames.NormalLayer) where T : Entity,IAwake,IOnCreate,IOnEnable<P1,P2,P3,P4>, new()
         {
 
             string ui_name = typeof(T).Name;

@@ -2,6 +2,25 @@
 
 namespace ET
 {
+    public interface IOnDisable
+    {
+    }
+
+    public interface IOnDisable<A>
+    {
+    }
+	
+    public interface IOnDisable<A, B>
+    {
+    }
+	
+    public interface IOnDisable<A, B, C>
+    {
+    }
+	
+    public interface IOnDisable<A, B, C, D>
+    {
+    }
     public interface IOnDisableSystem : ISystemType
     {
         void Run(object o);
@@ -28,7 +47,7 @@ namespace ET
     }
 
     [UISystem]
-    public abstract class OnDisableSystem<T> : IOnDisableSystem where T : Entity
+    public abstract class OnDisableSystem<T> : IOnDisableSystem where T : IOnDisable
     {
         public Type Type()
         {
@@ -49,7 +68,7 @@ namespace ET
     }
 
     [UISystem]
-    public abstract class OnDisableSystem<T, A> : IOnDisableSystem<A> where T : Entity
+    public abstract class OnDisableSystem<T, A> : IOnDisableSystem<A> where T : IOnDisable<A>
     {
         public Type Type()
         {
@@ -70,7 +89,7 @@ namespace ET
     }
 
     [UISystem]
-    public abstract class OnDisableSystem<T, A, B> : IOnDisableSystem<A, B> where T : Entity
+    public abstract class OnDisableSystem<T, A, B> : IOnDisableSystem<A, B> where T :  IOnDisable<A,B>
     {
         public Type Type()
         {
@@ -91,7 +110,7 @@ namespace ET
     }
 
     [UISystem]
-    public abstract class OnDisableSystem<T, A, B, C> : IOnDisableSystem<A, B, C> where T : Entity
+    public abstract class OnDisableSystem<T, A, B, C> : IOnDisableSystem<A, B, C> where T :  IOnDisable<A,B,C>
     {
         public Type Type()
         {
@@ -112,7 +131,7 @@ namespace ET
     }
 
     [UISystem]
-    public abstract class OnDisableSystem<T, A, B, C, D> : IOnDisableSystem<A, B, C, D> where T : Entity
+    public abstract class OnDisableSystem<T, A, B, C, D> : IOnDisableSystem<A, B, C, D> where T :  IOnDisable<A,B,C, D>
     {
         public Type Type()
         {

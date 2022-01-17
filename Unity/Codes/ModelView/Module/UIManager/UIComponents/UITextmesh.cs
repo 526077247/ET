@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace ET
 {
-    public class UITextmesh: Entity,IAwake
+    public class UITextmesh: Entity,IAwake,IOnCreate,IOnCreate<string>,IOnEnable
     {
         public TMPro.TMP_Text unity_uitextmesh;
 

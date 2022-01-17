@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 namespace ET
 {
-    public class UITransform:Entity,IAwake
+    public class UITransform:Entity,IAwake,IOnCreate,IOnCreate<Transform>,IOnEnable
     {
 
         public Transform transform;

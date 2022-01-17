@@ -1,7 +1,7 @@
 ﻿using System;
 namespace ET
 {
-    public class UISettingItem:Entity,IAwake
+    public class UISettingItem:Entity,IAwake,IOnCreate,IOnEnable
     {
         public UIButton Button;
         public UIText Text;

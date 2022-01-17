@@ -2,6 +2,26 @@
 
 namespace ET
 {
+    public interface IOnCreate
+    {
+    }
+
+    public interface IOnCreate<A>
+    {
+    }
+	
+    public interface IOnCreate<A, B>
+    {
+    }
+	
+    public interface IOnCreate<A, B, C>
+    {
+    }
+	
+    public interface IOnCreate<A, B, C, D>
+    {
+    }
+
     public interface IOnCreateSystem : ISystemType
     {
         void Run(object o);
@@ -28,7 +48,7 @@ namespace ET
     }
 
     [UISystem]
-    public abstract class OnCreateSystem<T> : IOnCreateSystem where T : Entity
+    public abstract class OnCreateSystem<T> : IOnCreateSystem where T : IOnCreate
     {
         public Type Type()
         {
@@ -49,7 +69,7 @@ namespace ET
     }
 
     [UISystem]
-    public abstract class OnCreateSystem<T, A> : IOnCreateSystem<A> where T : Entity
+    public abstract class OnCreateSystem<T, A> : IOnCreateSystem<A> where T : IOnCreate<A>
     {
         public Type Type()
         {
@@ -70,7 +90,7 @@ namespace ET
     }
 
     [UISystem]
-    public abstract class OnCreateSystem<T, A, B> : IOnCreateSystem<A, B> where T : Entity
+    public abstract class OnCreateSystem<T, A, B> : IOnCreateSystem<A, B> where T : IOnCreate<A,B>
     {
         public Type Type()
         {
@@ -91,7 +111,7 @@ namespace ET
     }
 
     [UISystem]
-    public abstract class OnCreateSystem<T, A, B, C> : IOnCreateSystem<A, B, C> where T : Entity
+    public abstract class OnCreateSystem<T, A, B, C> : IOnCreateSystem<A, B, C> where T : IOnCreate<A, B, C>
     {
         public Type Type()
         {
@@ -112,7 +132,7 @@ namespace ET
     }
 
     [UISystem]
-    public abstract class OnCreateSystem<T, A, B, C, D> : IOnCreateSystem<A, B, C, D> where T : Entity
+    public abstract class OnCreateSystem<T, A, B, C, D> : IOnCreateSystem<A, B, C, D> where T : IOnCreate<A, B, C, D>
     {
         public Type Type()
         {

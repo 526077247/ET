@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 namespace ET
 {
-	public class UIHelpWin : Entity, IAwake
+	public class UIHelpWin : Entity, IAwake,IOnCreate,IOnEnable
 	{
 		public UIText text;
 		

@@ -20,9 +20,9 @@ public class UIScriptController
             UnityEngine.Debug.LogError(go.name + "没有以UI开头");
             return false;
         }
-        if (!go.name.EndsWith("View") && !go.name.EndsWith("Win") && !go.name.EndsWith("Panel"))
+        if (!go.name.EndsWith("View") && !go.name.EndsWith("Win") && !go.name.EndsWith("Panel")&& !go.name.EndsWith("Item"))
         {
-            UnityEngine.Debug.LogError(go.name + "没有以View、Win、Panel结尾");
+            UnityEngine.Debug.LogError(go.name + "没有以View、Win、Panel或者Item结尾");
             return false;
         }
         return path.Contains(addressable_path);
@@ -55,6 +55,7 @@ public class UIScriptController
     static void GenerateEntityCode(GameObject go, string path)
     {
         string name = go.name;
+        bool isItem = go.name.EndsWith("Item");
         var temp = new List<string>(path.Split('/'));
         int index = temp.IndexOf("AssetsPackage");
         var dirPath = $"Codes/ModelView/{generate_path}/{temp[index + 1]}/{temp[index + 2]}";
@@ -79,10 +80,14 @@ public class UIScriptController
         strBuilder.AppendLine("namespace ET");
         strBuilder.AppendLine("{");
 
-        strBuilder.AppendFormat("\tpublic class {0} : Entity\r\n", name);
+        strBuilder.AppendFormat("\tpublic class {0} : Entity, IAwake, IOnCreate, IOnEnable\r\n", name);
         strBuilder.AppendLine("\t{");
-        strBuilder.AppendFormat("\t\tpublic static string PrefabPath => \"{0}\";", path.Replace(addressable_path, ""))
-            .AppendLine();
+        if (!isItem)
+        {
+            strBuilder.AppendFormat("\t\tpublic static string PrefabPath => \"{0}\";", path.Replace(addressable_path, ""))
+                    .AppendLine();
+        }
+
         GenerateEntityChildCode(go.transform, "", strBuilder);
         strBuilder.AppendLine("\t\t \r\n");
 

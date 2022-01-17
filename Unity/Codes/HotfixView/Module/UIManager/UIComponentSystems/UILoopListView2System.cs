@@ -38,7 +38,7 @@ namespace ET
 
 
         //item是Unity侧的item对象，在这里创建相应的UI对象
-        public static void AddItemViewComponent<T>(this UILoopListView2 self, LoopListViewItem2 item) where T : Entity,IAwake
+        public static void AddItemViewComponent<T>(this UILoopListView2 self, LoopListViewItem2 item) where T : Entity,IAwake,IOnEnable
         {
             //保证名字不能相同 不然没法cache
             item.gameObject.name = item.gameObject.name + item.ItemId;

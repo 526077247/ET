@@ -2,6 +2,25 @@
 
 namespace ET
 {
+    public interface IOnEnable
+    {
+    }
+
+    public interface IOnEnable<A>
+    {
+    }
+	
+    public interface IOnEnable<A, B>
+    {
+    }
+	
+    public interface IOnEnable<A, B, C>
+    {
+    }
+	
+    public interface IOnEnable<A, B, C, D>
+    {
+    }
     public interface IOnEnableSystem : ISystemType
     {
         void Run(object o);
@@ -28,7 +47,7 @@ namespace ET
     }
 
     [UISystem]
-    public abstract class OnEnableSystem<T> : IOnEnableSystem where T : Entity
+    public abstract class OnEnableSystem<T> : IOnEnableSystem where T : IOnEnable
     {
         public Type Type()
         {
@@ -49,7 +68,7 @@ namespace ET
     }
 
     [UISystem]
-    public abstract class OnEnableSystem<T, A> : IOnEnableSystem<A> where T : Entity
+    public abstract class OnEnableSystem<T, A> : IOnEnableSystem<A> where T : IOnEnable<A>
     {
         public Type Type()
         {
@@ -70,7 +89,7 @@ namespace ET
     }
 
     [UISystem]
-    public abstract class OnEnableSystem<T, A, B> : IOnEnableSystem<A, B> where T : Entity
+    public abstract class OnEnableSystem<T, A, B> : IOnEnableSystem<A, B> where T : IOnEnable<A,B>
     {
         public Type Type()
         {
@@ -91,7 +110,7 @@ namespace ET
     }
 
     [UISystem]
-    public abstract class OnEnableSystem<T, A, B, C> : IOnEnableSystem<A, B, C> where T : Entity
+    public abstract class OnEnableSystem<T, A, B, C> : IOnEnableSystem<A, B, C> where T : IOnEnable<A, B, C>
     {
         public Type Type()
         {
@@ -112,7 +131,7 @@ namespace ET
     }
 
     [UISystem]
-    public abstract class OnEnableSystem<T, A, B, C, D> : IOnEnableSystem<A, B, C, D> where T : Entity
+    public abstract class OnEnableSystem<T, A, B, C, D> : IOnEnableSystem<A, B, C, D> where T : IOnEnable<A, B, C,D>
     {
         public Type Type()
         {

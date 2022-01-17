@@ -1,0 +1,123 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: gameassets_unit
+  m_EditorClassIdentifier: 
+  m_GroupName: gameassets_unit
+  m_Data:
+    m_SerializedData: []
+  m_GUID: c79c81c2e4a9fd94bb1f03b826d84927
+  m_SerializeEntries:
+  - m_GUID: dfc15c633f0d98141920018f79a042a6
+    m_Address: GameAssets/Unit/Animations/Skeleton@Attack.FBX
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 81d4af5a5190e3d4d88c97161d881bf3
+    m_Address: GameAssets/Unit/Animations/Skeleton@Damage.FBX
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: a749f4485b342b7469956010abf2ab25
+    m_Address: GameAssets/Unit/Animations/Skeleton@Death.FBX
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: a5ea117a2b123564a83a2dbd1c9ea4cf
+    m_Address: GameAssets/Unit/Animations/Skeleton@Idle.FBX
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 6e0b4a05932877a4b89fb3fb32c3e72b
+    m_Address: GameAssets/Unit/Animations/Skeleton@Knockback.FBX
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: f57ee821486cd7b488adf1063a8dd207
+    m_Address: GameAssets/Unit/Animations/Skeleton@Run.FBX
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 1e768688017709245aed3bb86453c364
+    m_Address: GameAssets/Unit/Animations/Skeleton@Skill.FBX
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 6f61bc53c41ba664fa527d3386ecfd1e
+    m_Address: GameAssets/Unit/Animations/Skeleton@Stand.FBX
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 188f1042b5ff4644389fad5df1f98d7c
+    m_Address: GameAssets/Unit/Animations/Skeleton@Walk.FBX
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 595f7cae6f82a6146b20ca287fe7c859
+    m_Address: GameAssets/Unit/Animations/SkeletonController.controller
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: b1494958bf9856a479bec1767c02878e
+    m_Address: GameAssets/Unit/Materials/skeleton_D.mat
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 5a35c5f0a89b9654d897ccd7c8f81bd0
+    m_Address: GameAssets/Unit/Models/Skeleton@Skin.FBX
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 9e27b0bdab1ad7242a009899d15c0e67
+    m_Address: GameAssets/Unit/Prefabs/Skeleton.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 943f3c476130c4f4f8ae55ef3ccd38ba
+    m_Address: GameAssets/Unit/Textures/Skeleton_D.tif
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: dd1f300d6062fee48bf00a13907517b6, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 58019e6ba48aa42419683c6a8edd03db, type: 2}
+    - {fileID: 11400000, guid: c7cac3f189cf33a4f9c01a9b74e902ed, type: 2}

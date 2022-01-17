@@ -118,7 +118,7 @@ namespace ET
         /// </summary>
         /// <typeparam name="T">类型</typeparam>
         /// <param name="name">游戏物体名称</param>
-        public static T AddUIComponentNotCreate<T>(this Entity self,string name) where T : Entity,IAwake
+        public static T AddUIComponentNotCreate<T>(this Entity self,string name) where T : Entity,IAwake,IOnEnable
         {
             Type type = typeof(T);
             T component_inst = self.AddChild<T>();
@@ -134,7 +134,7 @@ namespace ET
         /// </summary>
         /// <typeparam name="T">类型</typeparam>
         /// <param name="path">路径</param>
-        public static T AddUIComponent<T>(this Entity self,string path = "") where T : Entity,IAwake
+        public static T AddUIComponent<T>(this Entity self,string path = "") where T : Entity,IAwake,IOnCreate,IOnEnable
         {
             Type type = typeof(T);
             T component_inst = self.AddChild<T>();
@@ -152,7 +152,7 @@ namespace ET
         /// </summary>
         /// <typeparam name="T">类型</typeparam>
         /// <param name="path">相对路径</param>
-        public static T AddUIComponent<T, A>(this Entity self,string path, A a) where T : Entity,IAwake
+        public static T AddUIComponent<T, A>(this Entity self,string path, A a) where T : Entity,IAwake,IOnCreate<A>,IOnEnable
         {
             Type type = typeof(T);
             T component_inst = self.AddChild<T>();
@@ -170,7 +170,7 @@ namespace ET
         /// </summary>
         /// <typeparam name="T">类型</typeparam>
         /// <param name="path">路径</param>
-        public static T AddUIComponent<T, A, B>(this Entity self, string path, A a, B b) where T : Entity,IAwake
+        public static T AddUIComponent<T, A, B>(this Entity self, string path, A a, B b) where T : Entity,IAwake,IOnCreate<A,B>,IOnEnable
         {
             Type type = typeof(T);
             T component_inst = self.AddChild<T>();
@@ -188,7 +188,7 @@ namespace ET
         /// </summary>
         /// <typeparam name="T">类型</typeparam>
         /// <param name="path">路径</param>
-        public static T AddUIComponent<T, A, B, C>(this Entity self, string path, A a, B b, C c) where T : Entity,IAwake
+        public static T AddUIComponent<T, A, B, C>(this Entity self, string path, A a, B b, C c) where T : Entity,IAwake,IOnCreate<A,B,C>,IOnEnable
         {
             Type type = typeof(T);
             T component_inst = self.AddChild<T>();
