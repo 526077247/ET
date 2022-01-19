@@ -51,9 +51,10 @@ namespace ET
 			}
 		}
 
-		private TypeSystems typeSystems = new TypeSystems();
+		private TypeSystems typeSystems;
 		public void Awake()
-        {
+		{
+			typeSystems = new TypeSystems();
 			foreach (Type type in EventSystem.Instance.GetTypes(typeof(UISystemAttribute)))
 			{
 				object obj = Activator.CreateInstance(type);

@@ -35,7 +35,15 @@ namespace ET
         }
 
     }
-
+    [ObjectSystem]
+    public class UIManagerComponentLoadSystem: LoadSystem<UIManagerComponent>
+    {
+        public override void Load(UIManagerComponent self)
+        {
+            self.DestroyUnShowWindow().Coroutine();
+            UIEventSystem.Instance.Awake();
+        }
+    }
     /// <summary>
     /// fd: UI管理类，所有UI都应该通过该管理类进行创建 
     /// UIManager.Instance.OpenWindow<T>();
@@ -141,6 +149,25 @@ namespace ET
                 await Game.EventSystem.PublishAsync(new UIEventType.InnerDestroyWindow() { target = target });
                 self.windows.Remove(target.Name);
                 target.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// 销毁隐藏状态的窗口
+        /// </summary>
+        /// <param name="self"></param>
+        public static async ETTask DestroyUnShowWindow(this UIManagerComponent self)
+        {
+            using (ListComponent<ETTask> TaskScheduler = ListComponent<ETTask>.Create())
+            {
+                foreach (var key in self.windows.Keys.ToList())
+                {
+                    if (!self.windows[key].Active)
+                    {
+                        TaskScheduler.Add(self.DestroyWindow(key));
+                    }
+                }
+                await ETTaskHelper.WaitAll(TaskScheduler);
             }
         }
         //打开窗口
