@@ -69,7 +69,8 @@ namespace ET
 					appDomain = new ILRuntime.Runtime.Enviorment.AppDomain();
 #if DEBUG && (UNITY_EDITOR || UNITY_ANDROID || UNITY_IPHONE)
 					this.appDomain.UnityMainThreadID = System.Threading.Thread.CurrentThread.ManagedThreadId;
-#endif					if(assStream!=null) assStream.Dispose();
+#endif					
+					if(assStream!=null) assStream.Dispose();
 					if(pdbStream!=null) pdbStream.Dispose();
 					assStream = new MemoryStream(assBytes);
 					pdbStream = new MemoryStream(pdbBytes);

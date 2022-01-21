@@ -203,11 +203,11 @@ namespace ILRuntime.Runtime.Generated
             ET_ETTask_1_Sprite_Binding.Register(app);
             ET_ETTask_1_Material_Binding.Register(app);
             System_Action_1_Single_Binding.Register(app);
-            System_Collections_Generic_Dictionary_2_Byte_ILTypeInstance_Binding.Register(app);
             System_Collections_Generic_List_1_Object_Binding.Register(app);
             System_GC_Binding.Register(app);
             UnityEngine_Resources_Binding.Register(app);
             UnityEngine_AsyncOperation_Binding.Register(app);
+            System_Collections_Generic_Dictionary_2_Byte_ILTypeInstance_Binding.Register(app);
             UnityEngine_UI_Button_Binding.Register(app);
             UnityEngine_Events_UnityEvent_Binding.Register(app);
             UnityEngine_Events_UnityAction_Binding.Register(app);
