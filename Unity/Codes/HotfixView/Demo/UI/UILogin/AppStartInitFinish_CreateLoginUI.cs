@@ -6,9 +6,7 @@ namespace ET
 	{
 		protected override async ETTask Run(EventType.AppStartInitFinish args)
 		{
-			await SceneManagerComponent.Instance.SwitchScene(SceneNames.Login,true);
-			await UIManagerComponent.Instance.OpenWindow<UILoginView,Scene>(UILoginView.PrefabPath,args.ZoneScene);
-			await UIManagerComponent.Instance.CloseWindow<UILoadingView>();
+			await UIHelper.Create(args.ZoneScene, UIType.UILogin, UILayer.Mid);
 		}
 	}
 }

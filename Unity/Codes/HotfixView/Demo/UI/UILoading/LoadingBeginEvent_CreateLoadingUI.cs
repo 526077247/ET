@@ -2,12 +2,11 @@
 
 namespace ET
 {
-    public class LoadingBeginEvent_CreateLoadingUI : AEvent<UIEventType.LoadingBegin>
+    public class LoadingBeginEvent_CreateLoadingUI : AEvent<EventType.LoadingBegin>
     {
-        protected override async ETTask Run(UIEventType.LoadingBegin args)
+        protected override async ETTask Run(EventType.LoadingBegin args)
         {
-            //await UIHelper.Create(args.Scene, UIType.UILoading);
-            await UIManagerComponent.Instance.OpenWindow<UILoadingView>(UILoadingView.PrefabPath);
+            await UIHelper.Create(args.Scene, UIType.UILoading, UILayer.Mid);
         }
     }
 }
