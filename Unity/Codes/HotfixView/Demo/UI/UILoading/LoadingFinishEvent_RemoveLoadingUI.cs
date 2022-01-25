@@ -1,10 +1,12 @@
 ﻿namespace ET
 {
-    public class LoadingFinishEvent_RemoveLoadingUI : AEvent<EventType.LoadingFinish>
+    public class LoadingFinishEvent_RemoveLoadingUI : AEvent<UIEventType.LoadingFinish>
     {
-        protected override async ETTask Run(EventType.LoadingFinish args)
+        protected override async ETTask Run(UIEventType.LoadingFinish args)
         {
-            await UIHelper.Create(args.Scene, UIType.UILoading, UILayer.Mid);
+            //await UIHelper.Remove(args.Scene, UIType.UILoading);
+            //UIManagerComponent.Instance.DestroyWindow<UILoadingView>();//Destroy掉的才能被销毁
+            await ETTask.CompletedTask;
         }
     }
 }
