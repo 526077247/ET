@@ -8,9 +8,9 @@ namespace ET
         public static void ExcelExporter()
         {
 #if UNITY_EDITOR_OSX
-            const string tools = "./Tools";
+            const string tools = "Tools";
 #else
-            const string tools = "./Tools.exe";
+            const string tools = "Tools.exe";
 #endif
             ShellHelper.Run($"{tools} --AppType=ExcelExporter", "../Bin/");
         }
@@ -19,9 +19,9 @@ namespace ET
         public static void Proto2CS()
         {
 #if UNITY_EDITOR_OSX
-            const string tools = "./Tools";
+            const string tools = "Tools";
 #else
-            const string tools = "./Tools.exe";
+            const string tools = "Tools.exe";
 #endif
             ShellHelper.Run($"{tools} --AppType=Proto2CS", "../Bin/");
         }

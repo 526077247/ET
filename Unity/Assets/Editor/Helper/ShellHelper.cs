@@ -59,8 +59,8 @@ namespace ET
                     start.RedirectStandardOutput = true;
                     start.RedirectStandardError = true;
                     start.RedirectStandardInput = true;
-                    start.StandardOutputEncoding = System.Text.Encoding.UTF8;
-                    start.StandardErrorEncoding = System.Text.Encoding.UTF8;
+                    start.StandardOutputEncoding = System.Text.Encoding.GetEncoding("gb2312");;
+                    start.StandardErrorEncoding = System.Text.Encoding.GetEncoding("gb2312");;
                 }
 
                 p = Process.Start(start);

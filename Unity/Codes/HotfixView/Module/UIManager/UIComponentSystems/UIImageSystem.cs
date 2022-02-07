@@ -49,9 +49,10 @@ namespace ET
             if (sprite == null)
             {
                 ImageLoaderComponent.Instance.ReleaseImage(sprite_path);
+                self.unity_uiimage.enabled = false;
                 return;
             }
-            
+            self.unity_uiimage.enabled = true;
             if(!string.IsNullOrEmpty(base_sprite_path))
                 ImageLoaderComponent.Instance.ReleaseImage(base_sprite_path);
             self.unity_uiimage.sprite = sprite;
