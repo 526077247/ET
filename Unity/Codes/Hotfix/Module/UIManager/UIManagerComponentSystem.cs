@@ -249,6 +249,31 @@ namespace ET
             return await self.__InnerOpenWindow<T, P1, P2, P3, P4>(target, p1, p2, p3, p4);
 
         }
+        //打开窗口
+        public static async ETTask OpenWindowTask<T>(this UIManagerComponent self, string path, UILayerNames layer_name = UILayerNames.NormalLayer) where T : Entity,IAwake,IOnCreate,IOnEnable, new()
+        {
+            await self.OpenWindow<T>(path,layer_name);
+        }
+        //打开窗口
+        public static async ETTask OpenWindowTask<T, P1>(this UIManagerComponent self, string path, P1 p1, UILayerNames layer_name = UILayerNames.NormalLayer) where T : Entity,IAwake,IOnCreate,IOnEnable<P1>, new()
+        {
+            await self.OpenWindow<T,P1>(path,p1,layer_name);
+        }
+        //打开窗口
+        public static async ETTask OpenWindowTask<T, P1, P2>(this UIManagerComponent self, string path, P1 p1, P2 p2, UILayerNames layer_name = UILayerNames.NormalLayer) where T : Entity,IAwake,IOnCreate,IOnEnable<P1,P2>, new()
+        {
+            await self.OpenWindow<T, P1, P2>(path, p1, p2, layer_name);
+        }
+        //打开窗口
+        public static async ETTask OpenWindowTask<T, P1, P2, P3>(this UIManagerComponent self, string path, P1 p1, P2 p2, P3 p3, UILayerNames layer_name = UILayerNames.NormalLayer) where T : Entity,IAwake,IOnCreate,IOnEnable<P1,P2,P3>, new()
+        {
+            await self.OpenWindow<T, P1, P2,P3>(path, p1, p2,p3, layer_name);
+        }
+        //打开窗口
+        public static async ETTask OpenWindowTask<T, P1, P2, P3, P4>(this UIManagerComponent self, string path, P1 p1, P2 p2, P3 p3, P4 p4, UILayerNames layer_name = UILayerNames.NormalLayer) where T : Entity,IAwake,IOnCreate,IOnEnable<P1,P2,P3,P4>, new()
+        {
+            await self.OpenWindow<T, P1, P2,P3,P4>(path, p1, p2,p3,p4, layer_name);
+        }
         //销毁指定窗口所有窗口
         public static async ETTask DestroyWindowExceptNames(this UIManagerComponent self, string[] type_names = null)
         {

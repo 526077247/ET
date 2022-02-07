@@ -138,7 +138,6 @@ namespace ET
                 {
                     if (value.ref_count > 0)
                     {
-                        GameObject.Destroy(value.asset);
                         value.ref_count = value.ref_count - 1;
                     }
                 }
