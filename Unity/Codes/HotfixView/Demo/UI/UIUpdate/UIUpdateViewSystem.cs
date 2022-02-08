@@ -92,7 +92,7 @@ namespace ET
                 Scene zoneScene = SceneFactory.CreateZoneScene(1, "Game", Game.Scene);
 
                 await Game.EventSystem.PublishAsync(new EventType.AppStartInitFinish() { ZoneScene = zoneScene });
-                self.CloseSelf();
+                self.CloseSelf().Coroutine();
             }
         }
 
