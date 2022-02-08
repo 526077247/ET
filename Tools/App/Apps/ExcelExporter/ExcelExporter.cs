@@ -34,7 +34,7 @@ namespace ET
             this.FieldAttribute = cs;
             this.FieldDesc = desc;
             this.FieldName = name;
-            this.FieldType = type;
+            this.FieldType = type.Replace(" ","").ToLower();
         }
     }
 
@@ -43,30 +43,73 @@ namespace ET
         private static string template;
 
         private const string clientClassDir = "../Unity/Codes/Model/Generate/Config";
+        private static string ClientClassDir
+        {
+            get
+            {
+                if (IsCheck) return "./Temp/ClientClass";
+                return clientClassDir;
+            }
+        }
         private const string serverClassDir = "../Server/Model/Generate/Config";
-
+        private static string ServerClassDir
+        {
+            get
+            {
+                if (IsCheck) return "./Temp/ServerClass";
+                return serverClassDir;
+            }
+        }
         private const string excelDir = "../Excel";
 
         private const string jsonDir = "./Json/{0}";
 
         private const string clientProtoDir = "../Unity/Assets/AssetsPackage/Config";
-        private const string serverProtoDir = "../Config";
-
-        public static void Export()
+        private static string ClientProtoDir
         {
+            get
+            {
+                if (IsCheck) return "./Temp/ClientProto";
+                return clientProtoDir;
+            }
+        }
+        private const string serverProtoDir = "../Config";
+        private static string ServerProtoDir
+        {
+            get
+            {
+                if (IsCheck) return "./Temp/ServerProto";
+                return serverProtoDir;
+            }
+        }
+        private static bool IsCheck;
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="isCheck">是否只校验</param>
+        public static void Export(bool isCheck = false)
+        {
+            IsCheck = isCheck;
+            if(isCheck)
+                Console.WriteLine("校验");
+            else
+                Console.WriteLine("导表");
             try
             {
-                if (Directory.Exists(serverClassDir))
-                    Directory.Delete(serverClassDir, true);
-                if (Directory.Exists(clientClassDir))
-                    Directory.Delete(clientClassDir, true);
+
+                if (Directory.Exists(ServerClassDir))
+                    Directory.Delete(ServerClassDir, true);
+                if (Directory.Exists(ClientClassDir))
+                    Directory.Delete(ClientClassDir, true);
+            
                 //if (Directory.Exists(serverProtoDir))
                 //    Directory.Delete(serverProtoDir, true);
-                if(Directory.Exists(clientProtoDir))
-                    Directory.Delete(clientProtoDir, true);
+                if(Directory.Exists(ClientProtoDir))
+                    Directory.Delete(ClientProtoDir, true);
+                
                 template = File.ReadAllText("Template.txt");
                 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-                foreach (string path in Directory.GetFiles(excelDir))
+                foreach (string path in FindFile(excelDir))
                 {
                     string fileName = Path.GetFileName(path);
                     if (!fileName.EndsWith(".xlsx") || fileName.StartsWith("~$"))
@@ -88,9 +131,20 @@ namespace ET
                         ExportExcelClass(p, real, ConfigType.Server);
                         ExportExcelJson(p, real, ConfigType.Server);
                     }
+                    if (name.StartsWith("P_"))
+                    {
+                        var real = name.Split("_")[1];
+
+                        ExportExcelClass(p, real, ConfigType.Client);
+                        ExportExcelJson(p, real, ConfigType.Client);
+                    }
                 }
                 ExportExcelProtobuf(ConfigType.Client);
                 ExportExcelProtobuf(ConfigType.Server);
+                if (Directory.Exists(ClientClassDir))
+                    foreach (string f in Directory.GetFileSystemEntries(ClientClassDir))
+                        if (f.Contains("Chapter") && File.Exists(f))
+                            File.Delete(f);
                 Console.WriteLine("导表成功!");
             }
             catch (Exception e)
@@ -98,23 +152,46 @@ namespace ET
                 Console.WriteLine(e);
             }
         }
+        public static List<string> FindFile(string dirPath) //参数dirPath为指定的目录
+        {
+            List<string> res = new List<string>();
+            //在指定目录及子目录下查找文件,在listBox1中列出子目录及文件
+            DirectoryInfo Dir = new DirectoryInfo(dirPath);
+            try
+            {
+                foreach (DirectoryInfo d in Dir.GetDirectories()) //查找子目录
+                {
+                    res.AddRange(FindFile(dirPath + "\\"+d.Name));
+                }
+                foreach (var f in Directory.GetFiles(dirPath)) //查找文件
+                {
+                    res.Add(f); 
+                }
+            }
 
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+
+            return res;
+        }
         private static string GetProtoDir(ConfigType configType)
         {
             if (configType == ConfigType.Client)
             {
-                return clientProtoDir;
+                return ClientProtoDir;
             }
-            return serverProtoDir;
+            return ServerProtoDir;
         }
 
         private static string GetClassDir(ConfigType configType)
         {
             if (configType == ConfigType.Client)
             {
-                return clientClassDir;
+                return ClientClassDir;
             }
-            return serverClassDir;
+            return ServerClassDir;
         }
 
         #region 导出class
@@ -124,7 +201,16 @@ namespace ET
             HashSet<string> uniqeField = new HashSet<string>();
             foreach (ExcelWorksheet worksheet in p.Workbook.Worksheets)
             {
-                ExportSheetClass(worksheet, classField, uniqeField, configType);
+                try
+                {
+                    if(worksheet.Dimension==null||worksheet.Dimension.End==null) continue;
+                    Console.WriteLine("ExportSheetClass "+name);
+                    ExportSheetClass(worksheet, classField, uniqeField, configType);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(name+"--"+worksheet.Name + "     有错误 "+ ex);
+                }
             }
             ExportClass(name, classField, configType);
         }
@@ -186,6 +272,8 @@ namespace ET
             sb.AppendLine("{\"list\":[");
             foreach (ExcelWorksheet worksheet in p.Workbook.Worksheets)
             {
+                if(worksheet.Dimension==null||worksheet.Dimension.End==null) continue;
+                Console.WriteLine("ExportExcelJson "+name);
                 ExportSheetJson(worksheet, name, configType, sb);
             }
             sb.AppendLine("]}");
@@ -259,7 +347,7 @@ namespace ET
                 sb.Append("},\n");
             }
         }
-
+        
         private static string Convert(string type, string value)
         {
             switch (type)
@@ -267,7 +355,8 @@ namespace ET
                 case "int[]":
                 case "int32[]":
                 case "long[]":
-                    return $"[{value}]";
+                case "float[]":
+                    return $"[{value.Replace(";",",")}]";
                 case "string[]":
                     return $"[{value}]";
                 case "int":
@@ -366,7 +455,7 @@ namespace ET
 
 
                 string json = File.ReadAllText(Path.Combine(string.Format(jsonDir, configType), $"{protoName}.txt"));
-                object deserialize = BsonSerializer.Deserialize(json, type);
+                object deserialize = JsonHelper.FromJson(type,json);
 
                 string path = Path.Combine(dir, $"{protoName}Category.bytes");
 

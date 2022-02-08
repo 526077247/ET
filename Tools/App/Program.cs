@@ -53,6 +53,12 @@ namespace ET
                         Proto2CS.Export();
                         return 0;
                     }
+                    case AppType.CHExcelExporter:
+                    {
+                        Game.Options.Console = 1;
+                        ExcelExporter.Export(true);
+                        return 0;
+                    }
                 }
             }
             catch (Exception e)

@@ -45,6 +45,7 @@ public class UIScriptController
         WidgetInterfaceList.Add(typeof(Button), "UIButton");
         WidgetInterfaceList.Add(typeof(InputField), "UIInput");
         WidgetInterfaceList.Add(typeof(Slider), "UISlider");
+        WidgetInterfaceList.Add(typeof(Dropdown), "UIDropdown");
         WidgetInterfaceList.Add(typeof(Image), "UIImage");
         WidgetInterfaceList.Add(typeof(RawImage), "UIRawImage");
         WidgetInterfaceList.Add(typeof(Text), "UIText");
