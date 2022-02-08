@@ -1,6 +1,5 @@
-using System.IO;
 using UnityEngine;
-
+using System;
 namespace ET
 {
     public class AppStart_Init : AEvent<EventType.AppStart>
@@ -36,8 +35,19 @@ namespace ET
             
             Game.Scene.AddComponent<GlobalComponent>();
             Game.Scene.AddComponent<AIDispatcherComponent>();
-            //下方代码会初始化Addressables,手机关闭网络等情况访问不到cdn的时候,会卡10s左右。todo:游戏启动时在mono层检查网络
-            await UIManagerComponent.Instance.OpenWindow<UIUpdateView>(UIUpdateView.PrefabPath);//下载热更资源
+            await UIManagerComponent.Instance.OpenWindow<UILoadingView>(UILoadingView.PrefabPath);
+            if(Define.Networked||Define.ForceUpdate) 
+                    //下方代码会初始化Addressables,手机关闭网络等情况访问不到cdn的时候,会卡10s左右。todo:游戏启动时在mono层检查网络
+                await UIManagerComponent.Instance.OpenWindow<UIUpdateView,Action>(UIUpdateView.PrefabPath,StartGame);//下载热更资源
+            else
+                StartGame();
+        }
+        
+        public void StartGame()
+        {
+            Scene zoneScene = SceneFactory.CreateZoneScene(1, "Game", Game.Scene);
+
+            Game.EventSystem.Publish(new EventType.AppStartInitFinish() { ZoneScene = zoneScene });
         }
     }
 }

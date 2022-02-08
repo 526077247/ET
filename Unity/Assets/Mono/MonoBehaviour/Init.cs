@@ -21,6 +21,9 @@ namespace ET
 		
 		private void Awake()
 		{
+#if !UNITY_EDITOR && !FORCE_UPDATE //编辑器模式下跳过更新
+			Define.Networked = Application.internetReachability != NetworkReachability.NotReachable;
+#endif
 			System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
 			//初始化App版本，解决覆盖安装问题
 			sw.Start();

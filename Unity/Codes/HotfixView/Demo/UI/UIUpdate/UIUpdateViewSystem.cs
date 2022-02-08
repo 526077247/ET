@@ -18,10 +18,12 @@ namespace ET
         }
     }
     [UISystem]
-    public class UIUpdateViewOnEnableSystem : OnEnableSystem<UIUpdateView>
+    public class UIUpdateViewOnEnableSystem : OnEnableSystem<UIUpdateView,Action>
     {
-        public override void OnEnable(UIUpdateView self)
+        public override void OnEnable(UIUpdateView self,Action func)
         {
+            self.force_update = Define.ForceUpdate;
+            self.OnOver = func;
             self.last_progress = 0;
             self.m_slider.SetValue(0);
             self.StartCheckUpdate().Coroutine();
@@ -89,10 +91,8 @@ namespace ET
             else
             {
                 Log.Info("不需要更新，直接进入游戏");
-                Scene zoneScene = SceneFactory.CreateZoneScene(1, "Game", Game.Scene);
-
-                await Game.EventSystem.PublishAsync(new EventType.AppStartInitFinish() { ZoneScene = zoneScene });
-                self.CloseSelf().Coroutine();
+                self.OnOver?.Invoke();
+                await self.CloseSelf();
             }
         }
 
@@ -142,12 +142,12 @@ namespace ET
             var info = await HttpManager.Instance.HttpGetResult<UpdateConfig>(url);
             if (info == null)
             {
-                var btnState = await self.ShowMsgBoxView("Update_Get_Fail", "Update_ReTry", "Btn_Exit");
+                var btnState = await self.ShowMsgBoxView("Update_Get_Fail", "Update_ReTry", self.force_update?"Btn_Exit":"Btn_Cancel");
                 if (btnState == self.BTN_CONFIRM)
                 {
                     await self.CheckUpdateList();
                 }
-                else
+                else if(self.force_update)
                 {
                     GameUtility.Quit();
                     return;
@@ -187,12 +187,21 @@ namespace ET
             var verInfo = channel_app_update_list.app_ver[app_ver];
             Log.Info("CheckAppUpdate app_url = " + app_url);
 
-            var force_update = true;//默认强更
-            if (verInfo != null && verInfo.force_update == 0)
-                force_update = false;
+            self.force_update = Define.ForceUpdate; 
+            if (Define.ForceUpdate)//默认强更
+            {
+                if (verInfo != null && verInfo.force_update == 0)
+                    self.force_update = false;
+            }
+            else
+            {
+                if (verInfo != null && verInfo.force_update != 0)
+                    self.force_update = true;
+            }
 
-            var cancelBtnText = force_update ? "Btn_Exit" : "Btn_Enter_Game";
-            var content_updata = force_update ? "Update_ReDownload" : "Update_SuDownload";
+
+            var cancelBtnText = self.force_update ? "Btn_Exit" : "Btn_Enter_Game";
+            var content_updata = self.force_update ? "Update_ReDownload" : "Update_SuDownload";
             var btnState = await self.ShowMsgBoxView(content_updata, "Global_Btn_Confirm", cancelBtnText);
 
             if (btnState == self.BTN_CONFIRM)
@@ -201,7 +210,7 @@ namespace ET
                 //为了防止切换到网页后回来进入了游戏，所以这里需要继续进入该流程
                 return await self.CheckAppUpdate();
             }
-            else if(force_update)
+            else if(self.force_update)
             {
                 Log.Info("CheckAppUpdate Need Force Update And User Choose Exit Game!");
                 GameUtility.Quit();
@@ -271,8 +280,12 @@ namespace ET
             var btnState = await self.ShowMsgBoxView(ct, "Global_Btn_Confirm", "Btn_Exit");
             if (btnState == self.BTN_CANCEL)
             {
-                GameUtility.Quit();
-                return false;
+                if (self.force_update)
+                {
+                    GameUtility.Quit();
+                    return false;
+                }
+                return true;
             }
 
             //开始进行更新
@@ -322,12 +335,13 @@ namespace ET
             if (size<0)
             {
                 Log.Info("CoGetDownloadSize Get Download Size Async Faild");
-                var btnState = await self.ShowMsgBoxView("Update_Get_Fail", "Update_ReTry", "Btn_Exit");
+                var btnState = await self.ShowMsgBoxView("Update_Get_Fail", "Update_ReTry", self.force_update?"Btn_Exit":"Btn_Cancel");
                 if (btnState == self.BTN_CONFIRM)
                     return await self.GetDownloadSize();
                 else
                 {
-                    GameUtility.Quit();
+                    if (self.force_update)
+                        GameUtility.Quit();
                     return 0;
                 }
             }
@@ -347,7 +361,8 @@ namespace ET
                     return await self.CheckCatalogUpdates();
                 else
                 {
-                    GameUtility.Quit();
+                    if(self.force_update)
+                        GameUtility.Quit();
                     return null;
                 }
             }
@@ -371,12 +386,13 @@ namespace ET
             else
             {
                 Log.Info("CoUpdateCatalogs Update Catalog Failed");
-                var btnState = await self.ShowMsgBoxView("Update_Get_Fail", "Update_ReTry", "Btn_Exit");
+                var btnState = await self.ShowMsgBoxView("Update_Get_Fail", "Update_ReTry", self.force_update?"Btn_Exit":"Btn_Cancel");
                 if (btnState == self.BTN_CONFIRM)
                     return await self.UpdateCatalogs(catalog);
                 else
                 {
-                    GameUtility.Quit();
+                    if(self.force_update)
+                        GameUtility.Quit();
                     return false;
 
                 }
@@ -390,12 +406,13 @@ namespace ET
             else
             {
                 Log.Info("CheckUpdateContent Failed");
-                var btnState = await self.ShowMsgBoxView("Update_Get_Fail", "Update_ReTry", "Btn_Exit");
+                var btnState = await self.ShowMsgBoxView("Update_Get_Fail", "Update_ReTry", self.force_update?"Btn_Exit":"Btn_Cancel");
                 if (btnState == self.BTN_CONFIRM)
                     return await self.CheckUpdateContent(merge_mode_union);
                 else
                 {
-                    GameUtility.Quit();
+                    if(self.force_update)
+                        GameUtility.Quit();
                     return null;
                 }
             }
@@ -418,12 +435,13 @@ namespace ET
             else
             {
                 Log.Info("DownloadContent Begin DownloadDependenciesAsync failed");
-                var btnState = await self.ShowMsgBoxView("Update_Get_Fail", "Update_ReTry", "Btn_Exit");
+                var btnState = await self.ShowMsgBoxView("Update_Get_Fail", "Update_ReTry", self.force_update?"Btn_Exit":"Btn_Cancel");
                 if (btnState == self.BTN_CONFIRM)
                     return await self.DownloadContent(size);
                 else
                 {
-                    GameUtility.Quit();
+                    if(self.force_update)
+                        GameUtility.Quit();
                     return false;
                 }
             }
@@ -477,12 +495,12 @@ namespace ET
                 }
             }
             downloadTool.DeleteTempFile(savePath);
-            var btnState = await self.ShowMsgBoxView("Update_Download_Fail", "Update_ReTry", "Btn_Exit");
+            var btnState = await self.ShowMsgBoxView("Update_Download_Fail", "Update_ReTry", self.force_update?"Btn_Exit":"Btn_Cancel");
             if (btnState == self.BTN_CONFIRM)
             {
                 await self.DownloadResinfoAsync(order);
             }
-            else
+            else if(self.force_update)
             {
                 GameUtility.Quit();
             }
