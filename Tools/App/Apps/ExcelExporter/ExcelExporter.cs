@@ -145,11 +145,11 @@ namespace ET
                     foreach (string f in Directory.GetFileSystemEntries(ClientClassDir))
                         if (f.Contains("Chapter") && File.Exists(f))
                             File.Delete(f);
-                Console.WriteLine("导表成功!");
+                Log.Console("Export Excel Sucess!");
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                Log.Console(e.ToString());
             }
         }
         public static List<string> FindFile(string dirPath) //参数dirPath为指定的目录
