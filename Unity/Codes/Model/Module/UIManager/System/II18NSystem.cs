@@ -2,6 +2,10 @@
 
 namespace ET
 {
+    public interface II18N
+    {
+        
+    }
     public interface II18NSystem : ISystemType
     {
         void Run(object o);
@@ -9,7 +13,7 @@ namespace ET
 
     
     [UISystem]
-    public abstract class I18NSystem<T> : II18NSystem where T :Entity
+    public abstract class I18NSystem<T> : II18NSystem where T :II18N
     {
         public Type Type()
         {

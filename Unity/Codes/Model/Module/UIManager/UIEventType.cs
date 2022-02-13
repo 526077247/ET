@@ -62,6 +62,20 @@ namespace ET
         {
             public Entity entity;
             public bool Active;
-        } 
+        }
+        /// <summary>
+        /// 注册多语言
+        /// </summary>
+        public struct RegisterI18NEntity
+        {
+            public Entity entity;
+        }
+        /// <summary>
+        /// 注销多语言
+        /// </summary>
+        public struct RemoveI18NEntity
+        {
+            public Entity entity;
+        }
     }
 }

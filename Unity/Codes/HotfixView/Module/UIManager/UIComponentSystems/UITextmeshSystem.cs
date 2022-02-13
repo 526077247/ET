@@ -8,19 +8,10 @@ using UnityEngine;
 namespace ET
 {
     [UISystem]
-    public class UITextmeshOnCreateSystem : OnCreateSystem<UITextmesh>
-    {
-        public override void OnCreate(UITextmesh self)
-        {
-            I18NComponent.Instance.RegisterI18NEntity(self);
-        }
-    }
-    [UISystem]
-    public class UITextmeshOnCreateSystem1 : OnCreateSystem<UITextmesh, string>
+    public class UITextmeshOnCreateSystem : OnCreateSystem<UITextmesh, string>
     {
         public override void OnCreate(UITextmesh self, string key)
         {
-            I18NComponent.Instance.RegisterI18NEntity(self);
             self.SetI18NKey(key);
         }
 
@@ -30,7 +21,6 @@ namespace ET
     {
         public override void OnDestroy(UITextmesh self)
         {
-            I18NComponent.Instance.RemoveI18NEntity(self);
             self.unity_i18ncomp_touched = null;
             self.keyParams = null;
         }

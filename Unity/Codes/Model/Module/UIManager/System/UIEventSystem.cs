@@ -69,6 +69,7 @@ namespace ET
 		#region OnCreate
 		public void OnCreate(Entity component)
 		{
+			RegisterI18N(component);
 			List<object> iOnCreateSystems = this.typeSystems.GetSystems(component.GetType(), typeof(IOnCreateSystem));
 			if (iOnCreateSystems == null)
 			{
@@ -95,6 +96,7 @@ namespace ET
 
 		public void OnCreate<P1>(Entity component, P1 p1)
 		{
+			RegisterI18N(component);
 			List<object> iOnCreateSystems = this.typeSystems.GetSystems(component.GetType(), typeof(IOnCreateSystem<P1>));
 			if (iOnCreateSystems == null)
 			{
@@ -121,6 +123,7 @@ namespace ET
 
 		public void OnCreate<P1, P2>(Entity component, P1 p1, P2 p2)
 		{
+			RegisterI18N(component);
 			List<object> iOnCreateSystems = this.typeSystems.GetSystems(component.GetType(), typeof(IOnCreateSystem<P1, P2>));
 			if (iOnCreateSystems == null)
 			{
@@ -147,6 +150,7 @@ namespace ET
 
 		public void OnCreate<P1, P2, P3>(Entity component, P1 p1, P2 p2, P3 p3)
 		{
+			RegisterI18N(component);
 			List<object> iOnCreateSystems = this.typeSystems.GetSystems(component.GetType(), typeof(IOnCreateSystem<P1, P2, P3>));
 			if (iOnCreateSystems == null)
 			{
@@ -173,6 +177,7 @@ namespace ET
 
 		public void OnCreate<P1, P2, P3, P4>(Entity component, P1 p1, P2 p2, P3 p3, P4 p4)
 		{
+			RegisterI18N(component);
 			List<object> iOnCreateSystems = this.typeSystems.GetSystems(component.GetType(), typeof(IOnCreateSystem<P1, P2, P3, P4>));
 			if (iOnCreateSystems == null)
 			{
@@ -459,6 +464,7 @@ namespace ET
 		#region OnDestroy
 		public void OnDestroy(Entity component)
 		{
+			RemoveI18N(component);
 			List<object> iOnDestroySystems = this.typeSystems.GetSystems(component.GetType(), typeof(IOnDestroySystem));
 			if (iOnDestroySystems == null)
 			{
@@ -484,6 +490,50 @@ namespace ET
 		}
 
 		#endregion
+		#region I18N
+
+		private Dictionary<Type, bool> I18NCheckRes = new Dictionary<Type, bool>();
+
+		public void RegisterI18N(Entity component)
+		{
+			if (CheckIsI18N(component))
+			{
+				EventSystem.Instance.Publish(new UIEventType.RegisterI18NEntity() {entity = component});
+			}
+		}
+		public void RemoveI18N(Entity component)
+		{
+			if (CheckIsI18N(component))
+			{
+				EventSystem.Instance.Publish(new UIEventType.RemoveI18NEntity {entity = component});
+			}
+		}
+		public bool CheckIsI18N(Entity component)
+		{
+			var type = component.GetType();
+			if (I18NCheckRes.ContainsKey(type)) return I18NCheckRes[type];
+			if (!(component is II18N))
+			{
+				I18NCheckRes[type] = false;
+				return false;
+			}
+			List<object> iI18NSystems = this.typeSystems.GetSystems(type, typeof(II18NSystem));
+			if (iI18NSystems == null)
+			{
+				I18NCheckRes[type] = false;
+				return false;
+			}
+			foreach (II18NSystem aI18NSystem in iI18NSystems)
+			{
+				if (aI18NSystem != null)
+				{
+					I18NCheckRes[type] = true;
+					return true;
+				}
+			}
+			I18NCheckRes[type] = false;
+			return false;
+		}
 
 		public void OnLanguageChange(Entity component)
 		{
@@ -510,7 +560,7 @@ namespace ET
 				}
 			}
 		}
-		
+		#endregion
 		public async ETTask OnViewInitializationSystem(Entity component)
 		{
 			List<object> iOnViewInitializationSystems = this.typeSystems.GetSystems(component.GetType(), typeof(IOnViewInitializationSystem));
