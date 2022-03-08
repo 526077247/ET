@@ -112,5 +112,13 @@ namespace ET
         {
             return show_count;
         }
+        
+        public void Clear()
+        {
+            for (int i = m_itemviewlist.Count - 1; i >= 0; i--)
+            {
+                Destroy(m_itemviewlist[i]);
+            }
+        }
     }
 }

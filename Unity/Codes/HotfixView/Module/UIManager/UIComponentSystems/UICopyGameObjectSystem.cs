@@ -2,7 +2,14 @@
 using UnityEngine;
 namespace ET
 {
-
+    [UISystem]
+    public class UICopyGameObjectOnDestroySystem : OnDestroySystem<UICopyGameObject>
+    {
+        public override void OnDestroy(UICopyGameObject self)
+        {
+            self.unity_comp.Clear();
+        }
+    }
     public static class UICopyGameObjectSystem
     {
         static void ActivatingComponent(this UICopyGameObject self)
