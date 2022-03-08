@@ -119,6 +119,7 @@ namespace ET
             {
                 Destroy(m_itemviewlist[i]);
             }
+            m_itemviewlist.Clear();
         }
     }
 }
