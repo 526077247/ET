@@ -12,7 +12,7 @@ namespace ET
         private static void GenerateCLRBindingByAnalysis()
         {
             string jstr = File.ReadAllText("Assets/AssetsPackage/config.bytes");
-            var config = JsonHelper.FromJson<Dictionary<string, string>>(jstr);
+            var config = LitJson.JsonMapper.ToObject<Dictionary<string, string>>(jstr);
             string assemblyName = "Code" + config["ResVer"];
             //用新的分析热更dll调用引用来生成绑定代码
             ILRuntime.Runtime.Enviorment.AppDomain domain = new ILRuntime.Runtime.Enviorment.AppDomain();

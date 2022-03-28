@@ -31,7 +31,7 @@ namespace ET
         public static void BuildCodeDebug()
         {
             string jstr = File.ReadAllText("Assets/AssetsPackage/config.bytes");
-            var config = JsonHelper.FromJson<Dictionary<string, string>>(jstr);
+            var config = LitJson.JsonMapper.ToObject<Dictionary<string, string>>(jstr);
             string assemblyName = "Code" + config["ResVer"];
             BuildAssemblieEditor.BuildMuteAssembly(assemblyName, new []
             {
@@ -49,7 +49,7 @@ namespace ET
         public static void BuildCodeRelease()
         {
             string jstr = File.ReadAllText("Assets/AssetsPackage/config.bytes");
-            var config = JsonHelper.FromJson<Dictionary<string, string>>(jstr);
+            var config = LitJson.JsonMapper.ToObject<Dictionary<string, string>>(jstr);
             string assemblyName = "Code" + config["ResVer"];
             BuildAssemblieEditor.BuildMuteAssembly(assemblyName, new []
             {

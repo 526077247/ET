@@ -102,7 +102,7 @@ namespace ET
 			if (this.config == null)
 			{
 				string jstr = File.ReadAllText("Assets/AssetsPackage/config.bytes");
-				config = JsonHelper.FromJson<Dictionary<string, string>>(jstr);
+				config = LitJson.JsonMapper.ToObject<Dictionary<string, string>>(jstr);
 			}
 			EditorGUILayout.LabelField("cdn地址：" + this.config["remote_cdn_url"]);
 			EditorGUILayout.LabelField("引擎版本：" + this.config["EngineVer"]);
@@ -114,7 +114,7 @@ namespace ET
 			if (GUILayout.Button("刷新配置"))
 			{
 				string jstr = File.ReadAllText("Assets/AssetsPackage/config.bytes");
-				config = JsonHelper.FromJson<Dictionary<string, string>>(jstr);
+				config = LitJson.JsonMapper.ToObject<Dictionary<string, string>>(jstr);
 			}
 			EditorGUILayout.LabelField("");
 			EditorGUILayout.LabelField("打包平台:");

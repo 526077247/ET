@@ -157,6 +157,7 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_List_1_ETTask_Binding.Register(app);
             ET_ETTaskHelper_Binding.Register(app);
             System_Array_Binding.Register(app);
+            ET_Define_Binding.Register(app);
             AssetBundles_AddressablesManager_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_TextAsset_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_TextAsset_Binding_Enumerator_Binding.Register(app);
@@ -184,7 +185,6 @@ namespace ILRuntime.Runtime.Generated
             ET_VersionCompare_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_Resver_Binding.Register(app);
             ET_Resver_Binding.Register(app);
-            ET_Define_Binding.Register(app);
             AssetBundleMgr_Binding.Register(app);
             ET_ETTask_1_Int64_Binding.Register(app);
             System_Int64_Binding.Register(app);
@@ -219,6 +219,8 @@ namespace ILRuntime.Runtime.Generated
             UnityEngine_Color_Binding.Register(app);
             UnityEngine_UI_Image_Binding.Register(app);
             ET_CopyGameObject_Binding.Register(app);
+            UnityEngine_UI_Dropdown_Binding.Register(app);
+            UnityEngine_Events_UnityEvent_1_Int32_Binding.Register(app);
             UnityEngine_UI_InputField_Binding.Register(app);
             TMPro_TMP_InputField_Binding.Register(app);
             SuperScrollView_LoopGridView_Binding.Register(app);
@@ -241,6 +243,7 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_List_1_Action_Binding.Register(app);
             System_Collections_Generic_List_1_Action_Binding_Enumerator_Binding.Register(app);
             ET_MonoPool_Binding.Register(app);
+            LitJson_JsonMapper_Binding.Register(app);
             System_Collections_Generic_HashSet_1_ILTypeInstance_Binding.Register(app);
             System_Collections_Generic_HashSet_1_ILTypeInstance_Binding_Enumerator_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Type_ILTypeInstance_Binding_ValueCollection_Binding.Register(app);
@@ -297,6 +300,7 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_Dictionary_2_Int32_Int64_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Int32_List_1_ILTypeInstance_Binding.Register(app);
             System_Single_Binding.Register(app);
+            System_Collections_Generic_Dictionary_2_Type_Boolean_Binding.Register(app);
             System_Collections_Generic_List_1_UnityWebRequest_Binding.Register(app);
             System_Collections_Generic_List_1_UnityWebRequest_Binding_Enumerator_Binding.Register(app);
             System_IO_File_Binding.Register(app);
