@@ -47,7 +47,7 @@ namespace ET
 			LoginHelper.Login(self.scene, self.ipaddr.GetText(), self.account.GetText(), self.password.GetText(), () =>
 			{
 				self.loginBtn.SetInteractable(true);
-			});
+			}).Coroutine();
 		}
 		public static void OnBtnClick(this UILoginView self,int id)
         {
@@ -56,7 +56,7 @@ namespace ET
 
 		public static void OnRegister(this UILoginView self)
 		{
-			Game.EventSystem.Publish(new UIEventType.ShowToast() { Text = "测试OnRegister" });
+			Game.EventSystem.PublishAsync(new UIEventType.ShowToast() { Text = "测试OnRegister" }).Coroutine();
 			RedDotComponent.Instance.RefreshRedDotViewCount("Test1", 1);
 		}
 

@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
+using UnityEngine.UI;
+
 namespace ET
 { 
     public class LruCache<TKey, TValue>
@@ -10,7 +12,7 @@ namespace ET
 
         int _capacity;
         ReaderWriterLockSlim _locker;
-        IDictionary<TKey, TValue> _dictionary;
+        Dictionary<TKey, TValue> _dictionary;
         LinkedList<TKey> _linkedList;
         Func<TKey, TValue, bool> check_can_pop_func;
         Action<TKey, TValue> pop_cb;
@@ -208,6 +210,14 @@ namespace ET
                 key = tuple_prev;
             }
 
+        }
+
+        public void ForEach(Action<TKey, TValue> cb)
+        {
+            foreach (var item in _dictionary)
+            {
+                cb(item.Key, item.Value);
+            }
         }
         public void Clear()
         {

@@ -21,9 +21,8 @@ namespace ILRuntime.Runtime.Intepreter
             for (int i = 0; i < fields.Length; i++)
             {
                 var ft = type.StaticFieldTypes[i];
-                var t = ft.TypeForCLR;
                 managedObjs.Add(null);
-                StackObject.Initialized(ref fields[i], i, t, ft, managedObjs);
+                StackObject.Initialized(ref fields[i], i, ft, managedObjs);
             }
             int idx = 0;
             foreach (var i in type.TypeDefinition.Fields)
@@ -33,6 +32,7 @@ namespace ILRuntime.Runtime.Intepreter
                     if (i.InitialValue != null && i.InitialValue.Length > 0)
                     {
                         fields[idx].ObjectType = ObjectTypes.Object;
+                        fields[idx].Value = idx;
                         managedObjs[idx] = i.InitialValue;
                     }
                     idx++;
@@ -135,6 +135,7 @@ namespace ILRuntime.Runtime.Intepreter
         protected StackObject[] fields;
         protected IList<object> managedObjs;
         object clrInstance;
+        ulong valueTypeMask;
         Dictionary<ILMethod, IDelegateAdapter> delegates;
 
         public ILType Type
@@ -175,8 +176,9 @@ namespace ILRuntime.Runtime.Intepreter
         {
             this.type = type;
             fields = new StackObject[type.TotalFieldCount];
-            managedObjs = new List<object>(fields.Length);
-            for (int i = 0; i < fields.Length; i++)
+            var cnt = fields.Length;
+            managedObjs = new List<object>(cnt);
+            for (int i = 0; i < cnt; i++)
             {
                 managedObjs.Add(null);
             }
@@ -404,8 +406,13 @@ namespace ILRuntime.Runtime.Intepreter
         {
             for (int i = 0; i < type.FieldTypes.Length; i++)
             {
+                var idx = type.FieldStartIndex + i;
                 var ft = type.FieldTypes[i];
-                StackObject.Initialized(ref fields[type.FieldStartIndex + i], type.FieldStartIndex + i, ft.TypeForCLR, ft, managedObjs);
+                if (ft.IsValueType && idx < 64)
+                {
+                    valueTypeMask |= (ulong)1 << idx;
+                }
+                StackObject.Initialized(ref fields[idx], idx, ft, managedObjs);
             }
             if (type.BaseType != null && type.BaseType is ILType)
                 InitializeFields((ILType)type.BaseType);
@@ -441,21 +448,59 @@ namespace ILRuntime.Runtime.Intepreter
             }
         }
 
+        internal unsafe void CopyToRegister(int fieldIdx,ref RegisterFrameInfo info, short reg)
+        {
+            if (fieldIdx < fields.Length && fieldIdx >= 0)
+            {
+                fixed(StackObject* ptr = fields)
+                {
+                    info.Intepreter.CopyToRegister(ref info, reg, &ptr[fieldIdx], managedObjs);
+                }
+            }
+            else
+            {
+                if (Type.FirstCLRBaseType != null && Type.FirstCLRBaseType is Enviorment.CrossBindingAdaptor)
+                {
+                    CLRType clrType = info.Intepreter.AppDomain.GetType(((Enviorment.CrossBindingAdaptor)Type.FirstCLRBaseType).BaseCLRType) as CLRType;
+                    var obj = clrType.GetFieldValue(fieldIdx, clrInstance);
+                    if (obj is CrossBindingAdaptorType)
+                        obj = ((CrossBindingAdaptorType)obj).ILInstance;
+                    ILIntepreter.AssignToRegister(ref info, reg, obj);
+                }
+                else
+                    throw new TypeLoadException();
+            }
+        }
+
         unsafe void PushToStackSub(ref StackObject field, int fieldIdx, StackObject* esp, IList<object> managedStack, ILIntepreter intp)
         {
             if (field.ObjectType >= ObjectTypes.Object)
             {
                 var obj = managedObjs[fieldIdx];
-                if (obj != null)
+                if (obj != null && (fieldIdx >= 64 || ((valueTypeMask & ((ulong)1 << fieldIdx)) != 0)))
                 {
-                    var ot = obj.GetType();
-                    ValueTypeBinder binder;
-                    if (ot.IsValueType && type.AppDomain.ValueTypeBinders.TryGetValue(ot, out binder))
+                    if (obj is ILTypeInstance)
                     {
-                        intp.AllocValueType(esp, binder.CLRType);
-                        var dst = ILIntepreter.ResolveReference(esp);
-                        binder.CopyValueTypeToStack(obj, dst, managedStack);
-                        return;
+                        ILTypeInstance ili = (ILTypeInstance)obj;
+                        if (ili.type != null && ili.type.IsValueType)
+                        {
+                            intp.AllocValueType(esp, ili.type);
+                            var dst = ILIntepreter.ResolveReference(esp);
+                            ili.CopyValueTypeToStack(dst, managedStack);
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        var ot = obj.GetType();
+                        ValueTypeBinder binder;
+                        if (ot.IsValueType && type.AppDomain.ValueTypeBinders.TryGetValue(ot, out binder))
+                        {
+                            intp.AllocValueType(esp, binder.CLRType);
+                            var dst = ILIntepreter.ResolveReference(esp);
+                            binder.CopyValueTypeToStack(obj, dst, managedStack);
+                            return;
+                        }
                     }
                 }
                 *esp = field;
@@ -469,7 +514,7 @@ namespace ILRuntime.Runtime.Intepreter
         internal unsafe void CopyValueTypeToStack(StackObject* ptr, IList<object> mStack)
         {
             ptr->ObjectType = ObjectTypes.ValueTypeDescriptor;
-            ptr->Value = type.GetHashCode();
+            ptr->Value = type.TypeIndex;
             ptr->ValueLow = type.TotalFieldCount;
             for(int i = 0; i < fields.Length; i++)
             {
@@ -486,7 +531,7 @@ namespace ILRuntime.Runtime.Intepreter
                         {
                             var obj = managedObjs[i];
                             var dst = ILIntepreter.ResolveReference(val);
-                            var vt = type.AppDomain.GetType(dst->Value);
+                            var vt = type.AppDomain.GetTypeByIndex(dst->Value);
                             if (vt is ILType)
                             {
                                 ((ILTypeInstance)obj).CopyValueTypeToStack(dst, mStack);
@@ -519,7 +564,7 @@ namespace ILRuntime.Runtime.Intepreter
                 if (fieldIdx < maxIdx && fieldIdx >= curType.FieldStartIndex)
                 {
                     var ft = curType.FieldTypes[fieldIdx - curType.FieldStartIndex];
-                    StackObject.Initialized(ref fields[fieldIdx], fieldIdx, ft.TypeForCLR, ft, managedObjs);
+                    StackObject.Initialized(ref fields[fieldIdx], fieldIdx, ft, managedObjs);
                     return;
                 }
                 else
@@ -575,7 +620,7 @@ namespace ILRuntime.Runtime.Intepreter
                         field.ObjectType = ObjectTypes.Object;
                         field.Value = fieldIdx;
                         var dst = ILIntepreter.ResolveReference(esp);
-                        var vt = domain.GetType(dst->Value);
+                        var vt = domain.GetTypeByIndex(dst->Value);
                         if(vt is ILType)
                         {
                             var ins = managedObjs[fieldIdx];
@@ -641,7 +686,11 @@ namespace ILRuntime.Runtime.Intepreter
                             ILEnumTypeInstance enum2 = (ILEnumTypeInstance)obj;
                             if (enum1.type == enum2.type)
                             {
-                                var res = enum1.fields[0] == enum2.fields[0];
+                                bool res;
+                                if (enum1.fields[0].ObjectType == ObjectTypes.Integer)
+                                    res = enum1.fields[0].Value == enum2.fields[0].Value;
+                                else
+                                    res = enum1.fields[0] == enum2.fields[0];
                                 return res;
                             }
                             else
@@ -704,7 +753,7 @@ namespace ILRuntime.Runtime.Intepreter
         internal IDelegateAdapter GetDelegateAdapter(ILMethod method)
         {
             if (delegates == null)
-                return null;//delegates = new Dictionary<ILMethod, IDelegateAdapter>();
+                return null;
 
             IDelegateAdapter res;
             if (delegates.TryGetValue(method, out res))
@@ -716,6 +765,7 @@ namespace ILRuntime.Runtime.Intepreter
         {
             if (delegates == null)
                 delegates = new Dictionary<ILMethod, IDelegateAdapter>();
+
             if (!delegates.ContainsKey(method))
                 delegates[method] = adapter;
             else

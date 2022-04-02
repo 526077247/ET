@@ -51,21 +51,20 @@ namespace ET
 			}
 		}
 
-		private TypeSystems typeSystems;
+		private TypeSystems typeSystems = new TypeSystems();
 		public void Awake()
-		{
-			typeSystems = new TypeSystems();
-			foreach (Type type in EventSystem.Instance.GetTypes(typeof(UISystemAttribute)))
-			{
-				object obj = Activator.CreateInstance(type);
+        {
+	        foreach (Type type in EventSystem.Instance.GetTypes(typeof(UISystemAttribute)))
+	        {
+		        object obj = Activator.CreateInstance(type);
 
-				if (obj is ISystemType iSystemType)
-				{
-					OneTypeSystems oneTypeSystems = this.typeSystems.GetOrCreateOneTypeSystems(iSystemType.Type());
-					oneTypeSystems.Add(iSystemType.SystemType(), obj);
-				}
-			}
-		}
+		        if (obj is ISystemType iSystemType)
+		        {
+			        OneTypeSystems oneTypeSystems = this.typeSystems.GetOrCreateOneTypeSystems(iSystemType.Type());
+			        oneTypeSystems.Add(iSystemType.SystemType(), obj);
+		        }
+	        }
+        }
 		#region OnCreate
 		public void OnCreate(Entity component)
 		{
@@ -76,8 +75,9 @@ namespace ET
 				return;
 			}
 
-			foreach (IOnCreateSystem aOnCreateSystem in iOnCreateSystems)
+			for (int i = 0; i < iOnCreateSystems.Count; i++)
 			{
+				IOnCreateSystem aOnCreateSystem = (IOnCreateSystem)iOnCreateSystems[i];
 				if (aOnCreateSystem == null)
 				{
 					continue;
@@ -103,8 +103,9 @@ namespace ET
 				return;
 			}
 
-			foreach (IOnCreateSystem<P1> aOnCreateSystem in iOnCreateSystems)
+			for (int i = 0; i < iOnCreateSystems.Count; i++)
 			{
+				IOnCreateSystem<P1> aOnCreateSystem = (IOnCreateSystem<P1>)iOnCreateSystems[i];
 				if (aOnCreateSystem == null)
 				{
 					continue;
@@ -130,8 +131,9 @@ namespace ET
 				return;
 			}
 
-			foreach (IOnCreateSystem<P1, P2> aOnCreateSystem in iOnCreateSystems)
+			for (int i = 0; i < iOnCreateSystems.Count; i++)
 			{
+				IOnCreateSystem<P1, P2> aOnCreateSystem = (IOnCreateSystem<P1, P2>)iOnCreateSystems[i];
 				if (aOnCreateSystem == null)
 				{
 					continue;
@@ -157,8 +159,9 @@ namespace ET
 				return;
 			}
 
-			foreach (IOnCreateSystem<P1, P2, P3> aOnCreateSystem in iOnCreateSystems)
+			for (int i = 0; i < iOnCreateSystems.Count; i++)
 			{
+				IOnCreateSystem<P1, P2, P3> aOnCreateSystem = (IOnCreateSystem<P1, P2, P3>)iOnCreateSystems[i];
 				if (aOnCreateSystem == null)
 				{
 					continue;
@@ -184,8 +187,9 @@ namespace ET
 				return;
 			}
 
-			foreach (IOnCreateSystem<P1, P2, P3, P4> aOnCreateSystem in iOnCreateSystems)
+			for (int i = 0; i < iOnCreateSystems.Count; i++)
 			{
+				IOnCreateSystem<P1, P2, P3, P4> aOnCreateSystem = (IOnCreateSystem<P1, P2, P3, P4>)iOnCreateSystems[i];
 				if (aOnCreateSystem == null)
 				{
 					continue;
@@ -211,8 +215,9 @@ namespace ET
 			List<object> iOnEnableSystems = this.typeSystems.GetSystems(component.GetType(), typeof(IOnEnableSystem));
 			if (iOnEnableSystems != null)
 			{
-				foreach (IOnEnableSystem aOnEnableSystem in iOnEnableSystems)
+				for (int i = 0; i < iOnEnableSystems.Count; i++)
 				{
+					IOnEnableSystem aOnEnableSystem = (IOnEnableSystem)iOnEnableSystems[i];
 					if (aOnEnableSystem == null)
 					{
 						continue;
@@ -235,8 +240,9 @@ namespace ET
 			List<object> iOnEnableSystems = this.typeSystems.GetSystems(component.GetType(), typeof(IOnEnableSystem<P1>));
 			if (iOnEnableSystems != null)
 			{
-				foreach (IOnEnableSystem<P1> aOnEnableSystem in iOnEnableSystems)
+				for (int i = 0; i < iOnEnableSystems.Count; i++)
 				{
+					IOnEnableSystem<P1> aOnEnableSystem = (IOnEnableSystem<P1>)iOnEnableSystems[i];
 					if (aOnEnableSystem == null)
 					{
 						continue;
@@ -259,8 +265,9 @@ namespace ET
 			List<object> iOnEnableSystems = this.typeSystems.GetSystems(component.GetType(), typeof(IOnEnableSystem<P1, P2>));
 			if (iOnEnableSystems != null)
 			{
-				foreach (IOnEnableSystem<P1, P2> aOnEnableSystem in iOnEnableSystems)
+				for (int i = 0; i < iOnEnableSystems.Count; i++)
 				{
+					IOnEnableSystem<P1, P2> aOnEnableSystem = (IOnEnableSystem<P1, P2>)iOnEnableSystems[i];
 					if (aOnEnableSystem == null)
 					{
 						continue;
@@ -283,8 +290,9 @@ namespace ET
 			List<object> iOnEnableSystems = this.typeSystems.GetSystems(component.GetType(), typeof(IOnEnableSystem<P1, P2, P3>));
 			if (iOnEnableSystems != null)
 			{
-				foreach (IOnEnableSystem<P1, P2, P3> aOnEnableSystem in iOnEnableSystems)
+				for (int i = 0; i < iOnEnableSystems.Count; i++)
 				{
+					IOnEnableSystem<P1, P2, P3> aOnEnableSystem = (IOnEnableSystem<P1, P2, P3>)iOnEnableSystems[i];
 					if (aOnEnableSystem == null)
 					{
 						continue;
@@ -307,8 +315,9 @@ namespace ET
 			List<object> iOnEnableSystems = this.typeSystems.GetSystems(component.GetType(), typeof(IOnEnableSystem<P1, P2, P3, P4>));
 			if (iOnEnableSystems != null)
 			{
-				foreach (IOnEnableSystem<P1, P2, P3, P4> aOnEnableSystem in iOnEnableSystems)
+				for (int i = 0; i < iOnEnableSystems.Count; i++)
 				{
+					IOnEnableSystem<P1, P2, P3, P4> aOnEnableSystem = (IOnEnableSystem<P1, P2, P3, P4>)iOnEnableSystems[i];
 					if (aOnEnableSystem == null)
 					{
 						continue;
@@ -337,8 +346,9 @@ namespace ET
 				return;
 			}
 
-			foreach (IOnDisableSystem aOnDisableSystem in iOnDisableSystems)
+			for (int i = 0; i < iOnDisableSystems.Count; i++)
 			{
+				IOnDisableSystem aOnDisableSystem = (IOnDisableSystem)iOnDisableSystems[i];
 				if (aOnDisableSystem == null)
 				{
 					continue;
@@ -363,8 +373,9 @@ namespace ET
 				return;
 			}
 
-			foreach (IOnDisableSystem<P1> aOnDisableSystem in iOnDisableSystems)
+			for (int i = 0; i < iOnDisableSystems.Count; i++)
 			{
+				IOnDisableSystem<P1> aOnDisableSystem = (IOnDisableSystem<P1>)iOnDisableSystems[i];
 				if (aOnDisableSystem == null)
 				{
 					continue;
@@ -389,8 +400,9 @@ namespace ET
 				return;
 			}
 
-			foreach (IOnDisableSystem<P1, P2> aOnDisableSystem in iOnDisableSystems)
+			for (int i = 0; i < iOnDisableSystems.Count; i++)
 			{
+				IOnDisableSystem<P1, P2> aOnDisableSystem = (IOnDisableSystem<P1, P2>)iOnDisableSystems[i];
 				if (aOnDisableSystem == null)
 				{
 					continue;
@@ -415,8 +427,9 @@ namespace ET
 				return;
 			}
 
-			foreach (IOnDisableSystem<P1, P2, P3> aOnDisableSystem in iOnDisableSystems)
+			for (int i = 0; i < iOnDisableSystems.Count; i++)
 			{
+				IOnDisableSystem<P1, P2, P3> aOnDisableSystem = (IOnDisableSystem<P1, P2, P3>)iOnDisableSystems[i];
 				if (aOnDisableSystem == null)
 				{
 					continue;
@@ -441,8 +454,9 @@ namespace ET
 				return;
 			}
 
-			foreach (IOnDisableSystem<P1, P2, P3, P4> aOnDisableSystem in iOnDisableSystems)
+			for (int i = 0; i < iOnDisableSystems.Count; i++)
 			{
+				IOnDisableSystem<P1, P2, P3, P4> aOnDisableSystem = (IOnDisableSystem<P1, P2, P3, P4>)iOnDisableSystems[i];
 				if (aOnDisableSystem == null)
 				{
 					continue;
@@ -471,8 +485,9 @@ namespace ET
 				return;
 			}
 
-			foreach (IOnDestroySystem aOnDestroySystem in iOnDestroySystems)
+			for (int i = 0; i < iOnDestroySystems.Count; i++)
 			{
+				IOnDestroySystem aOnDestroySystem = (IOnDestroySystem)iOnDestroySystems[i];
 				if (aOnDestroySystem == null)
 				{
 					continue;
@@ -490,6 +505,7 @@ namespace ET
 		}
 
 		#endregion
+		
 		#region I18N
 
 		private Dictionary<Type, bool> I18NCheckRes = new Dictionary<Type, bool>();
@@ -523,8 +539,9 @@ namespace ET
 				I18NCheckRes[type] = false;
 				return false;
 			}
-			foreach (II18NSystem aI18NSystem in iI18NSystems)
+			for (int i = 0; i < iI18NSystems.Count; i++)
 			{
+				II18NSystem aI18NSystem = (II18NSystem)iI18NSystems[i];
 				if (aI18NSystem != null)
 				{
 					I18NCheckRes[type] = true;
@@ -534,7 +551,6 @@ namespace ET
 			I18NCheckRes[type] = false;
 			return false;
 		}
-
 		public void OnLanguageChange(Entity component)
 		{
 			List<object> iI18NSystems = this.typeSystems.GetSystems(component.GetType(), typeof(II18NSystem));
@@ -543,8 +559,9 @@ namespace ET
 				return;
 			}
 
-			foreach (II18NSystem aI18NSystem in iI18NSystems)
+			for (int i = 0; i < iI18NSystems.Count; i++)
 			{
+				II18NSystem aI18NSystem = (II18NSystem)iI18NSystems[i];
 				if (aI18NSystem == null)
 				{
 					continue;
@@ -569,8 +586,9 @@ namespace ET
 				return;
 			}
 
-			foreach (IOnViewInitializationSystem aOnViewInitializationSystem in iOnViewInitializationSystems)
+			for (int i = 0; i < iOnViewInitializationSystems.Count; i++)
 			{
+				IOnViewInitializationSystem aOnViewInitializationSystem = (IOnViewInitializationSystem)iOnViewInitializationSystems[i];
 				if (aOnViewInitializationSystem == null)
 				{
 					continue;
@@ -595,8 +613,9 @@ namespace ET
 				return;
 			}
 
-			foreach (IRedDotSystem aRedDotSystem in iRedDotSystems)
+			for (int i = 0; i < iRedDotSystems.Count; i++)
 			{
+				IRedDotSystem aRedDotSystem = (IRedDotSystem)iRedDotSystems[i];
 				if (aRedDotSystem == null)
 				{
 					continue;

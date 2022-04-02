@@ -1,6 +1,7 @@
 ﻿using AssetBundles;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace ET
@@ -140,9 +141,9 @@ namespace ET
 			if (res.Count <= 0) return;
 			using (ListComponent<ETTask> TaskScheduler = ListComponent<ETTask>.Create())
 			{
-				foreach (var res_path in res)
+				for (int i = 0; i < res.Count; i++)
 				{
-					TaskScheduler.Add(PreLoadGameObjectAsync(res_path, 1));
+					TaskScheduler.Add(PreLoadGameObjectAsync(res[i], 1));
 				}
 				await ETTaskHelper.WaitAll(TaskScheduler);
 			}
@@ -333,13 +334,15 @@ namespace ET
 					Log.Error($"go_child_count({ go_child_count }) must equip inst_child_count({inst_child_count}) path = {path} ");
 					foreach (var item in childsCountMap)
 					{
+						var k = item.Key;
+						var v = item.Value;
 						var unfair = false;
-						if (!__detailGoChildsCount[path].ContainsKey(item.Key))
+						if (!__detailGoChildsCount[path].ContainsKey(k))
 							unfair = true;
-						else if (__detailGoChildsCount[path][item.Key] != item.Value)
+						else if (__detailGoChildsCount[path][k] != v)
 							unfair = true;
 						if (unfair)
-							Log.Error($"not match path on checkrecycle = { item.Key}, count = {item.Value}");
+							Log.Error($"not match path on checkrecycle = { k}, count = {v}");
 					}
 				}
 			}
@@ -349,9 +352,9 @@ namespace ET
 		{
 			if (__instCache.TryGetValue(path, out var inst_array))
 			{
-				foreach (var item in inst_array)
+				for (int i = 0; i < inst_array.Count; i++)
 				{
-					if (item == inst) return true;
+					if (inst_array[i] == inst) return true;
 				}
 			}
 			return false;
@@ -429,12 +432,13 @@ namespace ET
 			Log.Info("GameObjectPool Cleanup ");
 			foreach (var item in __instCache)
 			{
-				foreach (var inst in item.Value)
+				for (int i = 0; i < item.Value.Count; i++)
 				{
+					var inst = item.Value[i];
 					if (inst != null)
 					{
 						GameObject.Destroy(inst);
-						__goInstCountCache[item.Key] = __goInstCountCache[item.Key] - 1;
+						__goInstCountCache[item.Key]--;
 					}
 					__instPathCache.Remove(inst);
 				}
@@ -447,17 +451,13 @@ namespace ET
 				if (excludePathArray != null)
 				{
 					dict_excludepath = new Dictionary<string, bool>();
-					foreach (var item in excludePathArray)
+					for (int i = 0; i < excludePathArray.Length; i++)
 					{
-						dict_excludepath[item] = true;
+						dict_excludepath[excludePathArray[i]] = true;
 					}
 				}
 
-				List<string> keys = new List<string>();
-				foreach (var item in __goPool.Keys)
-				{
-					keys.Add(item);
-				}
+				List<string> keys = __goPool.Keys.ToList();
 				for (int i = keys.Count - 1; i >= 0; i--)
 				{
 					var path = keys[i];
@@ -485,21 +485,22 @@ namespace ET
 			if (patharray != null)
 			{
 				dict_path = new Dictionary<string, bool>();
-				foreach (var item in patharray)
+				for (int i = 0; i < patharray.Length; i++)
 				{
-					dict_path[item] = true;
+					dict_path[patharray[i]] = true;
 				}
 			}
 			foreach (var item in __instCache)
 			{
 				if (dict_path.ContainsKey(item.Key))
 				{
-					foreach (var inst in item.Value)
+					for (int i = 0; i < item.Value.Count; i++)
 					{
+						var inst = item.Value[i];
 						if (inst != null)
 						{
 							GameObject.Destroy(inst);
-							__goInstCountCache[item.Key] = __goInstCountCache[item.Key] - 1;
+							__goInstCountCache[item.Key]-- ;
 						}
 						__instPathCache.Remove(inst);
 					}
@@ -512,11 +513,7 @@ namespace ET
 
 			if (includePooledGo)
 			{
-				List<string> keys = new List<string>();
-				foreach (var item in __goPool.Keys)
-				{
-					keys.Add(item);
-				}
+				List<string> keys = __goPool.Keys.ToList();
 				for (int i = keys.Count - 1; i >= 0; i--)
 				{
 					var path = keys[i];
@@ -537,12 +534,7 @@ namespace ET
 		/// <param name="path"></param>
 		private bool __CheckNeedUnload(string path)
 		{
-			foreach (var item in __instPathCache)
-				if (item.Value == path)
-				{
-					return false;
-				}
-			return true;
+			return !__instPathCache.ContainsValue(path);
 		}
 		public GameObject GetCachedGoWithPath(string path)
 		{

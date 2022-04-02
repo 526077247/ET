@@ -100,7 +100,7 @@ namespace ET
             await UIManagerComponent.Instance.DestroyWindowExceptNames(self.DestroyWindowExceptNames.ToArray());
             
             slid_value += 0.01f;
-            await Game.EventSystem.PublishAsync(new UIEventType.LoadingProgress { Progress = slid_value });
+            Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value });
             //清除ImageLoaderManager里的资源缓存 这里考虑到我们是单场景
             Log.Info("InnerSwitchScene ImageLoaderManager Cleanup");
             ImageLoaderComponent.Instance.Clear();
@@ -111,7 +111,7 @@ namespace ET
             {
                 GameObjectPoolComponent.Instance.Cleanup(true, cleanup_besides_path);
                 slid_value += 0.01f;
-                await Game.EventSystem.PublishAsync(new UIEventType.LoadingProgress { Progress = slid_value });
+                Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value });
                 //清除除loading外的资源缓存 
                 List<UnityEngine.Object> gos = new List<UnityEngine.Object>();
                 foreach (var path in cleanup_besides_path)
@@ -125,17 +125,17 @@ namespace ET
                 Log.Info("InnerSwitchScene ResourcesManager ClearAssetsCache excludeAssetLen = " + gos.Count);
                 ResourcesComponent.Instance.ClearAssetsCache(gos.ToArray());
                 slid_value += 0.01f;
-                await Game.EventSystem.PublishAsync(new UIEventType.LoadingProgress { Progress = slid_value });
+                Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value });
             }
             else
             {
                 slid_value += 0.02f;
-                await Game.EventSystem.PublishAsync(new UIEventType.LoadingProgress { Progress = slid_value });
+                Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value });
             }
             await ResourcesComponent.Instance.LoadSceneAsync(self.GetSceneConfigByName(SceneNames.Loading).SceneAddress, false);
             Log.Info("LoadSceneAsync Over");
             slid_value += 0.01f;
-            await Game.EventSystem.PublishAsync(new UIEventType.LoadingProgress { Progress = slid_value });
+            Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value });
             //GC：交替重复2次，清干净一点
             GC.Collect();
             GC.Collect();
@@ -146,19 +146,19 @@ namespace ET
                 await TimerComponent.Instance.WaitAsync(1);
             }
             slid_value += 0.1f;
-            await Game.EventSystem.PublishAsync(new UIEventType.LoadingProgress { Progress = slid_value });
+            Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value });
             Log.Info("初始化目标场景 Start");
             //初始化目标场景
             
 
             slid_value += 0.02f;
-            await Game.EventSystem.PublishAsync(new UIEventType.LoadingProgress { Progress = slid_value });
+            Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value });
             Log.Info("异步加载目标场景 Start");
             //异步加载目标场景
             await ResourcesComponent.Instance.LoadSceneAsync(scene_config.SceneAddress, false);
 
             slid_value += 0.65f;
-            await Game.EventSystem.PublishAsync(new UIEventType.LoadingProgress { Progress = slid_value });
+            Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value });
             //准备工作：预加载资源等
             if (slc != null)
             {
@@ -170,12 +170,12 @@ namespace ET
             }
 
             slid_value += 0.15f;
-            await Game.EventSystem.PublishAsync(new UIEventType.LoadingProgress { Progress = slid_value });
+            Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value });
             CameraManagerComponent.Instance.SetCameraStackAtLoadingDone();
             self.current_scene = scene_config.Name;
 
             slid_value = 1;
-            await Game.EventSystem.PublishAsync(new UIEventType.LoadingProgress { Progress = slid_value });
+            Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value });
             //等久点，跳的太快
             await TimerComponent.Instance.WaitAsync(500);
             //加载完成，关闭loading界面

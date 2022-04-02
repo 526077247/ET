@@ -69,11 +69,11 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 2);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.String @itemPrefabName = (System.String)typeof(System.String).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            System.String @itemPrefabName = (System.String)typeof(System.String).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            SuperScrollView.LoopListView2 instance_of_this_method = (SuperScrollView.LoopListView2)typeof(SuperScrollView.LoopListView2).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            SuperScrollView.LoopListView2 instance_of_this_method = (SuperScrollView.LoopListView2)typeof(SuperScrollView.LoopListView2).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             var result_of_this_method = instance_of_this_method.NewListViewItem(@itemPrefabName);
@@ -88,7 +88,7 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 1);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            SuperScrollView.LoopListView2 instance_of_this_method = (SuperScrollView.LoopListView2)typeof(SuperScrollView.LoopListView2).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            SuperScrollView.LoopListView2 instance_of_this_method = (SuperScrollView.LoopListView2)typeof(SuperScrollView.LoopListView2).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             instance_of_this_method.ClearListView();
@@ -103,18 +103,18 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 4);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            SuperScrollView.LoopListViewInitParam @initParam = (SuperScrollView.LoopListViewInitParam)typeof(SuperScrollView.LoopListViewInitParam).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            SuperScrollView.LoopListViewInitParam @initParam = (SuperScrollView.LoopListViewInitParam)typeof(SuperScrollView.LoopListViewInitParam).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            System.Func<SuperScrollView.LoopListView2, System.Int32, SuperScrollView.LoopListViewItem2> @onGetItemByIndex = (System.Func<SuperScrollView.LoopListView2, System.Int32, SuperScrollView.LoopListViewItem2>)typeof(System.Func<SuperScrollView.LoopListView2, System.Int32, SuperScrollView.LoopListViewItem2>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            System.Func<SuperScrollView.LoopListView2, System.Int32, SuperScrollView.LoopListViewItem2> @onGetItemByIndex = (System.Func<SuperScrollView.LoopListView2, System.Int32, SuperScrollView.LoopListViewItem2>)typeof(System.Func<SuperScrollView.LoopListView2, System.Int32, SuperScrollView.LoopListViewItem2>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)8);
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 3);
             System.Int32 @itemTotalCount = ptr_of_this_method->Value;
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 4);
-            SuperScrollView.LoopListView2 instance_of_this_method = (SuperScrollView.LoopListView2)typeof(SuperScrollView.LoopListView2).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            SuperScrollView.LoopListView2 instance_of_this_method = (SuperScrollView.LoopListView2)typeof(SuperScrollView.LoopListView2).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             instance_of_this_method.InitListView(@itemTotalCount, @onGetItemByIndex, @initParam);
@@ -135,7 +135,7 @@ namespace ILRuntime.Runtime.Generated
             System.Int32 @itemCount = ptr_of_this_method->Value;
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 3);
-            SuperScrollView.LoopListView2 instance_of_this_method = (SuperScrollView.LoopListView2)typeof(SuperScrollView.LoopListView2).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            SuperScrollView.LoopListView2 instance_of_this_method = (SuperScrollView.LoopListView2)typeof(SuperScrollView.LoopListView2).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             instance_of_this_method.SetListItemCount(@itemCount, @resetPos);
@@ -153,7 +153,7 @@ namespace ILRuntime.Runtime.Generated
             System.Int32 @itemIndex = ptr_of_this_method->Value;
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            SuperScrollView.LoopListView2 instance_of_this_method = (SuperScrollView.LoopListView2)typeof(SuperScrollView.LoopListView2).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            SuperScrollView.LoopListView2 instance_of_this_method = (SuperScrollView.LoopListView2)typeof(SuperScrollView.LoopListView2).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             var result_of_this_method = instance_of_this_method.GetShownItemByItemIndex(@itemIndex);
@@ -174,7 +174,7 @@ namespace ILRuntime.Runtime.Generated
             System.Int32 @itemIndex = ptr_of_this_method->Value;
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 3);
-            SuperScrollView.LoopListView2 instance_of_this_method = (SuperScrollView.LoopListView2)typeof(SuperScrollView.LoopListView2).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            SuperScrollView.LoopListView2 instance_of_this_method = (SuperScrollView.LoopListView2)typeof(SuperScrollView.LoopListView2).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             instance_of_this_method.MovePanelToItemIndex(@itemIndex, @offset);
@@ -189,7 +189,7 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 1);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            SuperScrollView.LoopListView2 instance_of_this_method = (SuperScrollView.LoopListView2)typeof(SuperScrollView.LoopListView2).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            SuperScrollView.LoopListView2 instance_of_this_method = (SuperScrollView.LoopListView2)typeof(SuperScrollView.LoopListView2).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             instance_of_this_method.RefreshAllShownItem();
@@ -217,7 +217,7 @@ namespace ILRuntime.Runtime.Generated
         static StackObject* AssignFromStack_mOnBeginDragAction_0(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            System.Action @mOnBeginDragAction = (System.Action)typeof(System.Action).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            System.Action @mOnBeginDragAction = (System.Action)typeof(System.Action).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)8);
             ((SuperScrollView.LoopListView2)o).mOnBeginDragAction = @mOnBeginDragAction;
             return ptr_of_this_method;
         }
@@ -241,7 +241,7 @@ namespace ILRuntime.Runtime.Generated
         static StackObject* AssignFromStack_mOnDragingAction_1(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            System.Action @mOnDragingAction = (System.Action)typeof(System.Action).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            System.Action @mOnDragingAction = (System.Action)typeof(System.Action).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)8);
             ((SuperScrollView.LoopListView2)o).mOnDragingAction = @mOnDragingAction;
             return ptr_of_this_method;
         }
@@ -265,7 +265,7 @@ namespace ILRuntime.Runtime.Generated
         static StackObject* AssignFromStack_mOnEndDragAction_2(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            System.Action @mOnEndDragAction = (System.Action)typeof(System.Action).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            System.Action @mOnEndDragAction = (System.Action)typeof(System.Action).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)8);
             ((SuperScrollView.LoopListView2)o).mOnEndDragAction = @mOnEndDragAction;
             return ptr_of_this_method;
         }

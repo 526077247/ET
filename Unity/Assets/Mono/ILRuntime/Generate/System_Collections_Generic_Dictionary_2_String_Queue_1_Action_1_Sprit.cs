@@ -49,13 +49,13 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 3);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.Collections.Generic.Queue<System.Action<UnityEngine.Sprite>> @value = (System.Collections.Generic.Queue<System.Action<UnityEngine.Sprite>>)typeof(System.Collections.Generic.Queue<System.Action<UnityEngine.Sprite>>).CheckCLRTypes(__intp.RetriveObject(ptr_of_this_method, __mStack));
+            System.Collections.Generic.Queue<System.Action<UnityEngine.Sprite>> @value = (System.Collections.Generic.Queue<System.Action<UnityEngine.Sprite>>)typeof(System.Collections.Generic.Queue<System.Action<UnityEngine.Sprite>>).CheckCLRTypes(__intp.RetriveObject(ptr_of_this_method, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            System.String @key = (System.String)typeof(System.String).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            System.String @key = (System.String)typeof(System.String).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 3);
-            System.Collections.Generic.Dictionary<System.String, System.Collections.Generic.Queue<System.Action<UnityEngine.Sprite>>> instance_of_this_method = (System.Collections.Generic.Dictionary<System.String, System.Collections.Generic.Queue<System.Action<UnityEngine.Sprite>>>)typeof(System.Collections.Generic.Dictionary<System.String, System.Collections.Generic.Queue<System.Action<UnityEngine.Sprite>>>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            System.Collections.Generic.Dictionary<System.String, System.Collections.Generic.Queue<System.Action<UnityEngine.Sprite>>> instance_of_this_method = (System.Collections.Generic.Dictionary<System.String, System.Collections.Generic.Queue<System.Action<UnityEngine.Sprite>>>)typeof(System.Collections.Generic.Dictionary<System.String, System.Collections.Generic.Queue<System.Action<UnityEngine.Sprite>>>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
 
             var result_of_this_method = instance_of_this_method.TryGetValue(@key, out @value);
 
@@ -130,11 +130,11 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 2);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.String @key = (System.String)typeof(System.String).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            System.String @key = (System.String)typeof(System.String).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            System.Collections.Generic.Dictionary<System.String, System.Collections.Generic.Queue<System.Action<UnityEngine.Sprite>>> instance_of_this_method = (System.Collections.Generic.Dictionary<System.String, System.Collections.Generic.Queue<System.Action<UnityEngine.Sprite>>>)typeof(System.Collections.Generic.Dictionary<System.String, System.Collections.Generic.Queue<System.Action<UnityEngine.Sprite>>>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            System.Collections.Generic.Dictionary<System.String, System.Collections.Generic.Queue<System.Action<UnityEngine.Sprite>>> instance_of_this_method = (System.Collections.Generic.Dictionary<System.String, System.Collections.Generic.Queue<System.Action<UnityEngine.Sprite>>>)typeof(System.Collections.Generic.Dictionary<System.String, System.Collections.Generic.Queue<System.Action<UnityEngine.Sprite>>>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             var result_of_this_method = instance_of_this_method.Remove(@key);
@@ -151,15 +151,15 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 3);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.Collections.Generic.Queue<System.Action<UnityEngine.Sprite>> @value = (System.Collections.Generic.Queue<System.Action<UnityEngine.Sprite>>)typeof(System.Collections.Generic.Queue<System.Action<UnityEngine.Sprite>>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            System.Collections.Generic.Queue<System.Action<UnityEngine.Sprite>> @value = (System.Collections.Generic.Queue<System.Action<UnityEngine.Sprite>>)typeof(System.Collections.Generic.Queue<System.Action<UnityEngine.Sprite>>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            System.String @key = (System.String)typeof(System.String).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            System.String @key = (System.String)typeof(System.String).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 3);
-            System.Collections.Generic.Dictionary<System.String, System.Collections.Generic.Queue<System.Action<UnityEngine.Sprite>>> instance_of_this_method = (System.Collections.Generic.Dictionary<System.String, System.Collections.Generic.Queue<System.Action<UnityEngine.Sprite>>>)typeof(System.Collections.Generic.Dictionary<System.String, System.Collections.Generic.Queue<System.Action<UnityEngine.Sprite>>>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            System.Collections.Generic.Dictionary<System.String, System.Collections.Generic.Queue<System.Action<UnityEngine.Sprite>>> instance_of_this_method = (System.Collections.Generic.Dictionary<System.String, System.Collections.Generic.Queue<System.Action<UnityEngine.Sprite>>>)typeof(System.Collections.Generic.Dictionary<System.String, System.Collections.Generic.Queue<System.Action<UnityEngine.Sprite>>>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             instance_of_this_method[key] = value;
@@ -174,11 +174,11 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 2);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.String @key = (System.String)typeof(System.String).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            System.String @key = (System.String)typeof(System.String).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            System.Collections.Generic.Dictionary<System.String, System.Collections.Generic.Queue<System.Action<UnityEngine.Sprite>>> instance_of_this_method = (System.Collections.Generic.Dictionary<System.String, System.Collections.Generic.Queue<System.Action<UnityEngine.Sprite>>>)typeof(System.Collections.Generic.Dictionary<System.String, System.Collections.Generic.Queue<System.Action<UnityEngine.Sprite>>>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            System.Collections.Generic.Dictionary<System.String, System.Collections.Generic.Queue<System.Action<UnityEngine.Sprite>>> instance_of_this_method = (System.Collections.Generic.Dictionary<System.String, System.Collections.Generic.Queue<System.Action<UnityEngine.Sprite>>>)typeof(System.Collections.Generic.Dictionary<System.String, System.Collections.Generic.Queue<System.Action<UnityEngine.Sprite>>>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             var result_of_this_method = instance_of_this_method[key];

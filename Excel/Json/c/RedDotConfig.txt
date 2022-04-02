@@ -1,0 +1,4 @@
+{"list":[
+{"_t":"RedDotConfig","_id":1,"Target":"Test","Parent":"Null"},
+{"_t":"RedDotConfig","_id":2,"Target":"Test1","Parent":"Test"},
+]}

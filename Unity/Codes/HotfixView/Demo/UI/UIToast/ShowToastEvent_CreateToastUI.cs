@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ET
 {
-	public class ShowToastEvent_CreateToastUI : AEvent<UIEventType.ShowToast>
+	public class ShowToastEvent_CreateToastUI : AEventAsync<UIEventType.ShowToast>
 	{
 		protected override async ETTask Run(UIEventType.ShowToast args)
 		{

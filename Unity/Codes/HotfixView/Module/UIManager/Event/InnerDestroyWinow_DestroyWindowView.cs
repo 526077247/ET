@@ -9,7 +9,7 @@ namespace ET
 {
     public class InnerDestroyWinow_DestroyWindowView : AEvent<UIEventType.InnerDestroyWindow>
 	{
-		protected override async ETTask Run(UIEventType.InnerDestroyWindow args)
+		protected override void Run(UIEventType.InnerDestroyWindow args)
 		{
 			var target = args.target;
 			Entity view = target.GetComponent(target.ViewType);
@@ -26,7 +26,6 @@ namespace ET
 				view.BeforeOnDestroy();
 				UIEventSystem.Instance.OnDestroy(view);
 			}
-			await ETTask.CompletedTask;
 		}
 	}
 }

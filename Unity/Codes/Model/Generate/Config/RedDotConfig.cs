@@ -7,7 +7,7 @@ namespace ET
 {
     [ProtoContract]
     [Config]
-    public partial class RedDotConfigCategory : ProtoObject
+    public partial class RedDotConfigCategory : ProtoObject, IMerge
     {
         public static RedDotConfigCategory Instance;
 		
@@ -23,11 +23,18 @@ namespace ET
         {
             Instance = this;
         }
+        
+        public void Merge(object o)
+        {
+            RedDotConfigCategory s = o as RedDotConfigCategory;
+            this.list.AddRange(s.list);
+        }
 		
         public override void EndInit()
         {
-            foreach (RedDotConfig config in list)
+            for(int i =0 ;i<list.Count;i++)
             {
+                RedDotConfig config = list[i];
                 config.EndInit();
                 this.dict.Add(config.Id, config);
             }            
@@ -55,7 +62,10 @@ namespace ET
         {
             return this.dict;
         }
-
+        public List<RedDotConfig> GetAllList()
+        {
+            return this.list;
+        }
         public RedDotConfig GetOne()
         {
             if (this.dict == null || this.dict.Count <= 0)
@@ -69,10 +79,13 @@ namespace ET
     [ProtoContract]
 	public partial class RedDotConfig: ProtoObject, IConfig
 	{
+		/// <summary>Id</summary>
 		[ProtoMember(1)]
 		public int Id { get; set; }
+		/// <summary>标记</summary>
 		[ProtoMember(2)]
 		public string Target { get; set; }
+		/// <summary>父节点</summary>
 		[ProtoMember(3)]
 		public string Parent { get; set; }
 

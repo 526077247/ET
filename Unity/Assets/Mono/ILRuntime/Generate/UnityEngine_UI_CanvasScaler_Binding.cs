@@ -46,11 +46,11 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 2);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            UnityEngine.UI.CanvasScaler.ScaleMode @value = (UnityEngine.UI.CanvasScaler.ScaleMode)typeof(UnityEngine.UI.CanvasScaler.ScaleMode).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            UnityEngine.UI.CanvasScaler.ScaleMode @value = (UnityEngine.UI.CanvasScaler.ScaleMode)typeof(UnityEngine.UI.CanvasScaler.ScaleMode).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)20);
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            UnityEngine.UI.CanvasScaler instance_of_this_method = (UnityEngine.UI.CanvasScaler)typeof(UnityEngine.UI.CanvasScaler).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            UnityEngine.UI.CanvasScaler instance_of_this_method = (UnityEngine.UI.CanvasScaler)typeof(UnityEngine.UI.CanvasScaler).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             instance_of_this_method.uiScaleMode = value;
@@ -65,11 +65,11 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 2);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            UnityEngine.UI.CanvasScaler.ScreenMatchMode @value = (UnityEngine.UI.CanvasScaler.ScreenMatchMode)typeof(UnityEngine.UI.CanvasScaler.ScreenMatchMode).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            UnityEngine.UI.CanvasScaler.ScreenMatchMode @value = (UnityEngine.UI.CanvasScaler.ScreenMatchMode)typeof(UnityEngine.UI.CanvasScaler.ScreenMatchMode).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)20);
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            UnityEngine.UI.CanvasScaler instance_of_this_method = (UnityEngine.UI.CanvasScaler)typeof(UnityEngine.UI.CanvasScaler).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            UnityEngine.UI.CanvasScaler instance_of_this_method = (UnityEngine.UI.CanvasScaler)typeof(UnityEngine.UI.CanvasScaler).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             instance_of_this_method.screenMatchMode = value;
@@ -84,11 +84,16 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 2);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            UnityEngine.Vector2 @value = (UnityEngine.Vector2)typeof(UnityEngine.Vector2).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
-            __intp.Free(ptr_of_this_method);
+            UnityEngine.Vector2 @value = new UnityEngine.Vector2();
+            if (ILRuntime.Runtime.Generated.CLRBindings.s_UnityEngine_Vector2_Binding_Binder != null) {
+                ILRuntime.Runtime.Generated.CLRBindings.s_UnityEngine_Vector2_Binding_Binder.ParseValue(ref @value, __intp, ptr_of_this_method, __mStack, true);
+            } else {
+                @value = (UnityEngine.Vector2)typeof(UnityEngine.Vector2).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)16);
+                __intp.Free(ptr_of_this_method);
+            }
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            UnityEngine.UI.CanvasScaler instance_of_this_method = (UnityEngine.UI.CanvasScaler)typeof(UnityEngine.UI.CanvasScaler).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            UnityEngine.UI.CanvasScaler instance_of_this_method = (UnityEngine.UI.CanvasScaler)typeof(UnityEngine.UI.CanvasScaler).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             instance_of_this_method.referenceResolution = value;
@@ -106,7 +111,7 @@ namespace ILRuntime.Runtime.Generated
             System.Single @value = *(float*)&ptr_of_this_method->Value;
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            UnityEngine.UI.CanvasScaler instance_of_this_method = (UnityEngine.UI.CanvasScaler)typeof(UnityEngine.UI.CanvasScaler).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            UnityEngine.UI.CanvasScaler instance_of_this_method = (UnityEngine.UI.CanvasScaler)typeof(UnityEngine.UI.CanvasScaler).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             instance_of_this_method.matchWidthOrHeight = value;

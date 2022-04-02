@@ -40,6 +40,7 @@ namespace ET
             
             Game.Scene.AddComponent<GlobalComponent>();
             Game.Scene.AddComponent<AIDispatcherComponent>();
+            Game.Scene.AddComponent<NumericWatcherComponent>();
             await UIManagerComponent.Instance.OpenWindow<UILoadingView>(UILoadingView.PrefabPath);
             if(Define.Networked||Define.ForceUpdate) 
                     //下方代码会初始化Addressables,手机关闭网络等情况访问不到cdn的时候,会卡10s左右。todo:游戏启动时在mono层检查网络
@@ -52,7 +53,7 @@ namespace ET
         {
             Scene zoneScene = SceneFactory.CreateZoneScene(1, "Game", Game.Scene);
             
-            Game.EventSystem.Publish(new EventType.AppStartInitFinish() { ZoneScene = zoneScene });
+            Game.EventSystem.PublishAsync(new EventType.AppStartInitFinish() { ZoneScene = zoneScene }).Coroutine();
         }
     }
 }

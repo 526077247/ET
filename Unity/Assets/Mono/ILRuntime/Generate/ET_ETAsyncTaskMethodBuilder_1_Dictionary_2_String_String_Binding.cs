@@ -163,11 +163,11 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 2);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            ET.IAsyncStateMachineClassInheritanceAdaptor.IAsyncStateMachineAdaptor @stateMachine = (ET.IAsyncStateMachineClassInheritanceAdaptor.IAsyncStateMachineAdaptor)typeof(ET.IAsyncStateMachineClassInheritanceAdaptor.IAsyncStateMachineAdaptor).CheckCLRTypes(__intp.RetriveObject(ptr_of_this_method, __mStack));
+            ET.IAsyncStateMachineClassInheritanceAdaptor.IAsyncStateMachineAdaptor @stateMachine = (ET.IAsyncStateMachineClassInheritanceAdaptor.IAsyncStateMachineAdaptor)typeof(ET.IAsyncStateMachineClassInheritanceAdaptor.IAsyncStateMachineAdaptor).CheckCLRTypes(__intp.RetriveObject(ptr_of_this_method, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
             ptr_of_this_method = ILIntepreter.GetObjectAndResolveReference(ptr_of_this_method);
-            object instance_of_this_method = (ET.ETAsyncTaskMethodBuilder<System.Collections.Generic.Dictionary<System.String, System.String>>)typeof(ET.ETAsyncTaskMethodBuilder<System.Collections.Generic.Dictionary<System.String, System.String>>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            object instance_of_this_method = (ET.ETAsyncTaskMethodBuilder<System.Collections.Generic.Dictionary<System.String, System.String>>)typeof(ET.ETAsyncTaskMethodBuilder<System.Collections.Generic.Dictionary<System.String, System.String>>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)16);
 
             ((ET.ETAsyncTaskMethodBuilder<System.Collections.Generic.Dictionary<System.String, System.String>>)instance_of_this_method).Start<ET.IAsyncStateMachineClassInheritanceAdaptor.IAsyncStateMachineAdaptor>(ref @stateMachine);
 
@@ -239,7 +239,7 @@ namespace ILRuntime.Runtime.Generated
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
             ptr_of_this_method = ILIntepreter.GetObjectAndResolveReference(ptr_of_this_method);
-            ET.ETAsyncTaskMethodBuilder<System.Collections.Generic.Dictionary<System.String, System.String>> instance_of_this_method = (ET.ETAsyncTaskMethodBuilder<System.Collections.Generic.Dictionary<System.String, System.String>>)typeof(ET.ETAsyncTaskMethodBuilder<System.Collections.Generic.Dictionary<System.String, System.String>>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            ET.ETAsyncTaskMethodBuilder<System.Collections.Generic.Dictionary<System.String, System.String>> instance_of_this_method = (ET.ETAsyncTaskMethodBuilder<System.Collections.Generic.Dictionary<System.String, System.String>>)typeof(ET.ETAsyncTaskMethodBuilder<System.Collections.Generic.Dictionary<System.String, System.String>>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)16);
 
             var result_of_this_method = instance_of_this_method.Task;
 
@@ -257,14 +257,14 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 3);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            ET.IAsyncStateMachineClassInheritanceAdaptor.IAsyncStateMachineAdaptor @stateMachine = (ET.IAsyncStateMachineClassInheritanceAdaptor.IAsyncStateMachineAdaptor)typeof(ET.IAsyncStateMachineClassInheritanceAdaptor.IAsyncStateMachineAdaptor).CheckCLRTypes(__intp.RetriveObject(ptr_of_this_method, __mStack));
+            ET.IAsyncStateMachineClassInheritanceAdaptor.IAsyncStateMachineAdaptor @stateMachine = (ET.IAsyncStateMachineClassInheritanceAdaptor.IAsyncStateMachineAdaptor)typeof(ET.IAsyncStateMachineClassInheritanceAdaptor.IAsyncStateMachineAdaptor).CheckCLRTypes(__intp.RetriveObject(ptr_of_this_method, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            ET.ETTask<System.Collections.Generic.Dictionary<System.String, System.String>> @awaiter = (ET.ETTask<System.Collections.Generic.Dictionary<System.String, System.String>>)typeof(ET.ETTask<System.Collections.Generic.Dictionary<System.String, System.String>>).CheckCLRTypes(__intp.RetriveObject(ptr_of_this_method, __mStack));
+            ET.ETTask<System.Collections.Generic.Dictionary<System.String, System.String>> @awaiter = (ET.ETTask<System.Collections.Generic.Dictionary<System.String, System.String>>)typeof(ET.ETTask<System.Collections.Generic.Dictionary<System.String, System.String>>).CheckCLRTypes(__intp.RetriveObject(ptr_of_this_method, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 3);
             ptr_of_this_method = ILIntepreter.GetObjectAndResolveReference(ptr_of_this_method);
-            ET.ETAsyncTaskMethodBuilder<System.Collections.Generic.Dictionary<System.String, System.String>> instance_of_this_method = (ET.ETAsyncTaskMethodBuilder<System.Collections.Generic.Dictionary<System.String, System.String>>)typeof(ET.ETAsyncTaskMethodBuilder<System.Collections.Generic.Dictionary<System.String, System.String>>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            ET.ETAsyncTaskMethodBuilder<System.Collections.Generic.Dictionary<System.String, System.String>> instance_of_this_method = (ET.ETAsyncTaskMethodBuilder<System.Collections.Generic.Dictionary<System.String, System.String>>)typeof(ET.ETAsyncTaskMethodBuilder<System.Collections.Generic.Dictionary<System.String, System.String>>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)16);
 
             instance_of_this_method.AwaitUnsafeOnCompleted<ET.ETTask<System.Collections.Generic.Dictionary<System.String, System.String>>, ET.IAsyncStateMachineClassInheritanceAdaptor.IAsyncStateMachineAdaptor>(ref @awaiter, ref @stateMachine);
 
@@ -392,14 +392,14 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 3);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            ET.IAsyncStateMachineClassInheritanceAdaptor.IAsyncStateMachineAdaptor @stateMachine = (ET.IAsyncStateMachineClassInheritanceAdaptor.IAsyncStateMachineAdaptor)typeof(ET.IAsyncStateMachineClassInheritanceAdaptor.IAsyncStateMachineAdaptor).CheckCLRTypes(__intp.RetriveObject(ptr_of_this_method, __mStack));
+            ET.IAsyncStateMachineClassInheritanceAdaptor.IAsyncStateMachineAdaptor @stateMachine = (ET.IAsyncStateMachineClassInheritanceAdaptor.IAsyncStateMachineAdaptor)typeof(ET.IAsyncStateMachineClassInheritanceAdaptor.IAsyncStateMachineAdaptor).CheckCLRTypes(__intp.RetriveObject(ptr_of_this_method, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            ET.ETTask<System.Int32> @awaiter = (ET.ETTask<System.Int32>)typeof(ET.ETTask<System.Int32>).CheckCLRTypes(__intp.RetriveObject(ptr_of_this_method, __mStack));
+            ET.ETTask<System.Int32> @awaiter = (ET.ETTask<System.Int32>)typeof(ET.ETTask<System.Int32>).CheckCLRTypes(__intp.RetriveObject(ptr_of_this_method, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 3);
             ptr_of_this_method = ILIntepreter.GetObjectAndResolveReference(ptr_of_this_method);
-            ET.ETAsyncTaskMethodBuilder<System.Collections.Generic.Dictionary<System.String, System.String>> instance_of_this_method = (ET.ETAsyncTaskMethodBuilder<System.Collections.Generic.Dictionary<System.String, System.String>>)typeof(ET.ETAsyncTaskMethodBuilder<System.Collections.Generic.Dictionary<System.String, System.String>>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            ET.ETAsyncTaskMethodBuilder<System.Collections.Generic.Dictionary<System.String, System.String>> instance_of_this_method = (ET.ETAsyncTaskMethodBuilder<System.Collections.Generic.Dictionary<System.String, System.String>>)typeof(ET.ETAsyncTaskMethodBuilder<System.Collections.Generic.Dictionary<System.String, System.String>>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)16);
 
             instance_of_this_method.AwaitUnsafeOnCompleted<ET.ETTask<System.Int32>, ET.IAsyncStateMachineClassInheritanceAdaptor.IAsyncStateMachineAdaptor>(ref @awaiter, ref @stateMachine);
 
@@ -527,12 +527,12 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 2);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.Exception @exception = (System.Exception)typeof(System.Exception).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            System.Exception @exception = (System.Exception)typeof(System.Exception).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
             ptr_of_this_method = ILIntepreter.GetObjectAndResolveReference(ptr_of_this_method);
-            ET.ETAsyncTaskMethodBuilder<System.Collections.Generic.Dictionary<System.String, System.String>> instance_of_this_method = (ET.ETAsyncTaskMethodBuilder<System.Collections.Generic.Dictionary<System.String, System.String>>)typeof(ET.ETAsyncTaskMethodBuilder<System.Collections.Generic.Dictionary<System.String, System.String>>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            ET.ETAsyncTaskMethodBuilder<System.Collections.Generic.Dictionary<System.String, System.String>> instance_of_this_method = (ET.ETAsyncTaskMethodBuilder<System.Collections.Generic.Dictionary<System.String, System.String>>)typeof(ET.ETAsyncTaskMethodBuilder<System.Collections.Generic.Dictionary<System.String, System.String>>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)16);
 
             instance_of_this_method.SetException(@exception);
 
@@ -550,12 +550,12 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 2);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.Collections.Generic.Dictionary<System.String, System.String> @ret = (System.Collections.Generic.Dictionary<System.String, System.String>)typeof(System.Collections.Generic.Dictionary<System.String, System.String>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            System.Collections.Generic.Dictionary<System.String, System.String> @ret = (System.Collections.Generic.Dictionary<System.String, System.String>)typeof(System.Collections.Generic.Dictionary<System.String, System.String>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
             ptr_of_this_method = ILIntepreter.GetObjectAndResolveReference(ptr_of_this_method);
-            ET.ETAsyncTaskMethodBuilder<System.Collections.Generic.Dictionary<System.String, System.String>> instance_of_this_method = (ET.ETAsyncTaskMethodBuilder<System.Collections.Generic.Dictionary<System.String, System.String>>)typeof(ET.ETAsyncTaskMethodBuilder<System.Collections.Generic.Dictionary<System.String, System.String>>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            ET.ETAsyncTaskMethodBuilder<System.Collections.Generic.Dictionary<System.String, System.String>> instance_of_this_method = (ET.ETAsyncTaskMethodBuilder<System.Collections.Generic.Dictionary<System.String, System.String>>)typeof(ET.ETAsyncTaskMethodBuilder<System.Collections.Generic.Dictionary<System.String, System.String>>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)16);
 
             instance_of_this_method.SetResult(@ret);
 
@@ -573,12 +573,12 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 2);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.Runtime.CompilerServices.IAsyncStateMachine @stateMachine = (System.Runtime.CompilerServices.IAsyncStateMachine)typeof(System.Runtime.CompilerServices.IAsyncStateMachine).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            System.Runtime.CompilerServices.IAsyncStateMachine @stateMachine = (System.Runtime.CompilerServices.IAsyncStateMachine)typeof(System.Runtime.CompilerServices.IAsyncStateMachine).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
             ptr_of_this_method = ILIntepreter.GetObjectAndResolveReference(ptr_of_this_method);
-            ET.ETAsyncTaskMethodBuilder<System.Collections.Generic.Dictionary<System.String, System.String>> instance_of_this_method = (ET.ETAsyncTaskMethodBuilder<System.Collections.Generic.Dictionary<System.String, System.String>>)typeof(ET.ETAsyncTaskMethodBuilder<System.Collections.Generic.Dictionary<System.String, System.String>>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            ET.ETAsyncTaskMethodBuilder<System.Collections.Generic.Dictionary<System.String, System.String>> instance_of_this_method = (ET.ETAsyncTaskMethodBuilder<System.Collections.Generic.Dictionary<System.String, System.String>>)typeof(ET.ETAsyncTaskMethodBuilder<System.Collections.Generic.Dictionary<System.String, System.String>>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)16);
 
             instance_of_this_method.SetStateMachine(@stateMachine);
 

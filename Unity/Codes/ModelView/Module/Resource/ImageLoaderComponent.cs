@@ -83,20 +83,28 @@ namespace ET
         //异步加载图片 会自动识别图集：回调方式（image 和button已经封装 外部使用时候 谨慎使用）
         public async ETTask<Sprite> LoadImageAsync(string image_path, Action<Sprite> callback = null)
         {
-            Sprite res;
+            Sprite res = null;
             CoroutineLock coroutineLock = null;
             try
             {
-                coroutineLock = await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Resources, image_path.GetHashCode());
-                __GetSpriteLoadInfoByPath(image_path, out Type asset_type, out string asset_address, out string subasset_name);
+                coroutineLock =
+                    await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Resources, image_path.GetHashCode());
+                __GetSpriteLoadInfoByPath(image_path, out Type asset_type, out string asset_address,
+                    out string subasset_name);
                 if (asset_type == sprite_type)
                 {
-                    res = await __LoadSingleImageAsyncInternal(m_cacheSingleSprite, asset_address, subasset_name, callback);
+                    res = await __LoadSingleImageAsyncInternal(m_cacheSingleSprite, asset_address, subasset_name,
+                        callback);
                 }
                 else
                 {
-                    res = await __LoadSpriteImageAsyncInternal(m_cacheSpriteAtlas, asset_address, subasset_name, callback);
+                    res = await __LoadSpriteImageAsyncInternal(m_cacheSpriteAtlas, asset_address, subasset_name,
+                        callback);
                 }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex);
             }
             finally
             {
@@ -310,12 +318,12 @@ namespace ET
             if (subIndex >= 0)
             {
                 //有子目录
-                var prefix = image_path.Substring(0, index + 1);
+                var prefix = image_path.Substring(0, index+1);
                 var name = substr.Substring(0, subIndex);
                 atlasPath = string.Format("{0}{1}.spriteatlas", prefix, "Atlas_" + name);
                 var dotIndex = substr.LastIndexOf(".");
                 var lastSlashIndex = substr.LastIndexOf('/');
-                spriteName = substr.Substring(lastSlashIndex + 1, dotIndex - lastSlashIndex - 1);
+                spriteName = substr.Substring(lastSlashIndex+1, dotIndex - lastSlashIndex-1);
             }
             else
             {
@@ -473,34 +481,27 @@ namespace ET
 
         public void Clear()
         {
-            var keys = m_cacheSpriteAtlas.Keys;
-            foreach (var key in keys)
+            m_cacheSpriteAtlas.ForEach((key, value) =>
             {
-                if (m_cacheSpriteAtlas.TryOnlyGet(key, out var value))
-                {
-                    if (value.subasset != null)
-                        foreach (var item in value.subasset)
-                        {
-                            GameObject.Destroy(item.Value.asset);
-                        }
-                    AddressablesManager.ReleaseAsset(value.asset);
-                    value.asset = null;
-                    value.subasset = null;
-                    value.ref_count = 0;
-                }
-            }
+                if (value.subasset != null)
+                    foreach (var item in value.subasset)
+                    {
+                        GameObject.Destroy(item.Value.asset);
+                    }
+                AddressablesManager.ReleaseAsset(value.asset);
+                value.asset = null;
+                value.subasset = null;
+                value.ref_count = 0;
+            });
             m_cacheSpriteAtlas.Clear();
 
-            keys = m_cacheSingleSprite.Keys;
-            foreach (var key in keys)
-            {
-                if (m_cacheSingleSprite.TryOnlyGet(key, out var value))
+            m_cacheSingleSprite.ForEach((key, value) =>
                 {
                     AddressablesManager.ReleaseAsset(value.asset);
                     value.asset = null;
                     value.ref_count = 0;
                 }
-            }
+            );
             m_cacheSingleSprite.Clear();
         }
         #endregion

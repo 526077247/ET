@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-<<<<<<< HEAD:Unity/Assets/Editor/AddressableEditor/AddressableEditor.cs.meta
-guid: 9772a762bd8f1a14b9590ad61aa71529
-=======
 guid: 8486b7ac1e2f7684286cfa3d5af249fe
->>>>>>> upstream/master:Unity/Assets/Mono/Core/Helper/ForeachHelper.cs.meta
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2

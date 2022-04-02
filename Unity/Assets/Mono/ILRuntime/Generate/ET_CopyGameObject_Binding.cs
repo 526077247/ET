@@ -52,7 +52,7 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 1);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            ET.CopyGameObject instance_of_this_method = (ET.CopyGameObject)typeof(ET.CopyGameObject).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            ET.CopyGameObject instance_of_this_method = (ET.CopyGameObject)typeof(ET.CopyGameObject).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             instance_of_this_method.Clear();
@@ -67,18 +67,18 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 4);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.Nullable<System.Int32> @start_sibling_index = (System.Nullable<System.Int32>)typeof(System.Nullable<System.Int32>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            System.Nullable<System.Int32> @start_sibling_index = (System.Nullable<System.Int32>)typeof(System.Nullable<System.Int32>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)16);
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            System.Action<System.Int32, UnityEngine.GameObject> @ongetitemcallback = (System.Action<System.Int32, UnityEngine.GameObject>)typeof(System.Action<System.Int32, UnityEngine.GameObject>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            System.Action<System.Int32, UnityEngine.GameObject> @ongetitemcallback = (System.Action<System.Int32, UnityEngine.GameObject>)typeof(System.Action<System.Int32, UnityEngine.GameObject>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)8);
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 3);
             System.Int32 @total_count = ptr_of_this_method->Value;
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 4);
-            ET.CopyGameObject instance_of_this_method = (ET.CopyGameObject)typeof(ET.CopyGameObject).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            ET.CopyGameObject instance_of_this_method = (ET.CopyGameObject)typeof(ET.CopyGameObject).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             instance_of_this_method.InitListView(@total_count, @ongetitemcallback, @start_sibling_index);
@@ -93,14 +93,14 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 3);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.Nullable<System.Int32> @start_sibling_index = (System.Nullable<System.Int32>)typeof(System.Nullable<System.Int32>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            System.Nullable<System.Int32> @start_sibling_index = (System.Nullable<System.Int32>)typeof(System.Nullable<System.Int32>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)16);
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
             System.Int32 @total_count = ptr_of_this_method->Value;
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 3);
-            ET.CopyGameObject instance_of_this_method = (ET.CopyGameObject)typeof(ET.CopyGameObject).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            ET.CopyGameObject instance_of_this_method = (ET.CopyGameObject)typeof(ET.CopyGameObject).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             instance_of_this_method.SetListItemCount(@total_count, @start_sibling_index);
@@ -115,11 +115,11 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 2);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.Nullable<System.Int32> @start_sibling_index = (System.Nullable<System.Int32>)typeof(System.Nullable<System.Int32>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            System.Nullable<System.Int32> @start_sibling_index = (System.Nullable<System.Int32>)typeof(System.Nullable<System.Int32>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)16);
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            ET.CopyGameObject instance_of_this_method = (ET.CopyGameObject)typeof(ET.CopyGameObject).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            ET.CopyGameObject instance_of_this_method = (ET.CopyGameObject)typeof(ET.CopyGameObject).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             instance_of_this_method.RefreshAllShownItem(@start_sibling_index);
@@ -137,7 +137,7 @@ namespace ILRuntime.Runtime.Generated
             System.Int32 @index = ptr_of_this_method->Value;
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            ET.CopyGameObject instance_of_this_method = (ET.CopyGameObject)typeof(ET.CopyGameObject).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            ET.CopyGameObject instance_of_this_method = (ET.CopyGameObject)typeof(ET.CopyGameObject).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             var result_of_this_method = instance_of_this_method.GetItemByIndex(@index);
@@ -152,7 +152,7 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 1);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            ET.CopyGameObject instance_of_this_method = (ET.CopyGameObject)typeof(ET.CopyGameObject).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            ET.CopyGameObject instance_of_this_method = (ET.CopyGameObject)typeof(ET.CopyGameObject).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             var result_of_this_method = instance_of_this_method.GetListItemCount();

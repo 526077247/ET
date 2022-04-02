@@ -8,7 +8,7 @@ namespace ET
 {
 	public class AddWindowToStack_SetAsLastSibling : AEvent<UIEventType.AddWindowToStack>
 	{
-		protected override async ETTask Run(UIEventType.AddWindowToStack args)
+		protected override void Run(UIEventType.AddWindowToStack args)
 		{
 			var view = args.window.GetComponent(args.window.ViewType);
 			var uiTrans = view.GetUIComponent<UITransform>();
@@ -16,7 +16,6 @@ namespace ET
 			{
 				uiTrans.transform.SetAsLastSibling();
 			}
-			await ETTask.CompletedTask;
 		}
 	}
 }

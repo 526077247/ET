@@ -152,11 +152,11 @@ namespace ET
                     Debug.LogFormat("有{0}个Warning!!!", warningCount);
                 }
 
-                if (errorCount > 0)
+                if (errorCount > 0||warningCount > 0)
                 {
                     for (int i = 0; i < compilerMessages.Length; i++)
                     {
-                        if (compilerMessages[i].type == CompilerMessageType.Error)
+                        if (compilerMessages[i].type == CompilerMessageType.Error||compilerMessages[i].type == CompilerMessageType.Warning)
                         {
                             Debug.LogError(compilerMessages[i].message);
                         }

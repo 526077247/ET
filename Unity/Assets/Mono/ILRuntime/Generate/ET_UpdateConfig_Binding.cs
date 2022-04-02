@@ -56,7 +56,7 @@ namespace ILRuntime.Runtime.Generated
         static StackObject* AssignFromStack_app_list_0(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            System.Collections.Generic.Dictionary<System.String, ET.AppConfig> @app_list = (System.Collections.Generic.Dictionary<System.String, ET.AppConfig>)typeof(System.Collections.Generic.Dictionary<System.String, ET.AppConfig>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            System.Collections.Generic.Dictionary<System.String, ET.AppConfig> @app_list = (System.Collections.Generic.Dictionary<System.String, ET.AppConfig>)typeof(System.Collections.Generic.Dictionary<System.String, ET.AppConfig>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             ((ET.UpdateConfig)o).app_list = @app_list;
             return ptr_of_this_method;
         }
@@ -80,7 +80,7 @@ namespace ILRuntime.Runtime.Generated
         static StackObject* AssignFromStack_res_list_1(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            System.Collections.Generic.Dictionary<System.String, System.Collections.Generic.Dictionary<System.String, ET.Resver>> @res_list = (System.Collections.Generic.Dictionary<System.String, System.Collections.Generic.Dictionary<System.String, ET.Resver>>)typeof(System.Collections.Generic.Dictionary<System.String, System.Collections.Generic.Dictionary<System.String, ET.Resver>>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            System.Collections.Generic.Dictionary<System.String, System.Collections.Generic.Dictionary<System.String, ET.Resver>> @res_list = (System.Collections.Generic.Dictionary<System.String, System.Collections.Generic.Dictionary<System.String, ET.Resver>>)typeof(System.Collections.Generic.Dictionary<System.String, System.Collections.Generic.Dictionary<System.String, ET.Resver>>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             ((ET.UpdateConfig)o).res_list = @res_list;
             return ptr_of_this_method;
         }

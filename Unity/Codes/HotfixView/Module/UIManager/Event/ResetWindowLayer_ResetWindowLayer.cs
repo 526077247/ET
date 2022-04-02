@@ -8,7 +8,7 @@ namespace ET
 {
     public class ResetWindowLayer_ResetWindowLayer : AEvent<UIEventType.ResetWindowLayer>
     {
-        protected override async ETTask Run(UIEventType.ResetWindowLayer args)
+        protected override void Run(UIEventType.ResetWindowLayer args)
         {
             var target = args.window;
             var view = target.GetComponent(target.ViewType);
@@ -18,7 +18,6 @@ namespace ET
                 var layer = UIManagerComponent.Instance.GetComponent<UILayersComponent>().layers[target.Layer];
                 uiTrans.transform.SetParent(layer.transform, false);
             }
-            await ETTask.CompletedTask;
         }
     }
 }

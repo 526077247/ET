@@ -7,7 +7,7 @@ namespace ET
 {
     [ProtoContract]
     [Config]
-    public partial class I18NConfigCategory : ProtoObject
+    public partial class I18NConfigCategory : ProtoObject, IMerge
     {
         public static I18NConfigCategory Instance;
 		
@@ -23,11 +23,18 @@ namespace ET
         {
             Instance = this;
         }
+        
+        public void Merge(object o)
+        {
+            I18NConfigCategory s = o as I18NConfigCategory;
+            this.list.AddRange(s.list);
+        }
 		
         public override void EndInit()
         {
-            foreach (I18NConfig config in list)
+            for(int i =0 ;i<list.Count;i++)
             {
+                I18NConfig config = list[i];
                 config.EndInit();
                 this.dict.Add(config.Id, config);
             }            
@@ -55,7 +62,10 @@ namespace ET
         {
             return this.dict;
         }
-
+        public List<I18NConfig> GetAllList()
+        {
+            return this.list;
+        }
         public I18NConfig GetOne()
         {
             if (this.dict == null || this.dict.Count <= 0)
@@ -69,12 +79,16 @@ namespace ET
     [ProtoContract]
 	public partial class I18NConfig: ProtoObject, IConfig
 	{
+		/// <summary>Id</summary>
 		[ProtoMember(1)]
 		public int Id { get; set; }
+		/// <summary>索引标识</summary>
 		[ProtoMember(2)]
 		public string Key { get; set; }
+		/// <summary>简体中文</summary>
 		[ProtoMember(3)]
 		public string Chinese { get; set; }
+		/// <summary>英文</summary>
 		[ProtoMember(4)]
 		public string English { get; set; }
 

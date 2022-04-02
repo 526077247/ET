@@ -9,10 +9,9 @@ namespace ET
 {
     public class AfterUIManagerCreate_CreateUILayerManager : AEvent<UIEventType.AfterUIManagerCreate>
     {
-        protected override async ETTask Run(UIEventType.AfterUIManagerCreate args)
+        protected override void Run(UIEventType.AfterUIManagerCreate args)
         {
             UIManagerComponent.Instance.AddComponent<UILayersComponent>();
-            await ETTask.CompletedTask;
         }
     }
 }

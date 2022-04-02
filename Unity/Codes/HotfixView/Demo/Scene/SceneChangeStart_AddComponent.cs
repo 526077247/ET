@@ -1,21 +1,13 @@
 namespace ET
 {
-    public class SceneChangeStart_AddComponent: AEvent<EventType.SceneChangeStart>
+    public class SceneChangeStart_AddComponent: AEventAsync<EventType.SceneChangeStart>
     {
-        protected override void Run(EventType.SceneChangeStart args)
-        {
-            RunAsync(args).Coroutine();
-        }
-        
-        private async ETTask RunAsync(EventType.SceneChangeStart args)
+        protected override async ETTask Run(EventType.SceneChangeStart args)
         {
             Scene currentScene = args.ZoneScene.CurrentScene();
             SceneLoadComponent slc = EnterMap(currentScene);
             await SceneManagerComponent.Instance.SwitchScene(args.Name,slc:slc);
-            
-            await UIManagerComponent.Instance.DestroyWindow<UILoadingView>();
             currentScene.AddComponent<OperaComponent>();
-            await UIManagerComponent.Instance.OpenWindow<UIHelpWin>(UIHelpWin.PrefabPath);
             slc.Dispose();
         }
 

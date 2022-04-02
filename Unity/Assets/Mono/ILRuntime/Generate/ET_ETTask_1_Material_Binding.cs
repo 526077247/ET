@@ -46,7 +46,7 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 1);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            ET.ETTask<UnityEngine.Material> instance_of_this_method = (ET.ETTask<UnityEngine.Material>)typeof(ET.ETTask<UnityEngine.Material>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            ET.ETTask<UnityEngine.Material> instance_of_this_method = (ET.ETTask<UnityEngine.Material>)typeof(ET.ETTask<UnityEngine.Material>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             instance_of_this_method.Coroutine();
@@ -61,7 +61,7 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 1);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            ET.ETTask<UnityEngine.Material> instance_of_this_method = (ET.ETTask<UnityEngine.Material>)typeof(ET.ETTask<UnityEngine.Material>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            ET.ETTask<UnityEngine.Material> instance_of_this_method = (ET.ETTask<UnityEngine.Material>)typeof(ET.ETTask<UnityEngine.Material>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             var result_of_this_method = instance_of_this_method.GetAwaiter();
@@ -76,7 +76,7 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 1);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            ET.ETTask<UnityEngine.Material> instance_of_this_method = (ET.ETTask<UnityEngine.Material>)typeof(ET.ETTask<UnityEngine.Material>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            ET.ETTask<UnityEngine.Material> instance_of_this_method = (ET.ETTask<UnityEngine.Material>)typeof(ET.ETTask<UnityEngine.Material>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             var result_of_this_method = instance_of_this_method.IsCompleted;
@@ -93,7 +93,7 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 1);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            ET.ETTask<UnityEngine.Material> instance_of_this_method = (ET.ETTask<UnityEngine.Material>)typeof(ET.ETTask<UnityEngine.Material>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            ET.ETTask<UnityEngine.Material> instance_of_this_method = (ET.ETTask<UnityEngine.Material>)typeof(ET.ETTask<UnityEngine.Material>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
             var result_of_this_method = instance_of_this_method.GetResult();

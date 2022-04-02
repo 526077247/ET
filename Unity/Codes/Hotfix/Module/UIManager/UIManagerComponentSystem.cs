@@ -119,7 +119,10 @@ namespace ET
             if (except_ui_names != null && except_ui_names.Length > 0)
             {
                 dict_ui_names = new Dictionary<string, bool>();
-                foreach (var item in except_ui_names) dict_ui_names[item] = true;
+                for (int i = 0; i < except_ui_names.Length; i++)
+                {
+                    dict_ui_names[except_ui_names[i]] = true;
+                }
             }
 
             using (ListComponent<ETTask> TaskScheduler = ListComponent<ETTask>.Create())
@@ -146,7 +149,7 @@ namespace ET
             if (target != null)
             {
                 await self.CloseWindow(ui_name);
-                await Game.EventSystem.PublishAsync(new UIEventType.InnerDestroyWindow() { target = target });
+                Game.EventSystem.Publish(new UIEventType.InnerDestroyWindow() { target = target });
                 self.windows.Remove(target.Name);
                 target.Dispose();
             }
@@ -393,7 +396,7 @@ namespace ET
                     target.LoadingState = UIWindowLoadingState.Loading;
                     await Game.EventSystem.PublishAsync(new UIEventType.InnerOpenWindow() { path = target.PrefabPath, window = target });
                 }
-                await Game.EventSystem.PublishAsync(new UIEventType.ResetWindowLayer() { window = target });
+                Game.EventSystem.Publish(new UIEventType.ResetWindowLayer() { window = target });
                 await self.__AddWindowToStack(target);
                 return res;
             }
@@ -417,7 +420,7 @@ namespace ET
                     target.LoadingState = UIWindowLoadingState.Loading;
                     await Game.EventSystem.PublishAsync(new UIEventType.InnerOpenWindow() { path = target.PrefabPath, window = target });
                 }
-                await Game.EventSystem.PublishAsync(new UIEventType.ResetWindowLayer() { window = target });
+                Game.EventSystem.Publish(new UIEventType.ResetWindowLayer() { window = target });
                 await self.__AddWindowToStack(target, p1);
                 return res;
             }
@@ -440,7 +443,7 @@ namespace ET
                     target.LoadingState = UIWindowLoadingState.Loading;
                     await Game.EventSystem.PublishAsync(new UIEventType.InnerOpenWindow() { path = target.PrefabPath, window = target });
                 }
-                await Game.EventSystem.PublishAsync(new UIEventType.ResetWindowLayer() { window = target });
+                Game.EventSystem.Publish(new UIEventType.ResetWindowLayer() { window = target });
                 await self.__AddWindowToStack(target, p1, p2);
                 return res;
             }
@@ -463,7 +466,7 @@ namespace ET
                     target.LoadingState = UIWindowLoadingState.Loading;
                     await Game.EventSystem.PublishAsync(new UIEventType.InnerOpenWindow() { path = target.PrefabPath, window = target });
                 }
-                await Game.EventSystem.PublishAsync(new UIEventType.ResetWindowLayer() { window = target });
+                Game.EventSystem.Publish(new UIEventType.ResetWindowLayer() { window = target });
                 await self.__AddWindowToStack(target, p1, p2, p3);
                 return res;
             }
@@ -486,7 +489,7 @@ namespace ET
                     target.LoadingState = UIWindowLoadingState.Loading;
                     await Game.EventSystem.PublishAsync(new UIEventType.InnerOpenWindow() { path = target.PrefabPath, window = target });
                 }
-                await Game.EventSystem.PublishAsync(new UIEventType.ResetWindowLayer() { window = target });
+                Game.EventSystem.Publish(new UIEventType.ResetWindowLayer() { window = target });
                 await self.__AddWindowToStack(target, p1, p2, p3, p4);
                 return res;
             }
@@ -514,7 +517,7 @@ namespace ET
                 self.window_stack[layer_name].Remove(ui_name);
             }
             self.window_stack[layer_name].AddFirst(ui_name);
-            await Game.EventSystem.PublishAsync(new UIEventType.AddWindowToStack() { window = target });
+            Game.EventSystem.Publish(new UIEventType.AddWindowToStack() { window = target });
             var view = target.GetComponent(target.ViewType);
             view.SetActive(true);
             if (isFirst && (layer_name == UILayerNames.BackgroudLayer || layer_name == UILayerNames.GameBackgroudLayer))
@@ -537,7 +540,7 @@ namespace ET
                 self.window_stack[layer_name].Remove(ui_name);
             }
             self.window_stack[layer_name].AddFirst(ui_name);
-            await Game.EventSystem.PublishAsync(new UIEventType.AddWindowToStack() { window = target });
+            Game.EventSystem.Publish(new UIEventType.AddWindowToStack() { window = target });
             var view = target.GetComponent(target.ViewType);
             view.SetActive(true, p1);
             if (isFirst && (layer_name == UILayerNames.BackgroudLayer || layer_name == UILayerNames.GameBackgroudLayer))
@@ -560,7 +563,7 @@ namespace ET
                 self.window_stack[layer_name].Remove(ui_name);
             }
             self.window_stack[layer_name].AddFirst(ui_name);
-            await Game.EventSystem.PublishAsync(new UIEventType.AddWindowToStack() { window = target });
+            Game.EventSystem.Publish(new UIEventType.AddWindowToStack() { window = target });
             var view = target.GetComponent(target.ViewType);
             view.SetActive(true, p1, p2);
             if (isFirst && (layer_name == UILayerNames.BackgroudLayer || layer_name == UILayerNames.GameBackgroudLayer))
@@ -583,7 +586,7 @@ namespace ET
                 self.window_stack[layer_name].Remove(ui_name);
             }
             self.window_stack[layer_name].AddFirst(ui_name);
-            await Game.EventSystem.PublishAsync(new UIEventType.AddWindowToStack() { window = target });
+            Game.EventSystem.Publish(new UIEventType.AddWindowToStack() { window = target });
             var view = target.GetComponent(target.ViewType);
             view.SetActive(true, p1, p2, p3);
             if (isFirst && (layer_name == UILayerNames.BackgroudLayer || layer_name == UILayerNames.GameBackgroudLayer))
@@ -606,7 +609,7 @@ namespace ET
                 self.window_stack[layer_name].Remove(ui_name);
             }
             self.window_stack[layer_name].AddFirst(ui_name);
-            await Game.EventSystem.PublishAsync(new UIEventType.AddWindowToStack() { window = target });
+            Game.EventSystem.Publish(new UIEventType.AddWindowToStack() { window = target });
             var view = target.GetComponent(target.ViewType);
             view.SetActive(true, p1, p2, p3, p4);
             if (isFirst && (layer_name == UILayerNames.BackgroudLayer || layer_name == UILayerNames.GameBackgroudLayer))

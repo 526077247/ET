@@ -53,15 +53,49 @@ namespace ET
     {
         private static string template;
 
-        public const string ClientClassDir = "../Unity/Codes/Model/Generate/Config";
-        public const string ServerClassDir = "../Server/Model/Generate/Config";
+        private const string clientClassDir = "../Unity/Codes/Model/Generate/Config";
+        private static string ClientClassDir
+        {
+            get
+            {
+                if (IsCheck) return "./Temp/ClientClass";
+                return clientClassDir;
+            }
+        }
+        private const string serverClassDir = "../Server/Model/Generate/Config";
+        private static string ServerClassDir
+        {
+            get
+            {
+                if (IsCheck) return "./Temp/ServerClass";
+                return serverClassDir;
+            }
+        }
 
         private const string excelDir = "../Excel";
 
         private const string jsonDir = "../Excel/Json/{0}/{1}";
-
-        private const string clientProtoDir = "../Unity/Assets/Bundles/Config/{0}";
-        private const string serverProtoDir = "../Config/{0}";
+        
+        private const string __clientProtoDir = "../Unity/Assets/AssetsPackage/Config/{0}";
+        private static string clientProtoDir
+        {
+            get
+            {
+                if (IsCheck) return "./Temp/ClientProto/{0}";
+                return __clientProtoDir;
+            }
+        }
+        private const string __serverProtoDir = "../Config/{0}";
+        private static string serverProtoDir
+        {
+            get
+            {
+                if (IsCheck) return "./Temp/ServerProto/{0}";
+                return __serverProtoDir;
+            }
+        }
+        private static bool IsCheck;
+        
         private static Assembly[] configAssemblies = new Assembly[2];
 
         private static Dictionary<string, Table> tables = new Dictionary<string, Table>();
@@ -90,8 +124,13 @@ namespace ET
             return package;
         }
 
-        public static void Export()
+        public static void Export(bool isCheck = false)
         {
+            IsCheck = isCheck;
+            if(isCheck)
+                Console.WriteLine("校验");
+            else
+                Console.WriteLine("导表");
             try
             {
                 template = File.ReadAllText("Template.txt");
@@ -353,7 +392,16 @@ namespace ET
         {
             foreach (ExcelWorksheet worksheet in p.Workbook.Worksheets)
             {
-                ExportSheetClass(worksheet, table);
+                try
+                {
+                    if(worksheet.Dimension==null||worksheet.Dimension.End==null) continue;
+                    Console.WriteLine("ExportSheetClass "+name);
+                    ExportSheetClass(worksheet, table);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(name+"--"+worksheet.Name + "     有错误 "+ ex);
+                }
             }
         }
 
@@ -468,7 +516,8 @@ namespace ET
                 {
                     continue;
                 }
-
+                if(worksheet.Dimension==null||worksheet.Dimension.End==null) continue;
+                Console.WriteLine("ExportExcelJson "+name);
                 ExportSheetJson(worksheet, name, table.HeadInfos, configType, sb);
             }
 
@@ -556,8 +605,17 @@ namespace ET
                 case "int[]":
                 case "int32[]":
                 case "long[]":
+                case "float[]":
                     return $"[{value}]";
                 case "string[]":
+                    var list = value.Split(",");
+                    value = "";
+                    for (int i = 0; i < list.Length; i++)
+                    {
+                        value += "\""+list[i] + "\"";
+                        if (i < list.Length - 1) value += ",";
+                    }
+                    return $"[{value}]";
                 case "int[][]":
                     return $"[{value}]";
                 case "int":

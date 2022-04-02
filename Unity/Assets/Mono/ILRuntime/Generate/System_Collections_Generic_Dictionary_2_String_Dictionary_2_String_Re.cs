@@ -37,13 +37,13 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 3);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.Collections.Generic.Dictionary<System.String, ET.Resver> @value = (System.Collections.Generic.Dictionary<System.String, ET.Resver>)typeof(System.Collections.Generic.Dictionary<System.String, ET.Resver>).CheckCLRTypes(__intp.RetriveObject(ptr_of_this_method, __mStack));
+            System.Collections.Generic.Dictionary<System.String, ET.Resver> @value = (System.Collections.Generic.Dictionary<System.String, ET.Resver>)typeof(System.Collections.Generic.Dictionary<System.String, ET.Resver>).CheckCLRTypes(__intp.RetriveObject(ptr_of_this_method, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            System.String @key = (System.String)typeof(System.String).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            System.String @key = (System.String)typeof(System.String).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 3);
-            System.Collections.Generic.Dictionary<System.String, System.Collections.Generic.Dictionary<System.String, ET.Resver>> instance_of_this_method = (System.Collections.Generic.Dictionary<System.String, System.Collections.Generic.Dictionary<System.String, ET.Resver>>)typeof(System.Collections.Generic.Dictionary<System.String, System.Collections.Generic.Dictionary<System.String, ET.Resver>>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            System.Collections.Generic.Dictionary<System.String, System.Collections.Generic.Dictionary<System.String, ET.Resver>> instance_of_this_method = (System.Collections.Generic.Dictionary<System.String, System.Collections.Generic.Dictionary<System.String, ET.Resver>>)typeof(System.Collections.Generic.Dictionary<System.String, System.Collections.Generic.Dictionary<System.String, ET.Resver>>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
 
             var result_of_this_method = instance_of_this_method.TryGetValue(@key, out @value);
 

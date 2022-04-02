@@ -7,7 +7,7 @@ namespace ET
 {
     [ProtoContract]
     [Config]
-    public partial class ServerConfigCategory : ProtoObject
+    public partial class ServerConfigCategory : ProtoObject, IMerge
     {
         public static ServerConfigCategory Instance;
 		
@@ -23,11 +23,18 @@ namespace ET
         {
             Instance = this;
         }
+        
+        public void Merge(object o)
+        {
+            ServerConfigCategory s = o as ServerConfigCategory;
+            this.list.AddRange(s.list);
+        }
 		
         public override void EndInit()
         {
-            foreach (ServerConfig config in list)
+            for(int i =0 ;i<list.Count;i++)
             {
+                ServerConfig config = list[i];
                 config.EndInit();
                 this.dict.Add(config.Id, config);
             }            
@@ -55,7 +62,10 @@ namespace ET
         {
             return this.dict;
         }
-
+        public List<ServerConfig> GetAllList()
+        {
+            return this.list;
+        }
         public ServerConfig GetOne()
         {
             if (this.dict == null || this.dict.Count <= 0)
@@ -69,22 +79,31 @@ namespace ET
     [ProtoContract]
 	public partial class ServerConfig: ProtoObject, IConfig
 	{
+		/// <summary>Id</summary>
 		[ProtoMember(1)]
 		public int Id { get; set; }
+		/// <summary>标记</summary>
 		[ProtoMember(2)]
 		public string Name { get; set; }
+		/// <summary>realm服地址</summary>
 		[ProtoMember(3)]
 		public string RealmIp { get; set; }
+		/// <summary>更新列表cdn地址</summary>
 		[ProtoMember(4)]
 		public string UpdateListUrl { get; set; }
+		/// <summary>路由cdn地址</summary>
 		[ProtoMember(5)]
 		public string RouterListUrl { get; set; }
+		/// <summary>热更资源cdn地址</summary>
 		[ProtoMember(6)]
 		public string ResUrl { get; set; }
+		/// <summary>测试更新列表cdn地址</summary>
 		[ProtoMember(7)]
 		public string TestUpdateListUrl { get; set; }
+		/// <summary>服务器类型</summary>
 		[ProtoMember(8)]
 		public int EnvId { get; set; }
+		/// <summary>是否默认值</summary>
 		[ProtoMember(9)]
 		public int IsPriority { get; set; }
 
