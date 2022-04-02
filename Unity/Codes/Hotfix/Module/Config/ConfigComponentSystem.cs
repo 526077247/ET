@@ -35,8 +35,8 @@ namespace ET
 		public static void Load(this ConfigComponent self)
 		{
 			self.AllConfig.Clear();
-			HashSet<Type> types = Game.EventSystem.GetTypes(typeof(ConfigAttribute));
-
+			List<Type> types = Game.EventSystem.GetTypes(typeof (ConfigAttribute));
+			
 			Dictionary<string, byte[]> configBytes = new Dictionary<string, byte[]>();
 			self.ConfigLoader.GetAllConfigBytes(configBytes);
 
@@ -49,8 +49,8 @@ namespace ET
 		public static async ETTask LoadAsync(this ConfigComponent self)
 		{
 			self.AllConfig.Clear();
-			HashSet<Type> types = Game.EventSystem.GetTypes(typeof(ConfigAttribute));
-
+			List<Type> types = Game.EventSystem.GetTypes(typeof (ConfigAttribute));
+			
 			Dictionary<string, byte[]> configBytes = new Dictionary<string, byte[]>();
 			self.ConfigLoader.GetAllConfigBytes(configBytes);
 
