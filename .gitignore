@@ -74,3 +74,4 @@ Server/.DS_Store
 /Unity/Assembly-CSharp-Editor.csproj
 /Excel/~$*.xlsx
 /.vscode
+/Unity/.vsconfig

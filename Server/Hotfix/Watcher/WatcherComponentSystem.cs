@@ -20,6 +20,7 @@ namespace ET
         }
     }
     
+    [FriendClass(typeof(WatcherComponent))]
     public static class WatcherComponentSystem
     {
         public static void Start(this WatcherComponent self, int createScenes = 0)

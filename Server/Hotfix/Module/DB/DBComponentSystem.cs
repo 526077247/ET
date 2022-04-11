@@ -22,6 +22,7 @@ namespace ET
         }
     }
 	
+    [FriendClass(typeof(DBComponent))]
     public static class DBComponentSystem
     {
 	    #region Query
