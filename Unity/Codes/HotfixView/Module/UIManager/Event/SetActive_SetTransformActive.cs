@@ -4,7 +4,9 @@
     {
         protected override void Run(UIEventType.SetActive args)
         {
-            args.entity.GetGameObject()?.SetActive(args.Active);
+            var obj = args.entity.GetGameObject();
+            if(obj!=null&&obj.activeSelf!=args.Active)
+                obj.SetActive(args.Active);
         }
     }
 }
