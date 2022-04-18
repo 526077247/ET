@@ -311,6 +311,7 @@ namespace ET
                 component.BeforeOnDestroy();
                 UIEventSystem.Instance.OnDestroy(component);
                 self.GetCompoennts()[path].Remove(typeof(T));
+                component.Dispose();
             }
         }
 
