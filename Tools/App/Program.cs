@@ -45,6 +45,7 @@ namespace ET
                     {
                         Game.Options.Console = 1;
                         ExcelExporter.Export();
+                        ExcelExporter.ExportChapter();
                         return 0;
                     }
                     case AppType.Proto2CS:
@@ -57,6 +58,12 @@ namespace ET
                     {
                         Game.Options.Console = 1;
                         ExcelExporter.Export(true);
+                        return 0;
+                    }
+                    case AppType.ChapterExporter:
+                    {
+                        Game.Options.Console = 1;
+                        ExcelExporter.ExportChapter();
                         return 0;
                     }
                 }

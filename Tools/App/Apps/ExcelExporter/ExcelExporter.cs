@@ -19,6 +19,7 @@ namespace ET
     {
         c = 0,
         s = 1,
+        p = 2,
     }
 
     class HeadInfo
@@ -49,7 +50,7 @@ namespace ET
         public Dictionary<string, HeadInfo> HeadInfos = new Dictionary<string, HeadInfo>();
     }
     
-    public static class ExcelExporter
+    public static partial class ExcelExporter
     {
         private static string template;
 
@@ -146,7 +147,12 @@ namespace ET
                     Directory.Delete(ServerClassDir, true);
                 }
 
-                foreach (string path in Directory.GetFiles(excelDir))
+                if (Directory.Exists(clientProtoDir))
+                {
+                    Directory.Delete(clientProtoDir, true);
+                }
+                
+                foreach (string path in FindFile(excelDir))
                 {
                     string fileName = Path.GetFileName(path);
                     if (!fileName.EndsWith(".xlsx") || fileName.StartsWith("~$") || fileName.Contains("#"))
@@ -209,14 +215,14 @@ namespace ET
                 configAssemblies[(int) ConfigType.c] = DynamicBuild(ConfigType.c);
                 configAssemblies[(int) ConfigType.s] = DynamicBuild(ConfigType.s);
 
-                foreach (string path in Directory.GetFiles(excelDir))
+                foreach (string path in FindFile(excelDir))
                 {
                     ExportExcel(path);
                 }
                 
                 // 多线程导出
                 //List<Task> tasks = new List<Task>();
-                //foreach (string path in Directory.GetFiles(excelDir))
+                //foreach (string path in FindFile(excelDir))
                 //{
                 //    Task task = Task.Run(() => ExportExcel(path));
                 //    tasks.Add(task);
@@ -299,9 +305,9 @@ namespace ET
 
         private static string GetProtoDir(ConfigType configType, string relativeDir)
         {
-            if (configType == ConfigType.c)
+            if (configType == ConfigType.c||configType == ConfigType.p)
             {
-                return string.Format(clientProtoDir, relativeDir);
+                return string.Format(clientProtoDir, ".");
             }
 
             return string.Format(serverProtoDir, relativeDir);

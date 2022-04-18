@@ -11,5 +11,8 @@ namespace ET
         public static string Account { get => "Account"; }
         public static string Password { get => "Password"; }
         public static string CurLangType { get => "CurLangType"; }
+        
+        public static string MusicVolume { get => "MusicVolume"; }
+        public static string SoundVolume{ get => "SoundVolume"; }
     }
 }

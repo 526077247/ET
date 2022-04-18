@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using ET;
 public class I18NBridge
 {
 
@@ -19,7 +19,12 @@ public class I18NBridge
     /// <returns></returns>
     public string GetText(string key)
     {
-        return i18nTextKeyDic[key];
+        if (i18nTextKeyDic.ContainsKey(key))
+        {
+            return i18nTextKeyDic[key];
+        }
+        Log.Error("多语言未配置："+key);
+        return key;
     }
 
 }

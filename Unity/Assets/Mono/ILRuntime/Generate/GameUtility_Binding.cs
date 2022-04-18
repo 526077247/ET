@@ -26,14 +26,17 @@ namespace ILRuntime.Runtime.Generated
             method = type.GetMethod("CheckDirAndCreateWhenNeeded", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, CheckDirAndCreateWhenNeeded_0);
             args = new Type[]{};
+            method = type.GetMethod("ClearMemory", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, ClearMemory_1);
+            args = new Type[]{};
             method = type.GetMethod("Quit", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, Quit_1);
+            app.RegisterCLRMethodRedirection(method, Quit_2);
             args = new Type[]{typeof(System.String)};
             method = type.GetMethod("OpenURL", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, OpenURL_2);
+            app.RegisterCLRMethodRedirection(method, OpenURL_3);
             args = new Type[]{typeof(System.String), typeof(System.Byte[])};
             method = type.GetMethod("SafeWriteAllBytes", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, SafeWriteAllBytes_3);
+            app.RegisterCLRMethodRedirection(method, SafeWriteAllBytes_4);
 
 
         }
@@ -55,7 +58,18 @@ namespace ILRuntime.Runtime.Generated
             return __ret;
         }
 
-        static StackObject* Quit_1(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* ClearMemory_1(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        {
+            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
+            StackObject* __ret = ILIntepreter.Minus(__esp, 0);
+
+
+            global::GameUtility.ClearMemory();
+
+            return __ret;
+        }
+
+        static StackObject* Quit_2(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* __ret = ILIntepreter.Minus(__esp, 0);
@@ -66,7 +80,7 @@ namespace ILRuntime.Runtime.Generated
             return __ret;
         }
 
-        static StackObject* OpenURL_2(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* OpenURL_3(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
@@ -82,7 +96,7 @@ namespace ILRuntime.Runtime.Generated
             return __ret;
         }
 
-        static StackObject* SafeWriteAllBytes_3(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* SafeWriteAllBytes_4(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;

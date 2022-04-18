@@ -631,5 +631,36 @@ namespace ET
 				}
 			}
 		}
+		
+		public bool OnWidthPaddingChange(IOnWidthPaddingChange component)
+		{
+			
+			List<object> iOnWidthPaddingChangeSystems = this.typeSystems.GetSystems(component.GetType(), typeof(IOnWidthPaddingChangeSystem));
+			if (iOnWidthPaddingChangeSystems == null)
+			{
+				return false;
+			}
+			bool res = false;
+			for (int i = 0; i < iOnWidthPaddingChangeSystems.Count; i++)
+			{
+				IOnWidthPaddingChangeSystem aOnWidthPaddingChangeSystem = (IOnWidthPaddingChangeSystem)iOnWidthPaddingChangeSystems[i];
+				if (aOnWidthPaddingChangeSystem == null)
+				{
+					continue;
+				}
+
+				try
+				{
+					res = true;
+					aOnWidthPaddingChangeSystem.Run(component);
+				}
+				catch (Exception e)
+				{
+					Log.Error(e);
+				}
+			}
+
+			return res;
+		}
 	}
 }

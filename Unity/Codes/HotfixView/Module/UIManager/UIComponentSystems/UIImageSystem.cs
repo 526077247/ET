@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -36,46 +37,105 @@ namespace ET
                 {
                     Log.Error($"添加UI侧组件UIImage时，物体{self.GetGameObject().name}上没有找到Image组件");
                 }
+                self.BgAutoFit =  self.GetGameObject().GetComponent<BgAutoFit>();
             }
         }
-        public static async ETTask SetSpritePath(this UIImage self,string sprite_path)
+        public static async ETTask SetSpritePath(this UIImage self,string sprite_path,bool setNativeSize = false)
         {
-            if (string.IsNullOrEmpty(sprite_path)) return;
-            if (sprite_path == self.sprite_path) return;
-            self.ActivatingComponent();
-            var base_sprite_path = self.sprite_path;
-            self.sprite_path = sprite_path;
-	        var sprite = await ImageLoaderComponent.Instance.LoadImageAsync(sprite_path);
-            if (sprite == null)
+            CoroutineLock coroutine = null;
+            try
             {
-                ImageLoaderComponent.Instance.ReleaseImage(sprite_path);
+                coroutine = await CoroutineLockComponent.Instance.Wait(CoroutineLockType.UIImage, self.Id);
+                if (sprite_path == self.sprite_path) return;
+                self.ActivatingComponent();
+                if (self.BgAutoFit != null) self.BgAutoFit.enabled = false;
                 self.unity_uiimage.enabled = false;
-                return;
+                var base_sprite_path = self.sprite_path;
+                self.sprite_path = sprite_path;
+                if (string.IsNullOrEmpty(sprite_path))
+                {
+                    self.unity_uiimage.sprite = null;
+                    self.unity_uiimage.enabled = true;
+                }
+                else
+                {
+                    var sprite = await ImageLoaderComponent.Instance.LoadImageAsync(sprite_path);
+                    self.unity_uiimage.enabled = true;
+                    if (sprite == null)
+                    {
+                        ImageLoaderComponent.Instance.ReleaseImage(sprite_path);
+                        return;
+                    }
+                    self.unity_uiimage.sprite = sprite;
+                    if(setNativeSize)
+                        self.SetNativeSize();
+                    if (self.BgAutoFit != null)
+                    {
+                        self.BgAutoFit.bgSprite = sprite;
+                        self.BgAutoFit.enabled = true;
+                    }
+                }
+                if(!string.IsNullOrEmpty(base_sprite_path))
+                    ImageLoaderComponent.Instance.ReleaseImage(base_sprite_path);
             }
-            self.unity_uiimage.enabled = true;
-            if(!string.IsNullOrEmpty(base_sprite_path))
-                ImageLoaderComponent.Instance.ReleaseImage(base_sprite_path);
-            self.unity_uiimage.sprite = sprite;
+            finally
+            {
+                coroutine?.Dispose();
+            }
+        }
 
+        public static void SetNativeSize(this UIImage self)
+        {
+            self.unity_uiimage.SetNativeSize();
         }
 
         public static string GetSpritePath(this UIImage self)
         {
             return self.sprite_path;
         }
-
+        public static void SetColor(this UIImage self, string colorStr)
+        {
+            if (!colorStr.StartsWith("#")) colorStr = "#" + colorStr;
+            if (ColorUtility.TryParseHtmlString(colorStr, out var color))
+            {
+                self.ActivatingComponent();
+                self.unity_uiimage.color = color;
+            }
+            else
+            {
+                Log.Info(colorStr);
+            }
+        }
         public static void SetImageColor(this UIImage self,Color color)
         {
             self.ActivatingComponent();
             self.unity_uiimage.color = color;
         }
-
+        public static void SetImageAlpha(this UIImage self,float a,bool changeChild=false)
+        {
+            self.ActivatingComponent();
+            self.unity_uiimage.color = new Color(self.unity_uiimage.color.r,self.unity_uiimage.color.g,
+                self.unity_uiimage.color.b,a);
+            if (changeChild)
+            {
+                var images = self.unity_uiimage.GetComponentsInChildren<Image>(false);
+                for (int i = 0; i < images.Length; i++)
+                {
+                    images[i].color = new Color(images[i].color.r,images[i].color.g, images[i].color.b,a);
+                }
+                var texts = self.unity_uiimage.GetComponentsInChildren<TMPro.TMP_Text>(false);
+                for (int i = 0; i < texts.Length; i++)
+                {
+                    texts[i].color = new Color(texts[i].color.r,texts[i].color.g, texts[i].color.b,a);
+                }
+            }
+        }
         public static void SetEnabled(this UIImage self,bool flag)
         {
             self.ActivatingComponent();
             self.unity_uiimage.enabled = flag;
         }
-        public static async void SetImageGray(this UIImage self,bool isGray)
+        public static async ETTask SetImageGray(this UIImage self,bool isGray)
         {
             self.ActivatingComponent();
             Material mt = null;
@@ -89,6 +149,11 @@ namespace ET
         {
             self.ActivatingComponent();
             self.unity_uiimage.fillAmount = value;
+        }
+        public static void DoSetFillAmount(this UIImage self, float newValue, float duration)
+        {
+            self.ActivatingComponent();
+            DOTween.To(() => self.unity_uiimage.fillAmount,x=> self.unity_uiimage.fillAmount=x, newValue, duration);
         }
     }
 }

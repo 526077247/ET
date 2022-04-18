@@ -1,0 +1,20 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
+using UnityEngine;
+
+namespace ET
+{
+
+    /// <summary>
+    /// 运行
+    /// </summary>
+    public class GalGameEngineRunningState : Entity,IAwake<FSMComponent>
+    {
+        public FSMComponent FSM;
+        public GalGameEngineComponent Engine;
+        public ChapterCategory ChapterCategory;
+        public bool stop;
+        public bool isRunning;
+    }
+}

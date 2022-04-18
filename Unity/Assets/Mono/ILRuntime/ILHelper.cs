@@ -54,7 +54,8 @@ namespace ET
             appdomain.DelegateManager.RegisterMethodDelegate<long, IPEndPoint>();
             appdomain.DelegateManager.RegisterMethodDelegate<ILTypeInstance>();
             appdomain.DelegateManager.RegisterMethodDelegate<AsyncOperation>();
-            
+            appdomain.DelegateManager.RegisterMethodDelegate<UnityEngine.KeyCode>();
+
             
             appdomain.DelegateManager.RegisterFunctionDelegate<UnityEngine.Events.UnityAction>();
             appdomain.DelegateManager.RegisterFunctionDelegate<System.Object, ET.ETTask>();
@@ -100,7 +101,27 @@ namespace ET
                     return ((Func<System.String, System.String, System.Int32>)act)(x, y);
                 });
             });
-
+            appdomain.DelegateManager.RegisterDelegateConvertor<DG.Tweening.TweenCallback>((act) =>
+            {
+                return new DG.Tweening.TweenCallback(() =>
+                {
+                    ((Action)act)();
+                });
+            });
+            appdomain.DelegateManager.RegisterDelegateConvertor<DG.Tweening.Core.DOGetter<System.Single>>((act) =>
+            {
+                return new DG.Tweening.Core.DOGetter<System.Single>(() =>
+                {
+                    return ((Func<System.Single>)act)();
+                });
+            });
+            appdomain.DelegateManager.RegisterDelegateConvertor<DG.Tweening.Core.DOSetter<System.Single>>((act) =>
+            {
+                return new DG.Tweening.Core.DOSetter<System.Single>((pNewValue) =>
+                {
+                    ((Action<System.Single>)act)(pNewValue);
+                });
+            });
             
             // 注册适配器
             RegisterAdaptor(appdomain);

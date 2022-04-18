@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: uigames_uicommon
+  m_EditorClassIdentifier: 
+  m_GroupName: uigames_uicommon
+  m_Data:
+    m_SerializedData: []
+  m_GUID: e3778ededc8d5884b9297fe3ab828fbb
+  m_SerializeEntries:
+  - m_GUID: 713b046772221b34cb8c88db0b547ae9
+    m_Address: UIGames/UICommon/DiscreteImages/bg_05.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: eddda087ae3cd6241b0240578b8fbe7f
+    m_Address: UIGames/UICommon/DiscreteImages/bg_07.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: dd1f300d6062fee48bf00a13907517b6, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: bf6cffa87e2c5264196c3285562d9739, type: 2}
+    - {fileID: 11400000, guid: c8b7c4a3b7d893c43b64045c59afe05b, type: 2}

@@ -34,3 +34,8 @@ do you want to download it now?
 DUpdate_White是否进入白名单模式"Enter white list mode
 �Update_ReDownload-当前版本太低，请重新下载客户端"@The current version is too low, please download the client again
 �Update_SuDownload3当前版本较低。建议下载最新的客户端"MThe current version is lower. It is recommended to download the latest client
++Global_AutoPlay自动播放"AutoPlay
+#Global_QuickPlay快进"Quick
+'Global_Record对话记录"Record
+$ GalGame_Stop停止播放"Stop
+#!RoleName_Unknow	？？？"???

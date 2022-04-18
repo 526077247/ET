@@ -73,5 +73,11 @@ Server/.DS_Store
 /Unity/Assets/AssetsPackage/Code/Code.pdb.bytes.meta
 /Unity/Assembly-CSharp-Editor.csproj
 /Excel/~$*.xlsx
+/Excel/*/~$*.xlsx
+/Excel/Json
 /.vscode
 /Unity/.vsconfig
+Unity/Unity.TextMeshPro.csproj
+Unity/Unity.TextMeshPro.Editor.csproj
+Unity/Unity.TextMeshPro.Editor.Tests.csproj
+Unity/Unity.TextMeshPro.Tests.csproj

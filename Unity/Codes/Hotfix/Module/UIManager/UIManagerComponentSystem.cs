@@ -640,5 +640,30 @@ namespace ET
             }
         }
         #endregion
+        
+        #region 屏幕适配
+
+        public static void SetWidthPadding(this UIManagerComponent self, float value)
+        {
+            self.WidthPadding = value;
+            foreach (var layer in self.window_stack.Values)
+            {
+                if (layer != null)
+                {
+                    for (LinkedListNode<string> node = layer.First; null != node; node = node.Next)
+                    {
+                        var target = self.GetWindow(node.Value);
+                        var win = target.GetComponent(target.ViewType) as IOnWidthPaddingChange;
+                        if (win != null)
+                        {
+                            EventSystem.Instance.Publish(new UIEventType.OnWidthPaddingChange
+                                    {entity = win as Entity});
+                        }
+                    }
+                }
+            }
+        }
+        
+        #endregion
     }
 }

@@ -12,5 +12,6 @@ namespace ET
     {
         public string sprite_path;
         public Image unity_uiimage;
+        public BgAutoFit BgAutoFit;
     }
 }

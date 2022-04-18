@@ -20,9 +20,23 @@ namespace ET
 			ConfigComponent.Instance = null;
 		}
 	}
-
+	[FriendClass(typeof(ConfigComponent))]
 	public static class ConfigComponentSystem
 	{
+		public static T LoadOneConfig<T>(this ConfigComponent self, string name = "", bool cache = false) where T: ProtoObject
+		{
+			Type configType = typeof(T);
+			if (string.IsNullOrEmpty(name))
+				name = configType.FullName;
+			byte[] oneConfigBytes = self.ConfigLoader.GetOneConfigBytes(name);
+
+			object category = ProtobufHelper.FromBytes(configType, oneConfigBytes, 0, oneConfigBytes.Length);
+
+			if(cache)
+				self.AllConfig[configType] = category;
+
+			return category as T;
+		}
 		public static void LoadOneConfig(this ConfigComponent self, Type configType)
 		{
 			byte[] oneConfigBytes = self.ConfigLoader.GetOneConfigBytes(configType.FullName);
@@ -35,8 +49,8 @@ namespace ET
 		public static void Load(this ConfigComponent self)
 		{
 			self.AllConfig.Clear();
-			List<Type> types = Game.EventSystem.GetTypes(typeof (ConfigAttribute));
-			
+			List<Type> types = Game.EventSystem.GetTypes(typeof(ConfigAttribute));
+
 			Dictionary<string, byte[]> configBytes = new Dictionary<string, byte[]>();
 			self.ConfigLoader.GetAllConfigBytes(configBytes);
 
@@ -49,8 +63,8 @@ namespace ET
 		public static async ETTask LoadAsync(this ConfigComponent self)
 		{
 			self.AllConfig.Clear();
-			List<Type> types = Game.EventSystem.GetTypes(typeof (ConfigAttribute));
-			
+			List<Type> types = Game.EventSystem.GetTypes(typeof(ConfigAttribute));
+
 			Dictionary<string, byte[]> configBytes = new Dictionary<string, byte[]>();
 			self.ConfigLoader.GetAllConfigBytes(configBytes);
 
@@ -68,6 +82,7 @@ namespace ET
 
 		private static void LoadOneInThread(this ConfigComponent self, Type configType, Dictionary<string, byte[]> configBytes)
 		{
+			
 			byte[] oneConfigBytes = configBytes[configType.Name];
 
 			object category = ProtobufHelper.FromBytes(configType, oneConfigBytes, 0, oneConfigBytes.Length);

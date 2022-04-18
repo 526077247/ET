@@ -128,13 +128,41 @@ namespace ET
             self.unity_uitextmesh.color = color;
         }
 
+        public static void SetColor(this UITextmesh self, string colorStr)
+        {
+            if (!colorStr.StartsWith("#")) colorStr = "#" + colorStr;
+            if (ColorUtility.TryParseHtmlString(colorStr, out var color))
+            {
+                self.ActivatingComponent();
+                self.unity_uitextmesh.color = color;
+            }
+            else
+            {
+                Log.Info(colorStr);
+            }
+        }
+        
         public static void SetTextWithColor(this UITextmesh self, string text,string colorstr)
         {
             if (string.IsNullOrEmpty(colorstr))
                 self.SetText(text);
             else
+            {
+                if (!colorstr.StartsWith("#")) colorstr = "#" + colorstr;
                 self.SetText($"<color={colorstr}>{text}</color>");
+            }
         }
-        
+
+        public static int GetCharacterCount(this UITextmesh self)
+        {
+            self.ActivatingComponent();
+            return self.unity_uitextmesh.CharacterCount;
+        }
+
+        public static void SetMaxVisibleCharacters(this UITextmesh self,int count)
+        {
+            self.ActivatingComponent();
+            self.unity_uitextmesh.maxVisibleCharacters = count;
+        }
     }
 }

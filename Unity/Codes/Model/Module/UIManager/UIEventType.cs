@@ -63,6 +63,10 @@ namespace ET
             public Entity entity;
             public bool Active;
         }
+        public struct OnWidthPaddingChange
+        {
+            public Entity entity;
+        }
         /// <summary>
         /// 注册多语言
         /// </summary>

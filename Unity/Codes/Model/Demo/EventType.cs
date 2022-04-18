@@ -108,5 +108,10 @@ namespace ET
         {
             public Unit Unit;
         }
+        
+        public struct PlaySound
+        {
+            public string Path;
+        }
     }
 }

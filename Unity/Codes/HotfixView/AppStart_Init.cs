@@ -22,7 +22,7 @@ namespace ET
             Game.Scene.AddComponent<CameraManagerComponent>();
             Game.Scene.AddComponent<SceneManagerComponent>();
             Game.Scene.AddComponent<ToastComponent>();
-            
+            Game.Scene.AddComponent<SoundComponent>();
             // 加载配置
             Game.Scene.AddComponent<ConfigComponent>();
             ConfigComponent.Instance.Load();
@@ -39,6 +39,9 @@ namespace ET
             Game.Scene.AddComponent<ZoneSceneManagerComponent>();
             
             Game.Scene.AddComponent<GlobalComponent>();
+            Game.Scene.AddComponent<GalGameEngineComponent>();
+            // gal命令订阅组件
+            Game.Scene.AddComponent<CommandWatcherComponent>();
             Game.Scene.AddComponent<AIDispatcherComponent>();
             Game.Scene.AddComponent<NumericWatcherComponent>();
             await UIManagerComponent.Instance.OpenWindow<UILoadingView>(UILoadingView.PrefabPath);

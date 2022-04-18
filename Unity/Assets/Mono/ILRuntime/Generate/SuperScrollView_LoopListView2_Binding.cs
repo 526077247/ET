@@ -57,6 +57,10 @@ namespace ILRuntime.Runtime.Generated
             app.RegisterCLRFieldGetter(field, get_mOnEndDragAction_2);
             app.RegisterCLRFieldSetter(field, set_mOnEndDragAction_2);
             app.RegisterCLRFieldBinding(field, CopyToStack_mOnEndDragAction_2, AssignFromStack_mOnEndDragAction_2);
+            field = type.GetField("mOnSnapNearestChanged", flag);
+            app.RegisterCLRFieldGetter(field, get_mOnSnapNearestChanged_3);
+            app.RegisterCLRFieldSetter(field, set_mOnSnapNearestChanged_3);
+            app.RegisterCLRFieldBinding(field, CopyToStack_mOnSnapNearestChanged_3, AssignFromStack_mOnSnapNearestChanged_3);
 
 
         }
@@ -267,6 +271,30 @@ namespace ILRuntime.Runtime.Generated
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             System.Action @mOnEndDragAction = (System.Action)typeof(System.Action).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)8);
             ((SuperScrollView.LoopListView2)o).mOnEndDragAction = @mOnEndDragAction;
+            return ptr_of_this_method;
+        }
+
+        static object get_mOnSnapNearestChanged_3(ref object o)
+        {
+            return ((SuperScrollView.LoopListView2)o).mOnSnapNearestChanged;
+        }
+
+        static StackObject* CopyToStack_mOnSnapNearestChanged_3(ref object o, ILIntepreter __intp, StackObject* __ret, IList<object> __mStack)
+        {
+            var result_of_this_method = ((SuperScrollView.LoopListView2)o).mOnSnapNearestChanged;
+            return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
+        }
+
+        static void set_mOnSnapNearestChanged_3(ref object o, object v)
+        {
+            ((SuperScrollView.LoopListView2)o).mOnSnapNearestChanged = (System.Action<SuperScrollView.LoopListView2, SuperScrollView.LoopListViewItem2>)v;
+        }
+
+        static StackObject* AssignFromStack_mOnSnapNearestChanged_3(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
+        {
+            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
+            System.Action<SuperScrollView.LoopListView2, SuperScrollView.LoopListViewItem2> @mOnSnapNearestChanged = (System.Action<SuperScrollView.LoopListView2, SuperScrollView.LoopListViewItem2>)typeof(System.Action<SuperScrollView.LoopListView2, SuperScrollView.LoopListViewItem2>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)8);
+            ((SuperScrollView.LoopListView2)o).mOnSnapNearestChanged = @mOnSnapNearestChanged;
             return ptr_of_this_method;
         }
 

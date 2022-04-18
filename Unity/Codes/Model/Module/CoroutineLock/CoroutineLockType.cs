@@ -11,7 +11,8 @@ namespace ET
         public const int Resources = 6;
         public const int ResourcesLoader = 7;
         public const int UIManager = 8;
-
+        public const int FSM = 9;
+        public const int UIImage = 10;
         public const int Max = 100; // 这个必须最大
     }
 }
