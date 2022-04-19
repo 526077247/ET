@@ -3,6 +3,7 @@
 namespace ET
 {
     [UISystem]
+    [FriendClass(typeof(UISettingItem))]
     public class UISettingItemOnCreateSystem : OnCreateSystem<UISettingItem>
     {
         public override void OnCreate(UISettingItem self)
@@ -13,6 +14,7 @@ namespace ET
             
         }
     }
+    [FriendClass(typeof(UISettingItem))]
     public static class UISettingItemSystem
     {
         public static void SetData(this UISettingItem self, ServerConfig data,Action<int> callback)

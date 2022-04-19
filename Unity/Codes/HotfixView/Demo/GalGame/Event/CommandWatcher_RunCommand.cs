@@ -6,6 +6,7 @@ namespace ET
     /// 等待一段时间
     /// </summary>
     [CommandWatcher("Wait")]
+    [FriendClass(typeof(GalGameEngineComponent))]
     public class CommandWatcher_Wait : ICommandWatcher
     {
         public async ETTask Run(GalGameEngineComponent self, GalGameEnginePara para)
@@ -84,6 +85,7 @@ namespace ET
     /// 播放文本
     /// </summary>
     [CommandWatcher("ShowMessageWindow")]
+    [FriendClass(typeof(GalGameEngineComponent))]
     public class CommandWatcher_ShowMessageWindow : ICommandWatcher
     {
         public async ETTask Run(GalGameEngineComponent self, GalGameEnginePara para)
@@ -150,6 +152,7 @@ namespace ET
     /// 淡入
     /// </summary>
     [CommandWatcher("FadeIn")]
+    [FriendClass(typeof(GalGameEngineComponent))]
     public class CommandWatcher_FadeIn : ICommandWatcher
     {
         public async ETTask Run(GalGameEngineComponent self, GalGameEnginePara para)
@@ -167,6 +170,7 @@ namespace ET
     /// 淡出
     /// </summary>
     [CommandWatcher("FadeOut")]
+    [FriendClass(typeof(GalGameEngineComponent))]
     public class CommandWatcher_FadeOut : ICommandWatcher
     {
         public async ETTask Run(GalGameEngineComponent self, GalGameEnginePara para)
@@ -184,6 +188,7 @@ namespace ET
     /// 人物离场
     /// </summary>
     [CommandWatcher("CharacterOff")]
+    [FriendClass(typeof(GalGameEngineComponent))]
     public class CommandWatcher_CharacterOff : ICommandWatcher
     {
         public async ETTask Run(GalGameEngineComponent self, GalGameEnginePara para)
@@ -221,6 +226,7 @@ namespace ET
         /// 人物登场
         /// </summary>
         [CommandWatcher("CharacterOn")]
+        [FriendClass(typeof(GalGameEngineComponent))]
         public class CommandWatcher_CharacterOn : ICommandWatcher
         {
             public async ETTask Run(GalGameEngineComponent self, GalGameEnginePara para)

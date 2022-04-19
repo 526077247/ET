@@ -43,7 +43,12 @@ public class UIScriptCreatorEditor : Editor
         }
         string PREFAB_PATH = GetPrefabPath(go);
         UIScriptController.GenerateUICode(go, PREFAB_PATH);
-
+        if (IsMarking)
+        {
+            IsMarking = false;
+            EditorApplication.hierarchyWindowItemOnGUI -= DrawHierarchyIcon;
+            return;
+        }
         Debug.Log("生成完成");
     }
 

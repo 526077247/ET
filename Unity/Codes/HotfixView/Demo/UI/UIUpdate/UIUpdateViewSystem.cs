@@ -10,6 +10,7 @@ using System.Linq;
 namespace ET
 {
     [UISystem]
+    [FriendClass(typeof(UIUpdateView))]
     public class UIUpdateViewOnCreateSystem : OnCreateSystem<UIUpdateView>
     {
         public override void OnCreate(UIUpdateView self)
@@ -18,6 +19,7 @@ namespace ET
         }
     }
     [UISystem]
+    [FriendClass(typeof(UIUpdateView))]
     public class UIUpdateViewOnEnableSystem : OnEnableSystem<UIUpdateView,Action>
     {
         public override void OnEnable(UIUpdateView self,Action func)
@@ -29,6 +31,7 @@ namespace ET
             self.StartCheckUpdate().Coroutine();
         }
     }
+    [FriendClass(typeof(UIUpdateView))]
     public static class UIUpdateViewSystem
     {
 

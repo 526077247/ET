@@ -4,6 +4,8 @@ using UnityEngine;
 namespace ET
 {
     [UISystem]
+    [FriendClass(typeof(UIRedDotComponent))]
+    [FriendClass(typeof(RedDotComponent))]
     public class UIRedDotComponentOnCreateSystem: OnCreateSystem<UIRedDotComponent,string>
     {
         public override void OnCreate(UIRedDotComponent self,string target)
@@ -16,6 +18,8 @@ namespace ET
         }
     }
     [UISystem]
+    [FriendClass(typeof(UIRedDotComponent))]
+    [FriendClass(typeof(RedDotComponent))]
     public class UIRedDotComponentOnCreateSystem1: OnCreateSystem<UIRedDotComponent,string,Vector2>
     {
         public override void OnCreate(UIRedDotComponent self,string target,Vector2 positionOffset)
@@ -28,6 +32,7 @@ namespace ET
         }
     }
     [UISystem]
+    [FriendClass(typeof(UIRedDotComponent))]
     public class UIRedDotComponentOnDestroySystem: OnDestroySystem<UIRedDotComponent>
     {
         public override void OnDestroy(UIRedDotComponent self)
@@ -38,6 +43,8 @@ namespace ET
         }
     }
     [UISystem]
+    [FriendClass(typeof(UIRedDotComponent))]
+    [FriendClass(typeof(RedDotComponent))]
     public class UIRedDotComponentOnEnableSystem: OnEnableSystem<UIRedDotComponent>
     {
         public override void OnEnable(UIRedDotComponent self)
@@ -46,6 +53,7 @@ namespace ET
         }
     }
     [UISystem]
+    [FriendClass(typeof(UIRedDotComponent))]
     public class UIRedDotComponentRedDotSystem: RedDotSystem<UIRedDotComponent>
     {
         public override void OnRefreshCount(UIRedDotComponent self,int count)
@@ -53,6 +61,7 @@ namespace ET
             self.OnRefreshCount(count);
         }
     }
+    [FriendClass(typeof(UIRedDotComponent))]
     public static class UIRedDotComponentSystem
     {
         public static async ETTask ActivatingComponent(this UIRedDotComponent self)

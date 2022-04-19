@@ -3,6 +3,8 @@ using System;
 
 namespace ET
 {
+    [FriendClass(typeof(RouterDataComponent))]
+    [FriendClass(typeof(GetRouterComponent))]
     public static class LoginHelper
     {
         public static async ETTask Login(Scene zoneScene, string address, string account, string password,Action onError=null)

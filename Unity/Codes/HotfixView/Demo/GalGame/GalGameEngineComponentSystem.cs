@@ -41,7 +41,7 @@ namespace ET
             self.FSM.ChangeState<GalGameEngineReadyState>().Coroutine();
         }
     }
-
+    [FriendClass(typeof(GalGameEngineComponent))]
     public static class GalGameEngineComponentSystem
     {
         /// <summary>

@@ -10,6 +10,7 @@ using UnityEngine.UI;
 namespace ET
 {
     [UISystem]
+    [FriendClass(typeof(UIButton))]
     public class UIButtonOnCreateSystem : OnCreateSystem<UIButton>
     {
         public override void OnCreate(UIButton self)
@@ -18,6 +19,7 @@ namespace ET
         }
     }
     [UISystem]
+    [FriendClass(typeof(UIButton))]
     public class UIButtonOnDestroySystem : OnDestroySystem<UIButton>
     {
         public override void OnDestroy(UIButton self)
@@ -29,6 +31,7 @@ namespace ET
             self.__onclick = null;
         }
     }
+    [FriendClass(typeof(UIButton))]
     public static class UIButtonSystem
     {
         static void ActivatingComponent(this UIButton self)

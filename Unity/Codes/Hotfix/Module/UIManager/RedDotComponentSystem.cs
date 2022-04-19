@@ -32,7 +32,7 @@ namespace ET
             RedDotComponent.Instance = null;
         }
     }
-
+    [FriendClass(typeof(RedDotComponent))]
     public static class RedDotComponentSystem
     {
         /// <summary>

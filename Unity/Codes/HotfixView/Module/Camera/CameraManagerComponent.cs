@@ -25,6 +25,7 @@ namespace ET
             CameraManagerComponent.Instance = null;
         }
     }
+    [FriendClass(typeof(CameraManagerComponent))]
     public static class CameraManagerComponentSystem
     {
         

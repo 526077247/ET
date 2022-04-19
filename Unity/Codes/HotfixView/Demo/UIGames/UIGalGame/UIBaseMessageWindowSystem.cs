@@ -4,6 +4,7 @@ using UnityEngine.UI;
 namespace ET
 {
 	[UISystem]
+	[FriendClass(typeof(UIBaseMessageWindow))]
 	public class UIBaseMessageWindowOnCreateSystem: OnCreateSystem<UIBaseMessageWindow>
 	{
 		public override void OnCreate(UIBaseMessageWindow self)
@@ -23,6 +24,8 @@ namespace ET
 		}
 	}
 	[UISystem]
+	[FriendClass(typeof(UIBaseMessageWindow))]
+	[FriendClass(typeof(GalGameEngineComponent))]
 	public class UIBaseMessageWindowOnEnableSystem: OnEnableSystem<UIBaseMessageWindow,float,long>
 	{
 		public override void OnEnable(UIBaseMessageWindow self,float t,long v)
@@ -35,6 +38,8 @@ namespace ET
 		}
 	}
 	[UISystem]
+	[FriendClass(typeof(UIBaseMessageWindow))]
+	[FriendClass(typeof(GalGameEngineComponent))]
 	public class UIBaseMessageWindowOnDisableSystem: OnDisableSystem<UIBaseMessageWindow>
 	{
 		public override void OnDisable(UIBaseMessageWindow self)
@@ -42,6 +47,8 @@ namespace ET
 			GalGameEngineComponent.Instance.CancelToken?.Remove(self.CancelAction);
 		}
 	}
+	[FriendClass(typeof(UIBaseMessageWindow))]
+	[FriendClass(typeof(GalGameEngineComponent))]
 	public static class UIBaseMessageWindowSystem 
 	{
 

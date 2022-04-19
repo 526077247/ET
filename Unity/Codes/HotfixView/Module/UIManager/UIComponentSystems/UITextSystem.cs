@@ -9,6 +9,7 @@ using UnityEngine.UI;
 namespace ET
 {
     [UISystem]
+    [FriendClass(typeof(UIText))]
     public class UITextOnCreateSystem : OnCreateSystem<UIText>
     {
         public override void OnCreate(UIText self)
@@ -17,6 +18,7 @@ namespace ET
         }
     }
     [UISystem]
+    [FriendClass(typeof(UIText))]
     public class UITextOnCreateSystem1 : OnCreateSystem<UIText, string>
     {
         public override void OnCreate(UIText self, string key)
@@ -26,6 +28,7 @@ namespace ET
         }
     }
     [UISystem]
+    [FriendClass(typeof(UIText))]
     public class UITextOnDestroySystem : OnDestroySystem<UIText>
     {
         public override void OnDestroy(UIText self)
@@ -36,6 +39,7 @@ namespace ET
         }
     }
     [UISystem]
+    [FriendClass(typeof(UIText))]
     public class UITextI18NSystem: I18NSystem<UIText>
     {
         public override void OnLanguageChange(UIText self)
@@ -43,7 +47,7 @@ namespace ET
             self.OnLanguageChange();
         }
     }
-
+    [FriendClass(typeof(UIText))]
     public static class UITextSystem 
     {
         static void ActivatingComponent(this UIText self)

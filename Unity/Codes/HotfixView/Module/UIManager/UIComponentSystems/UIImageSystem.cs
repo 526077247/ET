@@ -18,6 +18,7 @@ namespace ET
         }
     }
     [UISystem]
+    [FriendClass(typeof(UIImage))]
     public class UIImageOnDestroySystem : OnDestroySystem<UIImage>
     {
         public override void OnDestroy(UIImage self)
@@ -26,6 +27,7 @@ namespace ET
                 ImageLoaderComponent.Instance?.ReleaseImage(self.sprite_path);
         }
     }
+    [FriendClass(typeof(UIImage))]
     public static class UIImageSystem
     {
         static void ActivatingComponent(this UIImage self)
@@ -110,6 +112,12 @@ namespace ET
         {
             self.ActivatingComponent();
             self.unity_uiimage.color = color;
+        }
+
+        public static Color GetImageColor(this UIImage self)
+        {
+            self.ActivatingComponent();
+            return self.unity_uiimage.color;
         }
         public static void SetImageAlpha(this UIImage self,float a,bool changeChild=false)
         {

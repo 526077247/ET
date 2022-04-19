@@ -2,6 +2,7 @@
 namespace ET
 {
     [ObjectSystem]
+    [FriendClass(typeof(SceneLoadComponent))]
     public class SceneLoadComponentAwakeSystem: AwakeSystem<SceneLoadComponent>
     {
         public override void Awake(SceneLoadComponent self)
@@ -19,6 +20,7 @@ namespace ET
             self.PreLoadTask.Dispose();
         }
     }
+    [FriendClass(typeof(SceneLoadComponent))]
     public static class SceneLoadComponentSystem
     {
         //预加载资源

@@ -7,7 +7,9 @@ using UnityEngine.UI;
 using SuperScrollView;
 namespace ET
 {
+	
 	[UISystem]
+	[FriendClass(typeof(UILoginView))]
 	public class UILoginViewOnCreateSystem : OnCreateSystem<UILoginView>
 	{
 		public override void OnCreate(UILoginView self)
@@ -25,6 +27,7 @@ namespace ET
 		}
 	}
 	[UISystem]
+	[FriendClass(typeof(UILoginView))]
 	public class UILoginViewOnEnableSystem : OnEnableSystem<UILoginView, Scene>
 	{
 		public override void OnEnable(UILoginView self, Scene scene)
@@ -35,6 +38,8 @@ namespace ET
 			self.password.SetText(PlayerPrefs.GetString(CacheKeys.Password, ""));
 		}
 	}
+	[FriendClass(typeof(UILoginView))]
+	[FriendClass(typeof(GlobalComponent))]
 	public static class UILoginViewSystem
 	{
 		

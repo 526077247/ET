@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 namespace ET
 {
+    [FriendClass(typeof(UIInput))]
     public static class UIInputSystem
     {
         static void ActivatingComponent(this UIInput self)

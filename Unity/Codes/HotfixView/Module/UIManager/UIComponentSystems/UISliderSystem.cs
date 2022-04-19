@@ -9,6 +9,7 @@ using UnityEngine.UI;
 namespace ET
 {
     [UISystem]
+    [FriendClass(typeof(UISlider))]
     public class UISliderDestorySystem : OnDestroySystem<UISlider>
     {
         public override void OnDestroy(UISlider self)
@@ -16,6 +17,7 @@ namespace ET
             self.RemoveOnValueChanged();
         }
     }
+    [FriendClass(typeof(UISlider))]
     public static class UISliderSystem
     {
         static void ActivatingComponent(this UISlider self)

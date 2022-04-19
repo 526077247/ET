@@ -4,6 +4,7 @@ using UnityEngine;
 namespace ET
 {
     [UISystem]
+    [FriendClass(typeof(UILobbyView))]
     public class UILobbyViewOnCreateSystem : OnCreateSystem<UILobbyView>
 	{
 		public override void OnCreate(UILobbyView self)
@@ -13,6 +14,7 @@ namespace ET
         }
 	}
     [UISystem]
+    [FriendClass(typeof(UILobbyView))]
     public class UILobbyViewOnEnableSystem : OnEnableSystem<UILobbyView, Scene>
 	{
 		public override void OnEnable(UILobbyView self, Scene scene)
@@ -20,6 +22,7 @@ namespace ET
             self.zoneScene = scene;
         }
 	}
+    [FriendClass(typeof(UILobbyView))]
 	public static class UILobbyViewSystem 
     {
         

@@ -9,6 +9,7 @@ using UnityEngine.UI;
 namespace ET
 {
     [ObjectSystem]
+    [FriendClass(typeof(UILayersComponent))]
     public class UILayerAwakeSystem : AwakeSystem<UILayer, UILayerDefine, GameObject>
     {
         public override void Awake(UILayer self, UILayerDefine layer,GameObject gameObject)
@@ -63,7 +64,9 @@ namespace ET
             self.unity_graphic_raycaster = null;
         }
     }
-
+    [FriendClass(typeof(UILayer))]
+    [FriendClass(typeof(UIManagerComponent))]
+    [FriendClass(typeof(UILayersComponent))]
     public static class UILayerSystem
     {
         //设置canvas的worldCamera

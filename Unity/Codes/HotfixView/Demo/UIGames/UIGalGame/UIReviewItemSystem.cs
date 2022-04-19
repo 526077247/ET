@@ -7,6 +7,7 @@ using SuperScrollView;
 namespace ET
 {
 	[UISystem]
+	[FriendClass(typeof(UIReviewItem))]
 	public class UIReviewItemOnCreateSystem : OnCreateSystem<UIReviewItem>
 	{
 
@@ -17,6 +18,7 @@ namespace ET
 		}
 
 	}
+	[FriendClass(typeof(UIReviewItem))]
 	public static class UIReviewItemSystem
 	{
 		public static void SetData(this UIReviewItem self, string title, string content)

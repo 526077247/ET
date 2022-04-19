@@ -7,6 +7,8 @@ using UnityEngine;
 
 namespace ET
 {
+	[FriendClass(typeof(UIWindow))]
+	[FriendClass(typeof(UILayersComponent))]
     public class InnerOpenWindow_GetGameObject : AEventAsync<UIEventType.InnerOpenWindow>
     {
 	    protected override async ETTask Run(UIEventType.InnerOpenWindow args)

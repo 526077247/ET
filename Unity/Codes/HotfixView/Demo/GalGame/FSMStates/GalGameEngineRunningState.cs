@@ -14,7 +14,18 @@ namespace ET
             self.Engine = GalGameEngineComponent.Instance;
         }
     }
+    [ObjectSystem]
+    public class GalGameEngineRunningStateAwakeSystem1 : AwakeSystem<GalGameEngineRunningState>
+    {
+        public override void Awake(GalGameEngineRunningState self)
+        {
+            self.FSM = self.GetParent<FSMComponent>();
+            self.Engine = GalGameEngineComponent.Instance;
+        }
+    }
     [FSMSystem]
+    [FriendClass(typeof(GalGameEngineComponent))]
+    [FriendClass(typeof(GalGameEngineRunningState))]
     public class GalGameEngineRunningStateOnEnterSystem : FSMOnEnterSystem<GalGameEngineRunningState>
     {
         public override async ETTask FSMOnEnter(GalGameEngineRunningState self)
@@ -37,6 +48,9 @@ namespace ET
     /// <summary>
     /// 运行
     /// </summary>
+    [FriendClass(typeof(GalGameEngineComponent))]
+    [FriendClass(typeof(GalGameEngineRunningState))]
+    [FriendClass(typeof(I18NComponent))]
     public static class GalGameEngineRunningStateSystem 
     {
         public static async ETTask MainRun(this GalGameEngineRunningState self)

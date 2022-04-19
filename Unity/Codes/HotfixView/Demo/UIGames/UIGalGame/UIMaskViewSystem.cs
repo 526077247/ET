@@ -2,6 +2,7 @@
 namespace ET
 {
     [UISystem]
+    [FriendClass(typeof(UIMaskView))]
     public class UIMaskViewOnCreateSystem:OnCreateSystem<UIMaskView>
     {
         public override void OnCreate(UIMaskView self)
@@ -12,6 +13,7 @@ namespace ET
     }
     
     [UISystem]
+    [FriendClass(typeof(UIMaskView))]
     public class UIMaskViewOnEnableSystem:OnEnableSystem<UIMaskView,string,float,bool>
     {
         public override void OnEnable(UIMaskView self, string imagePath, float time, bool isStart)
@@ -27,7 +29,8 @@ namespace ET
             self.StartChange(time,isStart,imagePath).Coroutine();
         }
     }
-    
+    [FriendClass(typeof(UIMaskView))]
+    [FriendClass(typeof(GalGameEngineComponent))]
     public static class UIMaskViewSystem
     {
         public static async ETTask StartChange(this UIMaskView self,float interval,bool isStart,string imagePath = null)

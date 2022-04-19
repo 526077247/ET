@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace ET
 {
+	[FriendClass(typeof(UIWindow))]
     public class InnerDestroyWinow_DestroyWindowView : AEvent<UIEventType.InnerDestroyWindow>
 	{
 		protected override void Run(UIEventType.InnerDestroyWindow args)

@@ -5,14 +5,16 @@ using UnityEngine;
 namespace ET
 {
     [ObjectSystem]
-    public class GalGameEngineReadyStateAwakeSystem : AwakeSystem<GalGameEngineReadyState, FSMComponent>
+    public class GalGameEngineReadyStateAwakeSystem : AwakeSystem<GalGameEngineReadyState>
     {
-        public override void Awake(GalGameEngineReadyState self, FSMComponent fsm)
+        public override void Awake(GalGameEngineReadyState self)
         {
-            self.FSM = fsm;
+            self.FSM = self.GetParent<FSMComponent>();
         }
     }
     [FSMSystem]
+    [FriendClass(typeof(GalGameEngineComponent))]
+    [FriendClass(typeof(GalGameEngineReadyState))]
     public class GalGameEngineReadyStateOnEnterSystem : FSMOnEnterSystem<GalGameEngineReadyState>
     {
         public override async ETTask FSMOnEnter(GalGameEngineReadyState self)
@@ -34,6 +36,8 @@ namespace ET
         }
     }
     [FSMSystem]
+    [FriendClass(typeof(GalGameEngineComponent))]
+    [FriendClass(typeof(GalGameEngineReadyState))]
     public class GalGameEngineReadyStateOnEnterSystem1 : FSMOnEnterSystem<GalGameEngineReadyState,bool>
     {
         public override async ETTask FSMOnEnter(GalGameEngineReadyState self,bool value)

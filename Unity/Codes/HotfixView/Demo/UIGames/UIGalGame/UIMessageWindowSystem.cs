@@ -5,6 +5,7 @@ using UnityEngine.UI;
 namespace ET
 {
 	[UISystem]
+	[FriendClass(typeof(UIMessageWindow))]
 	public class UIMessageWindowOnCreateSystem: OnCreateSystem<UIMessageWindow>
 	{
 		public override void OnCreate(UIMessageWindow self)
@@ -40,6 +41,8 @@ namespace ET
 		}
 	}
 	[UISystem]
+	[FriendClass(typeof(UIMessageWindow))]
+	[FriendClass(typeof(GalGameEngineComponent))]
 	public class UIMessageWindowOnEnableSystem: OnEnableSystem<UIMessageWindow,float,long>
 	{
 		public override void OnEnable(UIMessageWindow self,float t,long v)
@@ -53,6 +56,8 @@ namespace ET
 		}
 	}
 	[UISystem]
+	[FriendClass(typeof(UIMessageWindow))]
+	[FriendClass(typeof(GalGameEngineComponent))]
 	public class UIMessageWindowOnDisableSystem: OnDisableSystem<UIMessageWindow>
 	{
 		public override void OnDisable(UIMessageWindow self)
@@ -60,6 +65,8 @@ namespace ET
 			GalGameEngineComponent.Instance.CancelToken?.Remove(self.CancelAction);
 		}
 	}
+	[FriendClass(typeof(UIMessageWindow))]
+	[FriendClass(typeof(GalGameEngineComponent))]
 	public static class UIMessageWindowSystem
 	{
 		

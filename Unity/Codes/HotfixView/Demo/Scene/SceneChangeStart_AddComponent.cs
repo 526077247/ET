@@ -1,5 +1,6 @@
 namespace ET
 {
+    [FriendClass(typeof(SceneLoadComponent))]
     public class SceneChangeStart_AddComponent: AEventAsync<EventType.SceneChangeStart>
     {
         protected override async ETTask Run(EventType.SceneChangeStart args)

@@ -10,6 +10,7 @@ using UnityEngine.UI;
 namespace ET
 {
     [UISystem]
+    [FriendClass(typeof(UIDropdown))]
     public class UIDropdownDestorySystem : OnDestroySystem<UIDropdown>
     {
         public override void OnDestroy(UIDropdown self)
@@ -17,6 +18,7 @@ namespace ET
             self.RemoveOnValueChanged();
         }
     }
+    [FriendClass(typeof(UIDropdown))]
     public static class UIDropdownSystem
     {
         static void ActivatingComponent(this UIDropdown self)

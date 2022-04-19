@@ -5,14 +5,15 @@ using UnityEngine;
 namespace ET
 {
     [ObjectSystem]
-    public class GalGameEngineSuspendedStateAwakeSystem : AwakeSystem<GalGameEngineSuspendedState, FSMComponent>
+    public class GalGameEngineSuspendedStateAwakeSystem : AwakeSystem<GalGameEngineSuspendedState>
     {
-        public override void Awake(GalGameEngineSuspendedState self, FSMComponent fsm)
+        public override void Awake(GalGameEngineSuspendedState self)
         {
-            self.FSM = fsm;
+            self.FSM = self.GetParent<FSMComponent>();
         }
     }
     [FSMSystem]
+    [FriendClass(typeof(GalGameEngineComponent))]
     public class GalGameEngineSuspendedStateFSMOnEnterSystem : FSMOnEnterSystem<GalGameEngineSuspendedState>
     {
         public override async ETTask FSMOnEnter(GalGameEngineSuspendedState self)

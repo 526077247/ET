@@ -81,7 +81,7 @@ public class UIScriptController
         strBuilder.AppendLine("namespace ET");
         strBuilder.AppendLine("{");
 
-        strBuilder.AppendFormat("\tpublic class {0} : Entity, IAwake, IOnCreate, IOnEnable\r\n", name);
+        strBuilder.AppendFormat("\tpublic class {0} : Entity, IAwake, ILoad, IOnCreate, IOnEnable\r\n", name);
         strBuilder.AppendLine("\t{");
         if (!isItem)
         {
@@ -153,6 +153,8 @@ public class UIScriptController
         StreamWriter sw = new StreamWriter(csPath, false, Encoding.UTF8);
         StringBuilder strBuilder = new StringBuilder();
         StringBuilder tempBuilder = new StringBuilder();
+        StringBuilder addListenerBuilder = new StringBuilder();
+        
         strBuilder.AppendLine("using System.Collections;")
                   .AppendLine("using System.Collections.Generic;")
                   .AppendLine("using System;")
@@ -162,20 +164,33 @@ public class UIScriptController
 
         strBuilder.AppendLine("namespace ET");
         strBuilder.AppendLine("{");
+        
         strBuilder.AppendLine("\t[UISystem]");
+        strBuilder.AppendFormat("\t[FriendClass(typeof({0}))]\r\n",name);
         strBuilder.AppendFormat("\tpublic class {0}OnCreateSystem : OnCreateSystem<{1}>\r\n", name, name);
         strBuilder.AppendLine("\t{");
         strBuilder.AppendLine("");
-
-
         strBuilder.AppendFormat("\t\tpublic override void OnCreate({0} self)\n", name)
                .AppendLine("\t\t{");
-        GenerateSystemChildCode(go.transform, "", strBuilder, tempBuilder, name);
-
+        GenerateSystemChildCode(go.transform, "", strBuilder, tempBuilder, name,addListenerBuilder);
+        strBuilder.Append(addListenerBuilder);
         strBuilder.AppendLine("\t\t}");
         strBuilder.AppendLine("");
         strBuilder.AppendLine("\t}");
-
+        
+        strBuilder.AppendLine("\t[ObjectSystem]");
+        strBuilder.AppendFormat("\t[FriendClass(typeof({0}))]\r\n",name);
+        strBuilder.AppendFormat("\tpublic class {0}LoadSystem : LoadSystem<{1}>\r\n", name, name);
+        strBuilder.AppendLine("\t{");
+        strBuilder.AppendLine("");
+        strBuilder.AppendFormat("\t\tpublic override void Load({0} self)\n", name)
+                .AppendLine("\t\t{");
+        strBuilder.Append(addListenerBuilder);
+        strBuilder.AppendLine("\t\t}");
+        strBuilder.AppendLine("");
+        strBuilder.AppendLine("\t}");
+        
+        strBuilder.AppendFormat("\t[FriendClass(typeof({0}))]\r\n",name);
         strBuilder.AppendFormat("\tpublic static class {0}System\r\n", name);
         strBuilder.AppendLine("\t{");
         strBuilder.Append(tempBuilder);
@@ -188,7 +203,7 @@ public class UIScriptController
         sw.Close();
     }
 
-    public static void GenerateSystemChildCode(Transform trans, string strPath, StringBuilder strBuilder, StringBuilder tempBuilder, string name)
+    public static void GenerateSystemChildCode(Transform trans, string strPath, StringBuilder strBuilder, StringBuilder tempBuilder, string name,StringBuilder addListenerBuilder)
     {
         if (null == trans)
         {
@@ -213,7 +228,7 @@ public class UIScriptController
                             .AppendLine();
                         if (uiComponent.Key == typeof(Button) || uiComponent.Key == typeof(PointerClick))
                         {
-                            strBuilder.AppendFormat("\t\t\tself.{0}.SetOnClick(()=>{{self.OnClick{1}();}});", uisc.GetModuleName(), uisc.GetModuleName())
+                            addListenerBuilder.AppendFormat("\t\t\tself.{0}.SetOnClick(()=>{{self.OnClick{1}();}});", uisc.GetModuleName(), uisc.GetModuleName())
                                     .AppendLine();
                             tempBuilder.AppendFormat("\t\tpublic static void OnClick{0}(this {1} self)", uisc.GetModuleName(), name)
                                     .AppendLine();
@@ -222,7 +237,7 @@ public class UIScriptController
                         }
                         else if (uiComponent.Key == typeof(SuperScrollView.LoopListView2))
                         {
-                            strBuilder.AppendFormat("\t\t\tself.{0}.InitListView(0,(a,b)=>{{return self.Get{1}ItemByIndex(a,b);}});", uisc.GetModuleName(), uisc.GetModuleName())
+                            addListenerBuilder.AppendFormat("\t\t\tself.{0}.InitListView(0,(a,b)=>{{return self.Get{1}ItemByIndex(a,b);}});", uisc.GetModuleName(), uisc.GetModuleName())
                                     .AppendLine();
                             tempBuilder.AppendFormat("\t\tpublic static LoopListViewItem2 Get{0}ItemByIndex(this {1} self, LoopListView2 listView, int index)", uisc.GetModuleName(), name)
                                     .AppendLine();
@@ -232,7 +247,7 @@ public class UIScriptController
                         }
                         else if (uiComponent.Key == typeof(SuperScrollView.LoopGridView))
                         {
-                            strBuilder.AppendFormat("\t\t\tself.{0}.InitGridView(0,(a,b,c,d)=>{{return self.Get{1}ItemByIndex(a,b,c,d);}});", uisc.GetModuleName(), uisc.GetModuleName())
+                            addListenerBuilder.AppendFormat("\t\t\tself.{0}.InitGridView(0,(a,b,c,d)=>{{return self.Get{1}ItemByIndex(a,b,c,d);}});", uisc.GetModuleName(), uisc.GetModuleName())
                                     .AppendLine();
                             tempBuilder.AppendFormat("\t\tpublic static LoopGridViewItem Get{0}ItemByIndex(this {1} self, LoopGridView gridview, int index, int row, int column)", uisc.GetModuleName(), name)
                                     .AppendLine();
@@ -242,7 +257,7 @@ public class UIScriptController
                         }
                         else if (uiComponent.Key == typeof(CopyGameObject))
                         {
-                            strBuilder.AppendFormat("\t\t\tself.{0}.InitListView(0,(a,b)=>{{self.Get{1}ItemByIndex(a,b);}});", uisc.GetModuleName(), uisc.GetModuleName())
+                            addListenerBuilder.AppendFormat("\t\t\tself.{0}.InitListView(0,(a,b)=>{{self.Get{1}ItemByIndex(a,b);}});", uisc.GetModuleName(), uisc.GetModuleName())
                                     .AppendLine();
                             tempBuilder.AppendFormat("\t\tpublic static void Get{0}ItemByIndex(this {1} self, int index, GameObject obj)", uisc.GetModuleName(), name)
                                     .AppendLine();
@@ -260,7 +275,7 @@ public class UIScriptController
                 }
             }
 
-            GenerateSystemChildCode(child, strTemp, strBuilder, tempBuilder, name);
+            GenerateSystemChildCode(child, strTemp, strBuilder, tempBuilder, name,addListenerBuilder);
         }
     }
 }

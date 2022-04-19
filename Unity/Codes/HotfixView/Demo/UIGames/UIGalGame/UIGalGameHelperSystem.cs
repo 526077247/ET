@@ -7,6 +7,7 @@ using UnityEngine.UI;
 namespace ET
 {
 	[UISystem]
+	[FriendClass(typeof(UIGalGameHelper))]
 	public class UIGalGameHelperOnCreateSystem: OnCreateSystem<UIGalGameHelper>
 	{
 		public override void OnCreate(UIGalGameHelper self)
@@ -15,6 +16,7 @@ namespace ET
 		}
 	}
 	[UISystem]
+	[FriendClass(typeof(UIGalGameHelper))]
 	public class UIGalGameHelperOnEnableSystem: OnEnableSystem<UIGalGameHelper>
 	{
 		public override void OnEnable(UIGalGameHelper self)
@@ -23,6 +25,7 @@ namespace ET
 		}
 	}
 	[UISystem]
+	[FriendClass(typeof(UIGalGameHelper))]
 	public class UIGalGameHelperOnDisableSystem: OnDisableSystem<UIGalGameHelper>
 	{
 		public override void OnDisable(UIGalGameHelper self)
@@ -30,6 +33,7 @@ namespace ET
 			self.inputer.OnKeyUp -= UIGalGameHelperSystem.OnKeyHandler;
 		}
 	}
+	[FriendClass(typeof(GalGameEngineComponent))]
 	public static class UIGalGameHelperSystem
 	{
 

@@ -7,6 +7,8 @@ using UnityEngine;
 
 namespace ET
 {
+    [FriendClass(typeof(GameObjectPoolComponent))]
+    [FriendClass(typeof(UITransform))]
     public static class UIGameObjectPoolSystem
     {
         public static async ETTask<T> GetUIGameObjectAsync<T>(this GameObjectPoolComponent self, string path) where T : Entity,IAwake

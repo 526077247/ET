@@ -9,7 +9,7 @@ namespace ET
     /// <summary>
     /// 运行
     /// </summary>
-    public class GalGameEngineRunningState : Entity,IAwake<FSMComponent>
+    public class GalGameEngineRunningState : Entity,IAwake<FSMComponent>,IAwake
     {
         public FSMComponent FSM;
         public GalGameEngineComponent Engine;

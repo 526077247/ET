@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 namespace ET
 {
     [UISystem]
+    [FriendClass(typeof(UILoopListView2))]
     public class UILoopListView2DestorySystem : OnDestroySystem<UILoopListView2>
     {
         public override void OnDestroy(UILoopListView2 self)
@@ -14,6 +15,7 @@ namespace ET
             self.unity_uilooplistview = null;
         }
     }
+    [FriendClass(typeof(UILoopListView2))]
     public static class UILoopListView2System
     {
         public static void ActivatingComponent(this UILoopListView2 self)

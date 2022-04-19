@@ -37,6 +37,7 @@ namespace ET
             self._soundsPool = null;
         }
     }
+    [FriendClass(typeof(SoundComponent))]
     public static class SoundComponentSystem
     {
         public static void SetSoundVolume(this SoundComponent self,int value)

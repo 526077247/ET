@@ -3,6 +3,7 @@ using UnityEngine;
 namespace ET
 {
     [UISystem]
+    [FriendClass(typeof(UICopyGameObject))]
     public class UICopyGameObjectOnDestroySystem : OnDestroySystem<UICopyGameObject>
     {
         public override void OnDestroy(UICopyGameObject self)
@@ -10,6 +11,7 @@ namespace ET
             self.unity_comp.Clear();
         }
     }
+    [FriendClass(typeof(UICopyGameObject))]
     public static class UICopyGameObjectSystem
     {
         static void ActivatingComponent(this UICopyGameObject self)

@@ -25,6 +25,7 @@ namespace ET
             UIEventSystem.Instance.Awake();
         }
     }
+    [FriendClass(typeof(FSMComponent))]
     public static class FSMComponentSystem
     {
         /// <summary>
@@ -32,12 +33,12 @@ namespace ET
         /// </summary>
         /// <typeparam name="State"></typeparam>
         /// <param name="self"></param>
-        public static void AddState<State>(this FSMComponent self) where State : Entity,IAwake<FSMComponent>
+        public static void AddState<State>(this FSMComponent self) where State : Entity,IAwake
         {
             Entity _tmpState = self.GetState<State>();
             if (_tmpState == null)
             {
-                var state = FSMStateFactroy.CreateFSMState<State>(self.DomainScene(), self);
+                var state = self.AddChild<State>();
                 self.m_dic.Add(typeof(State), state);
             }
             else
@@ -50,12 +51,12 @@ namespace ET
         /// </summary>
         /// <typeparam name="State"></typeparam>
         /// <param name="self"></param>
-        public static void AddState<State, T>(this FSMComponent self, T t) where State : Entity,IAwake<FSMComponent,T>
+        public static void AddState<State, T>(this FSMComponent self, T t) where State : Entity,IAwake<T>
         {
             Entity _tmpState = self.GetState<State>();
             if (_tmpState == null)
             {
-                var state = FSMStateFactroy.CreateFSMState<State, T>(self.DomainScene(), self, t);
+                var state = self.AddChild<State,T>(t);
                 self.m_dic.Add(typeof(State), state);
             }
             else
@@ -68,12 +69,30 @@ namespace ET
         /// </summary>
         /// <typeparam name="State"></typeparam>
         /// <param name="self"></param>
-        public static void AddState<State, T, U>(this FSMComponent self, T t, U u) where State : Entity,IAwake<FSMComponent,T,U>
+        public static void AddState<State, T, U>(this FSMComponent self, T t, U u) where State : Entity,IAwake<T,U>
         {
             Entity _tmpState = self.GetState<State>();
             if (_tmpState == null)
             {
-                var state = FSMStateFactroy.CreateFSMState<State, T, U>(self.DomainScene(), self, t, u);
+                var state = self.AddChild<State,T,U>(t,u);
+                self.m_dic.Add(typeof(State), state);
+            }
+            else
+            {
+                Log.Warning("FSMSystem(容错)：该状态【{0}】已经被添加！", typeof(State).Name);
+            }
+        }
+        /// <summary>
+        /// 添加指定的状态
+        /// </summary>
+        /// <typeparam name="State"></typeparam>
+        /// <param name="self"></param>
+        public static void AddState<State, T, U,V>(this FSMComponent self, T t, U u,V v) where State : Entity,IAwake<T,U,V>
+        {
+            Entity _tmpState = self.GetState<State>();
+            if (_tmpState == null)
+            {
+                var state = self.AddChild<State,T,U,V>(t,u,v);
                 self.m_dic.Add(typeof(State), state);
             }
             else

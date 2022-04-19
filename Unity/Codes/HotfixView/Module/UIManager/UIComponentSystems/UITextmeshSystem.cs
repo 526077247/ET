@@ -8,6 +8,7 @@ using UnityEngine;
 namespace ET
 {
     [UISystem]
+    [FriendClass(typeof(UITextmesh))]
     public class UITextmeshOnCreateSystem : OnCreateSystem<UITextmesh, string>
     {
         public override void OnCreate(UITextmesh self, string key)
@@ -17,6 +18,7 @@ namespace ET
 
     }
     [UISystem]
+    [FriendClass(typeof(UITextmesh))]
     public class UITextmeshOnDestroySystem : OnDestroySystem<UITextmesh>
     {
         public override void OnDestroy(UITextmesh self)
@@ -26,6 +28,7 @@ namespace ET
         }
     }
     [UISystem]
+    [FriendClass(typeof(UITextmesh))]
     public class UITextmeshI18NSystem: I18NSystem<UITextmesh>
     {
         public override void OnLanguageChange(UITextmesh self)
@@ -33,6 +36,7 @@ namespace ET
             self.OnLanguageChange();
         }
     }
+    [FriendClass(typeof(UITextmesh))]
     public static class UITextmeshSystem
     {
         static void ActivatingComponent(this UITextmesh self)

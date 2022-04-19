@@ -8,6 +8,7 @@ using UnityEngine.Events;
 namespace ET
 {
     [UISystem]
+    [FriendClass(typeof(UIPointerClick))]
     public class UIPointerClickDestorySystem : OnDestroySystem<UIPointerClick>
     {
         public override void OnDestroy(UIPointerClick self)
@@ -17,6 +18,7 @@ namespace ET
             self.__onclick = null;
         }
     }
+    [FriendClass(typeof(UIPointerClick))]
     public static class UIPointerClickSystem
     {
         static void ActivatingComponent(this UIPointerClick self)

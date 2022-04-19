@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace ET
 {
+    [FriendClass(typeof(UIWindow))]
+    [FriendClass(typeof(UITransform))]
+    [FriendClass(typeof(UILayersComponent))]
     public class ResetWindowLayer_ResetWindowLayer : AEvent<UIEventType.ResetWindowLayer>
     {
         protected override void Run(UIEventType.ResetWindowLayer args)

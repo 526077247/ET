@@ -49,6 +49,8 @@ namespace ET
     /// UIManager.Instance.OpenWindow<T>();
     /// 提供UI操作、UI层级、UI消息、UI资源加载、UI调度、UI缓存等管理
     /// </summary>
+    [FriendClass(typeof(UIManagerComponent))]
+    [FriendClass(typeof(UIWindow))]
     public static class UIManagerComponentSystem
     {
         /// <summary>

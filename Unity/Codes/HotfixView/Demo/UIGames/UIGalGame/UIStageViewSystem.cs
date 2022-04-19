@@ -9,6 +9,7 @@ using DG.Tweening;
 namespace ET
 {
 	[UISystem]
+	[FriendClass(typeof(UIStageView))]
 	public class UIStageViewOnCreateSystem:OnCreateSystem<UIStageView>
 	{
 		public override void OnCreate(UIStageView self)
@@ -17,6 +18,7 @@ namespace ET
 		}
 	}
 	[UISystem]
+	[FriendClass(typeof(UIStageView))]
 	public class UIStageViewOnEnableSystem:OnEnableSystem<UIStageView,GalGameEngineComponent>
 	{
 		public override void OnEnable(UIStageView self,GalGameEngineComponent t)
@@ -26,6 +28,7 @@ namespace ET
 		}
 	}
 	[UISystem]
+	[FriendClass(typeof(UIStageView))]
 	public class UIStageViewOnEnableSystem2:OnEnableSystem<UIStageView,GalGameEngineComponent,GalGameEnginePara>
 	{
 		public override void OnEnable(UIStageView self,GalGameEngineComponent t,GalGameEnginePara p )
@@ -35,6 +38,7 @@ namespace ET
 		}
 	}
 	[UISystem]
+	[FriendClass(typeof(UIStageView))]
 	public class UIStageViewOnDestroySystem: OnDestroySystem<UIStageView>
 	{
 		public override void OnDestroy(UIStageView self)
@@ -47,7 +51,9 @@ namespace ET
 			Log.Info("OnDestroy");
 		}
 	}
-
+	[FriendClass(typeof(UIStageView))]
+	[FriendClass(typeof(UIStageRoleInfo))]
+	[FriendClass(typeof(GalGameEngineComponent))]
 	public static class UIStageViewSystem
 	{
 		public static async ETTask Refresh(this UIStageView self,GalGameEnginePara chapter = default)
@@ -113,10 +119,10 @@ namespace ET
 								string type = chapter.Arg2;
 								if (string.Equals(type, "FadeIn", StringComparison.OrdinalIgnoreCase))
 								{
-									info.image.unity_uiimage.color = Color.clear;
+									info.image.SetImageColor(Color.clear);
 									float time = float.Parse(chapter.Arg6);
-									DOTween.To(() => info.image.unity_uiimage.color,
-										x => info.image.unity_uiimage.color = x, Color.white, time);
+									DOTween.To(() => info.image.GetImageColor(),
+										x => info.image.SetImageColor(x), Color.white, time);
 								}
 							}
 						}
@@ -128,10 +134,10 @@ namespace ET
 								string type = chapter.Arg2;
 								if (string.Equals(type, "FadeOut", StringComparison.OrdinalIgnoreCase))
 								{
-									info.image.unity_uiimage.color = Color.white;
+									info.image.SetImageColor(Color.white);
 									float time = float.Parse(chapter.Arg6);
-									DOTween.To(() => info.image.unity_uiimage.color,
-										x => info.image.unity_uiimage.color = x, Color.clear, time);
+									DOTween.To(() => info.image.GetImageColor(),
+										x => info.image.SetImageColor(x), Color.clear, time);
 								}
 							}
 						}

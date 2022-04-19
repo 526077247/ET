@@ -6,6 +6,7 @@ using UITextMeshPro = TMPro.TMP_Text;
 namespace ET
 {
     [UISystem]
+    [FriendClass(typeof(UIReview))]
     public class UIReviewOnCreateSystem:OnCreateSystem<UIReview>
     {
         public override void OnCreate(UIReview self)
@@ -23,6 +24,7 @@ namespace ET
         }
     }
     [UISystem]
+    [FriendClass(typeof(UIReview))]
     public class UIReviewOnEnableSystem: OnEnableSystem<UIReview,bool,List<GalGameEngineComponent.ReviewItem>>
     {
         public override void OnEnable(UIReview self, bool a, List<GalGameEngineComponent.ReviewItem> b)
@@ -34,7 +36,8 @@ namespace ET
         }
         
     }
-    
+    [FriendClass(typeof(UIReview))]
+    [FriendClass(typeof(GalGameEngineComponent))]
     public static class UIReviewSystem
     {
         

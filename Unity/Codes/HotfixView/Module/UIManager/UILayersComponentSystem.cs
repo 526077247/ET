@@ -8,6 +8,7 @@ using UnityEngine;
 namespace ET
 {
 	[ObjectSystem]
+	[FriendClass(typeof(UIManagerComponent))]
 	public class UILayersComponentAwakeSystem : AwakeSystem<UILayersComponent>
     {
 
@@ -128,7 +129,7 @@ namespace ET
 		}
 
 	}
-
+    [FriendClass(typeof(UILayersComponent))]
 	public static class UILayersComponentSystem
     {
 		public static GameObject GetUIRoot(this UIManagerComponent self)

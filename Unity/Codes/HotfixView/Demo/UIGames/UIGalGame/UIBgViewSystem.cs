@@ -7,6 +7,7 @@ using UnityEngine.UI;
 namespace ET
 {
 	[UISystem]
+	[FriendClass(typeof(UIBgView))]
 	public class UIBgViewOnCreateSystem: OnCreateSystem<UIBgView>
 	{
 		public override void OnCreate(UIBgView self)
@@ -22,6 +23,7 @@ namespace ET
 			self.SetSprite(a);
 		}
 	}
+	[FriendClass(typeof(UIBgView))]
 	public static class UIBgViewSystem
 	{
 		public static void SetSprite(this UIBgView self,string path)

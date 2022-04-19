@@ -2,6 +2,7 @@
 namespace ET
 {
     [UISystem]
+    [FriendClass(typeof(UITransform))]
     public class UITransformOnCreateSystem : OnCreateSystem<UITransform, Transform>
     {
         public override void OnCreate(UITransform self, Transform transform)
@@ -9,7 +10,8 @@ namespace ET
             self.transform = transform;
         }
     }
-
+    [FriendClass(typeof(UITransform))]
+    [FriendClass(typeof(UIManagerComponent))]
     public static class UITransformSystem
     {
         public static Transform ActivatingComponent(this UITransform self)

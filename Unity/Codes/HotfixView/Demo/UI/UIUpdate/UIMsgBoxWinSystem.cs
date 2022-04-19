@@ -7,6 +7,7 @@ using UnityEngine.UI;
 namespace ET
 {
 	[UISystem]
+	[FriendClass(typeof(UIMsgBoxWin))]
 	public class UIMsgBoxWinOnCreateSystem : OnCreateSystem<UIMsgBoxWin>
 	{
 
@@ -21,6 +22,7 @@ namespace ET
 
 	}
 	[UISystem]
+	[FriendClass(typeof(UIMsgBoxWin))]
 	public class UIMsgBoxWinOnEnableSystem : OnEnableSystem<UIMsgBoxWin, UIMsgBoxWin.MsgBoxPara>
     {
         public override void OnEnable(UIMsgBoxWin self, UIMsgBoxWin.MsgBoxPara a)
@@ -33,6 +35,7 @@ namespace ET
 		}
     }
 	[UISystem]
+	[FriendClass(typeof(UIMsgBoxWin))]
 	public class UIMsgBoxWinOnDisableSystem : OnDisableSystem<UIMsgBoxWin>
 	{
 		public override void OnDisable(UIMsgBoxWin self)

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace ET
 {
+    [FriendClass(typeof(UIManagerComponent))]
     public static class UIBaseContainerSystem
     {
         public static Dictionary<string, Dictionary<Type, Entity>> GetCompoennts(this Entity self)

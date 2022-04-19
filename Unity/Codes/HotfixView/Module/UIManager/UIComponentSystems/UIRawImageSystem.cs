@@ -9,6 +9,7 @@ using UnityEngine.UI;
 namespace ET
 {
     [UISystem]
+    [FriendClass(typeof(UIRawImage))]
     public class UIRawImageOnCreateSystem : OnCreateSystem<UIRawImage, string>
     {
         public override void OnCreate(UIRawImage self, string path)
@@ -17,6 +18,7 @@ namespace ET
         }
     }
     [UISystem]
+    [FriendClass(typeof(UIRawImage))]
     public class UIRawImageOnDestroySystem : OnDestroySystem<UIRawImage>
     {
         public override void OnDestroy(UIRawImage self)
@@ -25,6 +27,7 @@ namespace ET
                 ImageLoaderComponent.Instance?.ReleaseImage(self.sprite_path);
         }
     }
+    [FriendClass(typeof(UIRawImage))]
     public static class UIRawImageSystem
     {
         static void ActivatingComponent(this UIRawImage self)

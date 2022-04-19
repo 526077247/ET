@@ -10,6 +10,7 @@ using UnityEngine.EventSystems;
 namespace ET
 {
     [UISystem]
+    [FriendClass(typeof(UILoopGridView))]
     public class UILoopGridViewDestorySystem : OnDestroySystem<UILoopGridView>
     {
         public override void OnDestroy(UILoopGridView self)
@@ -18,6 +19,7 @@ namespace ET
             self.unity_uiloopgridview = null;
         }
     }
+    [FriendClass(typeof(UILoopGridView))]
     public static class UILoopGridViewSystem
     {
         public static void ActivatingComponent(this UILoopGridView self)

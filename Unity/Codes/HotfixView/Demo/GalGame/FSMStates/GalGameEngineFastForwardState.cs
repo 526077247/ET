@@ -5,15 +5,18 @@ using UnityEngine;
 namespace ET
 {
     [ObjectSystem]
-    public class GalGameEngineFastForwardStateAwakeSystem : AwakeSystem<GalGameEngineFastForwardState, FSMComponent>
+    public class GalGameEngineFastForwardStateAwakeSystem : AwakeSystem<GalGameEngineFastForwardState>
     {
-        public override void Awake(GalGameEngineFastForwardState self, FSMComponent fsm)
+        public override void Awake(GalGameEngineFastForwardState self)
         {
-            self.FSM = fsm;
-            self.Base = self.AddComponent<GalGameEngineRunningState,FSMComponent>(fsm);
+            self.FSM = self.GetParent<FSMComponent>();
+            self.Base = self.AddComponent<GalGameEngineRunningState,FSMComponent>(self.FSM);
         }
     }
     [FSMSystem]
+    [FriendClass(typeof(GalGameEngineFastForwardState))]
+    [FriendClass(typeof(GalGameEngineComponent))]
+    [FriendClass(typeof(GalGameEngineRunningState))]
     public class GalGameEngineFastForwardStateFSMOnEnterSystem : FSMOnEnterSystem<GalGameEngineFastForwardState>
     {
         public override async ETTask FSMOnEnter(GalGameEngineFastForwardState self)
@@ -28,6 +31,9 @@ namespace ET
         }
     }
     [FSMSystem]
+    [FriendClass(typeof(GalGameEngineFastForwardState))]
+    [FriendClass(typeof(GalGameEngineComponent))]
+    [FriendClass(typeof(GalGameEngineRunningState))]
     public class GalGameEngineFastForwardStateFSMOnExitSystem : FSMOnExitSystem<GalGameEngineFastForwardState>
     {
         public override async ETTask FSMOnExit(GalGameEngineFastForwardState self)

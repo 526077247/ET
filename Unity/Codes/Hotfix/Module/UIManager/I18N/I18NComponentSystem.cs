@@ -48,6 +48,7 @@ namespace ET
             I18NBridge.Instance.i18nTextKeyDic = null;
         }
     }
+    [FriendClass(typeof(I18NComponent))]
     public static class I18NComponentSystem
     {
         public static string I18NGetText(this I18NComponent self, string key)

@@ -1,6 +1,7 @@
 ﻿namespace ET
 {
     [UISystem]
+    [FriendClass(typeof(UIHelpWin))]
     public class UIHelpWinOnCreateSystem : OnCreateSystem<UIHelpWin>
     {
         public override void OnCreate(UIHelpWin self)

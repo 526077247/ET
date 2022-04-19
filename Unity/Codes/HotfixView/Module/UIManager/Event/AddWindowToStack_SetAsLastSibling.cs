@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace ET
 {
+	[FriendClass(typeof(UIWindow))]
+	[FriendClass(typeof(UITransform))]
 	public class AddWindowToStack_SetAsLastSibling : AEvent<UIEventType.AddWindowToStack>
 	{
 		protected override void Run(UIEventType.AddWindowToStack args)

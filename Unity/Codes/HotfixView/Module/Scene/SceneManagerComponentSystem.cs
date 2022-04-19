@@ -69,6 +69,7 @@ namespace ET
     //-- 1、资源预加载放各个场景类中自行控制
     //-- 2、场景loading的UI窗口这里统一管理，由于这个窗口很简单，更新进度数据时直接写Model层
     //--]]
+    [FriendClass(typeof(SceneManagerComponent))]
     public static class SceneManagerComponentSystem
     {
         

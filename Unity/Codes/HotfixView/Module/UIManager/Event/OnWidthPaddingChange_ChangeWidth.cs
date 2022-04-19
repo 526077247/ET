@@ -2,6 +2,7 @@
 using UnityEngine;
 namespace ET
 {
+    [FriendClass(typeof(UIManagerComponent))]
     public class OnWidthPaddingChange_ChangeWidth: AEvent<UIEventType.OnWidthPaddingChange>
     {
         protected override void Run(UIEventType.OnWidthPaddingChange args)
