@@ -19,6 +19,7 @@ namespace ET
             UIEventSystem.Instance.Awake();
         }
     }
+
     [ObjectSystem]
     public class UIManagerComponentDestroySystem : DestroySystem<UIManagerComponent>
     {
@@ -72,15 +73,31 @@ namespace ET
             return null;
         }
         /// <summary>
+        /// 获取最上层window
+        /// </summary>
+        /// <param name="self"></param>
+        /// <returns></returns>
+        public static UIWindow GetTopWindow(this UIManagerComponent self)
+        {
+            for (int i = (byte)UILayerNames.TopLayer; i >=0; i--)
+            {
+                var wins = self.window_stack[(UILayerNames) i];
+                if (wins.Count <= 0) continue;
+                var name = wins.First.Value;
+                var win = self.GetWindow(name,1);
+                if (win != null) return win;
+            }
+            return null;
+        }
+        /// <summary>
         /// 获取UI窗口
         /// </summary>
-
         /// <param name="active">1打开，-1关闭,0不做限制</param>
         /// <returns></returns>
         public static T GetWindow<T>(this UIManagerComponent self, int active = 0) where T : Entity
         {
             string ui_name = typeof(T).Name;
-            if (self.windows.TryGetValue(ui_name, out var target))
+            if (self!=null&&self.windows!=null&&self.windows.TryGetValue(ui_name, out var target))
             {
                 if (active == 0 || active == (target.Active ? 1 : -1))
                 {
@@ -177,7 +194,7 @@ namespace ET
         }
         //打开窗口
         public static async ETTask<T> OpenWindow<T>(this UIManagerComponent self, string path, 
-            UILayerNames layer_name = UILayerNames.NormalLayer) where T : Entity,IAwake,IOnCreate,IOnEnable, new()
+            UILayerNames layer_name = UILayerNames.NormalLayer,bool banKey=true) where T : Entity,IAwake,IOnCreate,IOnEnable, new()
         {
             string ui_name = typeof(T).Name;
             var target = self.GetWindow(ui_name);
@@ -187,12 +204,13 @@ namespace ET
                 self.windows[ui_name] = target;
             }
             target.Layer = layer_name;
+            target.BanKey = banKey;
             return await self.__InnerOpenWindow<T>(target);
 
         }
         //打开窗口
         public static async ETTask<T> OpenWindow<T, P1>(this UIManagerComponent self, string path, P1 p1, 
-            UILayerNames layer_name = UILayerNames.NormalLayer) where T : Entity,IAwake,IOnCreate,IOnEnable<P1>, new()
+            UILayerNames layer_name = UILayerNames.NormalLayer,bool banKey=true) where T : Entity,IAwake,IOnCreate,IOnEnable<P1>, new()
         {
 
             string ui_name = typeof(T).Name;
@@ -203,12 +221,13 @@ namespace ET
                 self.windows[ui_name] = target;
             }
             target.Layer = layer_name;
+            target.BanKey = banKey;
             return await self.__InnerOpenWindow<T, P1>(target, p1);
 
         }
         //打开窗口
         public static async ETTask<T> OpenWindow<T, P1, P2>(this UIManagerComponent self, string path, P1 p1, P2 p2, 
-            UILayerNames layer_name = UILayerNames.NormalLayer) where T : Entity,IAwake,IOnCreate,IOnEnable<P1,P2>, new()
+            UILayerNames layer_name = UILayerNames.NormalLayer,bool banKey=true) where T : Entity,IAwake,IOnCreate,IOnEnable<P1,P2>, new()
         {
 
             string ui_name = typeof(T).Name;
@@ -219,12 +238,13 @@ namespace ET
                 self.windows[ui_name] = target;
             }
             target.Layer = layer_name;
+            target.BanKey = banKey;
             return await self.__InnerOpenWindow<T, P1, P2>(target, p1, p2);
 
         }
         //打开窗口
         public static async ETTask<T> OpenWindow<T, P1, P2, P3>(this UIManagerComponent self, string path, P1 p1, P2 p2, P3 p3, 
-            UILayerNames layer_name = UILayerNames.NormalLayer) where T : Entity,IAwake,IOnCreate,IOnEnable<P1,P2,P3>, new()
+            UILayerNames layer_name = UILayerNames.NormalLayer,bool banKey=true) where T : Entity,IAwake,IOnCreate,IOnEnable<P1,P2,P3>, new()
         {
 
             string ui_name = typeof(T).Name;
@@ -235,12 +255,13 @@ namespace ET
                 self.windows[ui_name] = target;
             }
             target.Layer = layer_name;
+            target.BanKey = banKey;
             return await self.__InnerOpenWindow<T, P1, P2, P3>(target, p1, p2, p3);
 
         }
         //打开窗口
         public static async ETTask<T> OpenWindow<T, P1, P2, P3, P4>(this UIManagerComponent self, string path, P1 p1, P2 p2, P3 p3, P4 p4, 
-            UILayerNames layer_name = UILayerNames.NormalLayer) where T : Entity,IAwake,IOnCreate,IOnEnable<P1,P2,P3,P4>, new()
+            UILayerNames layer_name = UILayerNames.NormalLayer,bool banKey=true) where T : Entity,IAwake,IOnCreate,IOnEnable<P1,P2,P3,P4>, new()
         {
 
             string ui_name = typeof(T).Name;
@@ -251,9 +272,11 @@ namespace ET
                 self.windows[ui_name] = target;
             }
             target.Layer = layer_name;
+            target.BanKey = banKey;
             return await self.__InnerOpenWindow<T, P1, P2, P3, P4>(target, p1, p2, p3, p4);
 
         }
+        
         //打开窗口
         public static async ETTask OpenWindowTask<T>(this UIManagerComponent self, string path, UILayerNames layer_name = UILayerNames.NormalLayer) where T : Entity,IAwake,IOnCreate,IOnEnable, new()
         {
@@ -642,7 +665,7 @@ namespace ET
             }
         }
         #endregion
-        
+
         #region 屏幕适配
 
         public static void SetWidthPadding(this UIManagerComponent self, float value)
@@ -659,7 +682,7 @@ namespace ET
                         if (win != null)
                         {
                             EventSystem.Instance.Publish(new UIEventType.OnWidthPaddingChange
-                                    {entity = win as Entity});
+                                {entity = win as Entity});
                         }
                     }
                 }

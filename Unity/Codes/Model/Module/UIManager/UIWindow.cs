@@ -38,5 +38,9 @@ namespace ET
 		/// 窗口类型
 		/// </summary>
 		public Type ViewType;
+		/// <summary>
+		/// 禁止物理按键
+		/// </summary>
+		public bool BanKey;
 	}
 }

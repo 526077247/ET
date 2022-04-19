@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace ET
 {
     [ChildType(typeof(UIWindow))]
-    public class UIManagerComponent : Entity,IAwake,IDestroy,ILoad
+    public class UIManagerComponent : Entity,IAwake,IDestroy,ILoad,IUpdate
     {
         public static UIManagerComponent Instance;
         public Dictionary<string, UIWindow> windows;//所有存活的窗体  {ui_name:window}
