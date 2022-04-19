@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -67,15 +68,15 @@ namespace ET
             self.unity_uislider.minValue = value;
         }
 
-        public static void SetValueList(this UISlider self, object[] value_list)
+        public static void SetValueList(this UISlider self, ArrayList value_list)
         {
             self.value_list = value_list;
             self.SetWholeNumbers(true);
             self.SetMinValue(0);
-            self.SetMaxValue(value_list.Length - 1);
+            self.SetMaxValue(value_list.Count - 1);
         }
-
-        public static object[] GetValueList(this UISlider self)
+   
+        public static ArrayList GetValueList(this UISlider self)
         {
             return self.value_list;
         }
@@ -93,7 +94,11 @@ namespace ET
                 return self.unity_uislider.normalizedValue;
             }
         }
-
+        public static object GetNormalizedValue(this UISlider self)
+        {
+            self.ActivatingComponent();
+            return self.unity_uislider.normalizedValue;
+        }
         /// <summary>
         /// 设置进度
         /// </summary>
@@ -101,10 +106,36 @@ namespace ET
         public static void SetValue(this UISlider self, int value)
         {
             self.ActivatingComponent();
-            if (self.isWholeNumbers)
-                self.unity_uislider.value = value;
-            else
-                self.unity_uislider.normalizedValue = value;
+            self.unity_uislider.value = value;
+        }
+        
+        public static void SetWholeNumbersValue(this UISlider self, object value)
+        {
+            self.ActivatingComponent();
+            if (!self.isWholeNumbers)
+            {
+                Log.Warning("请先设置WholeNumbers为true");
+                return;
+            }
+
+            for (int i = 0; i < self.value_list.Count; i++)
+            {
+                if (self.value_list[i] == value)
+                {
+                    self.unity_uislider.value = i;
+                    return;
+                }
+            }
+            
+        }
+        /// <summary>
+        /// 设置进度
+        /// </summary>
+        /// <param name="value">wholeNumbers 时value是ui侧的index</param>
+        public static void SetNormalizedValue(this UISlider self, float value)
+        {
+            self.ActivatingComponent();
+            self.unity_uislider.normalizedValue = value;
         }
         /// <summary>
         /// 设置进度
@@ -114,7 +145,7 @@ namespace ET
         {
             self.ActivatingComponent();
             if (!self.isWholeNumbers)
-                self.unity_uislider.normalizedValue = value;
+                self.unity_uislider.value = value;
             else
             {
                 Log.Warning("请先设置WholeNumbers为false");

@@ -70,7 +70,8 @@ namespace ET
             I18NComponent.Instance.I18NTryGetText(cancelBtnText, out self.para.CancelText);
             self.para.ConfirmCallback = confirmBtnFunc;
             self.para.CancelCallback = cancelBtnFunc;
-            await UIManagerComponent.Instance.OpenWindow<UIMsgBoxWin, UIMsgBoxWin.MsgBoxPara>(UIMsgBoxWin.PrefabPath,self.para);
+            await UIManagerComponent.Instance.OpenWindow<UIMsgBoxWin, UIMsgBoxWin.MsgBoxPara>(UIMsgBoxWin.PrefabPath,
+                self.para,UILayerNames.TipLayer);
             var result = await tcs;
             await UIManagerComponent.Instance.CloseWindow<UIMsgBoxWin>();
             return result;
@@ -145,7 +146,7 @@ namespace ET
             var info = await HttpManager.Instance.HttpGetResult<UpdateConfig>(url);
             if (info == null)
             {
-                var btnState = await self.ShowMsgBoxView("Update_Get_Fail", "Update_ReTry", self.force_update?"Btn_Exit":"Btn_Cancel");
+                var btnState = await self.ShowMsgBoxView("Update_Get_Fail", "Update_ReTry", self.force_update?"Btn_Exit":"Update_Skip");
                 if (btnState == self.BTN_CONFIRM)
                 {
                     await self.CheckUpdateList();
@@ -303,7 +304,7 @@ namespace ET
             self.m_needdownloadinfo = SortDownloadInfo(needdownloadinfo);
 
             Log.Info("CheckResUpdate DownloadContent begin");
-            bool result = await self.DownloadContent(size);
+            bool result = await self.DownloadContent();
             if (!result) return false;
             Log.Info("CheckResUpdate DownloadContent Success");
             return true;
@@ -338,7 +339,7 @@ namespace ET
             if (size<0)
             {
                 Log.Info("CoGetDownloadSize Get Download Size Async Faild");
-                var btnState = await self.ShowMsgBoxView("Update_Get_Fail", "Update_ReTry", self.force_update?"Btn_Exit":"Btn_Cancel");
+                var btnState = await self.ShowMsgBoxView("Update_Get_Fail", "Update_ReTry", self.force_update?"Btn_Exit":"Update_Skip");
                 if (btnState == self.BTN_CONFIRM)
                     return await self.GetDownloadSize();
                 else
@@ -389,7 +390,7 @@ namespace ET
             else
             {
                 Log.Info("CoUpdateCatalogs Update Catalog Failed");
-                var btnState = await self.ShowMsgBoxView("Update_Get_Fail", "Update_ReTry", self.force_update?"Btn_Exit":"Btn_Cancel");
+                var btnState = await self.ShowMsgBoxView("Update_Get_Fail", "Update_ReTry", self.force_update?"Btn_Exit":"Update_Skip");
                 if (btnState == self.BTN_CONFIRM)
                     return await self.UpdateCatalogs(catalog);
                 else
@@ -409,7 +410,7 @@ namespace ET
             else
             {
                 Log.Info("CheckUpdateContent Failed");
-                var btnState = await self.ShowMsgBoxView("Update_Get_Fail", "Update_ReTry", self.force_update?"Btn_Exit":"Btn_Cancel");
+                var btnState = await self.ShowMsgBoxView("Update_Get_Fail", "Update_ReTry", self.force_update?"Btn_Exit":"Update_Skip");
                 if (btnState == self.BTN_CONFIRM)
                     return await self.CheckUpdateContent(merge_mode_union);
                 else
@@ -424,23 +425,23 @@ namespace ET
         {
             if(value> self.last_progress)
                 self.last_progress = value;
-            self.m_slider.SetValue(self.last_progress);
+            self.m_slider.SetNormalizedValue(self.last_progress);
         }
-        async static ETTask<bool> DownloadContent(this UIUpdateView self,long size)
+        async static ETTask<bool> DownloadContent(this UIUpdateView self)
         {
             var url = BootConfig.Instance.GetUpdateListCdnUrl();
             var info = await HttpManager.Instance.HttpGetResult(url);
             if (!string.IsNullOrEmpty(info))
             {
-                await self.DownloadAllAssetBundle(size);
+                await self.DownloadAllAssetBundle();
                 return true;
             }
             else
             {
                 Log.Info("DownloadContent Begin DownloadDependenciesAsync failed");
-                var btnState = await self.ShowMsgBoxView("Update_Get_Fail", "Update_ReTry", self.force_update?"Btn_Exit":"Btn_Cancel");
+                var btnState = await self.ShowMsgBoxView("Update_Get_Fail", "Update_ReTry", self.force_update?"Btn_Exit":"Update_Skip");
                 if (btnState == self.BTN_CONFIRM)
-                    return await self.DownloadContent(size);
+                    return await self.DownloadContent();
                 else
                 {
                     if(self.force_update)
@@ -450,62 +451,46 @@ namespace ET
             }
         }
 
-        async static ETTask DownloadAllAssetBundle(this UIUpdateView self, long size)
+        async static ETTask DownloadAllAssetBundle(this UIUpdateView self)
         {
-            var downloadTool = self.AddComponent<UnityWebRequestRenewalAsync>();
-            var total_count = self.m_needdownloadinfo.Count;
-            Log.Info("DownloadAllAssetBundle count = " + total_count);
-            if (total_count <= 0)
-                return;
-            self.download_size = 0;
-            self.overCount = 0;
-            self.RefreshProgress(downloadTool, size).Coroutine();
+            var downloadTool = self.AddComponent<DownloadComponent>();
             for (int i = 0; i < self.m_needdownloadinfo.Count; i++)
             {
-                await self.DownloadResinfoAsync(i);
-                self.download_size += downloadTool.ByteDownloaded;
+                var url = string.Format("{0}/{1}", self.m_rescdn_url, self.m_needdownloadinfo[i].name);
+                var savePath = AssetBundleMgr.GetInstance().getCachedAssetBundlePath(self.m_needdownloadinfo[i].name) + ".temp";
+                downloadTool.AddDownloadUrl(url,savePath);
             }
-            Log.Info("DownloadAllAssetBundle end");
+            self.RefreshProgress(downloadTool).Coroutine();
+            var res = await downloadTool.DownloadAll();
+            if (!res)
+            {
+                var btnState = await self.ShowMsgBoxView("Update_Download_Fail", "Update_ReTry",
+                    self.force_update ? "Btn_Exit" : "Btn_Cancel");
+                if (btnState == self.BTN_CONFIRM)
+                {
+                    await self.DownloadAllAssetBundle();
+                }
+                else if (self.force_update)
+                {
+                    GameUtility.Quit();
+                }
+            }
+            else
+            {
+                for (int i = 0; i < self.m_needdownloadinfo.Count; i++)
+                {
+                    var downinfo = self.m_needdownloadinfo[i];
+                    AssetBundleMgr.GetInstance().CacheAssetBundle(downinfo.name, downinfo.hash);
+                }
+            }
 
         }
-        static async ETTask RefreshProgress(this UIUpdateView self, UnityWebRequestRenewalAsync downloadTool, long size)
+        static async ETTask RefreshProgress(this UIUpdateView self, DownloadComponent downloadTool)
         {
             while (self.m_needdownloadinfo.Count!= self.overCount)
             {
-                self.SetProgress((float)((double)(downloadTool.ByteDownloaded + self.download_size) / size));
+                self.SetProgress(downloadTool.GetProress());
                 await TimerComponent.Instance.WaitAsync(10);
-            }
-        }
-        static async ETTask DownloadResinfoAsync(this UIUpdateView self, int order)
-        {
-            var downloadTool = self.GetComponent<UnityWebRequestRenewalAsync>();
-            var downinfo = self.m_needdownloadinfo[order];
-            var url = string.Format("{0}/{1}", self.m_rescdn_url, downinfo.name);
-            Log.Info("download ab ============, " + order + " = " + url);
-            var savePath = AssetBundleMgr.GetInstance().getCachedAssetBundlePath(downinfo.name) + ".temp";
-            for (int i = 0; i < 3; i++)//重试3次
-            {
-                try
-                {
-                    await downloadTool.DownloadAsync(url, savePath);
-                    downloadTool.Clear();
-                    AssetBundleMgr.GetInstance().CacheAssetBundle(downinfo.name, downinfo.hash);
-                    return;
-                }
-                catch (Exception ex)
-                {
-                    Log.Error(ex);
-                }
-            }
-            downloadTool.DeleteTempFile(savePath);
-            var btnState = await self.ShowMsgBoxView("Update_Download_Fail", "Update_ReTry", self.force_update?"Btn_Exit":"Btn_Cancel");
-            if (btnState == self.BTN_CONFIRM)
-            {
-                await self.DownloadResinfoAsync(order);
-            }
-            else if(self.force_update)
-            {
-                GameUtility.Quit();
             }
         }
     }

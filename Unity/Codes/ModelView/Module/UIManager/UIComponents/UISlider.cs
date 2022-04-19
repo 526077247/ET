@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Collections;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
@@ -13,6 +10,6 @@ namespace ET
         public Slider unity_uislider;
         public UnityAction<float> __onValueChanged;
         public bool isWholeNumbers;
-        public object[] value_list;
+        public ArrayList value_list;
     }
 }
