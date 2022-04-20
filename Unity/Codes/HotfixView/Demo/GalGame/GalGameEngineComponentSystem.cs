@@ -71,6 +71,8 @@ namespace ET
             if (category == null) return false;
             self.CurCategory = category;
             self.CurCategory.Order();
+            self.StageRoleMap.Clear();
+            self.RoleExpressionMap.Clear();
             self.Index = 0;
             self.OnPlayOver = onPlayOver;
             UIManagerComponent.Instance.OpenWindow<UIGalGameHelper>(UIGalGameHelper.PrefabPath).Coroutine();

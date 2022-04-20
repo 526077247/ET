@@ -9,8 +9,8 @@ Command：
 8. EndScenario 结束情景。
 9. FadeIn 淡入效果。Arg1:用于遮罩图片路径，不填用默认；Arg6 :持续多长，单位秒。
 10. FadeOut 淡出效果。Arg1:用于遮罩图片路径，不填用默认；Arg6 :持续多长，单位秒。
-11. CharacterOff 人物离场。 Arg1:人物登场的角色名多语言Key为，空表示全下场；Arg2:淡出方式（FadeOut等）；Arg6 :持续多长，单位秒。
-12. CharacterOn 人物登场。 Arg1:人物登场的角色名多语言Key，为空表示全下场；Arg2:淡入方式（FadeIn等）；Arg6 :持续多长，单位秒。
+11. CharacterOff 人物离场。 Arg1:人物登场的角色名多语言Key为，空表示全下场；Arg5:淡出方式（FadeOut等）；Arg6 :持续多长，单位秒。
+12. CharacterOn 人物登场。 Arg1:人物登场的角色名多语言Key，为空表示全下场；Arg5:淡入方式（FadeIn等）；Arg6 :持续多长，单位秒。
 
 规则：
 1.Command不填默认表示 ShowMessageWindow

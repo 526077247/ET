@@ -168,5 +168,17 @@ namespace ET
             self.ActivatingComponent();
             self.unity_uitextmesh.maxVisibleCharacters = count;
         }
+        
+        public static Vector3 GetLastCharacterLocalPosition(this UITextmesh self)
+        {
+            self.ActivatingComponent();
+            if (self.unity_uitextmesh.m_textInfo.characterInfo != null && self.unity_uitextmesh.m_textInfo.characterInfo.Length > 0)
+            {
+                var info = self.unity_uitextmesh.m_textInfo.characterInfo[self.unity_uitextmesh.m_textInfo.characterCount-1];
+                return info.vertex_BR.position;
+            }
+            var rect = self.unity_uitextmesh.rectTransform.rect;
+            return new Vector3(-rect.width / 2, -rect.height / 2, 0);
+        }
     }
 }

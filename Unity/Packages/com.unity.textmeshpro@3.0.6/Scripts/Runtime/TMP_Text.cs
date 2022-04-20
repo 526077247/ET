@@ -1128,7 +1128,7 @@ namespace TMPro
             get { return m_textInfo; }
         }
         //[SerializeField]
-        protected TMP_TextInfo m_textInfo; // Class which holds information about the Text object such as characters, lines, mesh data as well as metrics.
+        public TMP_TextInfo m_textInfo; // Class which holds information about the Text object such as characters, lines, mesh data as well as metrics.
 
         /// <summary>
         /// Property tracking if any of the text properties have changed. Flag is set before the text is regenerated.

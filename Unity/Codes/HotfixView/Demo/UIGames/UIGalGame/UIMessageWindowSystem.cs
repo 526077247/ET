@@ -38,6 +38,10 @@ namespace ET
 			{
 				self.OnRunningStateEnd();
 			};
+			
+			self.Arrow = self.AddUIComponent<UIEmptyGameobject>("Space/Bg/Content/Arrow");
+			var rect = (self.Arrow.GetTransform() as RectTransform).rect;
+			self.Offset = new Vector3(rect.width / 2+5, rect.height / 2);
 		}
 	}
 	[UISystem]
@@ -81,6 +85,7 @@ namespace ET
 			self.showLen = self.allText.Length;
 			self.token = new ETCancellationToken();
 			self.isPlay = play;
+			self.Arrow.SetActive(false);
 			for (int i = baseLen + 1; i <= self.showLen && self.isPlay && self.speed>0; i++)
 			{
 				self.Text.SetMaxVisibleCharacters(i);
@@ -90,6 +95,8 @@ namespace ET
 			self.Text.SetMaxVisibleCharacters(int.MaxValue);
 			self.isPlay = false;
 			self.token = new ETCancellationToken();
+			self.Arrow.SetActive(true);
+			self.Arrow.GetTransform().localPosition = self.Text.GetLastCharacterLocalPosition()+self.Offset;
 			if (GalGameEngineComponent.Instance.AutoPlay || !clear || self.speed <= 0)
 			{
 				if (self.speed <= 0)
@@ -97,7 +104,7 @@ namespace ET
 				else
 					await TimerComponent.Instance.WaitAsync((long)(self.waitTime / self.speed), self.token);
 			}
-			else
+			if (!(GalGameEngineComponent.Instance.AutoPlay || !clear || self.speed <= 0))
 			{
 				while (true)
 				{

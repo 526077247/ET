@@ -109,6 +109,7 @@ namespace ET
 
                 await UIManagerComponent.Instance.OpenWindow<UIStageView, GalGameEngineComponent>(
                     UIStageView.PrefabPath, self);
+                UIManagerComponent.Instance.MoveWindowToTop<UIMessageWindow>();
             }
 
             if (float.TryParse(para.Arg6, out var wait_time))
@@ -251,6 +252,7 @@ namespace ET
                     await UIManagerComponent.Instance
                         .OpenWindow<UIStageView, GalGameEngineComponent, GalGameEnginePara>(
                             UIStageView.PrefabPath, self, para);
+                    UIManagerComponent.Instance.MoveWindowToTop<UIMessageWindow>();
                 }
 
                 await CommandWatcherComponent.Instance.Run("Wait", self, para);

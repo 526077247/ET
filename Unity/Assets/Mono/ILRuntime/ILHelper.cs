@@ -55,7 +55,10 @@ namespace ET
             appdomain.DelegateManager.RegisterMethodDelegate<ILTypeInstance>();
             appdomain.DelegateManager.RegisterMethodDelegate<AsyncOperation>();
             appdomain.DelegateManager.RegisterMethodDelegate<UnityEngine.KeyCode>();
-
+            appdomain.DelegateManager.RegisterMethodDelegate<UnityEngine.Color>();
+            appdomain.DelegateManager.RegisterMethodDelegate<ET.AService>();
+            appdomain.DelegateManager.RegisterMethodDelegate<System.Int64, System.Collections.Generic.List<System.Int64>>();
+            appdomain.DelegateManager.RegisterMethodDelegate<System.Int64, System.Collections.Generic.List<ILRuntime.Runtime.Intepreter.ILTypeInstance>>();
             
             appdomain.DelegateManager.RegisterFunctionDelegate<UnityEngine.Events.UnityAction>();
             appdomain.DelegateManager.RegisterFunctionDelegate<System.Object, ET.ETTask>();
@@ -70,13 +73,11 @@ namespace ET
             appdomain.DelegateManager.RegisterFunctionDelegate<KeyValuePair<int, List<int>>, bool>();
             appdomain.DelegateManager.RegisterFunctionDelegate<KeyValuePair<int, int>, KeyValuePair<int, int>, int>();
             appdomain.DelegateManager.RegisterFunctionDelegate<System.String, System.String, System.Int32>();
-            appdomain.DelegateManager.RegisterMethodDelegate<System.Int64, System.Collections.Generic.List<System.Int64>>();
             appdomain.DelegateManager.RegisterFunctionDelegate<SuperScrollView.LoopListView2, System.Int32, SuperScrollView.LoopListViewItem2>();
-            appdomain.DelegateManager.RegisterMethodDelegate<System.Int64, System.Collections.Generic.List<ILRuntime.Runtime.Intepreter.ILTypeInstance>>();
             appdomain.DelegateManager.RegisterFunctionDelegate<System.Int64, System.Collections.Generic.List<System.Int64>, System.Boolean>();
             appdomain.DelegateManager.RegisterFunctionDelegate<System.Int64, System.Collections.Generic.List<ILRuntime.Runtime.Intepreter.ILTypeInstance>, System.Boolean>();
+            appdomain.DelegateManager.RegisterFunctionDelegate<UnityEngine.Color>();
 
-            appdomain.DelegateManager.RegisterMethodDelegate<ET.AService>();
 
             appdomain.DelegateManager.RegisterDelegateConvertor<UnityEngine.Events.UnityAction>((act) =>
             {
@@ -122,7 +123,22 @@ namespace ET
                     ((Action<System.Single>)act)(pNewValue);
                 });
             });
-            
+            appdomain.DelegateManager.RegisterDelegateConvertor<DG.Tweening.Core.DOSetter<UnityEngine.Color>>((act) =>
+            {
+                return new DG.Tweening.Core.DOSetter<UnityEngine.Color>((pNewValue) =>
+                {
+                    ((Action<UnityEngine.Color>)act)(pNewValue);
+                });
+            });
+            appdomain.DelegateManager.RegisterDelegateConvertor<DG.Tweening.Core.DOGetter<UnityEngine.Color>>((act) =>
+            {
+                return new DG.Tweening.Core.DOGetter<UnityEngine.Color>(() =>
+                {
+                    return ((Func<UnityEngine.Color>)act)();
+                });
+            });
+
+
             // 注册适配器
             RegisterAdaptor(appdomain);
             

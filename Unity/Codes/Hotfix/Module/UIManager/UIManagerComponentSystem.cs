@@ -531,6 +531,27 @@ namespace ET
                 target.Active = false;
             }
         }
+        /// <summary>
+        /// 将窗口移到当前层级最上方
+        /// </summary>
+        /// <param name="self"></param>
+        /// <typeparam name="T"></typeparam>
+        public static void MoveWindowToTop<T>(this UIManagerComponent self) where T:Entity
+        {
+            string ui_name = typeof(T).Name;
+            var target = self.GetWindow(ui_name,1);
+            if (target == null)
+            {
+               return;
+            }
+            var layer_name = target.Layer;
+            if (self.window_stack[layer_name].Contains(ui_name))
+            {
+                self.window_stack[layer_name].Remove(ui_name);
+            }
+            self.window_stack[layer_name].AddFirst(ui_name);
+            Game.EventSystem.Publish(new UIEventType.AddWindowToStack() { window = target });
+        }
         static async ETTask __AddWindowToStack(this UIManagerComponent self, UIWindow target)
         {
             var ui_name = target.Name;

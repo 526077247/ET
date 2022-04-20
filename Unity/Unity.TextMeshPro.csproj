@@ -53,8 +53,8 @@
   </PropertyGroup>
   <ItemGroup>
      <Compile Include="Packages\com.unity.textmeshpro@3.0.6\Scripts\Runtime\TMP_TextProcessingStack.cs" />
-     <Compile Include="Packages\com.unity.textmeshpro@3.0.6\Scripts\Runtime\TMP_TextUtilities.cs" />
      <Compile Include="Packages\com.unity.textmeshpro@3.0.6\Scripts\Runtime\TMP_SpriteGlyph.cs" />
+     <Compile Include="Packages\com.unity.textmeshpro@3.0.6\Scripts\Runtime\TMP_TextUtilities.cs" />
      <Compile Include="Packages\com.unity.textmeshpro@3.0.6\Scripts\Runtime\ITextPreProcessor.cs" />
      <Compile Include="Packages\com.unity.textmeshpro@3.0.6\Scripts\Runtime\TMPro_MeshUtilities.cs" />
      <Compile Include="Packages\com.unity.textmeshpro@3.0.6\Scripts\Runtime\TMP_CharacterInfo.cs" />
@@ -98,16 +98,16 @@
      <Compile Include="Packages\com.unity.textmeshpro@3.0.6\Scripts\Runtime\TMP_UpdateRegistery.cs" />
      <Compile Include="Packages\com.unity.textmeshpro@3.0.6\Scripts\Runtime\TMP_ResourcesManager.cs" />
      <Compile Include="Packages\com.unity.textmeshpro@3.0.6\Scripts\Runtime\TMP_SubMesh.cs" />
-     <Compile Include="Packages\com.unity.textmeshpro@3.0.6\Scripts\Runtime\AssemblyInfo.cs" />
      <Compile Include="Packages\com.unity.textmeshpro@3.0.6\Scripts\Runtime\TMP_InputValidator.cs" />
+     <Compile Include="Packages\com.unity.textmeshpro@3.0.6\Scripts\Runtime\AssemblyInfo.cs" />
      <Compile Include="Packages\com.unity.textmeshpro@3.0.6\Scripts\Runtime\TMP_Asset.cs" />
      <Compile Include="Packages\com.unity.textmeshpro@3.0.6\Scripts\Runtime\TMP_LineInfo.cs" />
      <Compile Include="Packages\com.unity.textmeshpro@3.0.6\Scripts\Runtime\TextContainer.cs" />
      <Compile Include="Packages\com.unity.textmeshpro@3.0.6\Scripts\Runtime\TMP_Compatibility.cs" />
      <Compile Include="Packages\com.unity.textmeshpro@3.0.6\Scripts\Runtime\TMP_TextParsingUtilities.cs" />
      <Compile Include="Packages\com.unity.textmeshpro@3.0.6\Scripts\Runtime\TMP_DefaultControls.cs" />
-     <Compile Include="Packages\com.unity.textmeshpro@3.0.6\Scripts\Runtime\TMPro_Private.cs" />
      <Compile Include="Packages\com.unity.textmeshpro@3.0.6\Scripts\Runtime\TMP_ShaderUtilities.cs" />
+     <Compile Include="Packages\com.unity.textmeshpro@3.0.6\Scripts\Runtime\TMPro_Private.cs" />
      <Compile Include="Packages\com.unity.textmeshpro@3.0.6\Scripts\Runtime\TMP_ScrollbarEventHandler.cs" />
      <Compile Include="Packages\com.unity.textmeshpro@3.0.6\Scripts\Runtime\TMP_FontFeatureTable.cs" />
      <Compile Include="Packages\com.unity.textmeshpro@3.0.6\Scripts\Runtime\TMP_FontFeaturesCommon.cs" />

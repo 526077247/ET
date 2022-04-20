@@ -74,12 +74,10 @@ namespace ET
                     float flag = (tillTime - TimeHelper.ClientNow()) / 1000f;
                     if (isStart)
                     {
-                        Log.Info(flag);
                         rect.sizeDelta = new Vector2(Define.DesignScreen_Width, Define.DesignScreen_Height) * 5 * Mathf.Pow((1-flag),2);
                     }
                     else
                     {
-                        Log.Info(flag);
                         rect.sizeDelta = new Vector2(Define.DesignScreen_Width, Define.DesignScreen_Height) * 5 * Mathf.Pow(flag,2);
                     }
 

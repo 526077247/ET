@@ -83,6 +83,7 @@ namespace ET
                 return;
             }
             GalGameEnginePara para = new GalGameEnginePara();
+            para.Command = command.Command;
             //参数赋值
             para.Arg1 = command.Arg1;
             para.Arg2 = command.Arg2;

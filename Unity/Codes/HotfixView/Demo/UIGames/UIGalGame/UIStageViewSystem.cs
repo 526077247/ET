@@ -48,7 +48,6 @@ namespace ET
 				//销毁前先回收掉
 				GameObjectPoolComponent.Instance?.RecycleUIGameObject(item.Value);
 			}
-			Log.Info("OnDestroy");
 		}
 	}
 	[FriendClass(typeof(UIStageView))]
@@ -116,7 +115,7 @@ namespace ET
 							string newUser = chapter.Arg1;
 							if (string.Equals(newUser, value, StringComparison.OrdinalIgnoreCase))
 							{
-								string type = chapter.Arg2;
+								string type = chapter.Arg5;
 								if (string.Equals(type, "FadeIn", StringComparison.OrdinalIgnoreCase))
 								{
 									info.image.SetImageColor(Color.clear);
@@ -131,7 +130,7 @@ namespace ET
 							string newUser = chapter.Arg1;
 							if (string.Equals(newUser, value, StringComparison.OrdinalIgnoreCase))
 							{
-								string type = chapter.Arg2;
+								string type = chapter.Arg5;
 								if (string.Equals(type, "FadeOut", StringComparison.OrdinalIgnoreCase))
 								{
 									info.image.SetImageColor(Color.white);

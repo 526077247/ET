@@ -22,9 +22,9 @@ namespace ILRuntime.Runtime.Generated
             MethodBase method;
             Type[] args;
             Type type = typeof(System.Collections.Generic.LinkedList<System.String>);
-            args = new Type[]{typeof(System.String)};
-            method = type.GetMethod("Remove", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, Remove_0);
+            args = new Type[]{};
+            method = type.GetMethod("get_Count", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, get_Count_0);
             args = new Type[]{};
             method = type.GetMethod("get_First", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, get_First_1);
@@ -32,11 +32,11 @@ namespace ILRuntime.Runtime.Generated
             method = type.GetMethod("Contains", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, Contains_2);
             args = new Type[]{typeof(System.String)};
+            method = type.GetMethod("Remove", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, Remove_3);
+            args = new Type[]{typeof(System.String)};
             method = type.GetMethod("AddFirst", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, AddFirst_3);
-            args = new Type[]{};
-            method = type.GetMethod("get_Count", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, get_Count_4);
+            app.RegisterCLRMethodRedirection(method, AddFirst_4);
             args = new Type[]{};
             method = type.GetMethod("get_Last", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, get_Last_5);
@@ -51,24 +51,20 @@ namespace ILRuntime.Runtime.Generated
         }
 
 
-        static StackObject* Remove_0(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* get_Count_0(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
-            StackObject* __ret = ILIntepreter.Minus(__esp, 2);
+            StackObject* __ret = ILIntepreter.Minus(__esp, 1);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.String @value = (System.String)typeof(System.String).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
-            __intp.Free(ptr_of_this_method);
-
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
             System.Collections.Generic.LinkedList<System.String> instance_of_this_method = (System.Collections.Generic.LinkedList<System.String>)typeof(System.Collections.Generic.LinkedList<System.String>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
-            var result_of_this_method = instance_of_this_method.Remove(@value);
+            var result_of_this_method = instance_of_this_method.Count;
 
             __ret->ObjectType = ObjectTypes.Integer;
-            __ret->Value = result_of_this_method ? 1 : 0;
+            __ret->Value = result_of_this_method;
             return __ret + 1;
         }
 
@@ -108,7 +104,28 @@ namespace ILRuntime.Runtime.Generated
             return __ret + 1;
         }
 
-        static StackObject* AddFirst_3(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* Remove_3(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        {
+            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
+            StackObject* ptr_of_this_method;
+            StackObject* __ret = ILIntepreter.Minus(__esp, 2);
+
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
+            System.String @value = (System.String)typeof(System.String).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            __intp.Free(ptr_of_this_method);
+
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
+            System.Collections.Generic.LinkedList<System.String> instance_of_this_method = (System.Collections.Generic.LinkedList<System.String>)typeof(System.Collections.Generic.LinkedList<System.String>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            __intp.Free(ptr_of_this_method);
+
+            var result_of_this_method = instance_of_this_method.Remove(@value);
+
+            __ret->ObjectType = ObjectTypes.Integer;
+            __ret->Value = result_of_this_method ? 1 : 0;
+            return __ret + 1;
+        }
+
+        static StackObject* AddFirst_4(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
@@ -125,23 +142,6 @@ namespace ILRuntime.Runtime.Generated
             var result_of_this_method = instance_of_this_method.AddFirst(@value);
 
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
-        }
-
-        static StackObject* get_Count_4(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
-        {
-            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            StackObject* ptr_of_this_method;
-            StackObject* __ret = ILIntepreter.Minus(__esp, 1);
-
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.Collections.Generic.LinkedList<System.String> instance_of_this_method = (System.Collections.Generic.LinkedList<System.String>)typeof(System.Collections.Generic.LinkedList<System.String>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
-            __intp.Free(ptr_of_this_method);
-
-            var result_of_this_method = instance_of_this_method.Count;
-
-            __ret->ObjectType = ObjectTypes.Integer;
-            __ret->Value = result_of_this_method;
-            return __ret + 1;
         }
 
         static StackObject* get_Last_5(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)

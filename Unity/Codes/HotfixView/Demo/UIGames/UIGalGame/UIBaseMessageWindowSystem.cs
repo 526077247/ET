@@ -78,7 +78,7 @@ namespace ET
 				else
 					await TimerComponent.Instance.WaitAsync((long)(self.waitTime / self.speed), self.token);
 			}
-            else
+			if (!(GalGameEngineComponent.Instance.AutoPlay || !clear || self.speed <= 0))
             {
 				while (true)
 				{

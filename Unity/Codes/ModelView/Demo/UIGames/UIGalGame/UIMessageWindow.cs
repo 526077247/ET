@@ -22,6 +22,9 @@ namespace ET
 		public float speed;
 		public long waitTime;
 		public Action CancelAction;
+		
+		public UIEmptyGameobject Arrow;
+		public Vector3 Offset;
 
 	}
 }
