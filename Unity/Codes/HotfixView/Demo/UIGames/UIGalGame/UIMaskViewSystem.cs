@@ -9,6 +9,13 @@ namespace ET
         {
             self.bg = self.AddUIComponent<UIImage>("Image");
             self.bg2 = self.AddUIComponent<UIImage>("Image1");
+            var trans = self.bg2.GetTransform() as RectTransform;
+            self.MaxSize = trans.sizeDelta;
+            for (int i = 0; i < trans.childCount; i++)
+            {
+                var temp = trans.GetChild(i) as RectTransform;
+                temp.sizeDelta = self.MaxSize;
+            }
         }
     }
     
@@ -18,14 +25,6 @@ namespace ET
     {
         public override void OnEnable(UIMaskView self, string imagePath, float time, bool isStart)
         {
-            Vector2 size = new Vector2(Define.DesignScreen_Width, Define.DesignScreen_Height);
-            var trans = self.bg2.GetTransform() as RectTransform;
-            trans.sizeDelta = size;
-            for (int i = 0; i < trans.childCount; i++)
-            {
-                var temp = trans.GetChild(i) as RectTransform;
-                temp.sizeDelta = size;
-            }
             self.StartChange(time,isStart,imagePath).Coroutine();
         }
     }
@@ -74,11 +73,11 @@ namespace ET
                     float flag = (tillTime - TimeHelper.ClientNow()) / 1000f;
                     if (isStart)
                     {
-                        rect.sizeDelta = new Vector2(Define.DesignScreen_Width, Define.DesignScreen_Height) * 5 * Mathf.Pow((1-flag),2);
+                        rect.sizeDelta = self.MaxSize * 5 * Mathf.Pow((1-flag),2);
                     }
                     else
                     {
-                        rect.sizeDelta = new Vector2(Define.DesignScreen_Width, Define.DesignScreen_Height) * 5 * Mathf.Pow(flag,2);
+                        rect.sizeDelta = self.MaxSize * 5 * Mathf.Pow(flag,2);
                     }
 
                     await TimerComponent.Instance.WaitAsync(1);
