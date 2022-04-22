@@ -31,8 +31,10 @@ namespace ET
 			m2CCreateUnits.Unit = UnitHelper.CreateUnitInfo(unit);
 			MessageHelper.SendToClient(unit, m2CCreateUnits);
 			
+			var numericComponent = unit.GetComponent<NumericComponent>();
 			// 加入aoi
-			unit.AddComponent<AOIEntity, int, Vector3>(9 * 1000, unit.Position);
+			unit.AddComponent<AOIUnitComponent,Vector3,Quaternion, CampType,int>
+					(unit.Position,unit.Rotation,CampType.Player,numericComponent.GetAsInt(NumericType.AOI));
 
 			response.NewInstanceId = unit.InstanceId;
 			

@@ -9,10 +9,9 @@ namespace ET
     {
         public static void Broadcast(Unit unit, IActorMessage message)
         {
-            Dictionary<long, AOIEntity> dict = unit.GetBeSeePlayers();
-            foreach (AOIEntity u in dict.Values)
+            foreach (var u in unit.GetBeSeePlayers())
             {
-                SendToClient(u.Unit, message);
+                SendToClient(u.GetParent<Unit>(), message);
             }
         }
         

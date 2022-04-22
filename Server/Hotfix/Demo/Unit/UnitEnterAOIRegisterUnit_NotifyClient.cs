@@ -2,17 +2,14 @@
 {
     // 进入视野通知
     [Event]
-    public class UnitEnterSightRange_NotifyClient: AEvent<EventType.UnitEnterSightRange>
+    public class UnitEnterAOIRegisterUnit_NotifyClient: AEvent<EventType.AOIRegisterUnit>
     {
-        protected override void Run(EventType.UnitEnterSightRange args)
+        protected override void Run(EventType.AOIRegisterUnit args)
         {
-            AOIEntity a = args.A;
-            AOIEntity b = args.B;
-            if (a.Id == b.Id)
-            {
-                return;
-            }
-
+            
+            AOIUnitComponent a = args.Receive;
+            AOIUnitComponent b = args.Unit;
+            if (a == b) return;
             Unit ua = a.GetParent<Unit>();
             if (ua.Type != UnitType.Player)
             {

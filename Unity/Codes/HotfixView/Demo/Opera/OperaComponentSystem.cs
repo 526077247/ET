@@ -28,9 +28,9 @@ namespace ET
         {
             if (InputHelper.GetMouseButtonDown(1))
             {
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                RaycastHit hit;
-                if (Physics.Raycast(ray, out hit, 1000, self.mapMask))
+                UnityEngine.Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                UnityEngine.RaycastHit hit;
+                if (UnityEngine.Physics.Raycast(ray, out hit, 1000, self.mapMask))
                 {
                     self.ClickPoint = hit.point;
                     self.frameClickMap.X = self.ClickPoint.x;

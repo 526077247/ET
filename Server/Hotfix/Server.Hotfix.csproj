@@ -31,7 +31,9 @@
     <Compile Include="..\..\Unity\Codes\Hotfix\Module\Numeric\NumericWatcher_Hp_ShowUI.cs">
       <Link>Module\Numeric\NumericWatcher_Hp_ShowUI.cs</Link>
     </Compile>
-
+    <Compile Include="..\..\Unity\Codes\Hotfix\Module\AOI\**\*.cs">
+      <Link>Module\AOI\%(RecursiveDir)%(FileName)%(Extension)</Link>
+    </Compile>
     <Compile Include="..\..\Unity\Codes\Hotfix\Module\AI\**\*.cs">
       <Link>Module\AI\%(RecursiveDir)%(FileName)%(Extension)</Link>
     </Compile>

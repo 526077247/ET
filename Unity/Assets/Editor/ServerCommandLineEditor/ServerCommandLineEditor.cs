@@ -45,6 +45,11 @@ namespace ET
             {
                 ProcessHelper.Run("mongod", @"--dbpath=db", "../Database/bin/");
             }
+            
+            if (GUILayout.Button("Start FileServer"))
+            {
+                ProcessHelper.Run("dotnet.exe", "FileServer.dll", "../FileServer/");
+            }
         }
     }
 }
