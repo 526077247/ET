@@ -83,15 +83,15 @@ namespace ET
             self.Position = position;
             AOIGrid grid = self.Scene.GetAOIGrid(position);
             var oldgrid = self.Grid;
-            if (grid != oldgrid)//跨格子了：AOI刷新，触发器刷新 自己进入或离开别人的
+            if (grid != oldgrid)//跨格子了：AOI刷新
             {
                 self.ChangeTo(grid,oldpos);
             }
             //触发器刷新 自己进入或离开别人的
-            // if (self.Collider != null)
-            // {
-            //     self.Collider.AfterChangeBroadcastToOther(oldpos,self.Collider.GetRealRot());
-            // }
+            if (self.Collider != null)
+            {
+                self.Collider.AfterChangeBroadcastToOther(oldpos,self.Collider.GetRealRot());
+            }
             
             //触发器刷新 别人进入或离开自己的
             for (int i = 0; i < self.SphereTriggers.Count; i++)

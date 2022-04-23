@@ -101,17 +101,17 @@ namespace ET
         /// </summary>
         /// <param name="self"></param>
         /// <param name="radius"></param>
-        /// <param name="Flag"></param>
-        /// <param name="Handler"></param>
+        /// <param name="type"></param>
+        /// <param name="handler"></param>
         /// <param name="isCollider"></param>
-        /// <param name="Selecter"></param>
+        /// <param name="selecter"></param>
         /// <returns></returns>
-        static AOITriggerComponent AddTrigger(this AOIUnitComponent self, float radius, AOITriggerType Flag,
-            Action<AOIUnitComponent, AOITriggerType> Handler, bool isCollider, params CampType[] Selecter)
+        static AOITriggerComponent AddTrigger(this AOIUnitComponent self, float radius, AOITriggerType type,
+            Action<AOIUnitComponent, AOITriggerType> handler, bool isCollider, params CampType[] selecter)
         {
-            AOITriggerComponent trigger = self.AddChild<AOITriggerComponent,float,Action<AOIUnitComponent, AOITriggerType>>(radius,Handler);
-            trigger.Flag = Flag;
-            trigger.Selecter = new List<CampType>(Selecter);
+            AOITriggerComponent trigger = self.AddChild<AOITriggerComponent,float,Action<AOIUnitComponent, AOITriggerType>>(radius,handler);
+            trigger.Flag = type;
+            trigger.Selecter = new List<CampType>(selecter);
             trigger.TriggerType=TriggerShapeType.Sphere;
             trigger.IsCollider = isCollider;
             self.SphereTriggers.Add(trigger);
@@ -122,15 +122,16 @@ namespace ET
         /// </summary>
         /// <param name="self"></param>
         /// <param name="trigger"></param>
-        /// <param name="Flag"></param>
-        static void AddTriggerListener(this AOIUnitComponent self,AOITriggerComponent trigger,AOITriggerType Flag)
+        /// <param name="type"></param>
+        static void AddTriggerListener(this AOIUnitComponent self,AOITriggerComponent trigger,AOITriggerType type)
         {
             var len = self.Scene.gridLen;
             int count = (int)Math.Ceiling((double)trigger.Radius / len);
             if (count > 2) Log.Info("检测范围超过2格，触发半径："+ trigger.Radius);
             using (var grids = self.GetNearbyGrid(count))
             {
-                HashSetComponent<AOITriggerComponent> temp = HashSetComponent<AOITriggerComponent>.Create();
+                HashSetComponent<AOITriggerComponent> temp1 = HashSetComponent<AOITriggerComponent>.Create();
+                HashSetComponent<AOITriggerComponent> temp2 = HashSetComponent<AOITriggerComponent>.Create();
                 for (int i = 0; i < grids.Count; i++)
                 {
                     var item = grids[i];
@@ -139,33 +140,53 @@ namespace ET
                     if (flag >= 0)//格子在范围有重叠部分
                     {
                         item.AddTriggerListener(trigger);
-                        //进入触发器
-                        if (Flag == AOITriggerType.All || Flag == AOITriggerType.Enter)//注意不能放前面判断
+                        //别人进入自己
+                        if (type == AOITriggerType.All || type == AOITriggerType.Enter)//注意不能放前面判断
                         {
                             using (var colliders = item.GetAllCollider(trigger.Selecter,trigger))
                             {
                                 for (int j = 0; j < colliders.Count; j++)
                                 {
                                     var collider = colliders[j];
-                                    if (!temp.Contains(collider)&&trigger.IsInTrigger(collider,trigger.GetRealPos(),
+                                    if(collider==trigger) continue;
+                                    if (!temp1.Contains(collider)&&trigger.IsInTrigger(collider,trigger.GetRealPos(),
                                             trigger.GetRealRot(),collider.GetRealPos(),collider.GetRealRot()))
                                     {
-                                        if(collider==trigger) continue;
                                         Log.Info("grids pos "+item.posx+" "+item.posy);
-                                        temp.Add(collider);
+                                        temp1.Add(collider);
                                     }
+                                }
+                            }
+                        }
+                        //自己进入别人
+                        if (trigger.IsCollider)
+                        {
+                            for (int j = 0; j < item.Triggers.Count; j++)
+                            {
+                                var collider = item.Triggers[j];
+                                if(collider==trigger) continue;
+                                if(collider.Flag!=AOITriggerType.Enter&&collider.Flag!=AOITriggerType.All) continue;
+                                if (!temp2.Contains(collider)&&collider.IsInTrigger(trigger,collider.GetRealPos(),
+                                        collider.GetRealRot(),trigger.GetRealPos(), trigger.GetRealRot()))
+                                {
+                                    Log.Info("grids pos "+item.posx+" "+item.posy);
+                                    temp2.Add(collider);
                                 }
                             }
                         }
                     }
                 }
 
-                foreach (var item in temp)
+                foreach (var item in temp1)
                 {
                     trigger.OnTrigger(item,AOITriggerType.Enter);
                 }
-
-                temp.Dispose();
+                foreach (var item in temp2)
+                {
+                    item.OnTrigger(trigger,AOITriggerType.Enter);
+                }
+                temp1.Dispose();
+                temp2.Dispose();
             }
         }
         /// <summary>
@@ -173,12 +194,13 @@ namespace ET
         /// </summary>
         /// <param name="self"></param>
         /// <param name="radius">半径</param>a
-        /// <param name="Flag">监听进出类型</param>
-        /// <param name="Handler">当触发发生事件</param>
-        /// <param name="Selecter">筛选AOI类型</param>
+        /// <param name="flag">监听进出类型</param>
+        /// <param name="handler">当触发发生事件</param>
+        /// <param name="isCollider"></param>
+        /// <param name="selecter">筛选AOI类型</param>
         /// <returns></returns>
-        public static AOITriggerComponent AddSphereTrigger(this AOIUnitComponent self, float radius, AOITriggerType Flag, 
-            Action<AOIUnitComponent, AOITriggerType> Handler,bool isCollider, params CampType[] Selecter)
+        public static AOITriggerComponent AddSphereTrigger(this AOIUnitComponent self, float radius, AOITriggerType flag, 
+            Action<AOIUnitComponent, AOITriggerType> handler,bool isCollider, params CampType[] selecter)
         {
             if (isCollider && self.Collider != null)
             {
@@ -186,12 +208,12 @@ namespace ET
                 return null;
             }
             #region 数据初始化
-            var trigger = self.AddTrigger(radius, Flag, Handler,isCollider, Selecter);
+            var trigger = self.AddTrigger(radius, flag, handler,isCollider, selecter);
             #endregion
 
             #region 添加监听事件，并判断触发进入触发器
 
-            self.AddTriggerListener(trigger, Flag);
+            self.AddTriggerListener(trigger, flag);
             #endregion
             return trigger;
         }
@@ -199,26 +221,27 @@ namespace ET
         /// 添加立方体碰撞器
         /// </summary>
         /// <param name="self"></param>
-        /// <param name="Scale">长宽高</param>
-        /// <param name="Flag">监听进出类型</param>
-        /// <param name="Handler">当触发发生事件</param>
-        /// <param name="Selecter">筛选AOI类型</param>
+        /// <param name="scale">长宽高</param>
+        /// <param name="flag">监听进出类型</param>
+        /// <param name="handler">当触发发生事件</param>
+        /// <param name="isCollider"></param>
+        /// <param name="selecter">筛选AOI类型</param>
         /// <returns></returns>
-        public static AOITriggerComponent AddOBBTrigger(this AOIUnitComponent self, Vector3 Scale, AOITriggerType Flag,
-            Action<AOIUnitComponent, AOITriggerType> Handler,bool isCollider, params CampType[] Selecter)
+        public static AOITriggerComponent AddOBBTrigger(this AOIUnitComponent self, Vector3 scale, AOITriggerType flag,
+            Action<AOIUnitComponent, AOITriggerType> handler,bool isCollider, params CampType[] selecter)
         {
             if (isCollider && self.Collider != null)
             {
                 Log.Error("添加Collider时，Collider已存在");
                 return null;
             }
-            float radius = Mathf.Sqrt(Scale.x*Scale.x+Scale.y*Scale.y+Scale.z*Scale.z)/2;
-            var trigger = self.AddTrigger(radius, Flag, Handler,isCollider, Selecter);
-            trigger.AddComponent<OBBComponent, Vector3>(Scale);
+            float radius = Mathf.Sqrt(scale.x*scale.x+scale.y*scale.y+scale.z*scale.z)/2;
+            var trigger = self.AddTrigger(radius, flag, handler,isCollider, selecter);
+            trigger.AddComponent<OBBComponent, Vector3>(scale);
             trigger.TriggerType=TriggerShapeType.Cube;
             #region 添加监听事件，并判断触发进入触发器
 
-            self.AddTriggerListener(trigger, Flag);
+            self.AddTriggerListener(trigger, flag);
             
             #endregion
             return trigger;
@@ -448,7 +471,7 @@ namespace ET
             colliderDic.Dispose();
         }
         /// <summary>
-        /// 自己坐标方向改变后，看别人有没有进来或离开
+        /// 自己坐标方向改变后，有没有进来或离开别人
         /// </summary>
         /// <param name="self"></param>
         /// <param name="beforePosition"></param>
@@ -504,7 +527,7 @@ namespace ET
             {
                 if (item.Value > 0)//之前无现在有
                 {
-                    item.Key.AddTriggerListener(self);
+                    // item.Key.AddTriggerListener(self);
                     for (int i = 0; i < item.Key.Triggers.Count; i++)
                     {
                         var collider = item.Key.Triggers[i];
@@ -518,7 +541,7 @@ namespace ET
                 }
                 else if (item.Value < 0)//之前有现在无
                 {
-                    item.Key.RemoveTriggerListener(self);
+                    // item.Key.RemoveTriggerListener(self);
                     for (int i = 0; i < item.Key.Triggers.Count; i++)
                     {
                         var collider = item.Key.Triggers[i];
@@ -590,7 +613,7 @@ namespace ET
         
         
         /// <summary>
-        /// 自己坐标方向改变后，别人or别人斗殴判断有没有进来或离开
+        /// 自己坐标方向改变后，别人or别人自己都判断有没有进来或离开
         /// </summary>
         /// <param name="self"></param>
         /// <param name="beforePosition"></param>
