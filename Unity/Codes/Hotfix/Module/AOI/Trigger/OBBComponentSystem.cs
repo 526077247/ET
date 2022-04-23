@@ -227,7 +227,7 @@ namespace ET
                     hit = new Vector3(hit2d2.x,hit2d3.y,hit2d2.y);
                 }
             }
-            hit = rotation * ray.Start + center;
+            hit = rotation * hit + center;
             if (Vector3.Distance(hit, ray.Start) > ray.Distance) return false;
             return true;
         }
@@ -394,7 +394,7 @@ namespace ET
                     hit = new Vector3(hit2d2.x,hit2d3.y,hit2d2.y);
                 }
             }
-            hit = rotation * ray.Start + center;
+            hit = rotation * hit + center;
             if (Vector3.Distance(hit, ray.Start) > ray.Distance) return false;
             return true;
         }
