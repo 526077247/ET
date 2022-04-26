@@ -17,15 +17,15 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 6f4d749ec012a2b44a3e94bfec019834
   m_SerializeEntries:
-  - m_GUID: 7707e8056985ade4a93cc4fe15d7e886
-    m_Address: Code/Code.dll.bytes
+  - m_GUID: d517b02a85041bd44bf0c3254daa5ede
+    m_Address: Code/Code1.0.0.dll.bytes
     m_ReadOnly: 0
     m_SerializedLabels:
     - default
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
-  - m_GUID: 6470b029eec6f9741902447e84f45c62
-    m_Address: Code/Code.pdb.bytes
+  - m_GUID: 77dcaaa6e7204144e957c935fd60c307
+    m_Address: Code/Code1.0.0.pdb.bytes
     m_ReadOnly: 0
     m_SerializedLabels:
     - default

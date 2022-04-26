@@ -69,7 +69,15 @@ MonoBehaviour:
   - m_GUID: 1a1f71185d8b2c74696368d200e3a49e
     m_Address: Config/StartChapterCategory.bytes
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 078dcdf0fb19c0a408bc4ea9d1e740b6
+    m_Address: Config/AttributeConfigCategory.bytes
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
   m_ReadOnly: 0

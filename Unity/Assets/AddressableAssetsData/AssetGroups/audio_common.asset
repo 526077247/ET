@@ -20,19 +20,15 @@ MonoBehaviour:
   - m_GUID: d27200baf5ae97e44ad11c95e1eb2df5
     m_Address: Audio/Common/BGM.mixer
     m_ReadOnly: 0
-    m_SerializedLabels: []
-    m_MainAsset: {fileID: 0}
-    m_TargetAsset: {fileID: 0}
-  - m_GUID: a4eb5b3d480b75a40b26c051774f8c80
-    m_Address: Audio/Common/Click.mp3
-    m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - default
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
   - m_GUID: 96e0645ae25105f49ad570e783e32e48
     m_Address: Audio/Common/Sound.mixer
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - default
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
   m_ReadOnly: 0

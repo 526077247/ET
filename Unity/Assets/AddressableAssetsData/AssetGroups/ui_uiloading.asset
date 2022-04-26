@@ -41,13 +41,15 @@ MonoBehaviour:
   - m_GUID: ed9b3ca9f1f7744ca8a7f8a7ef6b03cb
     m_Address: UI/UILoading/Animations/loading_rotate_0.anim
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - default
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
   - m_GUID: 4b56efbb0a93e4278a226af9a5d246d1
     m_Address: UI/UILoading/Animations/loading_rotate_0.controller
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - default
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
   m_ReadOnly: 0

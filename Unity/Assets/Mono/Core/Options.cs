@@ -13,6 +13,7 @@ namespace ET
         Proto2CS,
         CHExcelExporter,//策划导表校验
         ChapterExporter,//单独导表剧情
+        AttrExporter,//导属性
     }
     
     public class Options

@@ -66,6 +66,12 @@ namespace ET
                         ExcelExporter.ExportChapter();
                         return 0;
                     }
+                    case AppType.AttrExporter:
+                    {
+                        Game.Options.Console = 1;
+                        AttrExporter.Export();
+                        return 0;
+                    }
                 }
             }
             catch (Exception e)

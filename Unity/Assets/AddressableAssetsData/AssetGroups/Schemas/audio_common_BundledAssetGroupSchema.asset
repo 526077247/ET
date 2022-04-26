@@ -31,11 +31,11 @@ MonoBehaviour:
   m_RedirectLimit: -1
   m_RetryCount: 0
   m_BuildPath:
-    m_Id: d7a6a7ba92fba42459ebf637027f8593
+    m_Id: 4a95311fc5915f2419ee26b24e9968a4
   m_LoadPath:
-    m_Id: b396472473d77e8448c948a15dad33fc
+    m_Id: e0590cfd1155bd046b1cdd14b5419cfe
   m_BundleMode: 0
   m_AssetBundleProviderType:
     m_AssemblyName: Unity.Mono, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     m_ClassName: AddressableExts.AssetBundleEncryptProvider
-  m_BundleNaming: 0
+  m_BundleNaming: 1

@@ -607,6 +607,8 @@ namespace ET
         {
             switch (type)
             {
+                case "decimal[]":
+                case "double[]":
                 case "uint[]":
                 case "int[]":
                 case "int32[]":
