@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using MongoDB.Bson.Serialization.Attributes;
+using System.Reflection;
 
 namespace ET
 {
@@ -956,6 +957,49 @@ namespace ET
 
             EventSystem.Instance.Awake(component, a, b, c);
             return component;
+        }
+        
+        [IgnoreDataMember]
+        [BsonIgnore]
+        public string JsonText
+        {
+            get => JsonHelper.ToJson(this);
+            set
+            {
+                var obj = JsonHelper.FromJson(GetType(), value);
+                FieldInfo[] fields = GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+                PropertyInfo[] propertyInfos = GetType().GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+                foreach (FieldInfo field in fields)
+                {
+                    if (field.GetCustomAttributes(typeof(BsonIgnoreAttribute), false).Length <= 0)
+                    {
+                        try { field.SetValue(this, DeepCopyByReflect(field.GetValue(obj))); }
+                        catch { }
+                    }
+                }
+                foreach (PropertyInfo field in propertyInfos)
+                {
+                    if (field.GetCustomAttributes(typeof(BsonIgnoreAttribute), false).Length <= 0)
+                    {
+                        try { field.SetValue(this, DeepCopyByReflect(field.GetValue(obj))); }
+                        catch { }
+                    }
+                }
+            }
+        }
+
+        public static T DeepCopyByReflect<T>(T obj)
+        {
+            //如果是字符串或值类型则直接返回
+            if (obj is string || obj.GetType().IsValueType) return obj;
+            object retval = Activator.CreateInstance(obj.GetType());
+            FieldInfo[] fields = obj.GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+            foreach (FieldInfo field in fields)
+            {
+                try { field.SetValue(retval, DeepCopyByReflect(field.GetValue(obj))); }
+                catch { }
+            }
+            return (T)retval;
         }
     }
 }
