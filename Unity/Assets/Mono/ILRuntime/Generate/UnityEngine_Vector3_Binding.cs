@@ -59,30 +59,27 @@ namespace ILRuntime.Runtime.Generated
             args = new Type[]{typeof(UnityEngine.Vector3), typeof(System.Single)};
             method = type.GetMethod("op_Multiply", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, op_Multiply_11);
-            args = new Type[]{typeof(UnityEngine.Vector3), typeof(System.Single)};
-            method = type.GetMethod("op_Division", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, op_Division_12);
             args = new Type[]{};
             method = type.GetMethod("get_one", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, get_one_13);
+            app.RegisterCLRMethodRedirection(method, get_one_12);
             args = new Type[]{typeof(UnityEngine.Vector3), typeof(UnityEngine.Vector3)};
             method = type.GetMethod("op_Equality", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, op_Equality_14);
+            app.RegisterCLRMethodRedirection(method, op_Equality_13);
             args = new Type[]{typeof(UnityEngine.Vector3), typeof(UnityEngine.Vector3)};
             method = type.GetMethod("Angle", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, Angle_15);
+            app.RegisterCLRMethodRedirection(method, Angle_14);
             args = new Type[]{};
             method = type.GetMethod("get_forward", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, get_forward_16);
+            app.RegisterCLRMethodRedirection(method, get_forward_15);
 
-            field = type.GetField("y", flag);
-            app.RegisterCLRFieldGetter(field, get_y_0);
-            app.RegisterCLRFieldSetter(field, set_y_0);
-            app.RegisterCLRFieldBinding(field, CopyToStack_y_0, AssignFromStack_y_0);
             field = type.GetField("x", flag);
-            app.RegisterCLRFieldGetter(field, get_x_1);
-            app.RegisterCLRFieldSetter(field, set_x_1);
-            app.RegisterCLRFieldBinding(field, CopyToStack_x_1, AssignFromStack_x_1);
+            app.RegisterCLRFieldGetter(field, get_x_0);
+            app.RegisterCLRFieldSetter(field, set_x_0);
+            app.RegisterCLRFieldBinding(field, CopyToStack_x_0, AssignFromStack_x_0);
+            field = type.GetField("y", flag);
+            app.RegisterCLRFieldGetter(field, get_y_1);
+            app.RegisterCLRFieldSetter(field, set_y_1);
+            app.RegisterCLRFieldBinding(field, CopyToStack_y_1, AssignFromStack_y_1);
             field = type.GetField("z", flag);
             app.RegisterCLRFieldGetter(field, get_z_2);
             app.RegisterCLRFieldSetter(field, set_z_2);
@@ -506,36 +503,7 @@ namespace ILRuntime.Runtime.Generated
             }
         }
 
-        static StackObject* op_Division_12(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
-        {
-            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            StackObject* ptr_of_this_method;
-            StackObject* __ret = ILIntepreter.Minus(__esp, 2);
-
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.Single @d = *(float*)&ptr_of_this_method->Value;
-
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            UnityEngine.Vector3 @a = new UnityEngine.Vector3();
-            if (ILRuntime.Runtime.Generated.CLRBindings.s_UnityEngine_Vector3_Binding_Binder != null) {
-                ILRuntime.Runtime.Generated.CLRBindings.s_UnityEngine_Vector3_Binding_Binder.ParseValue(ref @a, __intp, ptr_of_this_method, __mStack, true);
-            } else {
-                @a = (UnityEngine.Vector3)typeof(UnityEngine.Vector3).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)16);
-                __intp.Free(ptr_of_this_method);
-            }
-
-
-            var result_of_this_method = a / d;
-
-            if (ILRuntime.Runtime.Generated.CLRBindings.s_UnityEngine_Vector3_Binding_Binder != null) {
-                ILRuntime.Runtime.Generated.CLRBindings.s_UnityEngine_Vector3_Binding_Binder.PushValue(ref result_of_this_method, __intp, __ret, __mStack);
-                return __ret + 1;
-            } else {
-            return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
-            }
-        }
-
-        static StackObject* get_one_13(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* get_one_12(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* __ret = ILIntepreter.Minus(__esp, 0);
@@ -551,7 +519,7 @@ namespace ILRuntime.Runtime.Generated
             }
         }
 
-        static StackObject* op_Equality_14(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* op_Equality_13(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
@@ -583,7 +551,7 @@ namespace ILRuntime.Runtime.Generated
             return __ret + 1;
         }
 
-        static StackObject* Angle_15(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* Angle_14(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
@@ -615,7 +583,7 @@ namespace ILRuntime.Runtime.Generated
             return __ret + 1;
         }
 
-        static StackObject* get_forward_16(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* get_forward_15(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* __ret = ILIntepreter.Minus(__esp, 0);
@@ -632,42 +600,12 @@ namespace ILRuntime.Runtime.Generated
         }
 
 
-        static object get_y_0(ref object o)
-        {
-            return ((UnityEngine.Vector3)o).y;
-        }
-
-        static StackObject* CopyToStack_y_0(ref object o, ILIntepreter __intp, StackObject* __ret, IList<object> __mStack)
-        {
-            var result_of_this_method = ((UnityEngine.Vector3)o).y;
-            __ret->ObjectType = ObjectTypes.Float;
-            *(float*)&__ret->Value = result_of_this_method;
-            return __ret + 1;
-        }
-
-        static void set_y_0(ref object o, object v)
-        {
-            UnityEngine.Vector3 ins =(UnityEngine.Vector3)o;
-            ins.y = (System.Single)v;
-            o = ins;
-        }
-
-        static StackObject* AssignFromStack_y_0(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
-        {
-            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            System.Single @y = *(float*)&ptr_of_this_method->Value;
-            UnityEngine.Vector3 ins =(UnityEngine.Vector3)o;
-            ins.y = @y;
-            o = ins;
-            return ptr_of_this_method;
-        }
-
-        static object get_x_1(ref object o)
+        static object get_x_0(ref object o)
         {
             return ((UnityEngine.Vector3)o).x;
         }
 
-        static StackObject* CopyToStack_x_1(ref object o, ILIntepreter __intp, StackObject* __ret, IList<object> __mStack)
+        static StackObject* CopyToStack_x_0(ref object o, ILIntepreter __intp, StackObject* __ret, IList<object> __mStack)
         {
             var result_of_this_method = ((UnityEngine.Vector3)o).x;
             __ret->ObjectType = ObjectTypes.Float;
@@ -675,19 +613,49 @@ namespace ILRuntime.Runtime.Generated
             return __ret + 1;
         }
 
-        static void set_x_1(ref object o, object v)
+        static void set_x_0(ref object o, object v)
         {
             UnityEngine.Vector3 ins =(UnityEngine.Vector3)o;
             ins.x = (System.Single)v;
             o = ins;
         }
 
-        static StackObject* AssignFromStack_x_1(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
+        static StackObject* AssignFromStack_x_0(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             System.Single @x = *(float*)&ptr_of_this_method->Value;
             UnityEngine.Vector3 ins =(UnityEngine.Vector3)o;
             ins.x = @x;
+            o = ins;
+            return ptr_of_this_method;
+        }
+
+        static object get_y_1(ref object o)
+        {
+            return ((UnityEngine.Vector3)o).y;
+        }
+
+        static StackObject* CopyToStack_y_1(ref object o, ILIntepreter __intp, StackObject* __ret, IList<object> __mStack)
+        {
+            var result_of_this_method = ((UnityEngine.Vector3)o).y;
+            __ret->ObjectType = ObjectTypes.Float;
+            *(float*)&__ret->Value = result_of_this_method;
+            return __ret + 1;
+        }
+
+        static void set_y_1(ref object o, object v)
+        {
+            UnityEngine.Vector3 ins =(UnityEngine.Vector3)o;
+            ins.y = (System.Single)v;
+            o = ins;
+        }
+
+        static StackObject* AssignFromStack_y_1(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
+        {
+            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
+            System.Single @y = *(float*)&ptr_of_this_method->Value;
+            UnityEngine.Vector3 ins =(UnityEngine.Vector3)o;
+            ins.y = @y;
             o = ins;
             return ptr_of_this_method;
         }

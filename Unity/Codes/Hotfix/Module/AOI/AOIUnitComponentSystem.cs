@@ -267,7 +267,7 @@ namespace ET
 
             
         }
-        public static ListComponent<AOIUnitComponent> GetBeSeePlayers(this AOIUnitComponent self)
+        public static ListComponent<AOIUnitComponent> GetBeSeeUnits(this AOIUnitComponent self)
         {
             return self.Grid.ListenerUnits;
         }

@@ -1,0 +1,172 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: gameassets_skillpreview
+  m_EditorClassIdentifier: 
+  m_GroupName: gameassets_skillpreview
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 30e5576166bb97d449500d9cbd404eb8
+  m_SerializeEntries:
+  - m_GUID: 81a3c6ea5a48e9c4b8397c0d8806bda8
+    m_Address: GameAssets/SkillPreview/Materials/001.mat
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: b6978d3a0e7552f4f8a9c6296c0718b4
+    m_Address: GameAssets/SkillPreview/Materials/002.mat
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 4667998740da4724795bf441fa571555
+    m_Address: GameAssets/SkillPreview/Materials/003.mat
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 931d752f3dac577448da7a99fd2931ce
+    m_Address: GameAssets/SkillPreview/Materials/004.mat
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: eb573fec962c990478d1ed650ad30515
+    m_Address: GameAssets/SkillPreview/Materials/005.mat
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 92cde5980fad632469d6d9b4b6ff8bd2
+    m_Address: GameAssets/SkillPreview/Prefabs/001.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 6ceb59210365c9d4da42ae597797ae83
+    m_Address: GameAssets/SkillPreview/Prefabs/002.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 1b14bd398a68f2d4aa3f70e53b84a6b2
+    m_Address: GameAssets/SkillPreview/Prefabs/003.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 39db7b9b8df51be419f128da529c59ca
+    m_Address: GameAssets/SkillPreview/Prefabs/004.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 4869c084aff47c342acd3e5af1deb770
+    m_Address: GameAssets/SkillPreview/Prefabs/005.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: dbf7be3784e0803439f215041c063ce2
+    m_Address: GameAssets/SkillPreview/Prefabs/DirectRectSelectManager.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: b875f6f354463114cad169d025be3ff1
+    m_Address: GameAssets/SkillPreview/Prefabs/PointSelectManager.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 2935fc4e571feb4479ee9b1c9d80f4d5
+    m_Address: GameAssets/SkillPreview/Prefabs/TargetIcon.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 78b83e554c917764d85d4df8c2539863
+    m_Address: GameAssets/SkillPreview/Prefabs/TargetSelectManager.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: c721ff85800b87845985c598d8ca7cbe
+    m_Address: GameAssets/SkillPreview/Shader/Decal.shader
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 10b930ea220e5aa4490c65d21c3664a3
+    m_Address: GameAssets/SkillPreview/Textures/001.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 25af37bc4f206834daa9b0b96454d448
+    m_Address: GameAssets/SkillPreview/Textures/002.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 24f5df6ac1908894eba77e042c5ba4b8
+    m_Address: GameAssets/SkillPreview/Textures/003.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: d9687bd877bc3314fa3750d6ae841fb6
+    m_Address: GameAssets/SkillPreview/Textures/004.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: e79d2f7e2a1c6fd4382ac73baf5b2def
+    m_Address: GameAssets/SkillPreview/Textures/005.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: c603f204ef9d2294b8f7d979456246a7
+    m_Address: GameAssets/SkillPreview/Textures/TargetSelect.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: dd1f300d6062fee48bf00a13907517b6, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 7d06d1f52cd7ce3438948f22aeb35fbc, type: 2}
+    - {fileID: 11400000, guid: 3934d8e7b224e5c449920acf361e8559, type: 2}

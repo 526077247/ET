@@ -80,6 +80,41 @@ MonoBehaviour:
     - default
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
+  - m_GUID: 8740f5e62a6c4cd459d0d4da9d6f734c
+    m_Address: Config/BuffConfigCategory.bytes
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: ee9028d3caddbb34ab2478a618df1c9b
+    m_Address: Config/FormulaConfigCategory.bytes
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: cc3672c0321027d48b8f428c2c72a153
+    m_Address: Config/SkillConfigCategory.bytes
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 3473dc507a3ff7c44a57fd2f7085b354
+    m_Address: Config/SkillJudgeConfigCategory.bytes
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: dda95401475430c46b483df9ea070be8
+    m_Address: Config/SkillStepConfigCategory.bytes
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: dd1f300d6062fee48bf00a13907517b6, type: 2}
   m_SchemaSet:

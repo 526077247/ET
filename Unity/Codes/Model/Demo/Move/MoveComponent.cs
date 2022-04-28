@@ -78,5 +78,11 @@ namespace ET
         public Quaternion From;
 
         public Quaternion To;
+        
+        public bool Enable;//是否允许移动
+        
+        public Unit Aim;//目标
+
+        public Action OnArrive;
     }
 }

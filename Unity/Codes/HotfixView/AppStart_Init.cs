@@ -24,6 +24,7 @@ namespace ET
             Game.Scene.AddComponent<ToastComponent>();
             Game.Scene.AddComponent<SoundComponent>();
             // 加载配置
+            Game.Scene.AddComponent<SkillStepComponent>();
             Game.Scene.AddComponent<ConfigComponent>();
             ConfigComponent.Instance.Load();
             
@@ -40,8 +41,11 @@ namespace ET
             
             Game.Scene.AddComponent<GlobalComponent>();
             Game.Scene.AddComponent<GalGameEngineComponent>();
+            
             // gal命令订阅组件
             Game.Scene.AddComponent<CommandWatcherComponent>();
+            // 技能订阅组件
+            Game.Scene.AddComponent<SkillWatcherComponent>();
             Game.Scene.AddComponent<AIDispatcherComponent>();
             Game.Scene.AddComponent<NumericWatcherComponent>();
             await UIManagerComponent.Instance.OpenWindow<UILoadingView>(UILoadingView.PrefabPath);

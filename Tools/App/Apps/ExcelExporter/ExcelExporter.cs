@@ -202,19 +202,25 @@ namespace ET
                 {
                     if (kv.Value.C)
                     {
-                        ExportClass(kv.Key, kv.Value.HeadInfos, ConfigType.c);
+                        ExportClass(kv.Key, kv.Value.HeadInfos, ConfigType.c,true);
                     }
 
                     if (kv.Value.S)
                     {
-                        ExportClass(kv.Key, kv.Value.HeadInfos, ConfigType.s);
+                        ExportClass(kv.Key, kv.Value.HeadInfos, ConfigType.s,true);
                     }
                 }
 
                 // 动态编译生成的配置代码
                 configAssemblies[(int) ConfigType.c] = DynamicBuild(ConfigType.c);
                 configAssemblies[(int) ConfigType.s] = DynamicBuild(ConfigType.s);
-
+                foreach (var kv in tables)
+                {
+                    if (kv.Value.C)
+                    {
+                        ExportClass(kv.Key, kv.Value.HeadInfos, ConfigType.c);
+                    }
+                }
                 foreach (string path in FindFile(excelDir))
                 {
                     ExportExcel(path);
@@ -461,7 +467,7 @@ namespace ET
             }
         }
 
-        static void ExportClass(string protoName, Dictionary<string, HeadInfo> classField, ConfigType configType)
+        static void ExportClass(string protoName, Dictionary<string, HeadInfo> classField, ConfigType configType,bool setattr = false)
         {
             string dir = GetClassDir(configType);
             if (!Directory.Exists(dir))
@@ -491,7 +497,10 @@ namespace ET
                 {
                     continue;
                 }
-
+                if (setattr && headInfo.FieldType.IndexOf("float", StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    sb.Append("\t\t[BsonRepresentation(MongoDB.Bson.BsonType.Double, AllowTruncation = true)]\n");
+                }
                 sb.Append($"\t\t/// <summary>{headInfo.FieldDesc}</summary>\n");
                 sb.Append($"\t\t[ProtoMember({headInfo.FieldIndex})]\n");
                 string fieldType = headInfo.FieldType;

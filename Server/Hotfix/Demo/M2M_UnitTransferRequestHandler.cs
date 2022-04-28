@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace ET
@@ -29,13 +30,15 @@ namespace ET
 			// 通知客户端创建My Unit
 			M2C_CreateMyUnit m2CCreateUnits = new M2C_CreateMyUnit();
 			m2CCreateUnits.Unit = UnitHelper.CreateUnitInfo(unit);
+			m2CCreateUnits.Unit.SkillIds = new List<int>(){1001,1002,1003,1004};//初始技能
 			MessageHelper.SendToClient(unit, m2CCreateUnits);
 			
 			var numericComponent = unit.GetComponent<NumericComponent>();
 			// 加入aoi
-			unit.AddComponent<AOIUnitComponent,Vector3,Quaternion, CampType,int>
+			var aoiu = unit.AddComponent<AOIUnitComponent,Vector3,Quaternion, CampType,int>
 					(unit.Position,unit.Rotation,CampType.Player,numericComponent.GetAsInt(NumericType.AOI));
-
+			unit.AddComponent<CombatUnitComponent,Unit,List<int>>(unit,m2CCreateUnits.Unit.SkillIds);
+			aoiu.AddSphereTrigger(0.5f, AOITriggerType.None, null, true);
 			response.NewInstanceId = unit.InstanceId;
 			
 			reply();

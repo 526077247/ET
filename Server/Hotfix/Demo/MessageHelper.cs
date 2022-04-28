@@ -9,7 +9,7 @@ namespace ET
     {
         public static void Broadcast(Unit unit, IActorMessage message)
         {
-            foreach (var u in unit.GetBeSeePlayers())
+            foreach (var u in unit.GetBeSeeUnits())
             {
                 SendToClient(u.GetParent<Unit>(), message);
             }
@@ -17,7 +17,8 @@ namespace ET
         
         public static void SendToClient(Unit unit, IActorMessage message)
         {
-            SendActor(unit.GetComponent<UnitGateComponent>().GateSessionActorId, message);
+            if(unit.GetComponent<UnitGateComponent>()!=null)
+                SendActor(unit.GetComponent<UnitGateComponent>().GateSessionActorId, message);
         }
         
         

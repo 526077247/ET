@@ -4,13 +4,16 @@ using UnityEngine;
 
 namespace ET
 {
-    public class Unit: Entity, IAwake<int>
+    public class Unit: Entity, IAwake<int>,IAwake
     {
         public int ConfigId; //配置表id
 
         [BsonIgnore]
         public UnitConfig Config => UnitConfigCategory.Instance.Get(this.ConfigId);
-
+        
+        [BsonIgnore]
+        public UnitType Type => (UnitType)Config.Type;
+        
         private WrapVector3 position = new WrapVector3(); //坐标
 
         public Vector3 Position

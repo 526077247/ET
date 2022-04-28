@@ -32,6 +32,7 @@ namespace ET
 #if !NOT_UNITY
             return await HttpManager.Instance.HttpGetResult<string[]>(ServerConfigManagerComponent.Instance.GetCurConfig().RouterListUrl + "/router.list");
 #else
+            await ETTask.CompletedTask;
             return new string[]{"172.22.213.58:10007", "172.22.213.58:10008", "172.22.213.58:10009", };
 #endif
         }

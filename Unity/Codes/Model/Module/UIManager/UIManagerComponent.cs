@@ -13,7 +13,7 @@ namespace ET
         public Dictionary<string, UIWindow> windows;//所有存活的窗体  {ui_name:window}
         public Dictionary<UILayerNames, LinkedList<string>> window_stack;//窗口记录队列
         public int MaxOderPerWindow = 10;
-        public float ScreenSizeflag;
+        public float ScreenSizeflag { get; set; }
         public float WidthPadding;
         public Dictionary<long, Dictionary<string, Dictionary<Type, Entity>>> componentsMap = new Dictionary<long, Dictionary<string, Dictionary<Type, Entity>>>();
         public Dictionary<long, int> lengthMap = new Dictionary<long, int>();

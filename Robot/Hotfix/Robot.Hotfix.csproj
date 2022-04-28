@@ -47,7 +47,12 @@
         <Compile Include="..\..\Unity\Codes\Hotfix\Module\Numeric\**\*.cs">
             <Link>Module\Numeric\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
-
+        <Compile Include="..\..\Unity\Codes\Hotfix\Module\AOI\**\*.cs">
+            <Link>Module\AOI\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+        <Compile Include="..\..\Unity\Codes\Hotfix\Module\Battle\**\*.cs">
+            <Link>Module\Battle\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
         <Compile Include="..\..\Server\Hotfix\Module\Actor\**\*.cs">
             <Link>Module\Actor\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>

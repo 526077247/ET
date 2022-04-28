@@ -12,7 +12,7 @@ namespace ET
             {
                 case UnitType.Player:
                 {
-                    Unit unit = unitComponent.AddChildWithId<Unit, int>(id, 1001);
+                    Unit unit = unitComponent.AddChildWithId<Unit, int>(id, 1);
                     //ChildType测试代码 取消注释 编译Server.hotfix 可发现报错
                     //unitComponent.AddChild<Player, string>("Player");
                     unit.AddComponent<MoveComponent>();
@@ -30,6 +30,18 @@ namespace ET
                 default:
                     throw new Exception($"not such unit type: {unitType}");
             }
+        }
+        
+        public static Unit CreateSkillCollider(Scene currentScene, int configId,Vector3 pos,Quaternion rota,CombatUnitComponent from)
+        {
+            UnitComponent unitComponent = currentScene.GetComponent<UnitComponent>();
+            Unit unit = unitComponent.AddChild<Unit,int>(configId);
+        
+            unit.Position = pos;
+            unit.Rotation = rota;
+            unit.AddComponent<SkillColliderComponent, int,CombatUnitComponent>(configId,from);
+            unit.AddComponent<AOIUnitComponent,Vector3,Quaternion, CampType>(pos,rota,CampType.SkillCollider);
+            return unit;
         }
     }
 }

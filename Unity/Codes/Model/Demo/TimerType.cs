@@ -6,6 +6,9 @@
         public const int MoveTimer = 1001;
         public const int AITimer = 1002;
         public const int SessionAcceptTimeout = 1003;
+        public const int SkillColliderRemove = 1004;//销毁技能判定体
+        public const int PlayNextSkillStep = 1005;//技能步骤
+        public const int RemoveBuff = 1006;//移除Buff
         // 不能超过10000
     }
 }

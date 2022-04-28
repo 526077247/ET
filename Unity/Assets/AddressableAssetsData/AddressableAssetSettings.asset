@@ -47,6 +47,13 @@ MonoBehaviour:
   - {fileID: 11400000, guid: bed995d83902f0c44ace65e9a108f66c, type: 2}
   - {fileID: 11400000, guid: ba11c3959cee4ee49809b85e72ffde02, type: 2}
   - {fileID: 11400000, guid: f955fdfbb7086ed488fef03227efea84, type: 2}
+  - {fileID: 11400000, guid: 39d6d9a5bf155134c9950f4e9fcda034, type: 2}
+  - {fileID: 11400000, guid: af9603d21329ef3458a09dcf4a852ddb, type: 2}
+  - {fileID: 11400000, guid: e197f31c0176e7f49a5b198f2250e47c, type: 2}
+  - {fileID: 11400000, guid: d9774c90a27bdd04ea710aee4e4cd498, type: 2}
+  - {fileID: 11400000, guid: 3865a6cbee75a0e4cb451b2df77e5e9f, type: 2}
+  - {fileID: 11400000, guid: c05f42393c0c2d44b936e757d157a1b8, type: 2}
+  - {fileID: 11400000, guid: a1094f7b4b3cc8e4a9dfe9c74b82c090, type: 2}
   m_BuildSettings:
     m_CompileScriptsInVirtualMode: 0
     m_CleanupStreamingAssetsAfterBuilds: 1
@@ -124,7 +131,7 @@ MonoBehaviour:
         m_SerializedData:
         - m_AssemblyName: mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
           m_ClassName: System.Int32
-          m_Data: 60714
+          m_Data: 55419
           m_Key: HostingServicePort
         - m_AssemblyName: mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
           m_ClassName: System.String

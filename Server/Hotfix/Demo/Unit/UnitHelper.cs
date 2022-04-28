@@ -40,19 +40,22 @@ namespace ET
                 }
             }
 
-            foreach ((int key, long value) in nc.NumericDic)
+            if(nc!=null)
             {
-                unitInfo.Ks.Add(key);
-                unitInfo.Vs.Add(value);
+                foreach ((int key, long value) in nc.NumericDic)
+                {
+                    unitInfo.Ks.Add(key);
+                    unitInfo.Vs.Add(value);
+                }
             }
 
             return unitInfo;
         }
         
         // 获取看见unit的玩家，主要用于广播
-        public static ListComponent<AOIUnitComponent> GetBeSeePlayers(this Unit self)
+        public static ListComponent<AOIUnitComponent> GetBeSeeUnits(this Unit self)
         {
-            return self.GetComponent<AOIUnitComponent>().GetBeSeePlayers();
+            return self.GetComponent<AOIUnitComponent>().GetBeSeeUnits();
         }
         
         public static void NoticeUnitAdd(Unit unit, Unit sendUnit)

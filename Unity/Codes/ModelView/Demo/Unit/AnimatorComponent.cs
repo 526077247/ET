@@ -8,6 +8,8 @@ namespace ET
 		None,
 		Idle,
 		Run,
+		Died,
+		Damage,
 	}
 
 	public class AnimatorComponent : Entity, IAwake, IUpdate, IDestroy

@@ -55,6 +55,28 @@ namespace ET
                 C2M_TransferMap c2MTransferMap = new C2M_TransferMap();
                 self.ZoneScene().GetComponent<SessionComponent>().Session.Call(c2MTransferMap).Coroutine();
             }
+            
+            KeyCodeComponent keyCode = KeyCodeComponent.Instance;
+            if (keyCode != null)
+            {
+                var unit = UnitHelper.GetMyUnitFromZoneScene(keyCode.ZoneScene());
+                var CurCombat = unit?.GetComponent<CombatUnitComponent>();
+                var spellPreviewComponent = CurCombat?.GetComponent<SpellPreviewComponent>();
+                if (spellPreviewComponent == null)
+                {
+                    return;
+                }
+                for (int i = 0; i < keyCode.Skills.Length; i++)
+                {
+                    if (InputHelper.GetKeyDown(keyCode.Skills[i]) && spellPreviewComponent.InputSkills.ContainsKey(keyCode.Skills[i]))
+                    {
+                        var spellSkill = spellPreviewComponent.InputSkills[keyCode.Skills[i]];
+                        if (spellSkill == null || !spellSkill.CanUse()) return;
+                        spellPreviewComponent.PreviewingSkill = spellSkill;
+                        spellPreviewComponent.EnterPreview();
+                    }
+                }
+            }
         }
     }
 }

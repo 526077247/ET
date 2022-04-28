@@ -1,0 +1,81 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: skill_skill_1002
+  m_EditorClassIdentifier: 
+  m_GroupName: skill_skill_1002
+  m_Data:
+    m_SerializedData: []
+  m_GUID: f6530b530adba0d47995f1240636997b
+  m_SerializeEntries:
+  - m_GUID: 150aee38b5d848b42b75593618992bb7
+    m_Address: Skill/Skill_1002/Materials/circle_AB.mat
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: e7912d15146fcf145afaaedec646b781
+    m_Address: Skill/Skill_1002/Materials/explosion_spritesheet_3x3_AB.mat
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: e653836c30661fe419b8992e230ca189
+    m_Address: Skill/Skill_1002/Materials/glow1_ADD.mat
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 6dcac688f6814ad46a453f53e6f979bc
+    m_Address: Skill/Skill_1002/Prefabs/CartoonFireTorchBlue.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 423f66bea8a67bb448298e886ab1a120
+    m_Address: Skill/Skill_1002/Prefabs/SkillExecution_1002.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 155f67fd8750f8e4e83c8efb1731f3a0
+    m_Address: Skill/Skill_1002/Textures/circle.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: d7c03274686d81342b51ce0f21ac8215
+    m_Address: Skill/Skill_1002/Textures/explosion_spritesheet_3x3.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 75c822b01a637d547abc69e6f1f590b4
+    m_Address: Skill/Skill_1002/Textures/glow1.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: dd1f300d6062fee48bf00a13907517b6, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 1ed5706294032214c8fff5c36d2a26e0, type: 2}
+    - {fileID: 11400000, guid: c40274b2ea24f854eab169339f37c487, type: 2}

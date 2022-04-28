@@ -23,14 +23,32 @@ namespace ILRuntime.Runtime.Generated
             Type[] args;
             Type type = typeof(UnityEngine.TextAsset);
             args = new Type[]{};
+            method = type.GetMethod("get_text", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, get_text_0);
+            args = new Type[]{};
             method = type.GetMethod("get_bytes", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, get_bytes_0);
+            app.RegisterCLRMethodRedirection(method, get_bytes_1);
 
 
         }
 
 
-        static StackObject* get_bytes_0(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* get_text_0(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        {
+            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
+            StackObject* ptr_of_this_method;
+            StackObject* __ret = ILIntepreter.Minus(__esp, 1);
+
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
+            UnityEngine.TextAsset instance_of_this_method = (UnityEngine.TextAsset)typeof(UnityEngine.TextAsset).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            __intp.Free(ptr_of_this_method);
+
+            var result_of_this_method = instance_of_this_method.text;
+
+            return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
+        }
+
+        static StackObject* get_bytes_1(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;

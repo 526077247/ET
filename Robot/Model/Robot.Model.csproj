@@ -85,7 +85,12 @@
         <Compile Include="..\..\Unity\Codes\Model\Module\Numeric\**\*.cs">
             <Link>Module\Numeric\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
-
+        <Compile Include="..\..\Unity\Codes\Model\Module\AOI\**\*.cs">
+            <Link>Module\AOI\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+        <Compile Include="..\..\Unity\Codes\Model\Module\Battle\**\*.cs">
+            <Link>Module\Battle\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
         <Compile Include="..\..\Unity\Codes\Model\Module\Recast\**\*.cs">
             <Link>Module\Recast\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>

@@ -1,0 +1,176 @@
+﻿using System;
+using UnityEngine;
+using UnityEngine.UI;
+
+namespace ET
+{
+    [ObjectSystem]
+    public class TargetSelectComponentAwakeSystem : AwakeSystem<TargetSelectComponent>
+    {
+        public override void Awake(TargetSelectComponent self)
+        {
+            //CursorImage = GetComponent<Image>();
+            self.CursorColor = Color.white;
+            self.waiter = ETTask<GameObject>.Create(); 
+            
+            self.Init().Coroutine();
+             
+            self.HeroObj = UnitHelper.GetMyUnitFromZoneScene(self.ZoneScene()).GetComponent<GameObjectComponent>().GameObject;
+        }
+    }
+    [ObjectSystem]
+    [FriendClass(typeof(AOIUnitComponent))]
+    public class TargetSelectComponentUpdateSystem : UpdateSystem<TargetSelectComponent>
+    {
+        public override void Update(TargetSelectComponent self)
+        {
+            if (self.RangeCircleObj == null||!self.IsShow) return;
+            self.RangeCircleObj.transform.position = self.HeroObj.transform.position;
+            self.CursorImage.rectTransform.anchoredPosition = Input.mousePosition*UIManagerComponent.Instance.ScreenSizeflag;
+            
+            if (RaycastHelper.CastUnitObj(out var obj))
+            {
+                var uidC = obj.GetComponentInParent<UnitIdComponent>();
+                if (uidC != null)
+                {
+                    var unit = self.ZoneScene().CurrentScene().GetComponent<UnitComponent>()?.GetChild<Unit>(uidC.UnitId);
+                    var canUse = self.CanSkillToUnit(unit);
+                    if (canUse)
+                    {
+                        if (self.TargetLimitType == SkillAffectTargetType.EnemyTeam)
+                        {
+                            self.CursorImage.color = Color.red;
+                        }
+                        else if (self.TargetLimitType == SkillAffectTargetType.SelfTeam||self.TargetLimitType == SkillAffectTargetType.Self)
+                        {
+                            self.CursorImage.color = Color.green;
+                        }
+                        if (Input.GetMouseButtonDown((int)UnityEngine.UIElements.MouseButton.LeftMouse))
+                        {
+                            SelectEventSystem.Instance.Hide(self);
+                            self.OnSelectTargetCallback?.Invoke(unit);
+                        }
+                        return;
+                    }
+                }
+            }
+            if (Input.GetMouseButtonDown((int)UnityEngine.UIElements.MouseButton.LeftMouse))
+            {
+                SelectEventSystem.Instance.Hide(self);
+            }
+            self.CursorImage.color = self.CursorColor;
+            
+        }
+    }
+    [ObjectSystem]
+    public class TargetSelectComponentDestroySystem : DestroySystem<TargetSelectComponent>
+    {
+        public override void Destroy(TargetSelectComponent self)
+        {
+            GameObjectPoolComponent.Instance?.RecycleGameObject(self.gameObject);
+            GameObjectPoolComponent.Instance?.RecycleGameObject(self.CursorImage.gameObject);
+        }
+    }
+    [SelectSystem]
+    [FriendClass(typeof(TargetSelectComponent))]
+    public class TargetSelectComponentShowSelectSystem : ShowSelectSystem<TargetSelectComponent,Action<Unit>, int[]>
+    {
+        public override async ETTask OnShow(TargetSelectComponent self ,Action<Unit> onSelectedCallback, int[] previewRange)
+        {
+            if (previewRange == null || previewRange.Length != 1)
+            {
+                Log.Error("技能预览配置错误！！！");
+                return;
+            }
+            if (self.waiter != null) await self.waiter;
+            self.distance = previewRange[0];
+            self.gameObject.SetActive(true);
+            Cursor.visible = false;
+            self.CursorImage.gameObject.SetActive(true);
+            self.RangeCircleObj.transform.localScale = Vector3.one*self.distance;
+            self.OnSelectTargetCallback = onSelectedCallback;
+            self.IsShow = true;
+        }
+    }
+
+    [SelectSystem]
+    [FriendClass(typeof(TargetSelectComponent))]
+    public class TargetSelectComponentHideSelectSystem : HideSelectSystem<TargetSelectComponent>
+    {
+        public override void OnHide(TargetSelectComponent self)
+        {
+            self.IsShow = false;
+            if (self.waiter != null) return;
+            Cursor.visible = true;
+            self.CursorImage.gameObject.SetActive(false);
+            self.gameObject.SetActive(false);
+        }
+    }
+    [FriendClass(typeof(TargetSelectComponent))]
+    [FriendClass(typeof(UILayersComponent))]
+    public static class TargetSelectComponentSystem
+    {
+        public static async ETTask Init(this TargetSelectComponent self)
+        {
+            string path = "GameAssets/SkillPreview/Prefabs/TargetSelectManager.prefab";
+            string targetPath = "GameAssets/SkillPreview/Prefabs/TargetIcon.prefab";
+            using (ListComponent<ETTask<GameObject>> tasks = ListComponent<ETTask<GameObject>>.Create())
+            {
+                tasks.Add(GameObjectPoolComponent.Instance.GetGameObjectAsync(targetPath, (obj) =>
+                {
+                    self.CursorImage = obj.GetComponent<Image>();
+                    self.CursorImage.transform.parent =
+                        UILayersComponent.Instance.layers[UILayerNames.TipLayer].transform;
+                    self.CursorImage.transform.localPosition = Vector3.zero;
+                    self.CursorImage.rectTransform.anchoredPosition = Input.mousePosition;
+                }));
+                tasks.Add(GameObjectPoolComponent.Instance.GetGameObjectAsync(path, (obj) =>
+                {
+
+                    self.RangeCircleObj = obj.transform.Find("RangeCircle").gameObject;
+                    self.gameObject = obj;
+                }));
+                await ETTaskHelper.WaitAll(tasks);
+                self.waiter.SetResult(self.gameObject);
+                self.waiter = null;
+            }
+
+        }
+
+        public static Ray GetRay(this TargetSelectComponent self,float dis = 100f)
+        {
+            var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            return new Ray
+            {
+                Dir = ray.direction,
+                Start = ray.origin,
+                Distance = dis
+            };
+        }
+
+        public static bool CanSkillToUnit(this TargetSelectComponent self,Unit unit)
+        {
+            // var aoiU = unit?.GetComponent<AOIUnitComponent>();
+            // if (aoiU == null) return false;
+            //
+            // CampType[] res = null;
+            // if (self.TargetLimitType == SkillAffectTargetType.EnemyTeam)
+            //     res = new []{ CampType.Monster};
+            // else if (self.TargetLimitType == SkillAffectTargetType.SelfTeam||self.TargetLimitType == SkillAffectTargetType.Self)
+            //     res = new []{ CampType.Player};
+            // for (int i = 0; i < res.Length; i++)
+            // {
+            //     if (res[i] == aoiU.Type || res[i] == CampType.ALL)
+            //     {
+            //         return true;
+            //     }
+            // }
+            // return false;
+            if (self.TargetLimitType == SkillAffectTargetType.EnemyTeam)
+                return unit.Id != self.Id;
+            if (self.TargetLimitType == SkillAffectTargetType.SelfTeam||self.TargetLimitType == SkillAffectTargetType.Self)
+                return unit.Id != self.Id;
+            return false;
+        }
+    }
+}

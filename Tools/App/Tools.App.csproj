@@ -48,15 +48,14 @@
         <Compile Include="..\..\Unity\Codes\Model\Module\Message\OpcodeRangeDefine.cs">
             <Link>Module\Message\OpcodeRangeDefine.cs</Link>
         </Compile>
+        <Compile Include="..\..\Unity\Codes\Model\Module\Battle\Combat\Skill\SkillStep.cs">
+            <Link>Apps\SkillChecker\SkillStep.cs</Link>
+        </Compile>
     </ItemGroup>
     
     <ItemGroup>
       <ProjectReference Include="..\..\ThirdParty\ETTask\ETTask.csproj" />
       <ProjectReference Include="..\..\ThirdParty\ShareLib\ShareLib.csproj" />
-    </ItemGroup>
-    
-    <ItemGroup>
-      <Folder Include="Apps" />
     </ItemGroup>
     
     <ItemGroup>

@@ -17,7 +17,7 @@
             // 等待CreateMyUnit的消息
             WaitType.Wait_CreateMyUnit waitCreateMyUnit = await zoneScene.GetComponent<ObjectWait>().Wait<WaitType.Wait_CreateMyUnit>();
             await task;//等收到消息并且地图创建完成
-            
+            zoneScene.AddComponent<KeyCodeComponent>();
             M2C_CreateMyUnit m2CCreateMyUnit = waitCreateMyUnit.Message;
             Unit unit = UnitFactory.Create(currentScene, m2CCreateMyUnit.Unit);
             unitComponent.Add(unit);
