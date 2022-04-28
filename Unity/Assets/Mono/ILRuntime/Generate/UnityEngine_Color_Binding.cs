@@ -32,6 +32,12 @@ namespace ILRuntime.Runtime.Generated
             args = new Type[]{};
             method = type.GetMethod("get_white", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, get_white_2);
+            args = new Type[]{};
+            method = type.GetMethod("get_red", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, get_red_3);
+            args = new Type[]{};
+            method = type.GetMethod("get_green", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, get_green_4);
 
             field = type.GetField("r", flag);
             app.RegisterCLRFieldGetter(field, get_r_0);
@@ -132,6 +138,28 @@ namespace ILRuntime.Runtime.Generated
 
 
             var result_of_this_method = UnityEngine.Color.white;
+
+            return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
+        }
+
+        static StackObject* get_red_3(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        {
+            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
+            StackObject* __ret = ILIntepreter.Minus(__esp, 0);
+
+
+            var result_of_this_method = UnityEngine.Color.red;
+
+            return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
+        }
+
+        static StackObject* get_green_4(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        {
+            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
+            StackObject* __ret = ILIntepreter.Minus(__esp, 0);
+
+
+            var result_of_this_method = UnityEngine.Color.green;
 
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }

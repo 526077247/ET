@@ -23,17 +23,28 @@ namespace ILRuntime.Runtime.Generated
             Type[] args;
             Type type = typeof(ET.ListComponent<System.String>);
             args = new Type[]{};
-            method = type.GetMethod("Dispose", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, Dispose_0);
-            args = new Type[]{};
             method = type.GetMethod("Create", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, Create_1);
+            app.RegisterCLRMethodRedirection(method, Create_0);
+            args = new Type[]{};
+            method = type.GetMethod("Dispose", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, Dispose_1);
 
 
         }
 
 
-        static StackObject* Dispose_0(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* Create_0(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        {
+            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
+            StackObject* __ret = ILIntepreter.Minus(__esp, 0);
+
+
+            var result_of_this_method = ET.ListComponent<System.String>.Create();
+
+            return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
+        }
+
+        static StackObject* Dispose_1(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
@@ -46,17 +57,6 @@ namespace ILRuntime.Runtime.Generated
             instance_of_this_method.Dispose();
 
             return __ret;
-        }
-
-        static StackObject* Create_1(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
-        {
-            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            StackObject* __ret = ILIntepreter.Minus(__esp, 0);
-
-
-            var result_of_this_method = ET.ListComponent<System.String>.Create();
-
-            return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 
 

@@ -31,6 +31,15 @@ namespace ILRuntime.Runtime.Generated
             args = new Type[]{};
             method = type.GetMethod("GetResult", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, GetResult_2);
+            args = new Type[]{typeof(System.Boolean)};
+            method = type.GetMethod("Create", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, Create_3);
+            args = new Type[]{};
+            method = type.GetMethod("Coroutine", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, Coroutine_4);
+            args = new Type[]{typeof(UnityEngine.GameObject)};
+            method = type.GetMethod("SetResult", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, SetResult_5);
 
 
         }
@@ -81,6 +90,55 @@ namespace ILRuntime.Runtime.Generated
             var result_of_this_method = instance_of_this_method.GetResult();
 
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
+        }
+
+        static StackObject* Create_3(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        {
+            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
+            StackObject* ptr_of_this_method;
+            StackObject* __ret = ILIntepreter.Minus(__esp, 1);
+
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
+            System.Boolean @fromPool = ptr_of_this_method->Value == 1;
+
+
+            var result_of_this_method = ET.ETTask<UnityEngine.GameObject>.Create(@fromPool);
+
+            return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
+        }
+
+        static StackObject* Coroutine_4(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        {
+            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
+            StackObject* ptr_of_this_method;
+            StackObject* __ret = ILIntepreter.Minus(__esp, 1);
+
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
+            ET.ETTask<UnityEngine.GameObject> instance_of_this_method = (ET.ETTask<UnityEngine.GameObject>)typeof(ET.ETTask<UnityEngine.GameObject>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            __intp.Free(ptr_of_this_method);
+
+            instance_of_this_method.Coroutine();
+
+            return __ret;
+        }
+
+        static StackObject* SetResult_5(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        {
+            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
+            StackObject* ptr_of_this_method;
+            StackObject* __ret = ILIntepreter.Minus(__esp, 2);
+
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
+            UnityEngine.GameObject @result = (UnityEngine.GameObject)typeof(UnityEngine.GameObject).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            __intp.Free(ptr_of_this_method);
+
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
+            ET.ETTask<UnityEngine.GameObject> instance_of_this_method = (ET.ETTask<UnityEngine.GameObject>)typeof(ET.ETTask<UnityEngine.GameObject>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            __intp.Free(ptr_of_this_method);
+
+            instance_of_this_method.SetResult(@result);
+
+            return __ret;
         }
 
 

@@ -28,12 +28,15 @@ namespace ILRuntime.Runtime.Generated
             args = new Type[]{typeof(UnityEngine.Vector3), typeof(UnityEngine.Vector3)};
             method = type.GetMethod("LookRotation", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, LookRotation_1);
-            args = new Type[]{};
-            method = type.GetMethod("get_identity", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, get_identity_2);
+            args = new Type[]{typeof(UnityEngine.Quaternion)};
+            method = type.GetMethod("Inverse", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, Inverse_2);
             args = new Type[]{typeof(UnityEngine.Quaternion), typeof(UnityEngine.Vector3)};
             method = type.GetMethod("op_Multiply", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, op_Multiply_3);
+            args = new Type[]{};
+            method = type.GetMethod("get_identity", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, get_identity_4);
 
             app.RegisterCLRCreateDefaultInstance(type, () => new UnityEngine.Quaternion());
 
@@ -162,13 +165,23 @@ namespace ILRuntime.Runtime.Generated
             }
         }
 
-        static StackObject* get_identity_2(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* Inverse_2(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            StackObject* __ret = ILIntepreter.Minus(__esp, 0);
+            StackObject* ptr_of_this_method;
+            StackObject* __ret = ILIntepreter.Minus(__esp, 1);
+
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
+            UnityEngine.Quaternion @rotation = new UnityEngine.Quaternion();
+            if (ILRuntime.Runtime.Generated.CLRBindings.s_UnityEngine_Quaternion_Binding_Binder != null) {
+                ILRuntime.Runtime.Generated.CLRBindings.s_UnityEngine_Quaternion_Binding_Binder.ParseValue(ref @rotation, __intp, ptr_of_this_method, __mStack, true);
+            } else {
+                @rotation = (UnityEngine.Quaternion)typeof(UnityEngine.Quaternion).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)16);
+                __intp.Free(ptr_of_this_method);
+            }
 
 
-            var result_of_this_method = UnityEngine.Quaternion.identity;
+            var result_of_this_method = UnityEngine.Quaternion.Inverse(@rotation);
 
             if (ILRuntime.Runtime.Generated.CLRBindings.s_UnityEngine_Quaternion_Binding_Binder != null) {
                 ILRuntime.Runtime.Generated.CLRBindings.s_UnityEngine_Quaternion_Binding_Binder.PushValue(ref result_of_this_method, __intp, __ret, __mStack);
@@ -207,6 +220,22 @@ namespace ILRuntime.Runtime.Generated
 
             if (ILRuntime.Runtime.Generated.CLRBindings.s_UnityEngine_Vector3_Binding_Binder != null) {
                 ILRuntime.Runtime.Generated.CLRBindings.s_UnityEngine_Vector3_Binding_Binder.PushValue(ref result_of_this_method, __intp, __ret, __mStack);
+                return __ret + 1;
+            } else {
+            return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
+            }
+        }
+
+        static StackObject* get_identity_4(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        {
+            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
+            StackObject* __ret = ILIntepreter.Minus(__esp, 0);
+
+
+            var result_of_this_method = UnityEngine.Quaternion.identity;
+
+            if (ILRuntime.Runtime.Generated.CLRBindings.s_UnityEngine_Quaternion_Binding_Binder != null) {
+                ILRuntime.Runtime.Generated.CLRBindings.s_UnityEngine_Quaternion_Binding_Binder.PushValue(ref result_of_this_method, __intp, __ret, __mStack);
                 return __ret + 1;
             } else {
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);

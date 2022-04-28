@@ -25,7 +25,6 @@ namespace ET
 		private MemoryStream assStream ;
 		private MemoryStream pdbStream ;
 		
-		public CodeMode CodeMode { get; set; }
 		// 所有mono的类型
 		private readonly Dictionary<string, Type> monoTypes = new Dictionary<string, Type>();
 		
@@ -77,12 +76,7 @@ namespace ET
 					byte[] assBytes = (AssetDatabase.LoadAssetAtPath($"Assets/AssetsPackage/Code/Code{AssetBundleConfig.Instance.ResVer}.dll.bytes", typeof(TextAsset)) as TextAsset).bytes;
 					byte[] pdbBytes = (AssetDatabase.LoadAssetAtPath($"Assets/AssetsPackage/Code/Code{AssetBundleConfig.Instance.ResVer}.pdb.bytes", typeof(TextAsset)) as TextAsset).bytes;
 #endif
-					
-					if (assetsBundle != null)
-					{
-						assetsBundle.Unload(true);	
-					}
-					
+
 					assembly = Assembly.Load(assBytes, pdbBytes);
 					foreach (Type type in this.assembly.GetTypes())
 					{
