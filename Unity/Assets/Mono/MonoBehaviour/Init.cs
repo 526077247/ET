@@ -13,6 +13,7 @@ namespace ET
 		Mono = 1,
 		ILRuntime = 2,
 		Reload = 3,
+		ILRuntimeJIT = 4,
 	}
 	
 	public class Init: MonoBehaviour

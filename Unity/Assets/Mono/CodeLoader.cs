@@ -90,6 +90,7 @@ namespace ET
 #endif
 					break;
 				}
+				case CodeMode.ILRuntimeJIT:
 				case CodeMode.ILRuntime:
 				{
 #if !UNITY_EDITOR
@@ -100,8 +101,11 @@ namespace ET
 					byte[] assBytes = (AssetDatabase.LoadAssetAtPath($"Assets/AssetsPackage/Code/Code{AssetBundleConfig.Instance.ResVer}.dll.bytes", typeof(TextAsset)) as TextAsset).bytes;
 					byte[] pdbBytes = (AssetDatabase.LoadAssetAtPath($"Assets/AssetsPackage/Code/Code{AssetBundleConfig.Instance.ResVer}.pdb.bytes", typeof(TextAsset)) as TextAsset).bytes;
 #endif
+					if(this.CodeMode==CodeMode.ILRuntimeJIT)
+						appDomain = new ILRuntime.Runtime.Enviorment.AppDomain(ILRuntime.Runtime.ILRuntimeJITFlags.JITOnDemand);
+					else
+						appDomain = new ILRuntime.Runtime.Enviorment.AppDomain();
 					
-					appDomain = new ILRuntime.Runtime.Enviorment.AppDomain(ILRuntime.Runtime.ILRuntimeJITFlags.JITOnDemand);
 #if DEBUG && (UNITY_EDITOR || UNITY_ANDROID || UNITY_IPHONE)
 					this.appDomain.UnityMainThreadID = System.Threading.Thread.CurrentThread.ManagedThreadId;
 #endif					
