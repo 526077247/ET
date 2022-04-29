@@ -11,12 +11,12 @@ namespace ET
     /// 使用时注意 平面是x,z；竖直方向是y
     /// </summary>
     [ChildType(typeof(AOITriggerComponent))]
-    public class AOIUnitComponent:Entity,IAwake<Vector3,Quaternion,CampType,int>,IAwake<Vector3,Quaternion,CampType>,IDestroy
+    public class AOIUnitComponent:Entity,IAwake<Vector3,Quaternion,UnitType,int>,IAwake<Vector3,Quaternion,UnitType>,IDestroy
     {
         public Vector3 Position;
         public Quaternion Rotation;
         public AOISceneComponent Scene;
-        public CampType Type;
+        public UnitType Type { get; set; }
         public AOIGrid Grid;
         public int Range;
         public readonly List<AOITriggerComponent> SphereTriggers = new List<AOITriggerComponent>();//自己的触发器

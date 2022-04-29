@@ -6,5 +6,8 @@
         Monster = 2,
         NPC = 3,
         Skill = 4,
+        
+        MAX,
+        ALL,
     }
 }

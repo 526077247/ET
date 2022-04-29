@@ -35,8 +35,8 @@ namespace ET
 			
 			var numericComponent = unit.GetComponent<NumericComponent>();
 			// 加入aoi
-			var aoiu = unit.AddComponent<AOIUnitComponent,Vector3,Quaternion, CampType,int>
-					(unit.Position,unit.Rotation,CampType.Player,numericComponent.GetAsInt(NumericType.AOI));
+			var aoiu = unit.AddComponent<AOIUnitComponent,Vector3,Quaternion, UnitType,int>
+					(unit.Position,unit.Rotation,UnitType.Player,numericComponent.GetAsInt(NumericType.AOI));
 			unit.AddComponent<CombatUnitComponent,Unit,List<int>>(unit,m2CCreateUnits.Unit.SkillIds);
 			aoiu.AddSphereTrigger(0.5f, AOITriggerType.None, null, true);
 			response.NewInstanceId = unit.InstanceId;

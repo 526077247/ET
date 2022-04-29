@@ -14,9 +14,9 @@ namespace ET
     {
         public override void Awake(AOIGrid self)
         {
-            for (int i = 0; i < (int)CampType.MAX; i++)
+            for (int i = 0; i < (int)UnitType.MAX; i++)
             {
-                self.idUnits.Add((CampType)i, new Dictionary<long, AOIUnitComponent>());
+                self.idUnits.Add((UnitType)i, new List<AOIUnitComponent>());
             }
             self.Triggers = ListComponent<AOITriggerComponent>.Create();
             self.ListenerUnits = ListComponent<AOIUnitComponent>.Create();
@@ -234,6 +234,7 @@ namespace ET
         /// <returns></returns>
         public static void AddListener(this AOIGrid self, AOIUnitComponent unit)
         {
+            // Log.Info("AddListener"+unit.Id+" "+self.posx+","+self.posy);
             self.ListenerUnits.Add(unit);
         }
         /// <summary>
@@ -244,21 +245,10 @@ namespace ET
         /// <returns></returns>
         public static void RemoveListener(this AOIGrid self, AOIUnitComponent unit)
         {
+            // Log.Info("RemoveListener"+unit.Id+" "+self.posx+","+self.posy);
             self.ListenerUnits.Remove(unit);
         }
-        /// <summary>
-        /// 获取一个AOIUnit
-        /// </summary>
-        /// <param name="self"></param>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public static AOIUnitComponent Get(this AOIGrid self, long id)
-        {
-            foreach (var item in self.idUnits)
-                if(item.Value.TryGetValue(id, out AOIUnitComponent unit))
-                    return unit;
-            return null;
-        }
+        
         /// <summary>
         /// 进入格子
         /// </summary>
@@ -267,11 +257,15 @@ namespace ET
         public static void Add(this AOIGrid self, AOIUnitComponent unit)
         {
             unit.Grid = self;
-            self.idUnits[unit.Type][unit.Id]= unit;
+            if (Define.Debug&&self.idUnits[unit.Type].Contains(unit))//Debug开启检测
+            {
+                Log.Error("self.idUnits[unit.Type].Contains(unit)");
+            }
+            self.idUnits[unit.Type].Add(unit);
             for (int i = 0; i < self.ListenerUnits.Count; i++)
             {
                 var item = self.ListenerUnits[i];
-                if (item.Type == CampType.Player)
+                if (item.Type == UnitType.Player)
                 {
                     Game.EventSystem.Publish(new EventType.AOIRegisterUnit()
                     {
@@ -294,7 +288,7 @@ namespace ET
                 for (int i = 0; i < self.ListenerUnits.Count; i++)
                 {
                     var item = self.ListenerUnits[i];
-                    if (item.Type == CampType.Player)
+                    if (item.Type == UnitType.Player)
                     {
                         Game.EventSystem.Publish(new EventType.AOIRemoveUnit()
                         {
@@ -303,39 +297,11 @@ namespace ET
                         });
                     }
                 }
-                self.idUnits[unit.Type].Remove(unit.Id);
+                self.idUnits[unit.Type].Remove(unit);
                 unit.Grid = null;
             }
         }
-        /// <summary>
-        /// 离开
-        /// </summary>
-        /// <param name="self"></param>
-        /// <param name="id"></param>
-        public static void Remove(this AOIGrid self, long id)
-        {
-            foreach (var item in self.idUnits)
-            {
-                if (item.Value.TryGetValue(id, out AOIUnitComponent unit))
-                {
-                    for (int i = 0; i < self.ListenerUnits.Count; i++)
-                    {
-                        var temp = self.ListenerUnits[i];
-                        if (temp.Type == CampType.Player)
-                        {
-                            Game.EventSystem.Publish(new EventType.AOIRemoveUnit()
-                            {
-                                Receive = temp,
-                                Unit = unit
-                            });
-                        }
-                    }
-                    item.Value.Remove(unit.Id);
-                    unit.Grid = null;
-                    break;
-                }
-            }
-        }
+        
 
         /// <summary>
         /// 获取所有指定类型单位
@@ -343,17 +309,17 @@ namespace ET
         /// <param name="self"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static ListComponent<AOIUnitComponent> GetAllUnit(this AOIGrid self, CampType type = CampType.ALL)
+        public static ListComponent<AOIUnitComponent> GetAllUnit(this AOIGrid self, UnitType type = UnitType.ALL)
         {
             var res = ListComponent<AOIUnitComponent>.Create();
-            if (type == CampType.ALL)
+            if (type == UnitType.ALL)
             {
                 foreach (var item in self.idUnits)
-                    res.AddRange(item.Value.Values.ToList());
+                    res.AddRange(item.Value);
             }
             else if (self.idUnits.ContainsKey(type))
             {
-                res.AddRange(self.idUnits[type].Values.ToList());
+                res.AddRange(self.idUnits[type]);
             }
             return res;
         }
@@ -363,15 +329,15 @@ namespace ET
         /// <param name="self"></param>
         /// <param name="types"></param>
         /// <returns></returns>
-        public static ListComponent<AOIUnitComponent> GetAllUnit(this AOIGrid self, List<CampType> types)
+        public static ListComponent<AOIUnitComponent> GetAllUnit(this AOIGrid self, List<UnitType> types)
         {
             var res = ListComponent<AOIUnitComponent>.Create();
-            var isAll = types.Contains(CampType.ALL);
+            var isAll = types.Contains(UnitType.ALL);
             foreach (var item in self.idUnits)
                 if (types.Contains(item.Key) || isAll)
                 {
                     // Log.Info("GetAllUnit key:"+item.Key);
-                    res.AddRange(item.Value.Values.ToList());
+                    res.AddRange(item.Value);
                 }
             return res;
         }
@@ -382,10 +348,10 @@ namespace ET
         /// <param name="types"></param>
         /// <param name="except"></param>
         /// <returns></returns>
-        public static ListComponent<AOITriggerComponent> GetAllCollider(this AOIGrid self, List<CampType> types,AOITriggerComponent except)
+        public static ListComponent<AOITriggerComponent> GetAllCollider(this AOIGrid self, List<UnitType> types,AOITriggerComponent except)
         {
             var res = ListComponent<AOITriggerComponent>.Create();
-            var isAll = types.Contains(CampType.ALL);
+            var isAll = types.Contains(UnitType.ALL);
             for (int i = 0; i < self.Triggers.Count; i++)
             {
                 var item = self.Triggers[i];
@@ -418,16 +384,16 @@ namespace ET
         /// <param name="self"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static ListComponent<AOIUnitComponent> GetAllUnit(this ListComponent<AOIGrid> self, CampType type = CampType.ALL)
+        public static ListComponent<AOIUnitComponent> GetAllUnit(this ListComponent<AOIGrid> self, UnitType type = UnitType.ALL)
         {
             var res = ListComponent<AOIUnitComponent>.Create();
             for (int i = 0; i < self.Count; i++)
             {
-                if (type == CampType.ALL)
+                if (type == UnitType.ALL)
                     foreach (var item in self[i].idUnits)
-                        res.AddRange(item.Value.Values.ToList());
+                        res.AddRange(item.Value);
                 else if (self[i].idUnits.ContainsKey(type))
-                    res.AddRange(self[i].idUnits[type].Values.ToList());
+                    res.AddRange(self[i].idUnits[type]);
             }
             return res;
         }
@@ -438,7 +404,7 @@ namespace ET
         /// <param name="self"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static ListComponent<AOIUnitComponent> GetNearbyUnit(this AOIGrid self, int turnNum, CampType type = CampType.ALL)
+        public static ListComponent<AOIUnitComponent> GetNearbyUnit(this AOIGrid self, int turnNum, UnitType type = UnitType.ALL)
         {
             var grid = self.GetNearbyGrid(turnNum);
             var res = grid.GetAllUnit(type);

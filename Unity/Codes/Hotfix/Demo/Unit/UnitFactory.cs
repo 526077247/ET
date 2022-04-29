@@ -15,6 +15,7 @@ namespace ET
 	        unit.Forward = new Vector3(unitInfo.ForwardX, unitInfo.ForwardY, unitInfo.ForwardZ);
 	        switch (unit.Type)
 	        {
+		        case UnitType.Monster:
 		        case UnitType.Player:
 		        {
 			        NumericComponent numericComponent = unit.AddComponent<NumericComponent>();
@@ -40,7 +41,7 @@ namespace ET
 					        }
 				        }
 			        }
-			        
+			        unit.AddComponent<AOIUnitComponent,Vector3,Quaternion, UnitType>(unit.Position,unit.Rotation,unit.Type);
 			        if (unitInfo.SkillIds != null)
 			        {
 				        Log.Info("-----------------"+unit.Id);
@@ -53,9 +54,10 @@ namespace ET
 		        }
 		        case UnitType.Skill:
 		        {
-			        unit.AddComponent<MoveComponent>();
+			        
 			        if (unitInfo.MoveInfo != null)
 			        {
+				        unit.AddComponent<MoveComponent>();
 				        if (unitInfo.MoveInfo.X.Count > 0)
 				        {
 					        using (ListComponent<Vector3> list = ListComponent<Vector3>.Create())
@@ -70,11 +72,15 @@ namespace ET
 					        }
 				        }
 			        }
-
+			        unit.AddComponent<AOIUnitComponent,Vector3,Quaternion, UnitType>(unit.Position,unit.Rotation,unit.Type);
 			        unit.AddComponent<ObjectWait>();
 			        break;
 		        }
-			        
+		        default:
+		        {
+			        Log.Error("没有处理 "+unit.Type);
+			        break;
+		        }
 	        }
 	        Game.EventSystem.PublishAsync(new EventType.AfterUnitCreate() {Unit = unit}).Coroutine();
             return unit;
@@ -97,7 +103,7 @@ namespace ET
 	        unit.Position = pos;
 	        unit.Rotation = rota;
 	        unit.AddComponent<SkillColliderComponent, int,CombatUnitComponent>(configId,from);
-	        unit.AddComponent<AOIUnitComponent,Vector3,Quaternion, CampType>(pos,rota,CampType.SkillCollider);
+	        unit.AddComponent<AOIUnitComponent,Vector3,Quaternion, UnitType>(pos,rota,unit.Type);
 	        return unit;
         }
 

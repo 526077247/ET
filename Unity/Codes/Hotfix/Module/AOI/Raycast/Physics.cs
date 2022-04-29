@@ -8,11 +8,11 @@ namespace ET
     [FriendClass(typeof(AOIUnitComponent))]
     public static class Physics
     {
-        public static bool Raycast(AOISceneComponent scene,Ray ray,out RaycastHit hit,CampType[] type = null)
+        public static bool Raycast(AOISceneComponent scene,Ray ray,out RaycastHit hit,UnitType[] type = null)
         {
             hit = default;
             if (type == null) return false;
-            using (DictionaryComponent<CampType, bool> typeTemp = DictionaryComponent<CampType, bool>.Create())
+            using (DictionaryComponent<UnitType, bool> typeTemp = DictionaryComponent<UnitType, bool>.Create())
             {
                 using (HashSetComponent<AOITriggerComponent> temp = HashSetComponent<AOITriggerComponent>.Create())
                 {
@@ -160,12 +160,12 @@ namespace ET
         }
 
         private static void RaycastHits(Ray ray, AOIGrid grid,Vector3 inPoint,ListComponent<RaycastHit> hits,
-            HashSetComponent<AOITriggerComponent> triggers, DictionaryComponent<CampType, bool> type)
+            HashSetComponent<AOITriggerComponent> triggers, DictionaryComponent<UnitType, bool> type)
         {
             for (int i = 0; i < grid.Triggers.Count; i++)
             {
                 var item = grid.Triggers[i];
-                if (item.IsCollider &&!triggers.Contains(item)&& type.ContainsKey(CampType.ALL) ||
+                if (item.IsCollider &&!triggers.Contains(item)&& type.ContainsKey(UnitType.ALL) ||
                     type.ContainsKey(item.GetParent<AOIUnitComponent>().Type))
                 {
                     if (item.IsPointInTrigger(inPoint, item.GetRealPos(), item.GetRealRot()))
@@ -193,7 +193,7 @@ namespace ET
         }
         
         //todo:
-        private static RaycastHit[] RaycastAll(AOISceneComponent scene,Ray ray,CampType[] type = null)
+        private static RaycastHit[] RaycastAll(AOISceneComponent scene,Ray ray,UnitType[] type = null)
         {
             return null;
         }

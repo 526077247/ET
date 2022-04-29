@@ -171,7 +171,7 @@ namespace ET
                         skillAOIUnit.AddSphereTrigger(collider.ColliderPara[0], AOITriggerType.Enter, (o,e) =>
                         {
                             OnColliderIn(aoiUnit, o,e,para, collider);
-                        },false,CampType.Monster);
+                        },false,UnitType.Monster);
                         if (collider.BuffIds != null&&collider.IsExitRemove!=null)
                         {
                             for (int i = 0; i < collider.IsExitRemove.Length; i++)
@@ -182,7 +182,7 @@ namespace ET
                                     skillAOIUnit.AddSphereTrigger(collider.ColliderPara[0], AOITriggerType.Exit, (o,e) =>
                                     {
                                         OnColliderOut(aoiUnit, o,e,para, collider);
-                                    },false,CampType.Monster);
+                                    },false,UnitType.Monster);
                                     break;
                                 }
                             }
@@ -196,7 +196,7 @@ namespace ET
                         skillAOIUnit.AddOBBTrigger(par, AOITriggerType.Enter, (o,e) =>
                         {
                             OnColliderIn(aoiUnit, o,e,para,collider);
-                        },false,CampType.Monster);
+                        },false,UnitType.Monster);
                         if (collider.BuffIds != null&&collider.IsExitRemove!=null)
                         {
                             for (int i = 0; i < collider.IsExitRemove.Length; i++)
@@ -207,7 +207,7 @@ namespace ET
                                     skillAOIUnit.AddSphereTrigger(collider.ColliderPara[0], AOITriggerType.Exit, (o,e) =>
                                     {
                                         OnColliderOut(aoiUnit, o,e,para, collider);
-                                    },false,CampType.Monster);
+                                    },false,UnitType.Monster);
                                     break;
                                 }
                             }

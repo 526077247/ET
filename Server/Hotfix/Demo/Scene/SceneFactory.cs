@@ -31,7 +31,7 @@ namespace ET
                     break;
                 case SceneType.Map:
                     scene.AddComponent<UnitComponent>();
-                    scene.AddComponent<AOISceneComponent,int>(5);
+                    scene.AddComponent<AOISceneComponent,int>(9);
                     break;
                 case SceneType.Location:
                     scene.AddComponent<LocationComponent>();

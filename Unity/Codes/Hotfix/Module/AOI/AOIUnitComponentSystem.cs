@@ -7,9 +7,9 @@ using UnityEngine;
 namespace ET
 {
     [ObjectSystem]
-    public class AOIUnitComponentAwakeSystem : AwakeSystem<AOIUnitComponent,Vector3,Quaternion, CampType,int>
+    public class AOIUnitComponentAwakeSystem : AwakeSystem<AOIUnitComponent,Vector3,Quaternion, UnitType,int>
     {
-        public override void Awake(AOIUnitComponent self,Vector3 pos,Quaternion rota, CampType type,int range)
+        public override void Awake(AOIUnitComponent self,Vector3 pos,Quaternion rota, UnitType type,int range)
         {
             self.Position = pos;
             self.Rotation = rota;
@@ -19,9 +19,9 @@ namespace ET
         }
     }
     [ObjectSystem]
-    public class AOIUnitComponentAwakeSystem2 : AwakeSystem<AOIUnitComponent,Vector3,Quaternion, CampType>
+    public class AOIUnitComponentAwakeSystem2 : AwakeSystem<AOIUnitComponent,Vector3,Quaternion, UnitType>
     {
-        public override void Awake(AOIUnitComponent self,Vector3 pos,Quaternion rota, CampType type)
+        public override void Awake(AOIUnitComponent self,Vector3 pos,Quaternion rota, UnitType type)
         {
             self.Position = pos;
             self.Rotation = rota;
@@ -51,7 +51,7 @@ namespace ET
         /// <param name="turnNum"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static ListComponent<AOIUnitComponent> GetNearbyUnit(this AOIUnitComponent self,int turnNum= 1, CampType type = CampType.ALL)
+        public static ListComponent<AOIUnitComponent> GetNearbyUnit(this AOIUnitComponent self,int turnNum= 1, UnitType type = UnitType.ALL)
         {
             if (turnNum < 0) turnNum = self.Range;
             if (self.Grid!=null)
@@ -123,7 +123,7 @@ namespace ET
         /// <param name="self"></param>
         public static void RefreshUnit(this AOIUnitComponent self)
         {
-            if (self.Type == CampType.Player)
+            if (self.Type == UnitType.Player)
             {
                 // 把周围的人通知给自己
                 var units = self.GetNearbyUnit(self.Range);
@@ -154,13 +154,13 @@ namespace ET
                     for (int i = 0; i < oldgrid.ListenerUnits.Count; i++)
                     {
                         var item = oldgrid.ListenerUnits[i];
-                        if (item.Type == CampType.Player&&item!=self)
+                        if (item.Type == UnitType.Player&&item!=self)
                         {
                             dic.Add(item, -1);
                         }
                     }
 
-                    oldgrid.idUnits[self.Type].Remove(self.Id);
+                    oldgrid.idUnits[self.Type].Remove(self);
                     self.Grid = null;
                 }
                 else
@@ -170,11 +170,15 @@ namespace ET
 
                 //Add
                 self.Grid = newgrid;
-                newgrid.idUnits[self.Type][self.Id] = self;
+                if (Define.Debug && newgrid.idUnits[self.Type].Contains(self))
+                {
+                    Log.Error("newgrid.idUnits[self.Type].Contains(self)");
+                }
+                newgrid.idUnits[self.Type].Add(self);
                 for (int i = 0; i < newgrid.ListenerUnits.Count; i++)
                 {
                     var item = newgrid.ListenerUnits[i];
-                    if (item.Type == CampType.Player&&item!=self)
+                    if (item.Type == UnitType.Player&&item!=self)
                     {
                         if (dic.ContainsKey(item))
                             dic[item] += 1;
@@ -233,7 +237,7 @@ namespace ET
                     remover.AddRange(item.Key.GetAllUnit());
                 }
             }
-            if (self.Type == CampType.Player)
+            if (self.Type == UnitType.Player)
             {
                 for (int i = 0; i < adder.Count; i++)
                 {

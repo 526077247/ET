@@ -16,21 +16,7 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: 6f4d749ec012a2b44a3e94bfec019834
-  m_SerializeEntries:
-  - m_GUID: d517b02a85041bd44bf0c3254daa5ede
-    m_Address: Code/Code1.0.0.dll.bytes
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - default
-    m_MainAsset: {fileID: 0}
-    m_TargetAsset: {fileID: 0}
-  - m_GUID: 77dcaaa6e7204144e957c935fd60c307
-    m_Address: Code/Code1.0.0.pdb.bytes
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - default
-    m_MainAsset: {fileID: 0}
-    m_TargetAsset: {fileID: 0}
+  m_SerializeEntries: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: dd1f300d6062fee48bf00a13907517b6, type: 2}
   m_SchemaSet:

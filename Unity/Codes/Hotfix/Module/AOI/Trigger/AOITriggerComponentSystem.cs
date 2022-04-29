@@ -107,11 +107,11 @@ namespace ET
         /// <param name="selecter"></param>
         /// <returns></returns>
         static AOITriggerComponent AddTrigger(this AOIUnitComponent self, float radius, AOITriggerType type,
-            Action<AOIUnitComponent, AOITriggerType> handler, bool isCollider, params CampType[] selecter)
+            Action<AOIUnitComponent, AOITriggerType> handler, bool isCollider, params UnitType[] selecter)
         {
             AOITriggerComponent trigger = self.AddChild<AOITriggerComponent,float,Action<AOIUnitComponent, AOITriggerType>>(radius,handler);
             trigger.Flag = type;
-            trigger.Selecter = new List<CampType>(selecter);
+            trigger.Selecter = new List<UnitType>(selecter);
             trigger.TriggerType=TriggerShapeType.Sphere;
             trigger.IsCollider = isCollider;
             self.SphereTriggers.Add(trigger);
@@ -200,7 +200,7 @@ namespace ET
         /// <param name="selecter">筛选AOI类型</param>
         /// <returns></returns>
         public static AOITriggerComponent AddSphereTrigger(this AOIUnitComponent self, float radius, AOITriggerType flag, 
-            Action<AOIUnitComponent, AOITriggerType> handler,bool isCollider, params CampType[] selecter)
+            Action<AOIUnitComponent, AOITriggerType> handler,bool isCollider, params UnitType[] selecter)
         {
             if (isCollider && self.Collider != null)
             {
@@ -228,7 +228,7 @@ namespace ET
         /// <param name="selecter">筛选AOI类型</param>
         /// <returns></returns>
         public static AOITriggerComponent AddOBBTrigger(this AOIUnitComponent self, Vector3 scale, AOITriggerType flag,
-            Action<AOIUnitComponent, AOITriggerType> handler,bool isCollider, params CampType[] selecter)
+            Action<AOIUnitComponent, AOITriggerType> handler,bool isCollider, params UnitType[] selecter)
         {
             if (isCollider && self.Collider != null)
             {

@@ -55,7 +55,7 @@ namespace ET
             unit.Scene = self;
             AOIGrid grid = self.GetAOIGrid(unit.Position);
             grid.Add(unit);
-            Log.Info("RegisterUnit:" + unit.Id + "  Position:" + unit.Position + "  grid x:"+ grid.posx+",y:"+ grid.posy);
+            Log.Info("RegisterUnit:" + unit.Id + "  Position:" + unit.Position + "  grid x:"+ grid.posx+",y:"+ grid.posy+" type"+unit.Type);
 
             using (var ListenerGrids = grid.GetNearbyGrid(unit.Range))
             {
@@ -63,7 +63,7 @@ namespace ET
                 {
                     var item = ListenerGrids[i];
                     item.AddListener(unit);
-                    if (unit.Type == CampType.Player)
+                    if (unit.Type == UnitType.Player)
                     {
                         using (var list = item.GetAllUnit())
                         {
@@ -99,7 +99,7 @@ namespace ET
                     {
                         var item = ListenerGrids[i];
                         item.RemoveListener(unit);
-                        if (unit.Type == CampType.Player)
+                        if (unit.Type == UnitType.Player)
                         {
                             using (var list = item.GetAllUnit())
                             {

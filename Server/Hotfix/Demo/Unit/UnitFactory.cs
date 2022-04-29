@@ -40,7 +40,7 @@ namespace ET
             unit.Position = pos;
             unit.Rotation = rota;
             unit.AddComponent<SkillColliderComponent, int,CombatUnitComponent>(configId,from);
-            unit.AddComponent<AOIUnitComponent,Vector3,Quaternion, CampType>(pos,rota,CampType.SkillCollider);
+            unit.AddComponent<AOIUnitComponent,Vector3,Quaternion, UnitType>(pos,rota,unit.Type);
             return unit;
         }
     }

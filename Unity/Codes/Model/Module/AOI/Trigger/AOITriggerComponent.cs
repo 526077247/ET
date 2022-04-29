@@ -17,7 +17,7 @@ namespace ET
     {
         public float Radius;
         public AOITriggerType Flag;
-        public List<CampType> Selecter;
+        public List<UnitType> Selecter;
         public Action<AOIUnitComponent, AOITriggerType> Handler;
         public int TriggerType = TriggerShapeType.Sphere;//
         public bool IsCollider;

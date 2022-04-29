@@ -53,6 +53,7 @@ namespace ET
             if (InputHelper.GetKeyDown(116))
             {
                 C2M_TransferMap c2MTransferMap = new C2M_TransferMap();
+                self.ZoneScene().RemoveComponent<KeyCodeComponent>();
                 self.ZoneScene().GetComponent<SessionComponent>().Session.Call(c2MTransferMap).Coroutine();
             }
             

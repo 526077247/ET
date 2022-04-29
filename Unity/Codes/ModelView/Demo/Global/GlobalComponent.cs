@@ -7,8 +7,10 @@ namespace ET
         public static GlobalComponent Instance;
         
         public Transform Global;
-        public Transform Unit;
+        public Transform Unit { get; set; }
 
         public string Account;
+        
+        public bool ColliderDebug { get; set; }
     }
 }

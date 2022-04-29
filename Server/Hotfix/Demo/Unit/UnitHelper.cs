@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace ET
@@ -48,7 +49,11 @@ namespace ET
                     unitInfo.Vs.Add(value);
                 }
             }
-
+            var cuc = unit.GetComponent<CombatUnitComponent>();
+            if (cuc != null)
+            {
+                unitInfo.SkillIds = cuc.IdSkills.Keys.ToList();
+            }
             return unitInfo;
         }
         
