@@ -23,21 +23,15 @@ namespace ET
                 SceneAddress = "Scenes/LoginScene/Login.unity",
                 Name = SceneNames.Login,
             };
-            SceneConfig Map1Scene = new SceneConfig
+            SceneConfig MapScene = new SceneConfig
             {
-                SceneAddress = "Scenes/MapScene/Map1.unity",
-                Name = SceneNames.Map1,
-            };
-            SceneConfig Map2Scene = new SceneConfig
-            {
-                SceneAddress = "Scenes/MapScene/Map2.unity",
-                Name = SceneNames.Map2,
+                SceneAddress = "Scenes/MapScene/Map.unity",
+                Name = SceneNames.Map,
             };
             var res = new Dictionary<string, SceneConfig>();
             res.Add(LoadingScene.Name, LoadingScene);
-            res.Add(Map1Scene.Name, Map1Scene);
-            res.Add(Map2Scene.Name, Map2Scene);
             res.Add(LoginScene.Name, LoginScene);
+            res.Add(MapScene.Name, MapScene);
             return res;
         }
 
@@ -48,7 +42,7 @@ namespace ET
             self.DestroyWindowExceptNames = new List<string>();
             SceneManagerComponent.Instance = self;
             self.SceneConfigs = GetSceneConfig();
-            self.current_scene = SceneNames.None;
+            self.CurrentScene = SceneNames.None;
         }
     }
 
@@ -74,12 +68,9 @@ namespace ET
     {
         
         //切换场景
-        async static ETTask InnerSwitchScene(this SceneManagerComponent self,SceneConfig scene_config,bool needclean = false,SceneLoadComponent slc = null)
+        async static ETTask InnerSwitchScene(this SceneManagerComponent self,SceneConfig scene_config, bool needclean = false,SceneLoadComponent slc = null)
         {
             float slid_value = 0;
-            Log.Info("InnerSwitchScene start open uiloading");
-            //打开loading界面
-            await Game.EventSystem.PublishAsync(new UIEventType.LoadingBegin());
             Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value });
 
             CameraManagerComponent.Instance.SetCameraStackAtLoadingStart();
@@ -90,8 +81,6 @@ namespace ET
             {
                 await TimerComponent.Instance.WaitAsync(1);
             }
-            //清理旧场景
-
             slid_value += 0.01f;
             Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value });
             await TimerComponent.Instance.WaitAsync(1);
@@ -107,16 +96,16 @@ namespace ET
             ImageLoaderComponent.Instance.Clear();
             //清除预设以及其创建出来的gameobject, 这里不能清除loading的资源
             Log.Info("InnerSwitchScene GameObjectPool Cleanup");
-            string[] cleanup_besides_path = self.ScenesChangeIgnoreClean.ToArray();
             if (needclean)
             {
-                GameObjectPoolComponent.Instance.Cleanup(true, cleanup_besides_path);
+                GameObjectPoolComponent.Instance.Cleanup(true, self.ScenesChangeIgnoreClean);
                 slid_value += 0.01f;
                 Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value });
                 //清除除loading外的资源缓存 
                 List<UnityEngine.Object> gos = new List<UnityEngine.Object>();
-                foreach (var path in cleanup_besides_path)
+                for (int i = 0; i < self.ScenesChangeIgnoreClean.Count; i++)
                 {
+                    var path = self.ScenesChangeIgnoreClean[i];
                     var go = GameObjectPoolComponent.Instance.GetCachedGoWithPath(path);
                     if (go != null)
                     {
@@ -146,14 +135,9 @@ namespace ET
             {
                 await TimerComponent.Instance.WaitAsync(1);
             }
-            slid_value += 0.1f;
+            slid_value += 0.12f;
             Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value });
-            Log.Info("初始化目标场景 Start");
-            //初始化目标场景
-            
 
-            slid_value += 0.02f;
-            Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value });
             Log.Info("异步加载目标场景 Start");
             //异步加载目标场景
             await ResourcesComponent.Instance.LoadSceneAsync(scene_config.SceneAddress, false);
@@ -173,49 +157,60 @@ namespace ET
             slid_value += 0.15f;
             Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value });
             CameraManagerComponent.Instance.SetCameraStackAtLoadingDone();
-            self.current_scene = scene_config.Name;
+            self.CurrentScene = scene_config.Name;
 
             slid_value = 1;
             Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value });
             //等久点，跳的太快
             await TimerComponent.Instance.WaitAsync(500);
-            //加载完成，关闭loading界面
-            await Game.EventSystem.PublishAsync(new UIEventType.LoadingFinish());
-            //释放loading界面引用的资源
-            GameObjectPoolComponent.Instance.CleanupWithPathArray(true, cleanup_besides_path);
-            self.busing = false;
 
         }
         //切换场景
         public static async ETTask SwitchScene(this SceneManagerComponent self, SceneConfig scene_config,bool needclean = false,SceneLoadComponent slc = null)
         {
-            if (self.busing) return;
+            if (self.Busing) return;
             if (scene_config==null) return;
-            if (self.current_scene == scene_config.Name)
+            if (self.CurrentScene == scene_config.Name)
                 return;
-            self.busing = true;
+            self.Busing = true;
+            //打开loading界面
+            Log.Info("InnerSwitchScene start open uiloading");
+            await Game.EventSystem.PublishAsync(new UIEventType.LoadingBegin());
             await self.InnerSwitchScene(scene_config,needclean,slc);
+            //加载完成，关闭loading界面
+            await Game.EventSystem.PublishAsync(new UIEventType.LoadingFinish());
+            //释放loading界面引用的资源
+            GameObjectPoolComponent.Instance.CleanupWithPathArray(true, self.ScenesChangeIgnoreClean);
+            self.Busing = false;
         }
         //切换场景
         public static async ETTask SwitchScene(this SceneManagerComponent self, string scene_name, bool needclean = false,SceneLoadComponent slc = null)
         {
-            if (self.busing) return;
+            if (self.Busing) return;
             var scene_config = self.GetSceneConfigByName(scene_name);
             if (scene_config == null) return;
-            if (self.current_scene == scene_config.Name)
+            if (self.CurrentScene == scene_config.Name)
                 return;
-            self.busing = true;
+            self.Busing = true;
+            //打开loading界面
+            Log.Info("InnerSwitchScene start open uiloading");
+            await Game.EventSystem.PublishAsync(new UIEventType.LoadingBegin());
             await self.InnerSwitchScene(scene_config,needclean,slc);
+            //加载完成，关闭loading界面
+            await Game.EventSystem.PublishAsync(new UIEventType.LoadingFinish());
+            //释放loading界面引用的资源
+            GameObjectPoolComponent.Instance.CleanupWithPathArray(true, self.ScenesChangeIgnoreClean);
+            self.Busing = false;
         }
 
         public static string GetCurrentSceneName(this SceneManagerComponent self)
         {
-            return self.current_scene;
+            return self.CurrentScene;
         }
 
         public static bool IsInTargetScene(this SceneManagerComponent self,SceneConfig scene_config)
         {
-            return self.current_scene == scene_config.Name;
+            return self.CurrentScene == scene_config.Name;
         }
 
         public static SceneConfig GetSceneConfigByName(this SceneManagerComponent self, string name)

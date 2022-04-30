@@ -21,6 +21,7 @@ namespace ET
             Game.Scene.AddComponent<UIManagerComponent>();
             Game.Scene.AddComponent<CameraManagerComponent>();
             Game.Scene.AddComponent<SceneManagerComponent>();
+            Game.Scene.AddComponent<AOISceneViewComponent,int>(6);
             Game.Scene.AddComponent<ToastComponent>();
             Game.Scene.AddComponent<SoundComponent>();
             // 加载配置

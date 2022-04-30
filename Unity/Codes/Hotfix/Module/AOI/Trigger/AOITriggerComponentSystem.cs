@@ -990,7 +990,8 @@ namespace ET
             if (trigger.Radius < dis) return false;
             if (trigger.TriggerType==TriggerShapeType.Cube)
             {
-                return trigger.GetComponent<OBBComponent>().IsPointInTrigger(position,center,rotation);
+                var obb = trigger.GetComponent<OBBComponent>();
+                return AOIHelper.IsPointInTrigger(position, center, rotation, obb.Scale);
             }
             return true;
         }

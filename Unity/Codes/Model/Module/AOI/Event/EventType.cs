@@ -16,6 +16,12 @@
             public AOIUnitComponent Unit;
         }
 
+        public struct ChangeGrid
+        {
+            public AOIUnitComponent Unit;
+            public AOIGrid NewGrid;
+            public AOIGrid OldGrid;
+        }
         #endregion
     }
 }

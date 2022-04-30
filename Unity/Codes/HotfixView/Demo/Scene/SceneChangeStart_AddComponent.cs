@@ -7,7 +7,7 @@ namespace ET
         {
             Scene currentScene = args.ZoneScene.CurrentScene();
             SceneLoadComponent slc = EnterMap(currentScene);
-            await SceneManagerComponent.Instance.SwitchScene(args.Name,slc:slc);
+            await AOISceneViewComponent.Instance.ChangeToScene(args.Name,slc);
             currentScene.AddComponent<OperaComponent>();
             slc.Dispose();
         }
@@ -18,6 +18,9 @@ namespace ET
             var role = UnitConfigCategory.Instance.GetAll();
             foreach (var item in role)
                 slc.PreLoadTask.Add(slc.AddPreloadGameObject(item.Value.Perfab, 1));
+            //可以走配表
+            slc.PreLoadTask.Add(slc.AddPreloadGameObject("GameAssets/Map/Prefabs/Ground.prefab", 1));
+            slc.PreLoadTask.Add(slc.AddPreloadGameObject("GameAssets/Map/Prefabs/Cube.prefab", 10));
             return slc;
         }
     }

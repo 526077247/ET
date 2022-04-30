@@ -17,7 +17,22 @@ namespace ET
         public Quaternion Rotation;
         public AOISceneComponent Scene;
         public UnitType Type { get; set; }
-        public AOIGrid Grid;
+        private AOIGrid grid;
+        public AOIGrid Grid
+        {
+            get =>grid;
+            set
+            {
+                EventSystem.Instance.Publish(new EventType.ChangeGrid()
+                {
+                    Unit = this,
+                    NewGrid = value,
+                    OldGrid = grid
+                });
+                grid = value;
+            }
+        }
+
         public int Range;
         public readonly List<AOITriggerComponent> SphereTriggers = new List<AOITriggerComponent>();//自己的触发器
         // public float MaxTriggerRadius=0;

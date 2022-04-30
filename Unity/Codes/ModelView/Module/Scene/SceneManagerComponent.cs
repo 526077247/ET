@@ -14,9 +14,9 @@ namespace ET
 
         public Dictionary<string, SceneConfig> SceneConfigs;
         //当前场景
-        public string current_scene;
+        public string CurrentScene;
         //是否忙
-        public bool busing = false;
+        public bool Busing = false;
 
     }
 }

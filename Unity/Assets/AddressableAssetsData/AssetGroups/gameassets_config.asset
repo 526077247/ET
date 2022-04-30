@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: scenes_mapscene
+  m_Name: gameassets_config
   m_EditorClassIdentifier: 
-  m_GroupName: scenes_mapscene
+  m_GroupName: gameassets_config
   m_Data:
     m_SerializedData: []
-  m_GUID: 85d2ad1db5862824fab6b670c9c88b8a
+  m_GUID: 297fe8ba6738ede449244bc52a132a2f
   m_SerializeEntries:
-  - m_GUID: 511c13e3878e659428961d546be69e98
-    m_Address: Scenes/MapScene/Map.unity
+  - m_GUID: 093b45c82ecb03f4c8a9274fc72ea1d4
+    m_Address: GameAssets/Config/Map.xml
     m_ReadOnly: 0
     m_SerializedLabels:
     - default
@@ -28,5 +28,5 @@ MonoBehaviour:
   m_Settings: {fileID: 11400000, guid: dd1f300d6062fee48bf00a13907517b6, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: f28e4bebe0146e44b8634adcebb97862, type: 2}
-    - {fileID: 11400000, guid: 11b794f226d79e64cb29d12e0802389b, type: 2}
+    - {fileID: 11400000, guid: aea18bc3ede724449ae4884a4114a6b4, type: 2}
+    - {fileID: 11400000, guid: e9a1da33ac064d940956d1bc990b3a99, type: 2}

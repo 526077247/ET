@@ -32,7 +32,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3b6b12fa0414c7d4aac814550629ef65, type: 2}
   - {fileID: 11400000, guid: 32dcf20b69908924b964e59d992dc0ae, type: 2}
   - {fileID: 11400000, guid: 77f575c4bf9860b46acf052d6cc1b0b1, type: 2}
-  - {fileID: 11400000, guid: 8a8add3e6d21aab4394c8783a05bcaf4, type: 2}
   - {fileID: 11400000, guid: 9250af161a6680a4481cc7676f2e10e1, type: 2}
   - {fileID: 11400000, guid: 5a735e612778947718d11a35f2966aba, type: 2}
   - {fileID: 11400000, guid: 9ba3da7c062152a43ac4b035d5b0de5f, type: 2}
@@ -54,6 +53,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3865a6cbee75a0e4cb451b2df77e5e9f, type: 2}
   - {fileID: 11400000, guid: c05f42393c0c2d44b936e757d157a1b8, type: 2}
   - {fileID: 11400000, guid: a1094f7b4b3cc8e4a9dfe9c74b82c090, type: 2}
+  - {fileID: 11400000, guid: c17da10806480054aa92460d5fba4e20, type: 2}
+  - {fileID: 11400000, guid: f1487dcbed578ca4f93ef581d21e11f9, type: 2}
+  - {fileID: 11400000, guid: 8a8add3e6d21aab4394c8783a05bcaf4, type: 2}
   m_BuildSettings:
     m_CompileScriptsInVirtualMode: 0
     m_CleanupStreamingAssetsAfterBuilds: 1
@@ -131,11 +133,11 @@ MonoBehaviour:
         m_SerializedData:
         - m_AssemblyName: mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
           m_ClassName: System.Int32
-          m_Data: 55419
+          m_Data: 60643
           m_Key: HostingServicePort
         - m_AssemblyName: mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
           m_ClassName: System.String
-          m_Data: ServerData/StandaloneWindows64;Library/com.unity.addressables/aa/Windows/StandaloneWindows64
+          m_Data: ServerData/Android;Library/com.unity.addressables/aa/Android/Android
           m_Key: ContentRoot
         - m_AssemblyName: mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
           m_ClassName: System.Boolean

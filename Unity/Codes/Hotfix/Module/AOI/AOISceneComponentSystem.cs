@@ -23,7 +23,7 @@ namespace ET
     {
         public override void Destroy(AOISceneComponent self)
         {
-
+            Log.Info("AOIScene Destroy! ");
         }
     }
     [FriendClass(typeof(AOISceneComponent))]

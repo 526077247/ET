@@ -10,15 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: scenes_mapscene
+  m_Name: gameassets_map
   m_EditorClassIdentifier: 
-  m_GroupName: scenes_mapscene
+  m_GroupName: gameassets_map
   m_Data:
     m_SerializedData: []
-  m_GUID: 85d2ad1db5862824fab6b670c9c88b8a
+  m_GUID: cd5d120cd47bfbf459207aae8c079028
   m_SerializeEntries:
-  - m_GUID: 511c13e3878e659428961d546be69e98
-    m_Address: Scenes/MapScene/Map.unity
+  - m_GUID: 5b8b8c0f78ce9d24b8e76e31f423e9a1
+    m_Address: GameAssets/Map/Prefabs/Cube.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: c6a10ea528ff6664aa5d9c91ce30932f
+    m_Address: GameAssets/Map/Prefabs/Ground.prefab
     m_ReadOnly: 0
     m_SerializedLabels:
     - default
@@ -28,5 +35,5 @@ MonoBehaviour:
   m_Settings: {fileID: 11400000, guid: dd1f300d6062fee48bf00a13907517b6, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: f28e4bebe0146e44b8634adcebb97862, type: 2}
-    - {fileID: 11400000, guid: 11b794f226d79e64cb29d12e0802389b, type: 2}
+    - {fileID: 11400000, guid: f858957df15bb934f9350b249b6b897f, type: 2}
+    - {fileID: 11400000, guid: aaac5ba88abd3c14d9129497f1b6eebe, type: 2}

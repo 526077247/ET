@@ -46,23 +46,6 @@ namespace ET
 
             return res;
         }
-        /// <summary>
-        /// 当触发器在指定位置旋转到指定角度时，检测点是否在触发器内
-        /// </summary>
-        /// <param name="self"></param>
-        /// <param name="pos"></param>
-        ///  <param name="center"></param>
-        /// <param name="rot"></param>
-        /// <returns></returns>
-        public static bool IsPointInTrigger(this OBBComponent self, Vector3 pos,Vector3 center,Quaternion rot)
-        {
-            Vector3 temp = Quaternion.Inverse(rot)*(pos - center); //转换到触发器模型空间坐标
-            var xMax = self.Scale.x / 2;
-            var yMax = self.Scale.y / 2;
-            var zMax = self.Scale.z / 2;
-            return -xMax <= temp.x && temp.x <= xMax && -yMax <= temp.y && temp.y <= yMax && -zMax <= temp.z &&
-                   temp.z <= zMax;
-        }
 
 
         /// <summary>

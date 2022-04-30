@@ -35,108 +35,9 @@ namespace ET
     [FriendClass(typeof(AOIGrid))]
     [FriendClass(typeof(AOITriggerComponent))]
     [FriendClass(typeof(AOIUnitComponent))]
+    [FriendClass(typeof(OBBComponent))]
     public static class AOIGridSystem
     {
-        /// <summary>
-        /// 获取与球形碰撞器的关系：-1无关 0相交或包括碰撞器 1在碰撞器内部
-        /// </summary>
-        /// <param name="self"></param>
-        /// <param name="trigger"></param>
-        /// <param name="position"></param>
-        /// <returns></returns>
-        public static int GetRelationshipWithSphereTrigger(this AOIGrid self, AOITriggerComponent trigger,
-            Vector3 position)
-        {
-            Vector2 center = new Vector2(position.x,position.z) ;
-            // Log.Info(center.x+" "+self.posx+" "+self.xMin+" "+self.xMax);
-            // Log.Info(center.y+" "+self.posy+" "+self.yMin+" "+self.yMax);
-            //圆心在格子外 0或-1
-            if (center.x >= self.xMax) //圆心在格子右方
-            {
-                // Log.Info("center.x >= self.xMax");
-                if (center.y > self.yMax) //圆心在格子右上方
-                {
-                    if (Vector2.Distance(center, new Vector2(self.xMax, self.yMax)) > trigger.Radius)
-                        return -1;
-                }
-                else if (center.y < self.yMin) //圆心在格子右下方
-                {
-                    if (Vector2.Distance(center, new Vector2(self.xMax, self.yMin)) > trigger.Radius)
-                        return -1;
-                }
-                else //圆心在格子右侧方
-                {
-                    if ((center.x - self.xMax) > trigger.Radius)
-                        return -1;
-                }
-            }
-            else if (center.x <= self.xMin) //圆心在格子左方
-            {
-                // Log.Info("center.x <= self.xMin");
-                if (center.y >= self.yMax) //圆心在格子左上方
-                {
-                    if (Vector2.Distance(center, new Vector2(self.xMin, self.yMax)) > trigger.Radius)
-                        return -1;
-                }
-                else if (center.y <= self.yMin) //圆心在格子左下方
-                {
-                    if (Vector2.Distance(center, new Vector2(self.xMin, self.yMin)) > trigger.Radius)
-                        return -1;
-                }
-                else //圆心在格子左侧方
-                {
-                    if ((self.xMin - center.x) > trigger.Radius)
-                        return -1;
-                }
-            }
-            else if (center.y > self.yMax) //圆心在格子上方
-            {
-                // Log.Info("center.y > self.yMax");
-                if (center.x > self.xMin && center.x < self.xMax) //圆心在格子上侧方
-                    if ((center.x - self.yMax) > trigger.Radius)
-                        return -1;
-            }
-            else if (center.y < self.yMin) //圆心在格子下方
-            {
-                // Log.Info("center.y < self.yMin");
-                if (center.x > self.xMin && center.x < self.xMax) //圆心在格子下侧方
-                    if ((self.yMin - center.y) > trigger.Radius)
-                        return -1;
-            }
-            //圆心在格子内 0或1
-            else if (center.x > self.posx && center.y > self.posy) //圆心在格子内右上方
-            {
-                // Log.Info("圆心在格子内右上方");
-                if (Vector2.Distance(center,new Vector2(self.xMin,self.yMin))<trigger.Radius)
-                    return 1;
-            }
-            else if (center.x > self.posx && center.y < self.posy) //圆心在格子内右下方
-            {
-                // Log.Info("圆心在格子内右下方");
-                if (Vector2.Distance(center,new Vector2(self.xMin,self.yMax))<trigger.Radius)
-                    return 1;
-            }
-            else if (center.x < self.posx && center.y > self.posy) //圆心在格子内左上方
-            {
-                // Log.Info("圆心在格子内左上方");
-                if (Vector2.Distance(center,new Vector2(self.xMax,self.yMin))<trigger.Radius)
-                    return 1;
-            }
-            else if (center.x < self.posx && center.y < self.posy) //圆心在格子内左下方
-            {
-                // Log.Info("圆心在格子内左下方");
-                if (Vector2.Distance(center,new Vector2(self.xMax,self.yMax))<trigger.Radius)
-                    return 1;
-            }
-            //圆心在格子内中心 0或1
-            else
-            {
-                Log.Info("圆心x:" + center.x + " y:" + center.y + " -- 格子x:" + self.posx + " 格子y:" + self.posy);
-                if (self.halfDiagonal < trigger.Radius) return 1;
-            }
-            // Log.Info("0");
-            return 0;
-        }
         /// <summary>
         /// 获取与碰撞器的关系：-1无关 0相交或包括碰撞器 1在碰撞器内部
         /// </summary>
@@ -166,32 +67,17 @@ namespace ET
             {
                 tempRot = unit.Rotation;
             }
-            var res = self.GetRelationshipWithSphereTrigger(trigger, tempPos);
-            if (trigger.TriggerType==TriggerShapeType.Cube&&res>=0)
+
+            if (trigger.TriggerType == TriggerShapeType.Cube)
             {
                 var obb = trigger.GetComponent<OBBComponent>();
-                //判断格子4个顶点是否在碰撞体内
-                if (!obb.IsPointInTrigger(new Vector3(self.xMin, tempPos.y, self.yMin),tempPos,tempRot))
-                {
-                    return 0;
-                }
-                if (!obb.IsPointInTrigger(new Vector3(self.xMax, tempPos.y, self.yMin),tempPos,tempRot))
-                {
-                    return 0;
-                }
-                if (!obb.IsPointInTrigger(new Vector3(self.xMin, tempPos.y, self.yMax),tempPos,tempRot))
-                {
-                    return 0;
-                }
-                if (!obb.IsPointInTrigger(new Vector3(self.xMax, tempPos.y, self.yMax),tempPos,tempRot))
-                {
-                    return 0;
-                }
-                Log.Info("tempPos"+tempPos+"  trigger"+trigger.GetRealPos());
-                return 1;
+                return AOIHelper.GetGridRelationshipWithOBB(tempPos, tempRot,obb.Scale,self.xMax-self.xMin,self.posx,self.posy);
             }
-
-            return res;
+            else
+            {
+                return AOIHelper.GetGridRelationshipWithSphere(tempPos,trigger.Radius,self.xMax-self.xMin,self.posx,self.posy);
+            }
+            
         }
 
         /// <summary>

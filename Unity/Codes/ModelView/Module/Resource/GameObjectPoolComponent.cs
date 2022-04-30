@@ -428,7 +428,7 @@ namespace ET
 			return total_child_count;
 		}
 		//清理缓存
-		public void Cleanup(bool includePooledGo = true, string[] excludePathArray = null)
+		public void Cleanup(bool includePooledGo = true, List<string> excludePathArray = null)
 		{
 			Log.Info("GameObjectPool Cleanup ");
 			foreach (var item in __instCache)
@@ -452,7 +452,7 @@ namespace ET
 				if (excludePathArray != null)
 				{
 					dict_excludepath = new Dictionary<string, bool>();
-					for (int i = 0; i < excludePathArray.Length; i++)
+					for (int i = 0; i < excludePathArray.Count; i++)
 					{
 						dict_excludepath[excludePathArray[i]] = true;
 					}
@@ -479,14 +479,14 @@ namespace ET
 		//--不要轻易调用，除非你对内部的资源的生命周期有了清晰的了解
 		//--@param includePooledGo: 是否需要将预设也释放
 		//--@param patharray： 需要释放的资源路径数组
-		public void CleanupWithPathArray(bool includePooledGo = true, string[] patharray = null)
+		public void CleanupWithPathArray(bool includePooledGo = true, List<string> patharray = null)
 		{
 			Debug.Log("GameObjectPool Cleanup ");
 			Dictionary<string, bool> dict_path = null;
 			if (patharray != null)
 			{
 				dict_path = new Dictionary<string, bool>();
-				for (int i = 0; i < patharray.Length; i++)
+				for (int i = 0; i < patharray.Count; i++)
 				{
 					dict_path[patharray[i]] = true;
 				}
@@ -507,7 +507,7 @@ namespace ET
 					}
 				}
 			}
-			for (int i = 0; i < patharray.Length; i++)
+			for (int i = 0; i < patharray.Count; i++)
 			{
 				__instCache.Remove(patharray[i]);
 			}
