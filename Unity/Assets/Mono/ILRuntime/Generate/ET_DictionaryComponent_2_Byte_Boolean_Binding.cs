@@ -14,14 +14,14 @@ using ILRuntime.CLR.Utils;
 
 namespace ILRuntime.Runtime.Generated
 {
-    unsafe class ET_DictionaryComponent_2_Int32_Boolean_Binding
+    unsafe class ET_DictionaryComponent_2_Byte_Boolean_Binding
     {
         public static void Register(ILRuntime.Runtime.Enviorment.AppDomain app)
         {
             BindingFlags flag = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
             MethodBase method;
             Type[] args;
-            Type type = typeof(ET.DictionaryComponent<System.Int32, System.Boolean>);
+            Type type = typeof(ET.DictionaryComponent<System.Byte, System.Boolean>);
             args = new Type[]{};
             method = type.GetMethod("Create", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, Create_0);
@@ -36,7 +36,7 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 0);
 
 
-            var result_of_this_method = ET.DictionaryComponent<System.Int32, System.Boolean>.Create();
+            var result_of_this_method = ET.DictionaryComponent<System.Byte, System.Boolean>.Create();
 
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
