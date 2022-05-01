@@ -56,10 +56,7 @@ namespace ET
 			        if (unitInfo.BuffIds != null&&unitInfo.BuffIds.Count>0)
 			        {
 				        var buffC = combatU.GetComponent<BuffComponent>();
-				        for (int i = 0; i < unitInfo.BuffIds.Count; i++)
-				        {
-					        buffC.AddBuff(unitInfo.BuffIds[i], unitInfo.BuffTimestamp[i]);
-				        }
+				        buffC.Init(unitInfo.BuffIds, unitInfo.BuffTimestamp);
 				        
 			        }
 			       

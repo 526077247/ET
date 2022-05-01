@@ -2,7 +2,7 @@
 
 namespace ET
 {
-    public class Buff:Entity,IAwake<int,long>,IDestroy
+    public class Buff:Entity,IAwake<int,long>,IAwake<int,long,bool>,IDestroy
     {
         public int ConfigId;
         [BsonIgnore]

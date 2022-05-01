@@ -30,7 +30,7 @@ namespace ET
             self.unit = self.GetParent<CombatUnitComponent>().unit;
         }
     }
-	
+    
     [ObjectSystem]
     public class BuffComponentDestroySystem : DestroySystem<BuffComponent>
     {
@@ -42,8 +42,50 @@ namespace ET
     }
 	[FriendClass(typeof(BuffComponent))]
     [FriendClass(typeof(Buff))]
+    [FriendClass(typeof(CombatUnitComponent))]
     public static class BuffComponentSystem
     {
+        /// <summary>
+        /// 初始化(第一次创建Unit走这里，因为服务端穿的属性是加了BUFF后的属性，所以这里创建BUFF时不叠加属性)
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="buffIds"></param>
+        /// <param name="buffTimestamps"></param>
+        public static void Init(this BuffComponent self,List<int> buffIds,List<long> buffTimestamps)
+        {
+            self.Groups = DictionaryComponent<int, Buff>.Create();
+            self.ActionControls = DictionaryComponent<int, int>.Create();
+            self.unit = self.GetParent<CombatUnitComponent>().unit;
+            for (int i = 0; i < buffIds.Count; i++)
+            {
+                var id = buffIds[i];
+                var timestamp = buffTimestamps[i];
+                BuffConfig conf = BuffConfigCategory.Instance.Get(id);
+                if (self.Groups.ContainsKey(conf.Group))
+                {
+                    var old = self.Groups[conf.Group];
+                    if (old.Config.Priority > conf.Priority) {
+                        Log.Info("添加BUFF失败，优先级"+old.Config.Id+" > "+conf.Id);
+                        continue; //优先级低
+                    }
+                    Log.Info("优先级高或相同，替换旧的");
+                    self.Remove(self.Groups[conf.Group].Id);
+                }
+            
+                Buff buff = self.AddChild<Buff,int,long,bool>(id,timestamp,true);//走这里不叠加属性
+                self.Groups[conf.Group] = buff;
+                TimerComponent.Instance.NewOnceTimer(timestamp, TimerType.RemoveBuff, buff);
+                EventSystem.Instance.Publish(new EventType.AfterAddBuff(){Buff = buff});
+            }
+        }
+        
+        /// <summary>
+        /// 添加BUFF
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="id"></param>
+        /// <param name="timestamp"></param>
+        /// <returns></returns>
         public static Buff AddBuff(this BuffComponent self, int id,long timestamp)
         {
             BuffConfig conf = BuffConfigCategory.Instance.Get(id);
