@@ -47,6 +47,7 @@ namespace ET
             Game.Scene.AddComponent<CommandWatcherComponent>();
             // 技能订阅组件
             Game.Scene.AddComponent<SkillWatcherComponent>();
+            Game.Scene.AddComponent<BuffWatcherComponent>();
             Game.Scene.AddComponent<AIDispatcherComponent>();
             Game.Scene.AddComponent<NumericWatcherComponent>();
             await UIManagerComponent.Instance.OpenWindow<UILoadingView>(UILoadingView.PrefabPath);

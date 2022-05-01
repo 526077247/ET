@@ -2,7 +2,7 @@
 
 namespace ET
 {
-    public class Buff:Entity,IAwake<int>,IDestroy
+    public class Buff:Entity,IAwake<int,long>,IDestroy
     {
         public int ConfigId;
         [BsonIgnore]
@@ -10,5 +10,10 @@ namespace ET
         {
             get => BuffConfigCategory.Instance.Get(ConfigId);
         }
+
+        /// <summary>
+        /// 持续到什么时间
+        /// </summary>
+        public long Timestamp;
     }
 }

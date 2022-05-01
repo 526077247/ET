@@ -271,7 +271,12 @@ namespace ET
 
             
         }
-        public static ListComponent<AOIUnitComponent> GetBeSeeUnits(this AOIUnitComponent self)
+        /// <summary>
+        /// 获取自己能被谁看到
+        /// </summary>
+        /// <param name="self"></param>
+        /// <returns></returns>
+        public static List<AOIUnitComponent> GetBeSeeUnits(this AOIUnitComponent self)
         {
             return self.Grid.ListenerUnits;
         }

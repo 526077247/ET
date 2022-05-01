@@ -4,12 +4,12 @@
     {
         #region BUFF
 
-        public struct ShowBuffView
+        public struct AfterAddBuff
         {
             public Buff Buff;
         }
 
-        public struct HideBuffView
+        public struct AfterRemoveBuff
         {
             public Buff Buff;
         }

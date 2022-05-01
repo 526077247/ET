@@ -2,14 +2,16 @@
 {
     [FriendClass(typeof(BuffComponent))]
     [ObjectSystem]
-    public class BuffAwakeSystem : AwakeSystem<Buff,int>
+    public class BuffAwakeSystem : AwakeSystem<Buff,int,long>
     {
-        public override void Awake(Buff self,int id)
+        public override void Awake(Buff self,int id,long timestamp)
         {
             Log.Info("添加BUFF id="+id);
             self.ConfigId = id;
+            self.Timestamp = timestamp;
             var buffComp = self.GetParent<BuffComponent>();
             var unit = buffComp.unit;
+            //服务端就不同步属性了
             if (self.Config.AttributeType != null)
             {
                 var numc = unit?.GetComponent<NumericComponent>();

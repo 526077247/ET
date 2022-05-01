@@ -164,6 +164,12 @@ namespace ET
 		[ProtoMember(13)]
 		public List<int> SkillIds = new List<int>();
 
+		[ProtoMember(14)]
+		public List<int> BuffIds = new List<int>();
+
+		[ProtoMember(15)]
+		public List<long> BuffTimestamp = new List<long>();
+
 	}
 
 	[Message(OuterOpcode.M2C_CreateUnits)]
@@ -544,6 +550,24 @@ namespace ET
 
 		[ProtoMember(7)]
 		public float Z { get; set; }
+
+	}
+
+	[Message(OuterOpcode.M2C_AddBuff)]
+	[ProtoContract]
+	public partial class M2C_AddBuff: Object, IActorMessage
+	{
+		[ProtoMember(1)]
+		public int Error { get; set; }
+
+		[ProtoMember(2)]
+		public int ConfigId { get; set; }
+
+		[ProtoMember(3)]
+		public long Timestamp { get; set; }
+
+		[ProtoMember(4)]
+		public long UnitId { get; set; }
 
 	}
 

@@ -241,12 +241,15 @@ namespace ET
         {
             Log.Info("触发"+type.ToString()+to.Id+"  "+from.Id);
             Log.Info("触发"+type.ToString()+to.Position+" Dis: "+Vector3.Distance(to.Position,from.Position));
+
+            var combatU = to.Parent.GetComponent<CombatUnitComponent>();
             if(judge.BuffIds!=null)
             {
+                var buffC = combatU.GetComponent<BuffComponent>();
                 for (int i = 0; i < (judge.BuffIds==null?0:judge.BuffIds.Length); i++)
                 {
                     if(judge.BuffTimes==null||judge.BuffTimes.Length<=i) return;
-                    to.GetComponent<CombatUnitComponent>().GetComponent<BuffComponent>().AddBuff(judge.BuffIds[i],judge.BuffTimes[i]);
+                    buffC.AddBuff(judge.BuffIds[i],TimeHelper.ServerNow() + judge.BuffTimes[i]);
                 }
             }
 
@@ -281,7 +284,7 @@ namespace ET
                     }
                     EventSystem.Instance.Publish(new EventType.AfterCombatUnitGetDamage()
                     {
-                        CombatUnitComponent = to.GetComponent<CombatUnitComponent>()
+                        CombatUnitComponent = combatU
                     });
                 }
                 else if (realValue < 0)//加血
@@ -314,11 +317,12 @@ namespace ET
             Log.Info("触发"+type.ToString()+to.Position+" Dis: "+Vector3.Distance(to.Position,from.Position));
             if(judge.BuffIds!=null)
             {
+                var buffC = to.Parent.GetComponent<CombatUnitComponent>().GetComponent<BuffComponent>();
                 for (int i = 0; i < (judge.BuffIds==null?0:judge.BuffIds.Length); i++)
                 {
                     if (judge.IsExitRemove.Length > i && judge.IsExitRemove[i] == 1)
                     {
-                        to.GetComponent<CombatUnitComponent>().GetComponent<BuffComponent>().RemoveByConfigId(judge.BuffIds[i]);
+                        buffC.RemoveByConfigId(judge.BuffIds[i]);
                     }
                 }
             }

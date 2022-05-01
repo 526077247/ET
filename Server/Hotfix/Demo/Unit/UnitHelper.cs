@@ -7,12 +7,14 @@ namespace ET
     [FriendClass(typeof(Unit))]
     [FriendClass(typeof(MoveComponent))]
     [FriendClass(typeof(NumericComponent))]
+    [FriendClass(typeof(BuffComponent))]
+    [FriendClass(typeof(Buff))]
     public static class UnitHelper
     {
         public static UnitInfo CreateUnitInfo(Unit unit)
         {
             UnitInfo unitInfo = new UnitInfo();
-            NumericComponent nc = unit.GetComponent<NumericComponent>();
+            
             unitInfo.UnitId = unit.Id;
             unitInfo.ConfigId = unit.ConfigId;
             unitInfo.Type = (int)unit.Type;
@@ -25,6 +27,7 @@ namespace ET
             unitInfo.ForwardY = forward.y;
             unitInfo.ForwardZ = forward.z;
 
+            #region 移动信息
             MoveComponent moveComponent = unit.GetComponent<MoveComponent>();
             if (moveComponent != null)
             {
@@ -40,7 +43,13 @@ namespace ET
                     }
                 }
             }
+            
 
+            #endregion
+
+            #region 数值信息
+
+            NumericComponent nc = unit.GetComponent<NumericComponent>();
             if(nc!=null)
             {
                 foreach ((int key, long value) in nc.NumericDic)
@@ -49,16 +58,40 @@ namespace ET
                     unitInfo.Vs.Add(value);
                 }
             }
+            #endregion
+
+            #region 战斗数据
+
             var cuc = unit.GetComponent<CombatUnitComponent>();
             if (cuc != null)
             {
                 unitInfo.SkillIds = cuc.IdSkills.Keys.ToList();
+                var buffC = cuc.GetComponent<BuffComponent>();
+                if (buffC != null)
+                {
+                    unitInfo.BuffIds = new List<int>();
+                    unitInfo.BuffTimestamp = new List<long>();
+                    foreach (var item in buffC.Groups)
+                    {
+                        var buff = item.Value;
+                        unitInfo.BuffIds.Add(buff.ConfigId);
+                        unitInfo.BuffTimestamp.Add(buff.Timestamp);
+                    }
+                }
             }
+            
+            #endregion
+           
+            
             return unitInfo;
         }
         
-        // 获取看见unit的玩家，主要用于广播
-        public static ListComponent<AOIUnitComponent> GetBeSeeUnits(this Unit self)
+        /// <summary>
+        /// 获取看见unit的玩家，主要用于广播,注意不能Dispose
+        /// </summary>
+        /// <param name="self"></param>
+        /// <returns></returns>
+        public static List<AOIUnitComponent> GetBeSeeUnits(this Unit self)
         {
             return self.GetComponent<AOIUnitComponent>().GetBeSeeUnits();
         }

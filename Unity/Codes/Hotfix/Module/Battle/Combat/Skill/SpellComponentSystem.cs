@@ -76,7 +76,13 @@ namespace ET
                 return;
             if(!spellSkill.CanUse())return;
             self.Skill = spellSkill;
-            
+            var nowpos = self.GetParent<CombatUnitComponent>().unit.Position;
+            var nowpos2 = targetEntity.unit.Position;
+            if (Vector2.Distance(new Vector2(nowpos.x, nowpos.z), new Vector2(nowpos2.x, nowpos2.z)) >
+                spellSkill.SkillConfig.PreviewRange[0])
+            {
+                return;
+            }
             self.Para.Clear();
             self.Para.From = self.GetParent<CombatUnitComponent>();
             self.Para.Ability = spellSkill;

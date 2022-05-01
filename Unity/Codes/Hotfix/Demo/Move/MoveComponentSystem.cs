@@ -12,12 +12,6 @@ namespace ET
         {
             try
             {
-                if (self.Aim != null)
-                {
-                    self.Targets.Clear();
-                    self.Targets.Add(self.GetParent<Unit>().Position);
-                    self.Targets.Add(self.Aim.Position);
-                }
                 self.MoveForward(false);
             }
             catch (Exception e)
@@ -48,6 +42,7 @@ namespace ET
             self.Callback = null;
             self.Targets.Clear();
             self.Speed = 0;
+            self.Enable = true;
             self.N = 0;
             self.TurnTime = 0;
         }
@@ -133,6 +128,7 @@ namespace ET
 
         public static void MoveForward(this MoveComponent self, bool needCancel)
         {
+            if (!self.Enable) return;
             Unit unit = self.GetParent<Unit>();
             
             long timeNow = TimeHelper.ClientNow();
@@ -188,7 +184,6 @@ namespace ET
                 {
                     unit.Position = self.NextTarget;
                     unit.Rotation = self.To;
-                    self.OnArrive?.Invoke();
                     Action<bool> callback = self.Callback;
                     self.Callback = null;
 
@@ -281,45 +276,7 @@ namespace ET
             unit.Position = target;
             return true;
         }
-        public static async ETTask<bool> MoveToAimAsync(this MoveComponent self, Unit target, float speed,Action onArrive, ETCancellationToken cancellationToken = null)
-        {
-            self.Stop();
-            self.OnArrive = onArrive;
-            self.Aim = target;
-            self.Targets.Clear();
-            self.Targets.Add(self.GetParent<Unit>().Position);
-            self.Targets.Add(target.Position);
-            
-            self.IsTurnHorizontal = true;
-
-            self.Speed = speed;
-            ETTask<bool> tcs = ETTask<bool>.Create(true);
-            self.Callback = (ret) => { tcs.SetResult(ret); };
-
-            self.StartMove();
-            
-            void CancelAction()
-            {
-                self.Stop();
-            }
-            
-            bool moveRet;
-            try
-            {
-                cancellationToken?.Add(CancelAction);
-                moveRet = await tcs;
-            }
-            finally
-            {
-                cancellationToken?.Remove(CancelAction);
-            }
-
-            if (moveRet)
-            {
-                Game.EventSystem.Publish(new EventType.MoveStop(){Unit = self.GetParent<Unit>()});
-            }
-            return moveRet;
-        }
+        
         public static void Stop(this MoveComponent self)
         {
             if (self.Targets.Count > 0)

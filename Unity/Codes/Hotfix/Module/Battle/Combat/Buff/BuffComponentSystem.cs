@@ -44,7 +44,7 @@ namespace ET
     [FriendClass(typeof(Buff))]
     public static class BuffComponentSystem
     {
-        public static Buff AddBuff(this BuffComponent self, int id,int time)
+        public static Buff AddBuff(this BuffComponent self, int id,long timestamp)
         {
             BuffConfig conf = BuffConfigCategory.Instance.Get(id);
             if (self.Groups.ContainsKey(conf.Group))
@@ -57,10 +57,11 @@ namespace ET
                 Log.Info("优先级高或相同，替换旧的");
                 self.Remove(self.Groups[conf.Group].Id);
             }
-            Buff buff = self.AddChild<Buff,int>(id);
+            
+            Buff buff = self.AddChild<Buff,int,long>(id,timestamp);
             self.Groups[conf.Group] = buff;
-            TimerComponent.Instance.NewOnceTimer(TimeHelper.ServerNow() + time, TimerType.RemoveBuff, buff);
-            EventSystem.Instance.Publish(new EventType.ShowBuffView(){Buff = buff});
+            TimerComponent.Instance.NewOnceTimer(timestamp, TimerType.RemoveBuff, buff);
+            EventSystem.Instance.Publish(new EventType.AfterAddBuff(){Buff = buff});
             return buff;
         }
         /// <summary>
@@ -103,7 +104,7 @@ namespace ET
         {
             Buff buff = self.GetChild<Buff>(id);
             if(buff==null) return;
-            EventSystem.Instance.Publish(new EventType.HideBuffView(){Buff = buff});
+            EventSystem.Instance.Publish(new EventType.AfterRemoveBuff(){Buff = buff});
             self.Groups.Remove(buff.Config.Group);
             buff.Dispose();
         }
@@ -125,7 +126,7 @@ namespace ET
                 }
             }
         }
-
+#if !SERVER
         /// <summary>
         /// 展示所有BUFF
         /// </summary>
@@ -134,7 +135,7 @@ namespace ET
         {
             foreach (var item in self.Groups)
             {
-                EventSystem.Instance.Publish(new EventType.ShowBuffView(){Buff = item.Value});
+                EventSystem.Instance.Publish(new EventType.AfterAddBuff(){Buff = item.Value});
             }
         }
         
@@ -146,8 +147,10 @@ namespace ET
         {
             foreach (var item in self.Groups)
             {
-                EventSystem.Instance.Publish(new EventType.HideBuffView(){Buff = item.Value});
+                EventSystem.Instance.Publish(new EventType.AfterRemoveBuff(){Buff = item.Value});
             }
         }
+#endif
     }
+
 }

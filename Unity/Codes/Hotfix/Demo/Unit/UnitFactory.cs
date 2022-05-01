@@ -42,11 +42,27 @@ namespace ET
 				        }
 			        }
 			        unit.AddComponent<AOIUnitComponent,Vector3,Quaternion, UnitType>(unit.Position,unit.Rotation,unit.Type);
+			        CombatUnitComponent combatU;
 			        if (unitInfo.SkillIds != null)
 			        {
-				        Log.Info("-----------------"+unit.Id);
-				        unit.AddComponent<CombatUnitComponent,Unit,List<int>>(unit,unitInfo.SkillIds);
+				        combatU = unit.AddComponent<CombatUnitComponent,Unit,List<int>>(unit,unitInfo.SkillIds);
+				        
 			        }
+			        else
+			        {
+				        combatU = unit.AddComponent<CombatUnitComponent,Unit>(unit);
+			        }
+
+			        if (unitInfo.BuffIds != null&&unitInfo.BuffIds.Count>0)
+			        {
+				        var buffC = combatU.GetComponent<BuffComponent>();
+				        for (int i = 0; i < unitInfo.BuffIds.Count; i++)
+				        {
+					        buffC.AddBuff(unitInfo.BuffIds[i], unitInfo.BuffTimestamp[i]);
+				        }
+				        
+			        }
+			       
 			        unit.AddComponent<ObjectWait>();
 
 			        unit.AddComponent<XunLuoPathComponent>();

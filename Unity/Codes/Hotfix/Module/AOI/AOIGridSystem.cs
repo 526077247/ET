@@ -14,12 +14,13 @@ namespace ET
     {
         public override void Awake(AOIGrid self)
         {
+            self.idUnits = new Dictionary<UnitType, List<AOIUnitComponent>>();
             for (int i = 0; i < (int)UnitType.MAX; i++)
             {
                 self.idUnits.Add((UnitType)i, new List<AOIUnitComponent>());
             }
-            self.Triggers = ListComponent<AOITriggerComponent>.Create();
-            self.ListenerUnits = ListComponent<AOIUnitComponent>.Create();
+            self.Triggers = new List<AOITriggerComponent>();
+            self.ListenerUnits = new List<AOIUnitComponent>();
         }
     }
     [ObjectSystem]
@@ -28,8 +29,11 @@ namespace ET
         public override void Destroy(AOIGrid self)
         {
             self.idUnits.Clear();
-            self.Triggers.Dispose();
-            self.ListenerUnits.Dispose();
+            self.Triggers.Clear();
+            self.ListenerUnits.Clear();
+            self.idUnits = null;
+            self.Triggers = null;
+            self.ListenerUnits = null;
         }
     }
     [FriendClass(typeof(AOIGrid))]

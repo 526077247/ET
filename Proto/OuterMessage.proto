@@ -73,6 +73,8 @@ message UnitInfo
 	repeated int64 Vs = 11;
 	MoveInfo MoveInfo = 12;
 	repeated int32 SkillIds = 13;
+	repeated int32 BuffIds = 14;
+	repeated int64 BuffTimestamp = 15;
 }
 
 message M2C_CreateUnits // IActorMessage
@@ -261,4 +263,12 @@ message M2C_UseSkill // IActorMessage
 	float X = 5;
 	float Y = 6;
 	float Z = 7;
+}
+
+message M2C_AddBuff // IActorMessage
+{
+	int32 Error = 1;
+	int32 ConfigId = 2;
+	int64 Timestamp = 3;
+	int64 UnitId = 4;
 }

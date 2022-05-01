@@ -15,9 +15,9 @@ namespace ET
         public int posx;//AOI格子中的坐标
         public int posy;//AOI格子中的坐标
         public float halfDiagonal;//半对角线长度
-        public readonly Dictionary<UnitType,List<AOIUnitComponent>> idUnits = new Dictionary<UnitType, List<AOIUnitComponent>>();
-        public ListComponent<AOIUnitComponent> ListenerUnits;//关注此Grid的Unit
-        public ListComponent<AOITriggerComponent> Triggers;//关注此Grid的触发器
+        public Dictionary<UnitType,List<AOIUnitComponent>> idUnits;
+        public List<AOIUnitComponent> ListenerUnits;//关注此Grid的Unit
+        public List<AOITriggerComponent> Triggers;//关注此Grid的触发器
     }
     
 }
