@@ -48,7 +48,7 @@ namespace ET
                 });
                 unit.AddComponent<AnimatorComponent>();
                 
-                // unit.AddComponent<InfoComponent>();
+                unit.AddComponent<InfoComponent>();
                 var combatU = unit.GetComponent<CombatUnitComponent>();
                 if (combatU != null)
                 {

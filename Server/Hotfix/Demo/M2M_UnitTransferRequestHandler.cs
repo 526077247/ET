@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using MongoDB.Bson;
 using UnityEngine;
 
 namespace ET
@@ -15,12 +16,33 @@ namespace ET
 			
 			unitComponent.AddChild(unit);
 			unitComponent.Add(unit);
-
-			foreach (Entity entity in request.Entitys)
+			Log.Info(request.Map.ToJson());
+			Log.Info(request.Entitys.ToJson());
+			foreach (var item in request.Map)
 			{
-				unit.AddComponent(entity);
+				var entity = request.Entitys[item.ChildIndex];
+				if (item.ParentIndex == -1)//父组件为自己
+				{
+					if (item.IsChild == 0)
+					{
+						unit.AddComponent(entity);
+					}
+					else
+					{
+						unit.AddChild(entity);
+					}
+					continue;
+				}
+				var parent =  request.Entitys[item.ParentIndex];
+				if (item.IsChild == 0)
+				{
+					parent.AddComponent(entity);
+				}
+				else
+				{
+					parent.AddChild(entity);
+				}
 			}
-			
 			unit.AddComponent<MoveComponent>();
 			unit.AddComponent<PathfindingComponent, string>(scene.Name);
 			unit.Position = new Vector3(-10, 0, -10);
@@ -30,14 +52,15 @@ namespace ET
 			// 通知客户端创建My Unit
 			M2C_CreateMyUnit m2CCreateUnits = new M2C_CreateMyUnit();
 			m2CCreateUnits.Unit = UnitHelper.CreateUnitInfo(unit);
-			m2CCreateUnits.Unit.SkillIds = new List<int>(){1001,1002,1003,1004};//初始技能
+			
 			MessageHelper.SendToClient(unit, m2CCreateUnits);
 			
 			var numericComponent = unit.GetComponent<NumericComponent>();
+			
 			// 加入aoi
 			var aoiu = unit.AddComponent<AOIUnitComponent,Vector3,Quaternion, UnitType,int>
 					(unit.Position,unit.Rotation,UnitType.Player,numericComponent.GetAsInt(NumericType.AOI));
-			unit.AddComponent<CombatUnitComponent,Unit,List<int>>(unit,m2CCreateUnits.Unit.SkillIds);
+			
 			aoiu.AddSphereTrigger(0.5f, AOITriggerType.None, null, true);
 			response.NewInstanceId = unit.InstanceId;
 			

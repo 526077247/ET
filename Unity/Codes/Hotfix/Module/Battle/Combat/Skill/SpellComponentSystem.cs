@@ -27,7 +27,6 @@ namespace ET
         public override void Awake(SpellComponent self)
         {
             self.Skill = null;
-            self.Para = new SkillPara();
         }
     }
     [ObjectSystem]

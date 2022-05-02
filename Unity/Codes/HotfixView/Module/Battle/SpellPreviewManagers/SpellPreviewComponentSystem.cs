@@ -10,23 +10,7 @@ namespace ET
     {
         public override void Awake(SpellPreviewComponent self)
         {
-            var combatU = self.GetParent<CombatUnitComponent>();
-            Log.Info("技能未绑定按键，使用默认按键配置");
-            int i = 0;
-            foreach (var item in combatU.IdSkills)
-            {
-                if (i < KeyCodeComponent.Instance.Skills.Length)
-                {
-                    var keyCode = (int) KeyCodeComponent.Instance.Skills[i];
-                    self.BindSkillKeyCode(keyCode, item.Value);
-                }
-                else
-                {
-                    break;
-                }
-
-                i++;
-            }
+            self.BindSkillKeyDefault();
         }
     }
 
@@ -36,42 +20,52 @@ namespace ET
     {
         public override void Awake(SpellPreviewComponent self,Dictionary<int,int> info)
         {
-            var combatU = self.GetParent<CombatUnitComponent>();
             if (info != null)
             {
+                var combatU = self.GetParent<CombatUnitComponent>();
                 for (int i = 0; i < KeyCodeComponent.Instance.Skills.Length; i++)
                 {
                     var keyCode = KeyCodeComponent.Instance.Skills[i];
-                    if (info.ContainsKey(keyCode) && combatU.IdSkills.ContainsKey(info[keyCode]))
+                    if (info.ContainsKey(keyCode) && combatU.TryGetSkillAbility(info[keyCode],out var skill))
                     {
-                        self.BindSkillKeyCode(keyCode, combatU.IdSkills[info[keyCode]]);
+                        self.BindSkillKeyCode(keyCode, skill);
                     }
                 }
             }
             else
             {
-                Log.Info("技能未绑定按键，使用默认按键配置");
-                int i = 0;
-                foreach (var item in combatU.IdSkills)
-                {
-                    if (i < KeyCodeComponent.Instance.Skills.Length)
-                    {
-                        var keyCode = KeyCodeComponent.Instance.Skills[i];
-                        self.BindSkillKeyCode(keyCode, item.Value);
-                    }
-                    else
-                    {
-                        break;
-                    }
-
-                    i++;
-                }
+                self.BindSkillKeyDefault();
             }
         }
     }
     [FriendClass(typeof(SpellPreviewComponent))]
+    [FriendClass(typeof(CombatUnitComponent))]
     public static class SpellPreviewComponentSystem
     {
+        /// <summary>
+        /// 使用默认按键配置,技能绑定按键
+        /// </summary>
+        /// <param name="self"></param>
+        public static void BindSkillKeyDefault(this SpellPreviewComponent self)
+        {
+            var combatU = self.GetParent<CombatUnitComponent>();
+            Log.Info("使用默认按键配置,技能绑定按键");
+            int i = 0;
+            foreach (var item in combatU.IdSkillMap)
+            {
+                if (i < KeyCodeComponent.Instance.Skills.Length)
+                {
+                    var keyCode = KeyCodeComponent.Instance.Skills[i];
+                    self.BindSkillKeyCode(keyCode, combatU.GetChild<SkillAbility>(item.Value));
+                }
+                else
+                {
+                    break;
+                }
+
+                i++;
+            }
+        }
         /// <summary>
         /// 绑定技能与按键
         /// </summary>

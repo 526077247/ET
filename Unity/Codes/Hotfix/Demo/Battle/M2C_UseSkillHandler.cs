@@ -15,7 +15,7 @@ namespace ET
             }
             
             var combatU = sender.GetComponent<CombatUnitComponent>();
-            if (combatU != null&&combatU.IdSkills.TryGetValue(message.SkillConfigId,out SkillAbility skill))
+            if (combatU != null&&combatU.TryGetSkillAbility(message.SkillConfigId,out SkillAbility skill))
             {
                 if (skill.SkillConfig.PreviewType == SkillPreviewType.SelectCircularInCircularArea)
                 {

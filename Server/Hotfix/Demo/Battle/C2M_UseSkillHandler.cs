@@ -3,12 +3,13 @@
 namespace ET
 {
     [ActorMessageHandler]
+    [FriendClass(typeof(CombatUnitComponent))]
     public class C2M_UseSkillHandler : AMActorLocationHandler<Unit, C2M_UseSkill>
     {
         protected override async ETTask Run(Unit unit, C2M_UseSkill message)
         {
             var combatU = unit.GetComponent<CombatUnitComponent>();
-            if (combatU != null&&combatU.IdSkills.TryGetValue(message.SkillConfigId,out SkillAbility skill))
+            if (combatU != null&&combatU.TryGetSkillAbility(message.SkillConfigId,out SkillAbility skill))
             {
                 if (skill.SkillConfig.PreviewType == SkillPreviewType.SelectCircularInCircularArea)
                 {

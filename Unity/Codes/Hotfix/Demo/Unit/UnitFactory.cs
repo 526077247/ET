@@ -45,19 +45,19 @@ namespace ET
 			        CombatUnitComponent combatU;
 			        if (unitInfo.SkillIds != null)
 			        {
-				        combatU = unit.AddComponent<CombatUnitComponent,Unit,List<int>>(unit,unitInfo.SkillIds);
+				        combatU = unit.AddComponent<CombatUnitComponent,List<int>>(unitInfo.SkillIds);
 				        
 			        }
 			        else
 			        {
-				        combatU = unit.AddComponent<CombatUnitComponent,Unit>(unit);
+				        combatU = unit.AddComponent<CombatUnitComponent>();
 			        }
 
 			        if (unitInfo.BuffIds != null&&unitInfo.BuffIds.Count>0)
 			        {
 				        var buffC = combatU.GetComponent<BuffComponent>();
 				        buffC.Init(unitInfo.BuffIds, unitInfo.BuffTimestamp);
-				        
+
 			        }
 			       
 			        unit.AddComponent<ObjectWait>();

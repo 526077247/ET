@@ -9,6 +9,7 @@ namespace ET
     [FriendClass(typeof(NumericComponent))]
     [FriendClass(typeof(BuffComponent))]
     [FriendClass(typeof(Buff))]
+    [FriendClass(typeof(CombatUnitComponent))]
     public static class UnitHelper
     {
         public static UnitInfo CreateUnitInfo(Unit unit)
@@ -65,12 +66,11 @@ namespace ET
             var cuc = unit.GetComponent<CombatUnitComponent>();
             if (cuc != null)
             {
-                unitInfo.SkillIds = cuc.IdSkills.Keys.ToList();
+                //技能
+                unitInfo.SkillIds.AddRange(cuc.IdSkillMap.Keys);
                 var buffC = cuc.GetComponent<BuffComponent>();
                 if (buffC != null)
                 {
-                    unitInfo.BuffIds = new List<int>();
-                    unitInfo.BuffTimestamp = new List<long>();
                     foreach (var item in buffC.Groups)
                     {
                         var buff = item.Value;

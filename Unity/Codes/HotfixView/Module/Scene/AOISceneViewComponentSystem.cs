@@ -316,7 +316,7 @@ namespace ET
                                     view.transform.position = obj.Position;
                                     view.transform.rotation = obj.Rotation;
                                     view.transform.localScale = obj.Scale;
-                                    view.transform.parent = Camera.main.transform;
+                                    view.transform.parent = null;
                                 }).Coroutine();
                             }
                         }

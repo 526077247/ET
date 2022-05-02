@@ -18,4 +18,12 @@ message M2M_UnitTransferRequest // IActorRequest
 	int32 RpcId = 1;
 	Unit Unit = 2;
 	repeated Entity Entitys = 3;
+	repeated RecursiveEntitys Map = 4;
+}
+
+message RecursiveEntitys
+{
+	int32 IsChild = 1;
+	int32 ParentIndex = 2;
+	int32 ChildIndex = 3;
 }

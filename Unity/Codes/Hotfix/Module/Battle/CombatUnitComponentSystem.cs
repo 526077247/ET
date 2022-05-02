@@ -3,26 +3,14 @@ using System.Collections.Generic;
 namespace ET
 {
     [ObjectSystem]
-    public class CombatUnitAwakeSystem : AwakeSystem<CombatUnitComponent,Unit,List<int>>
+    public class CombatUnitAwakeSystem : AwakeSystem<CombatUnitComponent,List<int>>
     {
-        public override void Awake(CombatUnitComponent self,Unit unit,List<int> skills)
+        public override void Awake(CombatUnitComponent self,List<int> skills)
         {
-            self.unit = unit;
             self.AddComponent<SpellComponent>();//技能施法组件
             for (int i = 0; i < skills.Count; i++)
             {
-                if (skills[i] != 0)
-                {
-                    if (SkillConfigCategory.Instance.Contain(skills[i]))
-                    {
-                        self.AttachSkill(skills[i]);
-                        Log.Info("添加技能" + skills[i]);
-                    }
-                    else
-                    {
-                        Log.Error(skills[i] + "技能未配置");
-                    }
-                }
+                self.AddSkill(skills[i]);
             }
             self.AddComponent<BuffComponent>();//buff容器组件
             EventSystem.Instance.Publish(new EventType.AfterCombatUnitComponentCreate
@@ -32,11 +20,10 @@ namespace ET
         }
     }
     [ObjectSystem]
-    public class CombatUnitAwakeSystem1 : AwakeSystem<CombatUnitComponent,Unit>
+    public class CombatUnitAwakeSystem1 : AwakeSystem<CombatUnitComponent>
     {
-        public override void Awake(CombatUnitComponent self,Unit unit)
+        public override void Awake(CombatUnitComponent self)
         {
-            self.unit = unit;
             self.AddComponent<SpellComponent>();//技能施法组件
             self.AddComponent<BuffComponent>();//buff容器组件
             EventSystem.Instance.Publish(new EventType.AfterCombatUnitComponentCreate
@@ -50,9 +37,10 @@ namespace ET
     {
         public override void Destroy(CombatUnitComponent self)
         {
-            self.IdSkills.Clear();
+            self.IdSkillMap.Clear();
         }
     }
+    [FriendClass(typeof(CombatUnitComponent))]
     public static class CombatUnitComponentSystem
     {
         /// <summary>
@@ -61,14 +49,25 @@ namespace ET
         /// <param name="self"></param>
         /// <param name="configId"></param>
         /// <returns></returns>
-        public static SkillAbility AttachSkill(this CombatUnitComponent self,int configId)
+        public static SkillAbility AddSkill(this CombatUnitComponent self,int configId)
         {
-            if (!self.IdSkills.ContainsKey(configId))
+            if (!self.IdSkillMap.ContainsKey(configId))
             {
                 var skill = self.AddChild<SkillAbility, int>(configId);
-                self.IdSkills.Add(configId, skill);
+                self.IdSkillMap.Add(configId, skill.Id);
             }
-            return self.IdSkills[configId];
+            return self.GetChild<SkillAbility>(self.IdSkillMap[configId]);
+        }
+
+        public static bool TryGetSkillAbility(this CombatUnitComponent self, int configId,out SkillAbility skill)
+        {
+            if (self.IdSkillMap.ContainsKey(configId))
+            {
+                skill = self.GetChild<SkillAbility>(self.IdSkillMap[configId]);
+                return true;
+            }
+            skill = null;
+            return false;
         }
     }
 }

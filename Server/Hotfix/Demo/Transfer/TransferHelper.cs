@@ -9,14 +9,50 @@
             MessageHelper.SendToClient(unit, m2CStartSceneChange);
             
             M2M_UnitTransferRequest request = new M2M_UnitTransferRequest();
+            ListComponent<int> Stack = ListComponent<int>.Create();
             request.Unit = unit;
-            foreach (Entity entity in unit.Components.Values)
+            Entity curEntity = unit;
+            Stack.Add(-1);
+            while (Stack.Count > 0)
             {
-                if (entity is ITransfer)
+                var index = Stack[Stack.Count - 1];
+                if (index != -1)
                 {
-                    request.Entitys.Add(entity);
+                    curEntity = request.Entitys[index];
+                }
+                Stack.RemoveAt(Stack.Count - 1);
+                foreach (Entity entity in curEntity.Components.Values)
+                {
+                    if (entity is ITransfer)
+                    {
+                        var childIndex = request.Entitys.Count;
+                        request.Entitys.Add(entity);
+                        Stack.Add(childIndex);
+                        request.Map.Add(new RecursiveEntitys
+                        {
+                            ChildIndex = childIndex,
+                            ParentIndex = index,
+                            IsChild = 0
+                        });
+                    }
+                }
+                foreach (Entity entity in curEntity.Children.Values)
+                {
+                    if (entity is ITransfer)
+                    {
+                        var childIndex = request.Entitys.Count;
+                        request.Entitys.Add(entity);
+                        Stack.Add(childIndex);
+                        request.Map.Add(new RecursiveEntitys
+                        {
+                            ChildIndex = childIndex,
+                            ParentIndex = index,
+                            IsChild = 1
+                        });
+                    }
                 }
             }
+            Stack.Dispose();
             // 删除Mailbox,让发给Unit的ActorLocation消息重发
             unit.RemoveComponent<MailBoxComponent>();
             

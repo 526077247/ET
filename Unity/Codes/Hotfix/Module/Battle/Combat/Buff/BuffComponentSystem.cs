@@ -27,7 +27,6 @@ namespace ET
         {
             self.Groups = DictionaryComponent<int, Buff>.Create();
             self.ActionControls = DictionaryComponent<int, int>.Create();
-            self.unit = self.GetParent<CombatUnitComponent>().unit;
         }
     }
     
@@ -55,7 +54,6 @@ namespace ET
         {
             self.Groups = DictionaryComponent<int, Buff>.Create();
             self.ActionControls = DictionaryComponent<int, int>.Create();
-            self.unit = self.GetParent<CombatUnitComponent>().unit;
             for (int i = 0; i < buffIds.Count; i++)
             {
                 var id = buffIds[i];

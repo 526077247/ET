@@ -1,24 +1,27 @@
 ﻿
-
+using MongoDB.Bson.Serialization.Attributes;
 namespace ET
 {
     /// <summary>
     /// 技能施法组件
     /// </summary>
-    public class SpellComponent : Entity,IAwake,IDestroy
+    public class SpellComponent : Entity,IAwake,IDestroy,ITransfer
     {
+       
         /// <summary>
         /// 当前步骤
         /// </summary>
+        [BsonIgnore]
         public int CurrentSkillStep;
-
         /// <summary>
         /// 当前技能
         /// </summary>
+        [BsonIgnore]
         public SkillAbility Skill;
         /// <summary>
         /// 当前参数
         /// </summary>
-        public SkillPara Para;
+        [BsonIgnore]
+        public SkillPara Para = new SkillPara();
     }
 }

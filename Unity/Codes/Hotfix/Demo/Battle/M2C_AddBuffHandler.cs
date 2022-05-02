@@ -13,7 +13,7 @@
                 if (combatU == null)
                 {
                     Log.Info("combatU == null "+message.UnitId);
-                    combatU = unit.AddComponent<CombatUnitComponent, Unit>(unit);
+                    combatU = unit.AddComponent<CombatUnitComponent>();
                 }
 
                 var buffC = combatU.GetComponent<BuffComponent>();

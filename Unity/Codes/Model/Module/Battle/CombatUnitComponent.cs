@@ -1,13 +1,18 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections.Generic;
+using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson.Serialization.Options;
 namespace ET
 {
     [ChildType(typeof(SkillAbility))]
-    public class CombatUnitComponent:Entity,IAwake<Unit>,IAwake<Unit,List<int>>,IDestroy
+    public class CombatUnitComponent:Entity,IAwake,IAwake<List<int>>,IDestroy,ITransfer
     {
-        public Unit unit;
-        public Dictionary<int, SkillAbility> IdSkills { get;  } = new Dictionary<int, SkillAbility>();
-
+        [BsonIgnore]
+        public Unit unit => this.GetParent<Unit>();
+        
+        [BsonDictionaryOptions(DictionaryRepresentation.ArrayOfArrays)]
+        public Dictionary<int, long> IdSkillMap = new Dictionary<int, long>();
+        
     }
 }

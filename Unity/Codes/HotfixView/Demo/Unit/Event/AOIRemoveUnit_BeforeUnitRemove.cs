@@ -18,7 +18,7 @@
                     combatU.GetComponent<BuffComponent>()?.HideAllBuffView();
                 }
                 unit.RemoveComponent<AnimatorComponent>();
-                // unit.RemoveComponent<InfoComponent>();
+                unit.RemoveComponent<InfoComponent>();
                 // unit.RemoveComponent<NumberComponent>();
                 unit.RemoveComponent<GameObjectComponent>();
             }

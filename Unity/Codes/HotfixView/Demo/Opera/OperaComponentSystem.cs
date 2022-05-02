@@ -26,8 +26,15 @@ namespace ET
     {
         public static void Update(this OperaComponent self)
         {
+            var unit = self.GetMyUnitFromZoneScene();
+            if (unit == null) return;
             if (InputHelper.GetMouseButtonDown(1))
             {
+                if (!unit.GetComponent<MoveComponent>().Enable)
+                {
+                    Log.Error("暂时无法移动");
+                    return ;
+                }
                 UnityEngine.Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 UnityEngine.RaycastHit hit;
                 if (UnityEngine.Physics.Raycast(ray, out hit, 1000, self.mapMask))
@@ -60,7 +67,6 @@ namespace ET
             KeyCodeComponent keyCode = KeyCodeComponent.Instance;
             if (keyCode != null)
             {
-                var unit = UnitHelper.GetMyUnitFromZoneScene(keyCode.ZoneScene());
                 var CurCombat = unit?.GetComponent<CombatUnitComponent>();
                 var spellPreviewComponent = CurCombat?.GetComponent<SpellPreviewComponent>();
                 if (spellPreviewComponent == null)

@@ -128,11 +128,18 @@ namespace ET
 
         public static void MoveForward(this MoveComponent self, bool needCancel)
         {
-            if (!self.Enable) return;
+            long lastUpdateTime = self.UpdateTime;
+            self.UpdateTime = TimeHelper.ClientNow();
+            if (!self.Enable)
+            {
+                self.StartTime += self.UpdateTime - lastUpdateTime;
+                
+                return;
+            }
             Unit unit = self.GetParent<Unit>();
             
-            long timeNow = TimeHelper.ClientNow();
-            long moveTime = timeNow - self.StartTime;
+            
+            long moveTime = self.UpdateTime - self.StartTime;
 
             while (true)
             {

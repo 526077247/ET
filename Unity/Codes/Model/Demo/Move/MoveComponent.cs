@@ -27,7 +27,8 @@ namespace ET
 
         // 每个点的开始时间
         public long StartTime { get; set; }
-
+        // 上次Update的开始时间
+        public long UpdateTime { get; set; }
         // 开启移动协程的Unit的位置
         public Vector3 StartPos;
 
