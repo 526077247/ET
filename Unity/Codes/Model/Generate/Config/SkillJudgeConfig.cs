@@ -100,18 +100,6 @@ namespace ET
 		/// <summary>速度（m/s）</summary>
 		[ProtoMember(7)]
 		public float Speed { get; set; }
-		/// <summary>伤害计算公式(效果Id包含变化生命值时启用，变量用属性表的Key，前加$表示用对方属性)</summary>
-		[ProtoMember(8)]
-		public int FormulaId { get; set; }
-		/// <summary>buff</summary>
-		[ProtoMember(9)]
-		public int[] BuffIds { get; set; }
-		/// <summary>buff持续时间（单位毫秒）</summary>
-		[ProtoMember(10)]
-		public int[] BuffTimes { get; set; }
-		/// <summary>离开范围是否移除BUFF</summary>
-		[ProtoMember(11)]
-		public int[] IsExitRemove { get; set; }
 
 	}
 }

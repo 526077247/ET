@@ -55,8 +55,11 @@ namespace ET
             {
                 foreach ((int key, long value) in nc.NumericDic)
                 {
-                    unitInfo.Ks.Add(key);
-                    unitInfo.Vs.Add(value);
+                    if (key > NumericType.Max) //不需要同步最终值
+                    {
+                        unitInfo.Ks.Add(key);
+                        unitInfo.Vs.Add(value);
+                    }
                 }
             }
             #endregion

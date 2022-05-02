@@ -26,6 +26,7 @@ namespace ET
     [SkillWatcher(SkillStepType.GenerateCollider)]
     [FriendClass(typeof(AOIUnitComponent))]
     [FriendClass(typeof(CombatUnitComponent))]
+    [FriendClass(typeof(SkillAbility))]
     public class SkillWatcher_GenerateCollider : ISkillWatcher
     {
         public void Run(SkillPara para)
@@ -137,9 +138,9 @@ namespace ET
                     else if (collider.ColliderType == SkillJudgeType.Immediate) //立刻结算
                     {
                         if (collider.StartPosType == ColliderStartPosType.Self)
-                            OnColliderIn(aoiUnit, aoiUnit,AOITriggerType.Enter,para, collider);
+                            OnColliderTrigger(aoiUnit, aoiUnit,AOITriggerType.Enter,para, collider);
                         else if(collider.StartPosType == ColliderStartPosType.Aim&&para.To!=null)
-                            OnColliderIn(aoiUnit, para.To.unit.GetComponent<AOIUnitComponent>()
+                            OnColliderTrigger(aoiUnit, para.To.unit.GetComponent<AOIUnitComponent>()
                                 ,AOITriggerType.Enter,para,collider);
                         else if (collider.StartPosType == ColliderStartPosType.MousePos)
                         {
@@ -168,50 +169,20 @@ namespace ET
                     else if (collider.ColliderShape==SkillColliderShapeType.Sphere)
                     {
                         var skillAOIUnit = unit.GetComponent<AOIUnitComponent>();
-                        skillAOIUnit.AddSphereTrigger(collider.ColliderPara[0], AOITriggerType.Enter, (o,e) =>
+                        skillAOIUnit.AddSphereTrigger(collider.ColliderPara[0], AOITriggerType.All, (o,e) =>
                         {
-                            OnColliderIn(aoiUnit, o,e,para, collider);
-                        },false,UnitType.Monster);
-                        if (collider.BuffIds != null&&collider.IsExitRemove!=null)
-                        {
-                            for (int i = 0; i < collider.IsExitRemove.Length; i++)
-                            {
-                                var item = collider.IsExitRemove[i];
-                                if (item == 1)
-                                {
-                                    skillAOIUnit.AddSphereTrigger(collider.ColliderPara[0], AOITriggerType.Exit, (o,e) =>
-                                    {
-                                        OnColliderOut(aoiUnit, o,e,para, collider);
-                                    },false,UnitType.Monster);
-                                    break;
-                                }
-                            }
-                        }
+                            OnColliderTrigger(aoiUnit, o,e,para, collider);
+                        },false,UnitType.ALL);//测试判断为所有人
                     }
                     else if (collider.ColliderShape == SkillColliderShapeType.OBB)
                     {
                         var skillAOIUnit = unit.GetComponent<AOIUnitComponent>();
                         Vector3 par = new Vector3(collider.ColliderPara[0], collider.ColliderPara[1],
                             collider.ColliderPara[2]);
-                        skillAOIUnit.AddOBBTrigger(par, AOITriggerType.Enter, (o,e) =>
+                        skillAOIUnit.AddOBBTrigger(par, AOITriggerType.All, (o,e) =>
                         {
-                            OnColliderIn(aoiUnit, o,e,para,collider);
-                        },false,UnitType.Monster);
-                        if (collider.BuffIds != null&&collider.IsExitRemove!=null)
-                        {
-                            for (int i = 0; i < collider.IsExitRemove.Length; i++)
-                            {
-                                var item = collider.IsExitRemove[i];
-                                if (item == 1)
-                                {
-                                    skillAOIUnit.AddSphereTrigger(collider.ColliderPara[0], AOITriggerType.Exit, (o,e) =>
-                                    {
-                                        OnColliderOut(aoiUnit, o,e,para, collider);
-                                    },false,UnitType.Monster);
-                                    break;
-                                }
-                            }
-                        }
+                            OnColliderTrigger(aoiUnit, o,e,para,collider);
+                        },false,UnitType.ALL);//测试判断为所有人
                     }
                     else
                     {
@@ -228,6 +199,27 @@ namespace ET
             }
 #endif
         }
+
+        /// <summary>
+        /// 当触发
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <param name="type"></param>
+        /// <param name="para"></param>
+        /// <param name="judge"></param>
+        public void OnColliderTrigger(AOIUnitComponent from, AOIUnitComponent to,
+            AOITriggerType type, SkillPara para, SkillJudgeConfig judge)
+        {
+            if (type == AOITriggerType.Enter)
+            {
+                OnColliderIn(from, to, para, judge);
+            }
+            else if (type == AOITriggerType.Exit)
+            {
+                OnColliderOut(from, to, para, judge);
+            }
+        }
         /// <summary>
         /// 进入触发器
         /// </summary>
@@ -236,24 +228,48 @@ namespace ET
         /// <param name="type"></param>
         /// <param name="para"></param>
         /// <param name="judge"></param>
-        public void OnColliderIn(AOIUnitComponent from, AOIUnitComponent to,
-            AOITriggerType type,SkillPara para, SkillJudgeConfig judge)
+        public void OnColliderIn(AOIUnitComponent from, AOIUnitComponent to, SkillPara para, SkillJudgeConfig judge)
         {
-            Log.Info("触发"+type.ToString()+to.Id+"  "+from.Id);
-            Log.Info("触发"+type.ToString()+to.Position+" Dis: "+Vector3.Distance(to.Position,from.Position));
+            // Log.Info("触发"+type.ToString()+to.Id+"  "+from.Id);
+            // Log.Info("触发"+type.ToString()+to.Position+" Dis: "+Vector3.Distance(to.Position,from.Position));
+            int formulaId = 0;//公式
+            if (para.Paras.Length > 1)
+            {
+                int.TryParse(para.Paras[1].ToString(), out formulaId);
+            }
+            float percent = 1;//实际伤害百分比
+            if (para.Paras.Length > 2)
+            {
+                float.TryParse(para.Paras[2].ToString(), out percent);
+            }
 
+            List<int[]> buffInfo = null;//添加的buff
+            if (para.Paras.Length > 3)
+            {
+                string[] vs = para.Paras[3].ToString().Split(';');
+                buffInfo = new List<int[]>();
+                for (int i = 0; i < vs.Length; i++)
+                {
+                    var data = vs[i].Split(',');
+                    int[] temp = new int[data.Length];
+                    for (int j = 0; j < data.Length; j++)
+                    {
+                        temp[j] = int.Parse(data[i]);
+                    }
+                }
+                para.Paras[3] = buffInfo;
+            }
             var combatU = to.Parent.GetComponent<CombatUnitComponent>();
-            if(judge.BuffIds!=null)
+            if(buffInfo!=null&&buffInfo.Count>0)
             {
                 var buffC = combatU.GetComponent<BuffComponent>();
-                for (int i = 0; i < (judge.BuffIds==null?0:judge.BuffIds.Length); i++)
+                for (int i = 0; i < buffInfo.Count; i++)
                 {
-                    if(judge.BuffTimes==null||judge.BuffTimes.Length<=i) return;
-                    buffC.AddBuff(judge.BuffIds[i],TimeHelper.ServerNow() + judge.BuffTimes[i]);
+                    buffC.AddBuff(buffInfo[i][0],TimeHelper.ServerNow() + buffInfo[i][1]);
                 }
             }
 
-            FormulaConfig formula = FormulaConfigCategory.Instance.Get(judge.FormulaId);
+            FormulaConfig formula = FormulaConfigCategory.Instance.Get(formulaId);
             if (formula!=null)
             {
                 for (int i = 0; i < (para.Cost!=null?para.Cost.Count:0); i++)
@@ -263,43 +279,26 @@ namespace ET
                 FormulaStringFx fx = FormulaStringFx.GetInstance(formula.Formula);
                 NumericComponent f = from.GetParent<Unit>().GetComponent<NumericComponent>();
                 NumericComponent t = to?.GetParent<Unit>().GetComponent<NumericComponent>();
-                float value = fx.GetData(f, t);
-                if (para.Paras.Length>1&&float.TryParse(para.Paras[1].ToString(), out var percent))
-                {
-                    value *= percent;
-                }
-                ListComponent<int> realValues = ListComponent<int>.Create();
-                int realValue = 0;
+                float value = fx.GetData(f, t)*percent;
+                int realValue = (int)value;
                 
-                float now = t.GetAsFloat(NumericType.HpBase);
-                if (realValue > 0) //扣血
+                int now = t.GetAsInt(NumericType.HpBase);
+                if (now < realValue)
                 {
-                    if (now < realValue)
-                    {
-                        t.Set(NumericType.HpBase,0);
-                    }
-                    else
-                    {
-                        t.Set(NumericType.HpBase,now - realValue);
-                    }
-                    EventSystem.Instance.Publish(new EventType.AfterCombatUnitGetDamage()
-                    {
-                        CombatUnitComponent = combatU
-                    });
+                    realValue = now;
+                    t.Set(NumericType.HpBase,0);
                 }
-                else if (realValue < 0)//加血
+                else
                 {
-                    float max = t.GetAsFloat(NumericType.MaxHp);
-                    if (now + realValue >= max)
-                    {
-                        t.Set(NumericType.HpBase,max);
-                    }
-                    else
-                    {
-                        t.Set(NumericType.HpBase,now + realValue);
-                    }
+                    t.Set(NumericType.HpBase,now - realValue);
                 }
-                realValues.Dispose();
+                EventSystem.Instance.Publish(new EventType.AfterCombatUnitGetDamage()
+                {
+                    Unit = combatU,
+                    From = from.Parent.GetComponent<CombatUnitComponent>(),
+                    Value = realValue,
+                    SkillId = para.Ability.ConfigId
+                });
             }
         }
         /// <summary>
@@ -310,19 +309,22 @@ namespace ET
         /// <param name="type"></param>
         /// <param name="para"></param>
         /// <param name="judge"></param>
-        public void OnColliderOut(AOIUnitComponent from, AOIUnitComponent to,
-            AOITriggerType type, SkillPara para, SkillJudgeConfig judge)
+        public void OnColliderOut(AOIUnitComponent from, AOIUnitComponent to, SkillPara para, SkillJudgeConfig judge)
         {
-            Log.Info("触发"+type.ToString()+to.Id+"  "+from.Id);
-            Log.Info("触发"+type.ToString()+to.Position+" Dis: "+Vector3.Distance(to.Position,from.Position));
-            if(judge.BuffIds!=null)
+            // Log.Info("触发"+type.ToString()+to.Id+"  "+from.Id);
+            // Log.Info("触发"+type.ToString()+to.Position+" Dis: "+Vector3.Distance(to.Position,from.Position));
+            if (para.Paras.Length > 3)
             {
-                var buffC = to.Parent.GetComponent<CombatUnitComponent>().GetComponent<BuffComponent>();
-                for (int i = 0; i < (judge.BuffIds==null?0:judge.BuffIds.Length); i++)
+                List<int[]> buffInfo = para.Paras[3] as List<int[]>;
+                if (buffInfo != null&&buffInfo.Count>0)
                 {
-                    if (judge.IsExitRemove.Length > i && judge.IsExitRemove[i] == 1)
+                    var buffC = to.Parent.GetComponent<CombatUnitComponent>().GetComponent<BuffComponent>();
+                    for (int i = 0; i < buffInfo.Count; i++)
                     {
-                        buffC.RemoveByConfigId(judge.BuffIds[i]);
+                        if (buffInfo[i][2] == 1)
+                        {
+                            buffC.RemoveByConfigId(buffInfo[i][0]);
+                        }
                     }
                 }
             }

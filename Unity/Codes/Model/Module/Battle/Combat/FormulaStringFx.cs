@@ -147,7 +147,7 @@ public class FormulaStringFx
         string outstring = "";
         for (int i = 0; i < formulaNodeList.Count; i++)
         {
-            outstring += string.Format("({0}):({1}) {2}", formulaNodeList[i].Key, formulaNodeList[i].Value,formulaNodeList[i].IsSelf);
+            outstring += string.Format("[{0}-({1}):({2}) ]",formulaNodeList[i].IsSelf?"Slef":"Other", formulaNodeList[i].Key, formulaNodeList[i].Value);
         }
 
         Log.Info(outstring);
@@ -172,10 +172,8 @@ public class FormulaStringFx
         {
             if(!float.TryParse(tempList[i].Value,out _))
             {
-                var pro = typeof(NumericType).GetField(tempList[i].Value);
-                if (pro!=null)
+                if (NumericType.Map.TryGetValue(tempList[i].Value,out int type))
                 {
-                    var type = (int)pro.GetValue(default);
                     if(tempList[i].IsSelf)
                         tempList[i].Value = comp.GetAsFloat(type).ToString();
                     else if(other!=null)

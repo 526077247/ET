@@ -16,32 +16,20 @@ namespace ET
 			
 			unitComponent.AddChild(unit);
 			unitComponent.Add(unit);
-			Log.Info(request.Map.ToJson());
-			Log.Info(request.Entitys.ToJson());
+
 			foreach (var item in request.Map)
 			{
 				var entity = request.Entitys[item.ChildIndex];
+				Entity parent;
 				if (item.ParentIndex == -1)//父组件为自己
-				{
-					if (item.IsChild == 0)
-					{
-						unit.AddComponent(entity);
-					}
-					else
-					{
-						unit.AddChild(entity);
-					}
-					continue;
-				}
-				var parent =  request.Entitys[item.ParentIndex];
-				if (item.IsChild == 0)
-				{
-					parent.AddComponent(entity);
-				}
+					parent = unit;
 				else
-				{
+					parent = request.Entitys[item.ParentIndex];
+				
+				if (item.IsChild == 0)
+					parent.AddComponent(entity);
+				else
 					parent.AddChild(entity);
-				}
 			}
 			unit.AddComponent<MoveComponent>();
 			unit.AddComponent<PathfindingComponent, string>(scene.Name);

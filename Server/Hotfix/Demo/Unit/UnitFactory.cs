@@ -1,6 +1,8 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections.Generic;
+using OfficeOpenXml.Drawing.Style.Coloring;
+
 namespace ET
 {
     public static class UnitFactory
@@ -19,10 +21,13 @@ namespace ET
                     unit.Position = new Vector3(-10, 0, -10);
 			
                     NumericComponent numericComponent = unit.AddComponent<NumericComponent>();
-                    numericComponent.Set(NumericType.Speed, 6f); // 速度是6米每秒
-                    numericComponent.Set(NumericType.AOI, 2); // 视野2格
-                    numericComponent.Set(NumericType.Hp, 1000); // 生命1000
-                    numericComponent.Set(NumericType.MaxHp, 1000); // 最大生命1000
+                    numericComponent.Set(NumericType.SpeedBase, 6f); // 速度是6米每秒
+                    numericComponent.Set(NumericType.AOIBase, 2); // 视野2格
+                    numericComponent.Set(NumericType.HpBase, 1000); // 生命1000
+                    numericComponent.Set(NumericType.MaxHpBase, 1000); // 最大生命1000
+                    numericComponent.Set(NumericType.LvBase,1); //1级
+                    numericComponent.Set(NumericType.ATKBase,100); //100攻击
+                    numericComponent.Set(NumericType.DEFBase,500); //500防御
                     var SkillIds = new List<int>(){1001,1002,1003,1004};//初始技能
                     unit.AddComponent<CombatUnitComponent,List<int>>(SkillIds);
                     unitComponent.Add(unit);

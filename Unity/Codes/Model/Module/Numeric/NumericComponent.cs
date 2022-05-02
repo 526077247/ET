@@ -38,32 +38,50 @@ namespace ET
 
 		public float GetAsFloat(int numericType)
 		{
-			return (float)GetByKey(numericType) / 10000;
+			if(IsFloat(numericType))
+				return GetByKey(numericType)/10000f;
+			else
+				return GetByKey(numericType);
 		}
 
 		public int GetAsInt(int numericType)
 		{
-			return (int)GetByKey(numericType);
+			if(IsFloat(numericType))
+				return (int)GetByKey(numericType)/10000;
+			else
+				return (int)GetByKey(numericType);
 		}
 		
 		public long GetAsLong(int numericType)
 		{
-			return GetByKey(numericType);
+			if(IsFloat(numericType))
+				return GetByKey(numericType)/10000;
+			else
+				return GetByKey(numericType);
 		}
 
-		public void Set(int nt, float value)
+		public void Set(int nt, float value,bool isRealValue=false)
 		{
-			this[nt] = (int) (value * 10000);
+			if(!isRealValue&&IsFloat(nt))
+				this[nt] = (int) (value * 10000);
+			else
+				this[nt] = (int) value;
 		}
 
-		public void Set(int nt, int value)
+		public void Set(int nt, int value,bool isRealValue=false)
 		{
-			this[nt] = value;
+			if(!isRealValue&&IsFloat(nt))
+				this[nt] = value * 10000;
+			else
+				this[nt] = value;
 		}
 		
-		public void Set(int nt, long value)
+		public void Set(int nt, long value,bool isRealValue=false)
 		{
-			this[nt] = value;
+			if(!isRealValue&&IsFloat(nt))
+				this[nt] = value * 10000;
+			else
+				this[nt] = value;
 		}
 
 		public void SetNoEvent(int numericType, long value)
@@ -72,7 +90,7 @@ namespace ET
 		}
 		
 		
-		public long this[int numericType]
+		private long this[int numericType]
 		{
 			get
 			{
@@ -130,8 +148,24 @@ namespace ET
 
 			// 一个数值可能会多种情况影响，比如速度,加个buff可能增加速度绝对值100，也有些buff增加10%速度，所以一个值可以由5个值进行控制其最终结果
 			// final = (((base + add) * (100 + pct) / 100) + finalAdd) * (100 + finalPct) / 100;
-			long result = (long)(((this.GetByKey(bas) + this.GetByKey(add)) * (100 + this.GetAsFloat(pct)) / 100f + this.GetByKey(finalAdd)) * (100 + this.GetAsFloat(finalPct)) / 100f * 10000);
+			long result = (long)(((this.GetByKey(bas) + this.GetByKey(add)) * (100 + this.GetAsFloat(pct)) / 100f + this.GetByKey(finalAdd)) * (100 + this.GetAsFloat(finalPct)) / 100f);
 			this.Insert(final,result,isPublicEvent);
+		}
+		/// <summary>
+		/// 读表判断是取整还是保留小数
+		/// </summary>
+		/// <param name="numericType"></param>
+		/// <returns></returns>
+		public bool IsFloat(int numericType)
+		{
+			if (numericType > NumericType.Max)
+			{
+				var flag = numericType % 10;
+				if (flag == 3 || flag == 5) return true;//百分比的是小数,否则看配置表
+				numericType /= 10;
+			}
+			var attr = AttributeConfigCategory.Instance.Get(numericType);
+			return attr.Type == 1;
 		}
 	}
 }

@@ -88,7 +88,7 @@ namespace ET
 		/// <summary>名称</summary>
 		[ProtoMember(3)]
 		public string Name { get; set; }
-		/// <summary>类型(1:数值,2:千分比)</summary>
+		/// <summary>类型(0:整数,1:小数)</summary>
 		[ProtoMember(4)]
 		public int Type { get; set; }
 		/// <summary>显示</summary>

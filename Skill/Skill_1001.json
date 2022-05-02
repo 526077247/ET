@@ -12,6 +12,6 @@
     {
         "Trigger":0,
         "Type":6,
-        "Params":[1000]
+        "Params":[1000,1,1]
     }
 ]

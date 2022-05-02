@@ -571,4 +571,25 @@ namespace ET
 
 	}
 
+	[Message(OuterOpcode.M2C_Damage)]
+	[ProtoContract]
+	public partial class M2C_Damage: Object, IActorMessage
+	{
+		[ProtoMember(1)]
+		public int Error { get; set; }
+
+		[ProtoMember(2)]
+		public long FromId { get; set; }
+
+		[ProtoMember(3)]
+		public long ToId { get; set; }
+
+		[ProtoMember(4)]
+		public int ConfigId { get; set; }
+
+		[ProtoMember(5)]
+		public long Damage { get; set; }
+
+	}
+
 }

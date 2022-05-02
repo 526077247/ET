@@ -7,6 +7,6 @@
     {
         "Trigger":0,
         "Type":6,
-        "Params":[1002]
+        "Params":[1002,1,1]
     }
 ]

@@ -272,3 +272,12 @@ message M2C_AddBuff // IActorMessage
 	int64 Timestamp = 3;
 	int64 UnitId = 4;
 }
+
+message M2C_Damage // IActorMessage
+{
+	int32 Error = 1;
+	int64 FromId = 2;
+	int64 ToId = 3;
+	int32 ConfigId = 4;
+	int64 Damage = 5;
+}
