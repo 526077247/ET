@@ -70,6 +70,7 @@ namespace ILRuntime.Runtime.Generated
             ET_ETAsyncTaskMethodBuilder_Binding.Register(app);
             ET_ETTask_1_Int32_Binding.Register(app);
             UnityEngine_Vector3_Binding.Register(app);
+            System_Int64_Binding.Register(app);
             UnityEngine_PlayerPrefs_Binding.Register(app);
             System_Int32_Binding.Register(app);
             ET_ETTask_1_ILTypeInstance_Binding.Register(app);
@@ -95,7 +96,6 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_List_1_ILTypeInstance_Binding_Enumerator_Binding.Register(app);
             System_Collections_Generic_List_1_Int64_Binding.Register(app);
             System_Collections_Generic_List_1_Int64_Binding_Enumerator_Binding.Register(app);
-            System_Int64_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Int32_SortedDictionary_2_Int32_ILTypeInstance_Binding.Register(app);
             System_Collections_Generic_SortedDictionary_2_Int32_ILTypeInstance_Binding.Register(app);
             System_Collections_Generic_SortedDictionary_2_Int32_ILTypeInstance_Binding_ValueCollection_Binding.Register(app);
@@ -131,8 +131,8 @@ namespace ILRuntime.Runtime.Generated
             ET_DictionaryComponent_2_Int32_Int32_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Int32_ILTypeInstance_Binding_Enumerator_Binding.Register(app);
             System_Collections_Generic_KeyValuePair_2_Int32_ILTypeInstance_Binding.Register(app);
-            System_Collections_Generic_Dictionary_2_String_Int32_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Int32_Int32_Binding.Register(app);
+            System_Collections_Generic_Dictionary_2_String_Int32_Binding.Register(app);
             ET_DictionaryComponent_2_Int32_List_1_Object_Array_Binding.Register(app);
             ET_DictionaryComponent_2_Int32_List_1_Int32_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Int32_List_1_Int32_Binding.Register(app);
@@ -140,6 +140,7 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_List_1_Object_Array_Binding.Register(app);
             AssetBundles_AddressablesManager_Binding.Register(app);
             UnityEngine_TextAsset_Binding.Register(app);
+            System_Collections_Generic_Dictionary_2_Int32_Int64_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Type_Object_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_Byte_Array_Binding.Register(app);
             System_Threading_Monitor_Binding.Register(app);
@@ -246,14 +247,16 @@ namespace ILRuntime.Runtime.Generated
             UnityEngine_Rect_Binding.Register(app);
             System_Nullable_1_Int32_Binding.Register(app);
             DG_Tweening_DOTween_Binding.Register(app);
-            UnitIdComponent_Binding.Register(app);
-            UnityEngine_Collider_Binding.Register(app);
             UnityEngine_Animator_Binding.Register(app);
             UnityEngine_RuntimeAnimatorController_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_AnimationClip_Binding.Register(app);
             UnityEngine_AnimatorControllerParameter_Binding.Register(app);
             System_Collections_Generic_HashSet_1_String_Binding.Register(app);
             UnityEngine_AnimationClip_Binding.Register(app);
+            UnitIdComponent_Binding.Register(app);
+            UnityEngine_Collider_Binding.Register(app);
+            TMPro_TMP_Text_Binding.Register(app);
+            UnityEngine_UI_Image_Binding.Register(app);
             RaycastHelper_Binding.Register(app);
             System_Action_1_Vector3_Binding.Register(app);
             UnityEngine_UI_Graphic_Binding.Register(app);
@@ -262,6 +265,8 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_Dictionary_2_Byte_ILTypeInstance_Binding.Register(app);
             ET_ListComponent_1_ETTask_1_GameObject_Binding.Register(app);
             System_Collections_Generic_List_1_ETTask_1_GameObject_Binding.Register(app);
+            System_Collections_Generic_Dictionary_2_Int32_Int64_Binding_Enumerator_Binding.Register(app);
+            System_Collections_Generic_KeyValuePair_2_Int32_Int64_Binding.Register(app);
             UnityEngine_Rendering_Universal_CameraExtensions_Binding.Register(app);
             UnityEngine_Rendering_Universal_UniversalAdditionalCameraData_Binding.Register(app);
             System_Collections_Generic_List_1_Camera_Binding.Register(app);
@@ -290,7 +295,6 @@ namespace ILRuntime.Runtime.Generated
             UnityEngine_Behaviour_Binding.Register(app);
             UnityEngine_UI_Selectable_Binding.Register(app);
             TextColorCtrl_Binding.Register(app);
-            UnityEngine_UI_Image_Binding.Register(app);
             ET_CopyGameObject_Binding.Register(app);
             UnityEngine_UI_Dropdown_Binding.Register(app);
             UnityEngine_Events_UnityEvent_1_Int32_Binding.Register(app);
@@ -306,7 +310,6 @@ namespace ILRuntime.Runtime.Generated
             UnityEngine_UI_Slider_Binding.Register(app);
             UnityEngine_Events_UnityEvent_1_Single_Binding.Register(app);
             UnityEngine_UI_Text_Binding.Register(app);
-            TMPro_TMP_Text_Binding.Register(app);
             TMPro_TMP_TextInfo_Binding.Register(app);
             TMPro_TMP_CharacterInfo_Binding.Register(app);
             TMPro_TMP_Vertex_Binding.Register(app);
@@ -379,7 +382,6 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_Dictionary_2_Type_UInt16_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Type_Type_Binding.Register(app);
             ET_ErrorCore_Binding.Register(app);
-            System_Collections_Generic_Dictionary_2_Int32_Int64_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Type_Boolean_Binding.Register(app);
             System_Collections_Generic_List_1_UnityWebRequest_Binding.Register(app);
             System_Collections_Generic_List_1_UnityWebRequest_Binding_Enumerator_Binding.Register(app);
