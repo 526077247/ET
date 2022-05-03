@@ -130,7 +130,7 @@ namespace ET
             if(!spellSkill.CanUse())return;
             self.Skill = spellSkill;
             var nowpos = self.GetParent<CombatUnitComponent>().unit.Position;
-            point = new Vector3(point.x, point.y, nowpos.z);
+            point = new Vector3(point.x, nowpos.y, point.z);
             var Rotation = Quaternion.LookRotation(point - nowpos,Vector3.up);
             
             self.Para.Clear();

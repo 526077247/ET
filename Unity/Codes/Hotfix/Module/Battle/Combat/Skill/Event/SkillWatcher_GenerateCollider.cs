@@ -246,18 +246,23 @@ namespace ET
             List<int[]> buffInfo = null;//添加的buff
             if (para.Paras.Length > 3)
             {
-                string[] vs = para.Paras[3].ToString().Split(';');
-                buffInfo = new List<int[]>();
-                for (int i = 0; i < vs.Length; i++)
+                buffInfo = para.Paras[3] as List<int[]>;
+                if (buffInfo == null)
                 {
-                    var data = vs[i].Split(',');
-                    int[] temp = new int[data.Length];
-                    for (int j = 0; j < data.Length; j++)
+                    string[] vs = para.Paras[3].ToString().Split(';');
+                    buffInfo = new List<int[]>();
+                    for (int i = 0; i < vs.Length; i++)
                     {
-                        temp[j] = int.Parse(data[i]);
+                        var data = vs[i].Split(',');
+                        int[] temp = new int[data.Length];
+                        for (int j = 0; j < data.Length; j++)
+                        {
+                            temp[j] = int.Parse(data[i]);
+                        }
+                        buffInfo.Add(temp);
                     }
+                    para.Paras[3] = buffInfo;
                 }
-                para.Paras[3] = buffInfo;
             }
             var combatU = to.Parent.GetComponent<CombatUnitComponent>();
             if(buffInfo!=null&&buffInfo.Count>0)
