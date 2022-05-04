@@ -11,8 +11,10 @@ namespace ET
     public class SpellPreviewComponent : Entity,IAwake<Dictionary<int,int>>,IAwake
     {
 #if SERVER //单机去掉
-        public SpellComponent SpellComp => parent.GetComponent<SpellComponent>();
+        public SpellComponent SpellComp => parent.GetComponent<SpellComponent>();//选位置和方向的距离不够直接最大施法距离施法，选目标的则不施法
+        
 #endif
+        public MoveAndSpellComponent MoveAndSpellComp => parent.GetComponent<MoveAndSpellComponent>();//距离不够则走过去施法
         public bool Previewing;
         public SkillAbility PreviewingSkill { get; set; }
 

@@ -43,27 +43,6 @@ namespace ET
     public static class SpellComponentSystem
     {
         /// <summary>
-        /// 释放自动选择目标技能
-        /// </summary>
-        /// <param name="self"></param>
-        /// <param name="spellSkill"></param>
-        public static void SpellWithAuto(this SpellComponent self, SkillAbility spellSkill)
-        {
-            if (self.Skill != null)
-                return;
-            if(!spellSkill.CanUse())return;
-            //todo：释放自动选择目标技能
-            // self.Skill = spellSkill;
-            // var nowpos = self.GetParent<CombatUnitComponent>().unit.Position;
-            // self.Para.Clear();
-            // self.Para.Position = nowpos;
-            // self.Para.From = self.GetParent<CombatUnitComponent>();
-            // self.Para.Ability = spellSkill;
-            //
-            // self.Skill.LastSpellTime = TimeHelper.ClientNow();
-            // self.PlayNextSkillStep(0);
-        }
-        /// <summary>
         /// 释放对目标技能
         /// </summary>
         /// <param name="self"></param>

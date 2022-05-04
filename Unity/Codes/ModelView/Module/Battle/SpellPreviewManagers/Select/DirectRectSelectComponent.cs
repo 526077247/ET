@@ -14,6 +14,6 @@ namespace ET
         public GameObject AreaObj;
         public int distance;
         public int width;
-
+        public int Mode { get; set; }
     }
 }

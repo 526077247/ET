@@ -99,7 +99,9 @@ namespace ET
                     comp = self.AddComponent<TargetSelectComponent>();
                 }
                 comp.TargetLimitType = affectTargetType;
-                SelectEventSystem.Instance.Show<Action<Unit>,int[]>(comp,(a)=> { self.OnSelectedTarget(a); },self.PreviewingSkill.SkillConfig.PreviewRange).Coroutine();
+                comp.Mode = self.PreviewingSkill.SkillConfig.Mode;
+                SelectEventSystem.Instance.Show<Action<Unit>,int[]>(comp,(a)=> { self.OnSelectedTarget(a); },
+                    self.PreviewingSkill.SkillConfig.PreviewRange).Coroutine();
                 self.CurSelect = comp;
             }
             //1大圈选小圈
@@ -110,7 +112,9 @@ namespace ET
                 {
                     comp = self.AddComponent<PointSelectComponent>();
                 }
-                SelectEventSystem.Instance.Show<Action<Vector3>,int[]>(comp,(a)=> { self.OnInputPoint(a); },self.PreviewingSkill.SkillConfig.PreviewRange).Coroutine();
+                comp.Mode = self.PreviewingSkill.SkillConfig.Mode;
+                SelectEventSystem.Instance.Show<Action<Vector3>,int[]>(comp,(a)=> { self.OnInputPoint(a); },
+                    self.PreviewingSkill.SkillConfig.PreviewRange).Coroutine();
                 self.CurSelect = comp;
             }
             //2矩形
@@ -121,13 +125,15 @@ namespace ET
                 {
                     comp = self.AddComponent<DirectRectSelectComponent>();
                 }
-                SelectEventSystem.Instance.Show<Action<Vector3>,int[]>(comp,(a)=> { self.OnInputDirect(a); },self.PreviewingSkill.SkillConfig.PreviewRange).Coroutine();
+                comp.Mode = self.PreviewingSkill.SkillConfig.Mode;
+                SelectEventSystem.Instance.Show<Action<Vector3>,int[]>(comp,(a)=> { self.OnInputDirect(a); },
+                    self.PreviewingSkill.SkillConfig.PreviewRange).Coroutine();
                 self.CurSelect = comp;
             }
             //自动
             else
             {
-                self.SpellWithAuto();
+                Log.Error("未处理的施法类型"+previewType);
             }
             
             
@@ -139,40 +145,53 @@ namespace ET
             if(self.CurSelect!=null)
                 SelectEventSystem.Instance.Hide(self.CurSelect);
         }
-
-        private static void SpellWithAuto(this SpellPreviewComponent self)
-        {
-#if SERVER //单机去掉
-            self.SpellComp.SpellWithAuto(self.PreviewingSkill);
-#else
-            self.PreviewingSkill.UseSkill(Vector3.zero);
-#endif
-        }
+        
         private static void OnSelectedTarget(this SpellPreviewComponent self,Unit unit)
         {
+            if (self.PreviewingSkill.SkillConfig.Mode == 0)
+            {
 #if SERVER //单机去掉
-            self.SpellComp.SpellWithTarget(self.PreviewingSkill, unit?.GetComponent<CombatUnitComponent>());
+                self.MoveAndSpellComp.SpellWithTarget(self.PreviewingSkill, unit?.GetComponent<CombatUnitComponent>());
 #else
-            self.PreviewingSkill.UseSkill(Vector3.zero,unit.Id);
+                self.PreviewingSkill.UseSkill(Vector3.zero,unit.Id);
 #endif
+            }
+            else
+            {
+                self.MoveAndSpellComp.SpellWithTarget(self.PreviewingSkill, unit?.GetComponent<CombatUnitComponent>());
+            }
         }   
 
         private static void OnInputPoint(this SpellPreviewComponent self,Vector3 point)
         {
+            if (self.PreviewingSkill.SkillConfig.Mode == 0)
+            {
 #if SERVER //单机去掉
-            self.SpellComp.SpellWithPoint(self.PreviewingSkill, point);
+                self.SpellComp.SpellWithPoint(self.PreviewingSkill, point);
 #else
-            self.PreviewingSkill.UseSkill(point);
+                self.PreviewingSkill.UseSkill(point);
 #endif
+            }
+            else
+            {
+                self.MoveAndSpellComp.SpellWithPoint(self.PreviewingSkill, point);
+            }
         }
 
         private static void OnInputDirect(this SpellPreviewComponent self, Vector3 point)
         {
+            if (self.PreviewingSkill.SkillConfig.Mode == 0)
+            {
 #if SERVER //单机去掉
-            self.SpellComp.SpellWithDirect(self.PreviewingSkill, point);
+                self.SpellComp.SpellWithDirect(self.PreviewingSkill, point);
 #else
-            self.PreviewingSkill.UseSkill(point);
+                self.PreviewingSkill.UseSkill(point);
 #endif
+            }
+            else
+            {
+                self.MoveAndSpellComp.SpellWithDirect(self.PreviewingSkill, point);
+            }
         }
 
         public static void SelectTargetsWithDistance(this SpellPreviewComponent self,Vector3 point)

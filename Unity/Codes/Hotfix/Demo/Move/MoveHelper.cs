@@ -33,5 +33,10 @@ namespace ET
             bool ret = await moveComponent.MoveToAsync(path, speed);
             return ret;
         }
+
+        public static void Stop(this Unit unit, int error)
+        {
+            unit.ZoneScene().GetComponent<SessionComponent>().Session.Send(new C2M_Stop());
+        }
     }
 }

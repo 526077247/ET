@@ -13,6 +13,7 @@ namespace ET
                 self.AddSkill(skills[i]);
             }
             self.AddComponent<BuffComponent>();//buff容器组件
+            self.AddComponent<MoveAndSpellComponent>();//移动过去施法组件
             EventSystem.Instance.Publish(new EventType.AfterCombatUnitComponentCreate
             {
                 CombatUnitComponent = self
@@ -26,6 +27,7 @@ namespace ET
         {
             self.AddComponent<SpellComponent>();//技能施法组件
             self.AddComponent<BuffComponent>();//buff容器组件
+            self.AddComponent<MoveAndSpellComponent>();//移动过去施法组件
             EventSystem.Instance.Publish(new EventType.AfterCombatUnitComponentCreate
             {
                 CombatUnitComponent = self

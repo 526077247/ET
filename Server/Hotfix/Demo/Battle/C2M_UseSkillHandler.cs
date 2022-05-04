@@ -37,7 +37,7 @@ namespace ET
                 }
                 else
                 {
-                    combatU.GetComponent<SpellComponent>().SpellWithAuto(skill);
+                    Log.Error("未处理的类型"+skill.SkillConfig.PreviewType);
                 }
             }
             else

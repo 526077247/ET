@@ -19,6 +19,6 @@ namespace ET
         public bool IsShow;
         public int distance;
         public int range;
-
+        public int Mode { get; set; }
     }
 }
