@@ -68,24 +68,24 @@ namespace ILRuntime.Runtime.Generated
             args = new Type[]{typeof(System.String), typeof(System.Object)};
             method = type.GetMethod("Format", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, Format_14);
-            args = new Type[]{typeof(System.String), typeof(System.Object), typeof(System.Object)};
-            method = type.GetMethod("Format", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, Format_15);
             args = new Type[]{typeof(System.String[])};
             method = type.GetMethod("Concat", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, Concat_16);
-            args = new Type[]{typeof(System.String), typeof(System.Object[])};
+            app.RegisterCLRMethodRedirection(method, Concat_15);
+            args = new Type[]{typeof(System.String), typeof(System.Object), typeof(System.Object)};
             method = type.GetMethod("Format", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, Format_17);
-            args = new Type[]{typeof(System.String), typeof(System.StringComparison)};
-            method = type.GetMethod("IndexOf", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, IndexOf_18);
-            args = new Type[]{typeof(System.String), typeof(System.StringComparison)};
-            method = type.GetMethod("Equals", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, Equals_19);
+            app.RegisterCLRMethodRedirection(method, Format_16);
             args = new Type[]{typeof(System.Char[])};
             method = type.GetMethod("Split", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, Split_20);
+            app.RegisterCLRMethodRedirection(method, Split_17);
+            args = new Type[]{typeof(System.String), typeof(System.Object[])};
+            method = type.GetMethod("Format", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, Format_18);
+            args = new Type[]{typeof(System.String), typeof(System.StringComparison)};
+            method = type.GetMethod("IndexOf", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, IndexOf_19);
+            args = new Type[]{typeof(System.String), typeof(System.StringComparison)};
+            method = type.GetMethod("Equals", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, Equals_20);
             args = new Type[]{typeof(System.String), typeof(System.String), typeof(System.StringComparison)};
             method = type.GetMethod("Equals", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, Equals_21);
@@ -440,7 +440,23 @@ namespace ILRuntime.Runtime.Generated
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 
-        static StackObject* Format_15(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* Concat_15(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        {
+            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
+            StackObject* ptr_of_this_method;
+            StackObject* __ret = ILIntepreter.Minus(__esp, 1);
+
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
+            System.String[] @values = (System.String[])typeof(System.String[]).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            __intp.Free(ptr_of_this_method);
+
+
+            var result_of_this_method = System.String.Concat(@values);
+
+            return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
+        }
+
+        static StackObject* Format_16(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
@@ -464,23 +480,26 @@ namespace ILRuntime.Runtime.Generated
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 
-        static StackObject* Concat_16(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* Split_17(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
-            StackObject* __ret = ILIntepreter.Minus(__esp, 1);
+            StackObject* __ret = ILIntepreter.Minus(__esp, 2);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.String[] @values = (System.String[])typeof(System.String[]).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            System.Char[] @separator = (System.Char[])typeof(System.Char[]).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
+            System.String instance_of_this_method = (System.String)typeof(System.String).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            __intp.Free(ptr_of_this_method);
 
-            var result_of_this_method = System.String.Concat(@values);
+            var result_of_this_method = instance_of_this_method.Split(@separator);
 
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 
-        static StackObject* Format_17(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* Format_18(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
@@ -500,7 +519,7 @@ namespace ILRuntime.Runtime.Generated
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 
-        static StackObject* IndexOf_18(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* IndexOf_19(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
@@ -525,7 +544,7 @@ namespace ILRuntime.Runtime.Generated
             return __ret + 1;
         }
 
-        static StackObject* Equals_19(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* Equals_20(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
@@ -548,25 +567,6 @@ namespace ILRuntime.Runtime.Generated
             __ret->ObjectType = ObjectTypes.Integer;
             __ret->Value = result_of_this_method ? 1 : 0;
             return __ret + 1;
-        }
-
-        static StackObject* Split_20(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
-        {
-            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            StackObject* ptr_of_this_method;
-            StackObject* __ret = ILIntepreter.Minus(__esp, 2);
-
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.Char[] @separator = (System.Char[])typeof(System.Char[]).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
-            __intp.Free(ptr_of_this_method);
-
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            System.String instance_of_this_method = (System.String)typeof(System.String).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
-            __intp.Free(ptr_of_this_method);
-
-            var result_of_this_method = instance_of_this_method.Split(@separator);
-
-            return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 
         static StackObject* Equals_21(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)

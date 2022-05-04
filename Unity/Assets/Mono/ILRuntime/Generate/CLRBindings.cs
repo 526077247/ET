@@ -32,8 +32,7 @@ namespace ILRuntime.Runtime.Generated
             ET_ListComponent_1_Int32_Binding.Register(app);
             ET_ListComponent_1_ILTypeInstance_Binding.Register(app);
             System_Single_Binding.Register(app);
-            System_Type_Binding.Register(app);
-            System_Reflection_FieldInfo_Binding.Register(app);
+            System_Collections_Generic_Dictionary_2_String_Int32_Binding.Register(app);
             System_Collections_Generic_List_1_Int32_Binding.Register(app);
             System_Math_Binding.Register(app);
             System_Char_Binding.Register(app);
@@ -71,8 +70,8 @@ namespace ILRuntime.Runtime.Generated
             ET_ETTask_1_Int32_Binding.Register(app);
             UnityEngine_Vector3_Binding.Register(app);
             System_Int64_Binding.Register(app);
-            UnityEngine_PlayerPrefs_Binding.Register(app);
             System_Int32_Binding.Register(app);
+            UnityEngine_PlayerPrefs_Binding.Register(app);
             ET_ETTask_1_ILTypeInstance_Binding.Register(app);
             ET_NetworkHelper_Binding.Register(app);
             ET_RandomHelper_Binding.Register(app);
@@ -100,6 +99,7 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_SortedDictionary_2_Int32_ILTypeInstance_Binding.Register(app);
             System_Collections_Generic_SortedDictionary_2_Int32_ILTypeInstance_Binding_ValueCollection_Binding.Register(app);
             System_Collections_Generic_SortedDictionary_2_Int32_ILTypeInstance_Binding_ValueCollection_Binding_Enumerator_Binding.Register(app);
+            System_Type_Binding.Register(app);
             System_Collections_Generic_List_1_Type_Binding.Register(app);
             System_Collections_Generic_List_1_Type_Binding_Enumerator_Binding.Register(app);
             System_Activator_Binding.Register(app);
@@ -132,7 +132,7 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_Dictionary_2_Int32_ILTypeInstance_Binding_Enumerator_Binding.Register(app);
             System_Collections_Generic_KeyValuePair_2_Int32_ILTypeInstance_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Int32_Int32_Binding.Register(app);
-            System_Collections_Generic_Dictionary_2_String_Int32_Binding.Register(app);
+            System_Collections_Generic_List_1_Int32_Array_Binding.Register(app);
             ET_DictionaryComponent_2_Int32_List_1_Object_Array_Binding.Register(app);
             ET_DictionaryComponent_2_Int32_List_1_Int32_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Int32_List_1_Int32_Binding.Register(app);
@@ -324,6 +324,7 @@ namespace ILRuntime.Runtime.Generated
             ET_MonoPool_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Type_ILTypeInstance_Binding_ValueCollection_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Type_ILTypeInstance_Binding_ValueCollection_Binding_Enumerator_Binding.Register(app);
+            System_Reflection_FieldInfo_Binding.Register(app);
             System_Reflection_PropertyInfo_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_Type_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_Type_Binding_Enumerator_Binding.Register(app);
