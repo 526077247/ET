@@ -12,10 +12,5 @@
 	public class UnitGateComponent : Entity, IAwake<long>, ITransfer
 	{
 		public long GateSessionActorId;
-
-		public void Awake(long gateSessionId)
-		{
-			this.GateSessionActorId = gateSessionId;
-		}
 	}
 }
