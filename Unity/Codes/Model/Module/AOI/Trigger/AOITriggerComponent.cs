@@ -20,8 +20,8 @@ namespace ET
         public List<UnitType> Selecter;
         public Action<AOIUnitComponent, AOITriggerType> Handler;
         public int TriggerType = TriggerShapeType.Sphere;//
-        public bool IsCollider;
-        public DictionaryComponent<AOIGrid, int> DebugMap;
+        public bool IsCollider { get; set; }
+        public DictionaryComponent<AOICell, int> DebugMap;
         public ListComponent<string> LogInfo;
         public Vector3 Offset;
     }

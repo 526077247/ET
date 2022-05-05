@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ET
 {
-    [ChildType(typeof(AOIGrid))]
+    [ChildType(typeof(AOICell))]
     public class AOISceneComponent:Entity,IAwake<int>,IDestroy,IUpdate
     {
         public int gridLen;

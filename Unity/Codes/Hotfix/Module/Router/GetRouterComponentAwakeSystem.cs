@@ -30,7 +30,7 @@ namespace ET
         static async ETTask<string[]> GetRouterListFake()
         {
 #if !NOT_UNITY
-            return await HttpManager.Instance.HttpGetResult<string[]>(ServerConfigManagerComponent.Instance.GetCurConfig().RouterListUrl + "/router.list");
+            return await HttpManager.Instance.HttpGetResult<string[]>(ServerConfigComponent.Instance.GetCurConfig().RouterListUrl + "/router.list");
 #else
             await ETTask.CompletedTask;
             return new string[]{"172.22.213.58:10007", "172.22.213.58:10008", "172.22.213.58:10009", };
@@ -95,6 +95,45 @@ namespace ET
             self.socket = null;
             self.ipEndPoint = null;
             self.Tcs = null;
+        }
+    }
+    [FriendClass(typeof(GetRouterComponent))]
+    public static class GetRouterComponentSystem
+    {
+        public static void Recv(this GetRouterComponent self)
+        {
+            if (self.socket == null)
+            {
+                return;
+            }
+
+            while (self.socket != null && self.socket.Available > 0)
+            {
+                int messageLength = self.socket.ReceiveFrom(self.cache, ref self.ipEndPoint);
+
+                // 长度小于1，不是正常的消息
+                if (messageLength < 1)
+                {
+                    continue;
+                }
+                byte flag = self.cache[0];
+                try
+                {
+                    switch (flag)
+                    {
+                        case KcpProtocalType.RouterACK:
+                            Log.Debug("RouterACK:"+ self.ipEndPoint.ToString());
+                            self.Tcs?.SetResult(self.ipEndPoint.ToString());
+                            self.Tcs = null;
+                            self.CancellationToken?.Cancel();
+                            break;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Log.Error($"kservice error: {flag}\n{e}");
+                }
+            }
         }
     }
 }

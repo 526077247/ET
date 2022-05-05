@@ -10,9 +10,9 @@ using UnityEngine;
 namespace ET
 {
     [ObjectSystem]
-    public class AOIGridAwakeSystem : AwakeSystem<AOIGrid>
+    public class AOICellAwakeSystem : AwakeSystem<AOICell>
     {
-        public override void Awake(AOIGrid self)
+        public override void Awake(AOICell self)
         {
             self.idUnits = new Dictionary<UnitType, List<AOIUnitComponent>>();
             for (int i = 0; i < (int)UnitType.MAX; i++)
@@ -24,9 +24,9 @@ namespace ET
         }
     }
     [ObjectSystem]
-    public class AOIGridDestroySystem : DestroySystem<AOIGrid>
+    public class AOICellDestroySystem : DestroySystem<AOICell>
     {
-        public override void Destroy(AOIGrid self)
+        public override void Destroy(AOICell self)
         {
             self.idUnits.Clear();
             self.Triggers.Clear();
@@ -36,11 +36,11 @@ namespace ET
             self.ListenerUnits = null;
         }
     }
-    [FriendClass(typeof(AOIGrid))]
+    [FriendClass(typeof(AOICell))]
     [FriendClass(typeof(AOITriggerComponent))]
     [FriendClass(typeof(AOIUnitComponent))]
     [FriendClass(typeof(OBBComponent))]
-    public static class AOIGridSystem
+    public static class AOICellSystem
     {
         /// <summary>
         /// 获取与碰撞器的关系：-1无关 0相交或包括碰撞器 1在碰撞器内部
@@ -50,7 +50,7 @@ namespace ET
         /// <param name="position"></param>
         /// <param name="rotation"></param>
         /// <returns></returns>
-        public static int GetRelationshipWithTrigger(this AOIGrid self, AOITriggerComponent trigger,Vector3? position = null,Quaternion? rotation = null)
+        public static int GetRelationshipWithTrigger(this AOICell self, AOITriggerComponent trigger,Vector3? position = null,Quaternion? rotation = null)
         {
             var unit = trigger.GetParent<AOIUnitComponent>();
             Vector3 tempPos;
@@ -90,7 +90,7 @@ namespace ET
         /// <param name="self"></param>
         /// <param name="trigger"></param>
         /// <returns></returns>
-        public static void AddTriggerListener(this AOIGrid self, AOITriggerComponent trigger)
+        public static void AddTriggerListener(this AOICell self, AOITriggerComponent trigger)
         {
             if (Define.Debug)
             {
@@ -106,7 +106,7 @@ namespace ET
         /// <param name="self"></param>
         /// <param name="trigger"></param>
         /// <returns></returns>
-        public static void RemoveTriggerListener(this AOIGrid self, AOITriggerComponent trigger)
+        public static void RemoveTriggerListener(this AOICell self, AOITriggerComponent trigger)
         {
             if (Define.Debug)
             {
@@ -122,7 +122,7 @@ namespace ET
         /// <param name="self"></param>
         /// <param name="unit"></param>
         /// <returns></returns>
-        public static void AddListener(this AOIGrid self, AOIUnitComponent unit)
+        public static void AddListener(this AOICell self, AOIUnitComponent unit)
         {
             // Log.Info("AddListener"+unit.Id+" "+self.posx+","+self.posy);
             self.ListenerUnits.Add(unit);
@@ -133,7 +133,7 @@ namespace ET
         /// <param name="self"></param>
         /// <param name="unit"></param>
         /// <returns></returns>
-        public static void RemoveListener(this AOIGrid self, AOIUnitComponent unit)
+        public static void RemoveListener(this AOICell self, AOIUnitComponent unit)
         {
             // Log.Info("RemoveListener"+unit.Id+" "+self.posx+","+self.posy);
             self.ListenerUnits.Remove(unit);
@@ -144,9 +144,9 @@ namespace ET
         /// </summary>
         /// <param name="self"></param>
         /// <param name="unit"></param>
-        public static void Add(this AOIGrid self, AOIUnitComponent unit)
+        public static void Add(this AOICell self, AOIUnitComponent unit)
         {
-            unit.Grid = self;
+            unit.Cell = self;
             if (Define.Debug&&self.idUnits[unit.Type].Contains(unit))//Debug开启检测
             {
                 Log.Error("self.idUnits[unit.Type].Contains(unit)");
@@ -171,7 +171,7 @@ namespace ET
         /// </summary>
         /// <param name="self"></param>
         /// <param name="unit"></param>
-        public static void Remove(this AOIGrid self, AOIUnitComponent unit)
+        public static void Remove(this AOICell self, AOIUnitComponent unit)
         {
             if (self.idUnits.ContainsKey(unit.Type))
             {
@@ -188,7 +188,7 @@ namespace ET
                     }
                 }
                 self.idUnits[unit.Type].Remove(unit);
-                unit.Grid = null;
+                unit.Cell = null;
             }
         }
         
@@ -199,7 +199,7 @@ namespace ET
         /// <param name="self"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static ListComponent<AOIUnitComponent> GetAllUnit(this AOIGrid self, UnitType type = UnitType.ALL)
+        public static ListComponent<AOIUnitComponent> GetAllUnit(this AOICell self, UnitType type = UnitType.ALL)
         {
             var res = ListComponent<AOIUnitComponent>.Create();
             if (type == UnitType.ALL)
@@ -219,7 +219,7 @@ namespace ET
         /// <param name="self"></param>
         /// <param name="types"></param>
         /// <returns></returns>
-        public static ListComponent<AOIUnitComponent> GetAllUnit(this AOIGrid self, List<UnitType> types)
+        public static ListComponent<AOIUnitComponent> GetAllUnit(this AOICell self, List<UnitType> types)
         {
             var res = ListComponent<AOIUnitComponent>.Create();
             var isAll = types.Contains(UnitType.ALL);
@@ -238,7 +238,7 @@ namespace ET
         /// <param name="types"></param>
         /// <param name="except"></param>
         /// <returns></returns>
-        public static ListComponent<AOITriggerComponent> GetAllCollider(this AOIGrid self, List<UnitType> types,AOITriggerComponent except)
+        public static ListComponent<AOITriggerComponent> GetAllCollider(this AOICell self, List<UnitType> types,AOITriggerComponent except)
         {
             var res = ListComponent<AOITriggerComponent>.Create();
             var isAll = types.Contains(UnitType.ALL);
@@ -262,7 +262,7 @@ namespace ET
         /// <param name="self"></param>
         /// <param name="turnNum">圈数</param>
         /// <returns></returns>
-        public static ListComponent<AOIGrid> GetNearbyGrid(this AOIGrid self,int turnNum)
+        public static ListComponent<AOICell> GetNearbyGrid(this AOICell self,int turnNum)
         {
             var scene = self.DomainScene().GetComponent<AOISceneComponent>();
             return scene.GetNearbyGrid(turnNum, self.posx, self.posy);
@@ -274,7 +274,7 @@ namespace ET
         /// <param name="self"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static ListComponent<AOIUnitComponent> GetAllUnit(this ListComponent<AOIGrid> self, UnitType type = UnitType.ALL)
+        public static ListComponent<AOIUnitComponent> GetAllUnit(this ListComponent<AOICell> self, UnitType type = UnitType.ALL)
         {
             var res = ListComponent<AOIUnitComponent>.Create();
             for (int i = 0; i < self.Count; i++)
@@ -294,7 +294,7 @@ namespace ET
         /// <param name="self"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static ListComponent<AOIUnitComponent> GetNearbyUnit(this AOIGrid self, int turnNum, UnitType type = UnitType.ALL)
+        public static ListComponent<AOIUnitComponent> GetNearbyUnit(this AOICell self, int turnNum, UnitType type = UnitType.ALL)
         {
             var grid = self.GetNearbyGrid(turnNum);
             var res = grid.GetAllUnit(type);

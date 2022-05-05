@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 #if NOT_UNITY
 using System.IO;
-#else
-using AssetBundles;
 #endif
 
 namespace ET
@@ -31,10 +30,16 @@ namespace ET
     }
 
     [FriendClass(typeof(SkillStepComponent))]
+    [FriendClass(typeof(SkillAbility))]
     public static class SkillStepComponentSystem
     {
-        public static void GetSkillStepInfo(this SkillStepComponent self,int configId, out List<int> timeline,
-            out List<int> steptype, out List<object[]> paras)
+        public static 
+#if !NOT_UNITY
+                async ETTask 
+#else
+                void
+#endif
+                GetSkillStepInfo(this SkillStepComponent self,int configId,SkillAbility skill)
         {
            
             bool needinit = false;
@@ -43,21 +48,21 @@ namespace ET
                 needinit = true;
                 self.TimeLine[configId] = new List<int>();
             }
-            timeline = self.TimeLine[configId];
+            skill.TimeLine = self.TimeLine[configId];
             
             if (!self.StepType.ContainsKey(configId))
             {
                 needinit = true;
                 self.StepType[configId] = new List<int>();
             }
-            steptype = self.StepType[configId];
+            skill.StepType = self.StepType[configId];
             
             if (!self.Params.ContainsKey(configId))
             {
                 needinit = true;
                 self.Params[configId] = new List<object[]>();
             }
-            paras = self.Params[configId];
+            skill.Paras = self.Params[configId];
             if (needinit)
             {
                 Log.Info("GetSkillStepInfo "+configId);
@@ -66,14 +71,14 @@ namespace ET
 #if NOT_UNITY
                 var text = File.ReadAllText($"../Skill/{config.JsonFile}.json");
 #else
-                var text = AddressablesManager.Instance.LoadTextAsset($"Skill/Config/{config.JsonFile}.json").text;
+                var text = (await ResourcesComponent.Instance.LoadAsync<TextAsset>($"Skill/Config/{config.JsonFile}.json")).text;
 #endif
                 var list = JsonHelper.FromJson<List<SkillStep>>(text);
                 for (int i = 0; i < list.Count; i++)
                 {
-                    timeline.Add(list[i].Trigger);
-                    steptype.Add(list[i].Type);
-                    paras.Add(list[i].Params);
+                    self.TimeLine[configId].Add(list[i].Trigger);
+                    self.StepType[configId].Add(list[i].Type);
+                    self.Params[configId].Add(list[i].Params);
                 }
             }
         }

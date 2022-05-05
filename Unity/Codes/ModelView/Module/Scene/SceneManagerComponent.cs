@@ -8,8 +8,8 @@ namespace ET
 {
     public class SceneManagerComponent:Entity,IAwake,IDestroy
     {
-        public List<string> ScenesChangeIgnoreClean ;
-        public List<string> DestroyWindowExceptNames;
+        public List<string> ScenesChangeIgnoreClean { get; set; }
+        public List<string> DestroyWindowExceptNames{ get; set; }
         public static SceneManagerComponent Instance;
 
         public Dictionary<string, SceneConfig> SceneConfigs;

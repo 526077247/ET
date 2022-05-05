@@ -3,7 +3,7 @@ using System;
 namespace ET
 {
     [FriendClass(typeof(AOISceneComponent))]
-    [FriendClass(typeof(AOIGrid))]
+    [FriendClass(typeof(AOICell))]
     [FriendClass(typeof(AOITriggerComponent))]
     [FriendClass(typeof(AOIUnitComponent))]
     public static class Physics
@@ -38,16 +38,16 @@ namespace ET
                     while (true)
                     {
                         long cellId = AOIHelper.CreateCellId(xIndex, yIndex);
-                        AOIGrid grid = scene.GetChild<AOIGrid>(cellId);
+                        AOICell cell = scene.GetChild<AOICell>(cellId);
                         var xMin = xIndex * scene.gridLen;
                         var xMax = xMin + scene.gridLen;
                         var yMin = yIndex * scene.gridLen;
                         var yMax = yMin + scene.gridLen;
                         //Log.Info("Raycast Check "+xIndex+" "+yIndex);
-                        if (grid != null)
+                        if (cell != null)
                         {
                             ListComponent<RaycastHit> hits = ListComponent<RaycastHit>.Create();
-                            RaycastHits(ray, grid, inPoint, hits, temp, typeTemp);
+                            RaycastHits(ray, cell, inPoint, hits, temp, typeTemp);
                             if (hits.Count > 0)
                             {
                                 hits.KSsort((i1,i2)=> i1.Distance >= i2.Distance?1:-1);//从小到大
@@ -159,12 +159,12 @@ namespace ET
             return false;
         }
 
-        private static void RaycastHits(Ray ray, AOIGrid grid,Vector3 inPoint,ListComponent<RaycastHit> hits,
+        private static void RaycastHits(Ray ray, AOICell cell,Vector3 inPoint,ListComponent<RaycastHit> hits,
             HashSetComponent<AOITriggerComponent> triggers, DictionaryComponent<UnitType, bool> type)
         {
-            for (int i = 0; i < grid.Triggers.Count; i++)
+            for (int i = 0; i < cell.Triggers.Count; i++)
             {
-                var item = grid.Triggers[i];
+                var item = cell.Triggers[i];
                 if (item.IsCollider &&!triggers.Contains(item)&& type.ContainsKey(UnitType.ALL) ||
                     type.ContainsKey(item.GetParent<AOIUnitComponent>().Type))
                 {

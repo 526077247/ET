@@ -31,7 +31,7 @@ namespace ET
             
             Game.Scene.AddComponent<I18NComponent>();//多语言系统
             Game.Scene.AddComponent<RedDotComponent>();//红点系统
-            Game.Scene.AddComponent<ServerConfigManagerComponent>();
+            Game.Scene.AddComponent<ServerConfigComponent>();
             
             Game.Scene.AddComponent<OpcodeTypeComponent>();
             Game.Scene.AddComponent<MessageDispatcherComponent>();

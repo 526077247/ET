@@ -11,21 +11,20 @@ namespace ET
     {
         public long Gateid;
     }
+    [FriendClass(typeof(SwitchRouterComponent))]
+    [FriendClass(typeof(RouterDataComponent))]
+    [FriendClass(typeof(GetRouterComponent))]
+    [FriendClass(typeof(Session))]
     public class SwitchRouterComponentAwakeSystem : AwakeSystem<SwitchRouterComponent>
     {
         public override void Awake(SwitchRouterComponent self)
         {
-            self.ChangeRouter().Coroutine();
+            ChangeRouter(self).Coroutine();
         }
-    }
-    /// <summary>
-    /// 切换路由组件
-    /// </summary>
-    public class SwitchRouterComponent : Entity,IAwake
-    {
-        public async ETTask ChangeRouter()
+        
+        public async ETTask ChangeRouter(SwitchRouterComponent self)
         {
-            Session session = GetParent<Session>();
+            Session session = self.GetParent<Session>();
             session.RemoveComponent<SessionIdleCheckerComponent>();
             var gateid = session.GetComponent<RouterDataComponent>().Gateid;
             var routercomponent = session.AddComponent<GetRouterComponent, long, long>(gateid, session.Id);
@@ -41,6 +40,13 @@ namespace ET
             session.AddComponent<SessionIdleCheckerComponent,int>(NetThreadComponent.checkInteral);
             session.RemoveComponent<SwitchRouterComponent>();
         }
+    }
+    /// <summary>
+    /// 切换路由组件
+    /// </summary>
+    public class SwitchRouterComponent : Entity,IAwake
+    {
+        
     }
 
 }

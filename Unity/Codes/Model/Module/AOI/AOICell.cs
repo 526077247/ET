@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ET
 {
-    public class AOIGrid: Entity,IAwake,IDestroy
+    public class AOICell: Entity,IAwake,IDestroy
     {
         public int xMax;//实际地图范围
         public int xMin;//实际地图范围

@@ -16,41 +16,7 @@ namespace ET
         public ETCancellationToken CancellationToken;
         public ETTask<string> Tcs;
         public bool IsChangingRouter;
-        public void Recv()
-        {
-            if (this.socket == null)
-            {
-                return;
-            }
-
-            while (socket != null && this.socket.Available > 0)
-            {
-                int messageLength = this.socket.ReceiveFrom(this.cache, ref this.ipEndPoint);
-
-                // 长度小于1，不是正常的消息
-                if (messageLength < 1)
-                {
-                    continue;
-                }
-                byte flag = this.cache[0];
-                try
-                {
-                    switch (flag)
-                    {
-                        case KcpProtocalType.RouterACK:
-                            Log.Debug("RouterACK:"+ this.ipEndPoint.ToString());
-                            this.Tcs?.SetResult(this.ipEndPoint.ToString());
-                            this.Tcs = null;
-                            this.CancellationToken?.Cancel();
-                            break;
-                    }
-                }
-                catch (Exception e)
-                {
-                    Log.Error($"kservice error: {flag}\n{e}");
-                }
-            }
-        }
+        
     }
 
 }

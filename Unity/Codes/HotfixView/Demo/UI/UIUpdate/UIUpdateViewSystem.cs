@@ -102,7 +102,7 @@ namespace ET
 
         async static ETTask CheckIsInWhiteList(this UIUpdateView self)
         {
-            var url = BootConfig.Instance.GetWhiteListCdnUrl();
+            var url = ServerConfigComponent.Instance.GetWhiteListCdnUrl();
             if (string.IsNullOrEmpty(url))
             {
                 Log.Info(" no white list cdn url");
@@ -111,13 +111,13 @@ namespace ET
             var info = await HttpManager.Instance.HttpGetResult<List<WhiteConfig>>(url);
             if (info != null)
             {
-                BootConfig.Instance.SetWhiteList(info);
-                if (BootConfig.Instance.IsInWhiteList())
+                ServerConfigComponent.Instance.SetWhiteList(info);
+                if (ServerConfigComponent.Instance.IsInWhiteList())
                 {
                     var btnState = await self.ShowMsgBoxView("Update_White", "Global_Btn_Confirm", "Global_Btn_Cancel");
                     if (btnState == self.BTN_CONFIRM)
                     {
-                        BootConfig.Instance.SetWhiteMode(true);
+                        ServerConfigComponent.Instance.SetWhiteMode(true);
                     }
                 }
                 return;
@@ -126,7 +126,7 @@ namespace ET
 
         async static ETTask CheckUpdateList(this UIUpdateView self)
         {
-            var url = BootConfig.Instance.GetUpdateListCdnUrl();
+            var url = ServerConfigComponent.Instance.GetUpdateListCdnUrl();
             //UpdateConfig aa = new UpdateConfig
             //{
             //    app_list = new Dictionary<string, AppConfig>
@@ -159,20 +159,20 @@ namespace ET
             }
             else
             {
-                BootConfig.Instance.SetUpdateList(info);
+                ServerConfigComponent.Instance.SetUpdateList(info);
             }
         }
 
         async static ETTask<bool> CheckAppUpdate(this UIUpdateView self)
         {
             var app_channel = PlatformUtil.GetAppChannel();
-            var channel_app_update_list = BootConfig.Instance.GetAppUpdateListByChannel(app_channel);
+            var channel_app_update_list = ServerConfigComponent.Instance.GetAppUpdateListByChannel(app_channel);
             if (channel_app_update_list == null || channel_app_update_list.app_ver == null)
             {
                 Log.Info("CheckAppUpdate channel_app_update_list or app_ver is nil, so return");
                 return false;
             }
-            var maxVer = BootConfig.Instance.FindMaxUpdateAppVer(app_channel);
+            var maxVer = ServerConfigComponent.Instance.FindMaxUpdateAppVer(app_channel);
             if (string.IsNullOrEmpty(maxVer))
             {
                 Log.Info("CheckAppUpdate maxVer is nil");
@@ -228,7 +228,7 @@ namespace ET
         {
             var app_channel = PlatformUtil.GetAppChannel();
             var engine_ver = AssetBundleConfig.Instance.EngineVer;
-            var maxVer = BootConfig.Instance.FindMaxUpdateResVer(engine_ver, app_channel);
+            var maxVer = ServerConfigComponent.Instance.FindMaxUpdateResVer(engine_ver, app_channel);
             if (string.IsNullOrEmpty(maxVer))
             {
                 Log.Info("CheckResUpdate No Max Ver EngineVer = " + engine_ver + " app_channel " + app_channel);
@@ -248,7 +248,7 @@ namespace ET
             if (Define.IsEditor) return false;
 
             //找到最新版本，则设置当前资源存放的cdn地址
-            var url = BootConfig.Instance.GetUpdateCdnResUrlByVersion(maxVer);
+            var url = ServerConfigComponent.Instance.GetUpdateCdnResUrlByVersion(maxVer);
             self.m_rescdn_url = url;
             Log.Info("CheckResUpdate res_cdn_url is " + url);
             AssetBundleMgr.GetInstance().SetAddressableRemoteResCdnUrl(self.m_rescdn_url);
@@ -429,7 +429,7 @@ namespace ET
         }
         async static ETTask<bool> DownloadContent(this UIUpdateView self)
         {
-            var url = BootConfig.Instance.GetUpdateListCdnUrl();
+            var url = ServerConfigComponent.Instance.GetUpdateListCdnUrl();
             var info = await HttpManager.Instance.HttpGetResult(url);
             if (!string.IsNullOrEmpty(info))
             {

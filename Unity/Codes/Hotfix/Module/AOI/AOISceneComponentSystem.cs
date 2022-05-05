@@ -28,7 +28,7 @@ namespace ET
     }
     [FriendClass(typeof(AOISceneComponent))]
     [FriendClass(typeof(AOIUnitComponent))]
-    [FriendClass(typeof(AOIGrid))]
+    [FriendClass(typeof(AOICell))]
     public static class AOISceneComponentSystem
     {
         /// <summary>
@@ -37,7 +37,7 @@ namespace ET
         /// <param name="self"></param>
         /// <param name="pos"></param>
         /// <param name="create">没有是否创建</param>
-        public static AOIGrid GetAOIGrid(this AOISceneComponent self,Vector3 pos,bool create = true)
+        public static AOICell GetAOIGrid(this AOISceneComponent self,Vector3 pos,bool create = true)
         {
             int xIndex = (int)Math.Floor(pos.x / self.gridLen);
             int yIndex = (int)Math.Floor(pos.z / self.gridLen);
@@ -53,11 +53,11 @@ namespace ET
         public static void RegisterUnit(this AOISceneComponent self,AOIUnitComponent unit)
         {
             unit.Scene = self;
-            AOIGrid grid = self.GetAOIGrid(unit.Position);
-            grid.Add(unit);
-            Log.Info("RegisterUnit:" + unit.Id + "  Position:" + unit.Position + "  grid x:"+ grid.posx+",y:"+ grid.posy+" type"+unit.Type+" range"+unit.Range);
+            AOICell cell = self.GetAOIGrid(unit.Position);
+            cell.Add(unit);
+            Log.Info("RegisterUnit:" + unit.Id + "  Position:" + unit.Position + "  grid x:"+ cell.posx+",y:"+ cell.posy+" type"+unit.Type+" range"+unit.Range);
 
-            using (var ListenerGrids = grid.GetNearbyGrid(unit.Range))
+            using (var ListenerGrids = cell.GetNearbyGrid(unit.Range))
             {
                 for (int i = 0; i < ListenerGrids.Count; i++)
                 {
@@ -91,9 +91,9 @@ namespace ET
         {
             Log.Info("RemoveUnit:" + unit.Id);
             unit.Scene = null;
-            if (unit.Grid != null)
+            if (unit.Cell != null)
             {
-                using (var ListenerGrids = unit.Grid.GetNearbyGrid(unit.Range))
+                using (var ListenerGrids = unit.Cell.GetNearbyGrid(unit.Range))
                 {
                     for (int i = 0; i < ListenerGrids.Count; i++)
                     {
@@ -116,7 +116,7 @@ namespace ET
                         }
                     }
                 }
-                unit.Grid.Remove(unit);
+                unit.Cell.Remove(unit);
             }
             
         }
@@ -129,9 +129,9 @@ namespace ET
         /// <param name="posx"></param>
         /// <param name="posy"></param>
         /// <returns></returns>
-        public static ListComponent<AOIGrid> GetNearbyGrid(this AOISceneComponent self,int turnNum,int posx,int posy)
+        public static ListComponent<AOICell> GetNearbyGrid(this AOISceneComponent self,int turnNum,int posx,int posy)
         {
-            ListComponent<AOIGrid> res = ListComponent<AOIGrid>.Create();
+            ListComponent<AOICell> res = ListComponent<AOICell>.Create();
             for (int i = 0; i <= turnNum*2+1; i++)
             {
                 var x = posx - turnNum + i;
@@ -144,23 +144,23 @@ namespace ET
             return res;
         }
         
-        private static AOIGrid GetCell(this AOISceneComponent self, int x,int y,bool create = true)
+        private static AOICell GetCell(this AOISceneComponent self, int x,int y,bool create = true)
         {
             long cellId = AOIHelper.CreateCellId(x, y);
-            AOIGrid grid = self.GetChild<AOIGrid>(cellId);
-            if (grid == null && create)
+            AOICell cell = self.GetChild<AOICell>(cellId);
+            if (cell == null && create)
             {
-                grid = self.AddChildWithId<AOIGrid>(cellId);
-                grid.xMin = x * self.gridLen;
-                grid.xMax = grid.xMin + self.gridLen;
-                grid.yMin = y * self.gridLen;
-                grid.yMax = grid.yMin + self.gridLen;
-                grid.posx = x;
-                grid.posy = y;
-                grid.halfDiagonal = self.halfDiagonal;
+                cell = self.AddChildWithId<AOICell>(cellId);
+                cell.xMin = x * self.gridLen;
+                cell.xMax = cell.xMin + self.gridLen;
+                cell.yMin = y * self.gridLen;
+                cell.yMax = cell.yMin + self.gridLen;
+                cell.posx = x;
+                cell.posy = y;
+                cell.halfDiagonal = self.halfDiagonal;
             }
 
-            return grid;
+            return cell;
         }
         /// <summary>
         /// 获取指定位置为中心指定圈数的所有格子
@@ -169,10 +169,10 @@ namespace ET
         /// <param name="turnNum"></param>
         /// <param name="pos"></param>
         /// <returns></returns>
-        public static ListComponent<AOIGrid> GetNearbyGrid(this AOISceneComponent self,int turnNum,Vector3 pos)
+        public static ListComponent<AOICell> GetNearbyGrid(this AOISceneComponent self,int turnNum,Vector3 pos)
         {
             var grid = self.GetAOIGrid(pos);
-            ListComponent<AOIGrid> res = ListComponent<AOIGrid>.Create();
+            ListComponent<AOICell> res = ListComponent<AOICell>.Create();
             for (int i = 0; i <= turnNum*2+1; i++)
             {
                 var x = grid.posx - turnNum + i;

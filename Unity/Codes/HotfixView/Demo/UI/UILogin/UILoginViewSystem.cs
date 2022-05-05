@@ -33,7 +33,7 @@ namespace ET
 		public override void OnEnable(UILoginView self, Scene scene)
 		{
 			self.scene = scene;
-			self.ipaddr.SetText(ServerConfigManagerComponent.Instance.GetCurConfig().RealmIp);
+			self.ipaddr.SetText(ServerConfigComponent.Instance.GetCurConfig().RealmIp);
 			self.account.SetText(PlayerPrefs.GetString(CacheKeys.Account, ""));
 			self.password.SetText(PlayerPrefs.GetString(CacheKeys.Password, ""));
 		}
@@ -56,7 +56,7 @@ namespace ET
 		}
 		public static void OnBtnClick(this UILoginView self,int id)
         {
-			self.ipaddr.SetText(ServerConfigManagerComponent.Instance.ChangeEnv(id).RealmIp);
+			self.ipaddr.SetText(ServerConfigComponent.Instance.ChangeEnv(id).RealmIp);
 		}
 
 		public static void OnRegister(this UILoginView self)

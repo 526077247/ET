@@ -20,49 +20,57 @@ MonoBehaviour:
   - m_GUID: 1d4d361487f1c404e8f4dd03873c7067
     m_Address: Buff/Buff_1001/Animations/TurnStar.anim
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - default
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
   - m_GUID: 15dffb989e1e0f2428eff569b0f2176e
     m_Address: Buff/Buff_1001/Materials/lightray3_ADD.mat
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - default
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
   - m_GUID: d05bd487e32791148ab238ebabb0154b
     m_Address: Buff/Buff_1001/Materials/star_AB.mat
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - default
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
   - m_GUID: e0e726a0fdbabcf4e9f96b91ac0b43a8
     m_Address: Buff/Buff_1001/Models/ETFX_AuraVerticalCentered.FBX
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - default
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
   - m_GUID: 77c2df474049cbe4f8fba87ed222aa43
     m_Address: Buff/Buff_1001/Models/Materials/Material #30.mat
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - default
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
   - m_GUID: 2022455cd9fcced4f9ca284f9c6af78d
     m_Address: Buff/Buff_1001/Prefabs/Buff_1001.prefab
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - default
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
   - m_GUID: 20980e90dd2e73b419275714d5c124c4
     m_Address: Buff/Buff_1001/Prefabs/Trun.prefab
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - default
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
   - m_GUID: 93f8abb6df8f9f348910ec6328660560
     m_Address: Buff/Buff_1001/Textures/star.png
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - default
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
   m_ReadOnly: 0

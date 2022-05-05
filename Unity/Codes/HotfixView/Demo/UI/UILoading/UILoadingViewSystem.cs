@@ -5,6 +5,20 @@ namespace ET
 {
 	[UISystem]
 	[FriendClass(typeof(UILoadingView))]
+	public class UILoadingViewAwakeSystem: AwakeSystem<UILoadingView>
+	{
+		public override void Awake(UILoadingView self)
+		{
+			if (!SceneManagerComponent.Instance.ScenesChangeIgnoreClean.Contains(UILoadingView.PrefabPath))
+			{
+				SceneManagerComponent.Instance.ScenesChangeIgnoreClean.Add(UILoadingView.PrefabPath);
+				SceneManagerComponent.Instance.DestroyWindowExceptNames.Add(typeof(UILoadingView).Name);
+			}
+		}
+	}
+	
+	[UISystem]
+	[FriendClass(typeof(UILoadingView))]
 	public class UILoadingViewOnCreateSystem : OnCreateSystem<UILoadingView>
 	{
 		public override void OnCreate(UILoadingView self)

@@ -17,19 +17,19 @@ namespace ET
         public Quaternion Rotation;
         public AOISceneComponent Scene;
         public UnitType Type { get; set; }
-        private AOIGrid grid;
-        public AOIGrid Grid
+        private AOICell cell;
+        public AOICell Cell
         {
-            get =>grid;
+            get =>this.cell;
             set
             {
                 EventSystem.Instance.Publish(new EventType.ChangeGrid()
                 {
                     Unit = this,
-                    NewGrid = value,
-                    OldGrid = grid
+                    NewCell = value,
+                    OldCell = this.cell
                 });
-                grid = value;
+                this.cell = value;
             }
         }
 

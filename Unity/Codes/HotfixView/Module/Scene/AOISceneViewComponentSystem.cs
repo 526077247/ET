@@ -8,18 +8,29 @@ namespace ET
     [ObjectSystem]
     public class AOISceneViewComponentAwakeSystem: AwakeSystem<AOISceneViewComponent,int>
     {
-        public override void Awake(AOISceneViewComponent self,int len)
+        public override void Awake(AOISceneViewComponent self, int len)
         {
             AOISceneViewComponent.Instance = self;
             self.GridLen = len;
             self.DynamicSceneObjectMapCount = new Dictionary<AOISceneViewComponent.DynamicSceneObject, int>();
             self.DynamicSceneObjectMapObj = new Dictionary<AOISceneViewComponent.DynamicSceneObject, AOISceneViewComponent.DynamicSceneViewObj>();
+            self.Init().Coroutine();
+        }
+        
+        
+    }
+    [FriendClass(typeof(AOISceneViewComponent))]
+    [FriendClass(typeof(SceneManagerComponent))]
+    public static class AOISceneViewComponentSystem
+    {
+        public static async ETTask Init(this AOISceneViewComponent self)
+        {
             #region 从XML初始化场景物体信息
             self.DynamicSceneMap = new Dictionary<string, AOISceneViewComponent.DynamicScene>();
             string xmlPath = "GameAssets/Config/Map.xml";
-            var content = AddressablesManager.Instance.LoadTextAsset(xmlPath).text;
+            var content = await ResourcesComponent.Instance.LoadAsync<TextAsset>(xmlPath);
             XmlDocument xmlDocument = new XmlDocument();
-            xmlDocument.LoadXml(content);
+            xmlDocument.LoadXml(content.text);
             // 使用 XPATH 获取所有 gameObject 节点
             XmlNodeList xmlNodeList = xmlDocument.LastChild.ChildNodes;
             foreach(XmlNode scene in xmlNodeList)
@@ -76,11 +87,6 @@ namespace ET
             #endregion
             
         }
-    }
-    [FriendClass(typeof(AOISceneViewComponent))]
-    [FriendClass(typeof(SceneManagerComponent))]
-    public static class AOISceneViewComponentSystem
-    {
         /// <summary>
         /// 切换到某个场景
         /// </summary>

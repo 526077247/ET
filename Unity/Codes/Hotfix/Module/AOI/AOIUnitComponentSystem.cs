@@ -40,7 +40,7 @@ namespace ET
         }
     }
     [FriendClass(typeof(AOIUnitComponent))]
-    [FriendClass(typeof(AOIGrid))]
+    [FriendClass(typeof(AOICell))]
     public static class AOIUnitComponentSystem
     {
 
@@ -54,8 +54,8 @@ namespace ET
         public static ListComponent<AOIUnitComponent> GetNearbyUnit(this AOIUnitComponent self,int turnNum= 1, UnitType type = UnitType.ALL)
         {
             if (turnNum < 0) turnNum = self.Range;
-            if (self.Grid!=null)
-                return self.Grid.GetNearbyUnit(turnNum, type);
+            if (self.Cell!=null)
+                return self.Cell.GetNearbyUnit(turnNum, type);
             return ListComponent<AOIUnitComponent>.Create();
         }
         /// <summary>
@@ -65,12 +65,12 @@ namespace ET
         /// <param name="turnNum"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static ListComponent<AOIGrid> GetNearbyGrid(this AOIUnitComponent self,int turnNum= 1)
+        public static ListComponent<AOICell> GetNearbyGrid(this AOIUnitComponent self,int turnNum= 1)
         {
             if (turnNum < 0) turnNum = self.Range;
-            if (self.Grid!=null)
-                return self.Grid.GetNearbyGrid(turnNum);
-            return ListComponent<AOIGrid>.Create();
+            if (self.Cell!=null)
+                return self.Cell.GetNearbyGrid(turnNum);
+            return ListComponent<AOICell>.Create();
         }
         /// <summary>
         /// 移动一个 AOI 对象, 设置新的 (2D / 3D) 坐标
@@ -81,11 +81,11 @@ namespace ET
         {
             var oldpos = self.Position;
             self.Position = position;
-            AOIGrid grid = self.Scene.GetAOIGrid(position);
-            var oldgrid = self.Grid;
-            if (grid != oldgrid)//跨格子了：AOI刷新
+            AOICell cell = self.Scene.GetAOIGrid(position);
+            var oldgrid = self.Cell;
+            if (cell != oldgrid)//跨格子了：AOI刷新
             {
-                self.ChangeTo(grid,oldpos);
+                self.ChangeTo(cell,oldpos);
             }
             //触发器刷新 自己进入或离开别人的
             if (self.Collider != null)
@@ -141,9 +141,9 @@ namespace ET
         /// </summary>
         /// <param name="self"></param>
         /// <param name="newgrid"></param>
-        public static void ChangeTo(this AOIUnitComponent self,AOIGrid newgrid,Vector3 oldPos)
+        public static void ChangeTo(this AOIUnitComponent self,AOICell newgrid,Vector3 oldPos)
         {
-            AOIGrid oldgrid = self.Grid;
+            AOICell oldgrid = self.Cell;
             Log.Info(self.Id+"From: "+"  grid x:"+ oldgrid.posx+",y:"+ oldgrid.posy+ "  ChangeTo:grid x:"+ newgrid.posx+",y:"+ newgrid.posy);
             #region 广播给别人
             using (DictionaryComponent<AOIUnitComponent, int> dic = DictionaryComponent<AOIUnitComponent, int>.Create())
@@ -161,7 +161,7 @@ namespace ET
                     }
 
                     oldgrid.idUnits[self.Type].Remove(self);
-                    self.Grid = null;
+                    self.Cell = null;
                 }
                 else
                 {
@@ -169,7 +169,7 @@ namespace ET
                 }
 
                 //Add
-                self.Grid = newgrid;
+                self.Cell = newgrid;
                 if (Define.Debug && newgrid.idUnits[self.Type].Contains(self))
                 {
                     Log.Error("newgrid.idUnits[self.Type].Contains(self)");
@@ -208,7 +208,7 @@ namespace ET
             #region 广播给自己 && 刷新监听
             var older = oldgrid.GetNearbyGrid(self.Range);
             var newer = newgrid.GetNearbyGrid(self.Range);
-            DictionaryComponent<AOIGrid, int> temp = DictionaryComponent<AOIGrid, int>.Create();
+            DictionaryComponent<AOICell, int> temp = DictionaryComponent<AOICell, int>.Create();
             for (int i = 0; i < older.Count; i++)
             {
                 var item = older[i];
@@ -278,7 +278,7 @@ namespace ET
         /// <returns></returns>
         public static List<AOIUnitComponent> GetBeSeeUnits(this AOIUnitComponent self)
         {
-            return self.Grid.ListenerUnits;
+            return self.Cell.ListenerUnits;
         }
     }
     

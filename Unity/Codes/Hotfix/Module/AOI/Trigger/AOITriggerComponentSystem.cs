@@ -12,7 +12,7 @@ namespace ET
         {
             if (Define.Debug)
             {
-                self.DebugMap = DictionaryComponent<AOIGrid, int>.Create();
+                self.DebugMap = DictionaryComponent<AOICell, int>.Create();
                 self.LogInfo = ListComponent<string>.Create();
             }
             self.Radius = a;
@@ -20,7 +20,7 @@ namespace ET
         }
     }
     [ObjectSystem]
-    [FriendClass(typeof(AOIGrid))]
+    [FriendClass(typeof(AOICell))]
     public class AOITriggerComponentDestroySystem : DestroySystem<AOITriggerComponent>
     {
         public override void Destroy(AOITriggerComponent self)
@@ -60,7 +60,7 @@ namespace ET
     [FriendClass(typeof(AOITriggerComponent))]
     [FriendClass(typeof(AOIUnitComponent))]
     [FriendClass(typeof(AOISceneComponent))]
-    [FriendClass(typeof(AOIGrid))]
+    [FriendClass(typeof(AOICell))]
     public static class AOITriggerComponentSystem
     {
         public static void OnTrigger(this AOITriggerComponent self, AOITriggerComponent other, AOITriggerType type)
@@ -334,7 +334,7 @@ namespace ET
             var len = unit.Scene.gridLen;
             int count = (int)Math.Ceiling((double)self.Radius / len);
             if (count > 2) Log.Info("检测范围超过2格，触发半径："+ self.Radius);
-            DictionaryComponent<AOIGrid,int> triggers = DictionaryComponent<AOIGrid, int>.Create();
+            DictionaryComponent<AOICell,int> triggers = DictionaryComponent<AOICell, int>.Create();
             DictionaryComponent<AOITriggerComponent,int> colliderDic = DictionaryComponent<AOITriggerComponent, int>.Create();
 
             using (var grids = unit.Scene.GetNearbyGrid(count, beforePosition))
@@ -483,7 +483,7 @@ namespace ET
             var len = unit.Scene.gridLen;
             int count = (int)Math.Ceiling((double)self.Radius / len);
             if (count > 2) Log.Info("检测范围超过2格，触发半径："+ self.Radius);
-            DictionaryComponent<AOIGrid,int> triggers = DictionaryComponent<AOIGrid, int>.Create();
+            DictionaryComponent<AOICell,int> triggers = DictionaryComponent<AOICell, int>.Create();
             DictionaryComponent<AOITriggerComponent,int> colliderDic = DictionaryComponent<AOITriggerComponent, int>.Create();
 
             using (var grids = unit.Scene.GetNearbyGrid(count, beforePosition))
@@ -624,7 +624,7 @@ namespace ET
             var len = unit.Scene.gridLen;
             int count = (int)Math.Ceiling((double)self.Radius / len);
             if (count > 2) Log.Info("检测范围超过2格，触发半径："+ self.Radius);
-            DictionaryComponent<AOIGrid,int> triggers = DictionaryComponent<AOIGrid, int>.Create();
+            DictionaryComponent<AOICell,int> triggers = DictionaryComponent<AOICell, int>.Create();
             DictionaryComponent<AOITriggerComponent,int> colliderDic = DictionaryComponent<AOITriggerComponent, int>.Create();
 
             using (var grids = unit.Scene.GetNearbyGrid(count, beforePosition))
