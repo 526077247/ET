@@ -19,6 +19,7 @@ using UnityEngine.AddressableAssets.ResourceProviders;
 using UnityEngine.Build.Pipeline;
 using UnityEngine.ResourceManagement.ResourceProviders;
 using UnityEngine.ResourceManagement.Util;
+using UnityEngine.TextCore;
 using static UnityEditor.AddressableAssets.Build.ContentUpdateScript;
 
 namespace UnityEditor.AddressableAssets.Build.DataBuilders
@@ -104,7 +105,7 @@ namespace UnityEditor.AddressableAssets.Build.DataBuilders
                 MaxConcurrentWebRequests = aaSettings.MaxConcurrentWebRequests
             };
             m_Linker = UnityEditor.Build.Pipeline.Utilities.LinkXmlGenerator.CreateDefault();
-            m_Linker.AddAssemblies(new[] { typeof(Addressables).Assembly, typeof(UnityEngine.ResourceManagement.ResourceManager).Assembly });
+            m_Linker.AddAssemblies(new[] { typeof(Addressables).Assembly, typeof(UnityEngine.ResourceManagement.ResourceManager).Assembly,typeof(FaceInfo).Assembly  });
             m_Linker.AddTypes(runtimeData.CertificateHandlerType);
 
             m_ResourceProviderData = new List<ObjectInitializationData>();
