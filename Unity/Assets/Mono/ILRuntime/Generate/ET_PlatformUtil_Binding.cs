@@ -23,34 +23,34 @@ namespace ILRuntime.Runtime.Generated
             Type[] args;
             Type type = typeof(ET.PlatformUtil);
             args = new Type[]{};
-            method = type.GetMethod("GetAppChannel", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, GetAppChannel_0);
-            args = new Type[]{};
             method = type.GetMethod("GetStrPlatformIgnoreEditor", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, GetStrPlatformIgnoreEditor_1);
+            app.RegisterCLRMethodRedirection(method, GetStrPlatformIgnoreEditor_0);
+            args = new Type[]{};
+            method = type.GetMethod("GetAppChannel", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, GetAppChannel_1);
 
 
         }
 
 
-        static StackObject* GetAppChannel_0(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
-        {
-            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            StackObject* __ret = ILIntepreter.Minus(__esp, 0);
-
-
-            var result_of_this_method = ET.PlatformUtil.GetAppChannel();
-
-            return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
-        }
-
-        static StackObject* GetStrPlatformIgnoreEditor_1(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* GetStrPlatformIgnoreEditor_0(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* __ret = ILIntepreter.Minus(__esp, 0);
 
 
             var result_of_this_method = ET.PlatformUtil.GetStrPlatformIgnoreEditor();
+
+            return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
+        }
+
+        static StackObject* GetAppChannel_1(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        {
+            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
+            StackObject* __ret = ILIntepreter.Minus(__esp, 0);
+
+
+            var result_of_this_method = ET.PlatformUtil.GetAppChannel();
 
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }

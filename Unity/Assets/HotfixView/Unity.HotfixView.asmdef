@@ -6,7 +6,9 @@
         "Unity.ThirdParty",
         "Unity.Model",
         "Unity.Hotfix",
-        "Unity.ModelView"
+        "Unity.ModelView",
+        "Unity.TextMeshPro",
+        "Unity.RenderPipelines.Universal.Runtime"
     ],
     "includePlatforms": [
         "Editor"

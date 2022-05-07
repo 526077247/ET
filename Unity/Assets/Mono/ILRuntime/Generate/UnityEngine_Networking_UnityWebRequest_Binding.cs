@@ -58,18 +58,6 @@ namespace ILRuntime.Runtime.Generated
             args = new Type[]{};
             method = type.GetMethod("Dispose", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, Dispose_11);
-            args = new Type[]{};
-            method = type.GetMethod("get_downloadProgress", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, get_downloadProgress_12);
-            args = new Type[]{};
-            method = type.GetMethod("get_downloadedBytes", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, get_downloadedBytes_13);
-            args = new Type[]{typeof(System.String)};
-            method = type.GetMethod("Head", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, Head_14);
-            args = new Type[]{typeof(System.String)};
-            method = type.GetMethod("GetResponseHeader", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, GetResponseHeader_15);
 
             args = new Type[]{typeof(System.String), typeof(System.String)};
             method = type.GetConstructor(flag, null, args, null);
@@ -282,75 +270,6 @@ namespace ILRuntime.Runtime.Generated
             instance_of_this_method.Dispose();
 
             return __ret;
-        }
-
-        static StackObject* get_downloadProgress_12(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
-        {
-            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            StackObject* ptr_of_this_method;
-            StackObject* __ret = ILIntepreter.Minus(__esp, 1);
-
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            UnityEngine.Networking.UnityWebRequest instance_of_this_method = (UnityEngine.Networking.UnityWebRequest)typeof(UnityEngine.Networking.UnityWebRequest).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
-            __intp.Free(ptr_of_this_method);
-
-            var result_of_this_method = instance_of_this_method.downloadProgress;
-
-            __ret->ObjectType = ObjectTypes.Float;
-            *(float*)&__ret->Value = result_of_this_method;
-            return __ret + 1;
-        }
-
-        static StackObject* get_downloadedBytes_13(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
-        {
-            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            StackObject* ptr_of_this_method;
-            StackObject* __ret = ILIntepreter.Minus(__esp, 1);
-
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            UnityEngine.Networking.UnityWebRequest instance_of_this_method = (UnityEngine.Networking.UnityWebRequest)typeof(UnityEngine.Networking.UnityWebRequest).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
-            __intp.Free(ptr_of_this_method);
-
-            var result_of_this_method = instance_of_this_method.downloadedBytes;
-
-            __ret->ObjectType = ObjectTypes.Long;
-            *(ulong*)&__ret->Value = result_of_this_method;
-            return __ret + 1;
-        }
-
-        static StackObject* Head_14(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
-        {
-            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            StackObject* ptr_of_this_method;
-            StackObject* __ret = ILIntepreter.Minus(__esp, 1);
-
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.String @uri = (System.String)typeof(System.String).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
-            __intp.Free(ptr_of_this_method);
-
-
-            var result_of_this_method = UnityEngine.Networking.UnityWebRequest.Head(@uri);
-
-            return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
-        }
-
-        static StackObject* GetResponseHeader_15(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
-        {
-            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            StackObject* ptr_of_this_method;
-            StackObject* __ret = ILIntepreter.Minus(__esp, 2);
-
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.String @name = (System.String)typeof(System.String).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
-            __intp.Free(ptr_of_this_method);
-
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            UnityEngine.Networking.UnityWebRequest instance_of_this_method = (UnityEngine.Networking.UnityWebRequest)typeof(UnityEngine.Networking.UnityWebRequest).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
-            __intp.Free(ptr_of_this_method);
-
-            var result_of_this_method = instance_of_this_method.GetResponseHeader(@name);
-
-            return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 
 
