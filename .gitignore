@@ -81,4 +81,7 @@ Unity/Unity.TextMeshPro.csproj
 Unity/Unity.TextMeshPro.Editor.csproj
 Unity/Unity.TextMeshPro.Editor.Tests.csproj
 Unity/Unity.TextMeshPro.Tests.csproj
-/Unity1
+/Unity1Unity/Unity.Hotfix.csproj
+Unity/Unity.HotfixView.csproj
+Unity/Unity.Model.csproj
+Unity/Unity.ModelView.csproj
