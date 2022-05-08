@@ -20,6 +20,10 @@ namespace ET
             {
                 var pui = self.Parent;
                 self.transform = self.GetParentTransform()?.Find(UIManagerComponent.Instance.pathMap[pui.Id]);
+                if (self.transform == null)
+                {
+                    Log.Error(self.Parent.GetType().Name+"路径错误:" + UIManagerComponent.Instance.pathMap[pui.Id]);
+                }
             }
             return self.transform;
         }
@@ -60,7 +64,7 @@ namespace ET
             else
                 uitrans = self as UITransform;
             uitrans.ActivatingComponent();
-            return uitrans.transform.gameObject;
+            return uitrans.transform?.gameObject;
         }
     }
 }
