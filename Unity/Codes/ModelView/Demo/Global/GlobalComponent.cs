@@ -8,6 +8,8 @@ namespace ET
         
         public Transform Global;
         public Transform Unit { get; set; }
+        
+        public Transform Scene { get; set; }
 
         public string Account;
         

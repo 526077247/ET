@@ -322,7 +322,7 @@ namespace ET
                                     view.transform.position = obj.Position;
                                     view.transform.rotation = obj.Rotation;
                                     view.transform.localScale = obj.Scale;
-                                    view.transform.parent = null;
+                                    view.transform.parent = GlobalComponent.Instance.Scene;
                                 }).Coroutine();
                             }
                         }

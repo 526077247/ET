@@ -101,15 +101,13 @@ namespace ET
                             Log.Info("目标未指定,或触发体类型不存在");
                             return;
                         }
-                        unit = UnitFactory.CreateSkillCollider(scene, colliderId, startPos,para.Rotation,para.From);
-                        var numc = unit.AddComponent<NumericComponent>();
-                        numc.Set(NumericType.SpeedBase,collider.Speed);
-                        var moveComp = unit.AddComponent<MoveComponent>();
+                        unit = UnitFactory.CreateSkillCollider(scene, colliderId, startPos,para.Rotation,para.From,collider.Speed);
+                        unit.AddComponent<MoveComponent>();
                         Log.Info(startPos+" "+startPos+(para.Position-startPos).normalized*collider.Speed*collider.Time/1000f);
                         List<Vector3> target = new List<Vector3>();
                         target.Add(startPos);
                         target.Add(startPos+(para.Position-startPos).normalized*collider.Speed*collider.Time/1000f);
-                        moveComp.MoveToAsync(target, collider.Speed).Coroutine();
+                        unit.MoveToAsync(target).Coroutine();
                     }
                     else if (collider.ColliderType == SkillJudgeType.Aim)//锁定目标飞行
                     {

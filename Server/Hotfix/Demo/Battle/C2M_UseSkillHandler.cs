@@ -31,7 +31,7 @@ namespace ET
                         return;
                     }
                 }
-                else if (skill.SkillConfig.PreviewType == SkillPreviewType.SelectCircularInCircularArea)
+                else if (skill.SkillConfig.PreviewType == SkillPreviewType.SelectRectangleArea)
                 {
                     combatU.GetComponent<SpellComponent>().SpellWithDirect(skill,new Vector3(message.X,message.Y,message.Z));
                 }

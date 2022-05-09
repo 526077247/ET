@@ -11,6 +11,7 @@ namespace ET
             
             self.Global = GameObject.Find("/Global").transform;
             self.Unit = GameObject.Find("/Global/Unit").transform;
+            self.Scene = GameObject.Find("/Global/Scene").transform;
         }
     }
 }

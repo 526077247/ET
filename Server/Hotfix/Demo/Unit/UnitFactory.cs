@@ -40,13 +40,19 @@ namespace ET
             }
         }
         
-        public static Unit CreateSkillCollider(Scene currentScene, int configId,Vector3 pos,Quaternion rota,CombatUnitComponent from)
+        public static Unit CreateSkillCollider(Scene currentScene, int configId,Vector3 pos,Quaternion rota,CombatUnitComponent from,float speed = 0)
         {
             UnitComponent unitComponent = currentScene.GetComponent<UnitComponent>();
             Unit unit = unitComponent.AddChild<Unit,int>(configId);
         
             unit.Position = pos;
             unit.Rotation = rota;
+            if (speed > 0)
+            {
+                var numc = unit.AddComponent<NumericComponent>();
+                numc.Set(NumericType.SpeedBase, speed);
+            }
+
             unit.AddComponent<SkillColliderComponent, int,CombatUnitComponent>(configId,from);
             unit.AddComponent<AOIUnitComponent,Vector3,Quaternion, UnitType>(pos,rota,unit.Type);
             return unit;

@@ -68,22 +68,27 @@ namespace ET
 		        }
 		        case UnitType.Skill:
 		        {
-			        
-			        if (unitInfo.MoveInfo != null)
+			        NumericComponent numericComponent = unit.AddComponent<NumericComponent>();
+			        if (unitInfo.Ks != null && unitInfo.Ks.Count > 0)
 			        {
-				        unit.AddComponent<MoveComponent>();
-				        if (unitInfo.MoveInfo.X.Count > 0)
+				        for (int i = 0; i < unitInfo.Ks.Count; ++i)
 				        {
-					        using (ListComponent<Vector3> list = ListComponent<Vector3>.Create())
+					        if (unitInfo.Ks[i] > NumericType.Max) //不需要同步最终值
+						        numericComponent.Set(unitInfo.Ks[i], unitInfo.Vs[i], true);
+				        }
+			        }
+			        unit.AddComponent<MoveComponent>();
+			        if (unitInfo.MoveInfo != null&&unitInfo.MoveInfo.X.Count > 0)
+			        {
+				        using (ListComponent<Vector3> list = ListComponent<Vector3>.Create())
+				        {
+					        list.Add(unit.Position);
+					        for (int i = 0; i < unitInfo.MoveInfo.X.Count; ++i)
 					        {
-						        list.Add(unit.Position);
-						        for (int i = 0; i < unitInfo.MoveInfo.X.Count; ++i)
-						        {
-							        list.Add(new Vector3(unitInfo.MoveInfo.X[i], unitInfo.MoveInfo.Y[i], unitInfo.MoveInfo.Z[i]));
-						        }
-
-						        unit.MoveToAsync(list).Coroutine();
+						        list.Add(new Vector3(unitInfo.MoveInfo.X[i], unitInfo.MoveInfo.Y[i], unitInfo.MoveInfo.Z[i]));
 					        }
+
+					        unit.MoveToAsync(list).Coroutine();
 				        }
 			        }
 			        unit.AddComponent<AOIUnitComponent,Vector3,Quaternion, UnitType>(unit.Position,unit.Rotation,unit.Type);
