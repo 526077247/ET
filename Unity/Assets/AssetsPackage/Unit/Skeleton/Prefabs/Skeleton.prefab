@@ -346,6 +346,7 @@ GameObject:
   - component: {fileID: 4781799842951158}
   - component: {fileID: 95876942513160466}
   - component: {fileID: 3318747793691498982}
+  - component: {fileID: 6897367933112515654}
   m_Layer: 0
   m_Name: Skeleton
   m_TagString: Untagged
@@ -402,6 +403,21 @@ CapsuleCollider:
   m_Height: 1.6
   m_Direction: 1
   m_Center: {x: 0, y: 0.8, z: 0}
+--- !u!114 &6897367933112515654
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1248987324363926}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 502d8cafd6a5a0447ab1db9a24cdcb10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  data:
+  - key: Head
+    gameObject: {fileID: 3192326971529749792}
 --- !u!1 &1261353649905318
 GameObject:
   m_ObjectHideFlags: 0

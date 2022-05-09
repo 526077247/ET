@@ -39,7 +39,7 @@ namespace ET
             self.obj.parent = UIManagerComponent.Instance.GetLayer(UILayerNames.GameLayer).transform;
             self.obj.localScale = Vector3.one;
             self.obj.localPosition = Vector3.zero;
-            self.head = parent.GetComponent<GameObjectComponent>().GameObject.transform.Find("Head");
+            self.head = parent.GetComponent<GameObjectComponent>().GetCollectorObj<GameObject>("Head").transform;
             self.Num = self.obj.Find("Hp/HPNum").GetComponent<TMPro.TMP_Text>();
             self.HpBg = self.obj.Find("Hp").GetComponent<Image>();
             self.RefreshUI();

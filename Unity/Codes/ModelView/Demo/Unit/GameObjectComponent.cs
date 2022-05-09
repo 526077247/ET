@@ -9,5 +9,7 @@ namespace ET
         public GameObject GameObject { get; set; }
         public Action OnDestroyAction;
         public bool IsDebug;
+
+        public ReferenceCollector Collector;
     }
 }
