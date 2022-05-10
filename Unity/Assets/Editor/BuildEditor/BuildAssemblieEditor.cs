@@ -105,15 +105,13 @@ namespace ET
                     scripts.Add(fileInfos[j].FullName);
                 }
             }
-            
-            Directory.CreateDirectory(Define.BuildOutputDir);
-            
+            if (!Directory.Exists(Define.BuildOutputDir))
+                Directory.CreateDirectory(Define.BuildOutputDir);
+
             string dllPath = Path.Combine(Define.BuildOutputDir, $"{assemblyName}.dll");
             string pdbPath = Path.Combine(Define.BuildOutputDir, $"{assemblyName}.pdb");
             File.Delete(dllPath);
             File.Delete(pdbPath);
-
-           
 
             AssemblyBuilder assemblyBuilder = new AssemblyBuilder(dllPath, scripts.ToArray());
             
