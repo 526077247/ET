@@ -161,10 +161,12 @@ namespace ET
                         //自己进入别人
                         if (trigger.IsCollider)
                         {
+                            var unitType = trigger.GetParent<AOIUnitComponent>().Type;
                             for (int j = 0; j < item.Triggers.Count; j++)
                             {
                                 var collider = item.Triggers[j];
                                 if(collider==trigger) continue;
+                                if(!collider.Selecter.Contains(unitType))continue;
                                 if(collider.Flag!=AOITriggerType.Enter&&collider.Flag!=AOITriggerType.All) continue;
                                 if (!temp2.Contains(collider)&&collider.IsInTrigger(trigger,collider.GetRealPos(),
                                         collider.GetRealRot(),trigger.GetRealPos(), trigger.GetRealRot()))
