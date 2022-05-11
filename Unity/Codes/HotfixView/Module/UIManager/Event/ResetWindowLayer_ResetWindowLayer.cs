@@ -8,7 +8,6 @@ namespace ET
 {
     [FriendClass(typeof(UIWindow))]
     [FriendClass(typeof(UITransform))]
-    [FriendClass(typeof(UILayersComponent))]
     public class ResetWindowLayer_ResetWindowLayer : AEvent<UIEventType.ResetWindowLayer>
     {
         protected override void Run(UIEventType.ResetWindowLayer args)
@@ -18,7 +17,7 @@ namespace ET
             var uiTrans = view.GetUIComponent<UITransform>();
             if (uiTrans!=null)
             {
-                var layer = UIManagerComponent.Instance.GetComponent<UILayersComponent>().layers[target.Layer];
+                var layer = UIManagerComponent.Instance.GetLayer(target.Layer);
                 uiTrans.transform.SetParent(layer.transform, false);
             }
         }

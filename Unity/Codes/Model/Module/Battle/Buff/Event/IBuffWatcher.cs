@@ -2,6 +2,6 @@
 {
     public interface IBuffWatcher
     {
-        void Run(Unit unit,Buff buff);
+        void Run(Unit unit);
     }
 }

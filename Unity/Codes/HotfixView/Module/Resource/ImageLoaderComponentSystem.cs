@@ -1,5 +1,4 @@
 ﻿using System;
-using AssetBundles;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.U2D;
@@ -16,7 +15,6 @@ namespace ET
             public override void Awake(ImageLoaderComponent self)
             {
                 ImageLoaderComponent.Instance = self;
-                self.AddressablesManager = AddressablesManager.Instance;
                 self.m_cacheSingleSprite = new LruCache<string, SpriteValue>();
                 self.m_cacheSpriteAtlas = new LruCache<string, SpriteAtlasValue>();
                 self.InitSingleSpriteCache(self.m_cacheSingleSprite);
@@ -46,7 +44,7 @@ namespace ET
                     item.Value.asset = null;
                     item.Value.ref_count = 0;
                 }
-                self.AddressablesManager.ReleaseAsset(value.asset);
+                ResourcesComponent.Instance.ReleaseAsset(value.asset);
                 value.asset = null;
                 value.ref_count = 0;
             });
@@ -58,7 +56,7 @@ namespace ET
                 return value.ref_count == 0;
             });
             cache.SetPopCallback((key, value) => {
-                self.AddressablesManager.ReleaseAsset(value.asset);
+                ResourcesComponent.Instance.ReleaseAsset(value.asset);
                 value.asset = null;
                 value.ref_count = 0;
             });
@@ -474,7 +472,7 @@ namespace ET
                     {
                         GameObject.Destroy(item.Value.asset);
                     }
-                self.AddressablesManager.ReleaseAsset(value.asset);
+                ResourcesComponent.Instance.ReleaseAsset(value.asset);
                 value.asset = null;
                 value.subasset = null;
                 value.ref_count = 0;
@@ -483,7 +481,7 @@ namespace ET
 
             self.m_cacheSingleSprite.ForEach((key, value) =>
                 {
-                    self.AddressablesManager.ReleaseAsset(value.asset);
+                    ResourcesComponent.Instance.ReleaseAsset(value.asset);
                     value.asset = null;
                     value.ref_count = 0;
                 }

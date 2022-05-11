@@ -279,6 +279,7 @@ namespace ILRuntime.Runtime.Generated
             UnityEngine_AnimationClip_Binding.Register(app);
             UnitIdComponent_Binding.Register(app);
             UnityEngine_Collider_Binding.Register(app);
+            ReferenceCollector_Binding.Register(app);
             TMPro_TMP_Text_Binding.Register(app);
             UnityEngine_UI_Image_Binding.Register(app);
             RaycastHelper_Binding.Register(app);
@@ -286,7 +287,6 @@ namespace ILRuntime.Runtime.Generated
             UnityEngine_UI_Graphic_Binding.Register(app);
             UnityEngine_Cursor_Binding.Register(app);
             UnityEngine_Ray_Binding.Register(app);
-            System_Collections_Generic_Dictionary_2_Byte_ILTypeInstance_Binding.Register(app);
             ET_ListComponent_1_ETTask_1_GameObject_Binding.Register(app);
             System_Collections_Generic_List_1_ETTask_1_GameObject_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Int32_Int64_Binding_Enumerator_Binding.Register(app);
@@ -371,6 +371,7 @@ namespace ILRuntime.Runtime.Generated
             UnityEngine_Canvas_Binding.Register(app);
             UnityEngine_UI_CanvasScaler_Binding.Register(app);
             UnityEngine_Screen_Binding.Register(app);
+            System_Collections_Generic_Dictionary_2_Byte_ILTypeInstance_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Byte_ILTypeInstance_Binding_Enumerator_Binding.Register(app);
             System_Collections_Generic_KeyValuePair_2_Byte_ILTypeInstance_Binding.Register(app);
             ET_Options_Binding.Register(app);

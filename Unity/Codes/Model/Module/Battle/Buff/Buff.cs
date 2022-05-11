@@ -15,5 +15,8 @@ namespace ET
         /// 持续到什么时间
         /// </summary>
         public long Timestamp;
+        
+        [BsonIgnore]
+        public long TimerId;
     }
 }

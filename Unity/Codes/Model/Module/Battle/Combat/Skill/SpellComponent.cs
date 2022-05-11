@@ -23,5 +23,12 @@ namespace ET
         /// </summary>
         [BsonIgnore]
         public SkillPara Para = new SkillPara();
+
+        /// <summary>
+        /// 是否生效
+        /// </summary>
+        public bool Enable;
+
+        public long TimerId;
     }
 }

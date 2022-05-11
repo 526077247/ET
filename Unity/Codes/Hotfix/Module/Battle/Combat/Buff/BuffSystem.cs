@@ -1,5 +1,22 @@
 ﻿namespace ET
 {
+    [Timer(TimerType.RemoveBuff)]
+    public class RemoveBuff: ATimer<Buff>
+    {
+        public override void Run(Buff self)
+        {
+            try
+            {
+                if(self==null||self.IsDisposed) return;
+                self.GetParent<BuffComponent>().Remove(self.Id);
+            }
+            catch (System.Exception e)
+            {
+                Log.Error($"move timer error: {self.Id}\n{e}");
+            }
+        }
+    }
+
     [FriendClass(typeof(BuffComponent))]
     [ObjectSystem]
     public class BuffAwakeSystem : AwakeSystem<Buff,int,long>
@@ -21,7 +38,7 @@
                     {
                         buffComp.ActionControls[type] = 1;
                         // Log.Info("BuffWatcherComponent");
-                        BuffWatcherComponent.Instance.Run(type,true,unit,self);
+                        BuffWatcherComponent.Instance.Run(type,true,unit);
                     }
                     else
                     {
@@ -29,6 +46,8 @@
                     }
                 }
             }
+            if(timestamp>=0)
+                self.TimerId = TimerComponent.Instance.NewOnceTimer(timestamp, TimerType.RemoveBuff, self);
         }
     }
     [FriendClass(typeof(BuffComponent))]
@@ -53,7 +72,7 @@
                     {
                         buffComp.ActionControls[type] = 1;
                         // Log.Info("BuffWatcherComponent");
-                        BuffWatcherComponent.Instance.Run(type,true,unit,self);
+                        BuffWatcherComponent.Instance.Run(type,true,unit);
                     }
                     else
                     {
@@ -61,6 +80,8 @@
                     }
                 }
             }
+            if(timestamp>=0)
+                self.TimerId = TimerComponent.Instance.NewOnceTimer(timestamp, TimerType.RemoveBuff, self);
         }
     }
     [FriendClass(typeof(BuffComponent))]
@@ -69,6 +90,7 @@
     {
         public override void Destroy(Buff self)
         {
+            TimerComponent.Instance.Remove(ref self.TimerId);
             Log.Info("移除BUFF id="+self.ConfigId);
             var buffComp = self.GetParent<BuffComponent>();
             var unit = buffComp.unit;
@@ -88,7 +110,7 @@
                         if (buffComp.ActionControls[type] == 0)
                         {
                             // Log.Info("BuffWatcherComponent");
-                            BuffWatcherComponent.Instance.Run(type,false,unit,self);
+                            BuffWatcherComponent.Instance.Run(type,false,unit);
                         }
                     }
                 }

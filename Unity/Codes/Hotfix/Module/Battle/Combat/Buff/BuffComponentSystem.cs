@@ -2,23 +2,7 @@
 
 namespace ET
 {
-    [Timer(TimerType.RemoveBuff)]
-    public class RemoveBuff: ATimer<Buff>
-    {
-        public override void Run(Buff self)
-        {
-            try
-            {
-                if(self==null||self.IsDisposed) return;
-                self.GetParent<BuffComponent>().Remove(self.Id);
-            }
-            catch (System.Exception e)
-            {
-                Log.Error($"move timer error: {self.Id}\n{e}");
-            }
-        }
-    }
-    
+
     [ObjectSystem]
     [FriendClass(typeof(CombatUnitComponent))]
     public class BuffComponentAwakeSystem : AwakeSystem<BuffComponent>
@@ -72,7 +56,6 @@ namespace ET
             
                 Buff buff = self.AddChild<Buff,int,long,bool>(id,timestamp,true);//走这里不叠加属性
                 self.Groups[conf.Group] = buff;
-                TimerComponent.Instance.NewOnceTimer(timestamp, TimerType.RemoveBuff, buff);
                 EventSystem.Instance.Publish(new EventType.AfterAddBuff(){Buff = buff});
             }
         }
@@ -98,9 +81,8 @@ namespace ET
                 self.Remove(self.Groups[conf.Group].Id);
             }
             
-            Buff buff = self.AddChild<Buff,int,long>(id,timestamp);
+            Buff buff = self.AddChild<Buff,int,long>(id,timestamp,true);
             self.Groups[conf.Group] = buff;
-            TimerComponent.Instance.NewOnceTimer(timestamp, TimerType.RemoveBuff, buff);
             EventSystem.Instance.Publish(new EventType.AfterAddBuff(){Buff = buff});
             return buff;
         }

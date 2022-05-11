@@ -48,7 +48,7 @@ namespace ET
             }
         }
 
-        public static void Run(this BuffWatcherComponent self, int type,bool isAdd,Unit unit,Buff buff)
+        public static void Run(this BuffWatcherComponent self, int type,bool isAdd,Unit unit)
         {
             var key = isAdd ? type : -type;
             List<IBuffWatcher> list;
@@ -59,7 +59,7 @@ namespace ET
             for (int i = 0; i < list.Count; i++)
             {
                 IBuffWatcher numericWatcher = list[i];
-                numericWatcher.Run(unit,buff);
+                numericWatcher.Run(unit);
             }
         }
     }

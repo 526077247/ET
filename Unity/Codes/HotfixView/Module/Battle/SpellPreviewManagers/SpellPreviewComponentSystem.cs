@@ -10,6 +10,7 @@ namespace ET
     {
         public override void Awake(SpellPreviewComponent self)
         {
+            self.Enable = true;
             self.BindSkillKeyDefault();
         }
     }
@@ -20,6 +21,7 @@ namespace ET
     {
         public override void Awake(SpellPreviewComponent self,Dictionary<int,int> info)
         {
+            self.Enable = true;
             if (info != null)
             {
                 var combatU = self.GetParent<CombatUnitComponent>();
@@ -42,6 +44,20 @@ namespace ET
     [FriendClass(typeof(CombatUnitComponent))]
     public static class SpellPreviewComponentSystem
     {
+        /// <summary>
+        /// 设置是否生效
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="enable"></param>
+        public static void SetEnable(this SpellPreviewComponent self, bool enable)
+        {
+            if (self.Enable)
+            {
+                self.CancelPreview();
+            }
+            self.Enable = enable;
+        }
+        
         /// <summary>
         /// 使用默认按键配置,技能绑定按键
         /// </summary>
@@ -82,6 +98,7 @@ namespace ET
         /// <param name="self"></param>
         public static void EnterPreview(this SpellPreviewComponent self)
         {
+            if (!self.Enable) return;
             self.CancelPreview();
             self.Previewing = true;
             //伤害作用对象(0自身1己方2敌方)

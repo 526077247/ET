@@ -1,7 +1,6 @@
 ﻿using UnityEngine.UI;
 using UnityEngine;
 using UnityEngine.U2D;
-using AssetBundles;
 using System.Collections.Generic;
 using System;
 
@@ -30,7 +29,6 @@ namespace ET
         public LruCache<string, SpriteValue> m_cacheSingleSprite;
 
         public LruCache<string, SpriteAtlasValue> m_cacheSpriteAtlas;
-        public AddressablesManager AddressablesManager;
 
     }
 

@@ -20,5 +20,7 @@ namespace ET
 
         public Entity CurSelect;
         public Dictionary<int, SkillAbility> InputSkills { get;  } = new Dictionary<int, SkillAbility>();
+
+        public bool Enable;
     }
 }

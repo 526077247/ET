@@ -6,7 +6,7 @@ namespace ET
     public static class ServerConfigComponentSystem
     {
         [ObjectSystem]
-        public class ServerConfigManagerComponentAwakeSystem : AwakeSystem<ServerConfigComponent>
+        public class ServerConfigComponentAwakeSystem : AwakeSystem<ServerConfigComponent>
         {
             public override void Awake(ServerConfigComponent self)
             {

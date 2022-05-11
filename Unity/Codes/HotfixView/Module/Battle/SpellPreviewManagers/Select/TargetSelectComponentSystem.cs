@@ -107,7 +107,6 @@ namespace ET
         }
     }
     [FriendClass(typeof(TargetSelectComponent))]
-    [FriendClass(typeof(UILayersComponent))]
     public static class TargetSelectComponentSystem
     {
         public static async ETTask Init(this TargetSelectComponent self)
@@ -120,7 +119,7 @@ namespace ET
                 {
                     self.CursorImage = obj.GetComponent<Image>();
                     self.CursorImage.transform.parent =
-                        UILayersComponent.Instance.layers[UILayerNames.TipLayer].transform;
+                            UIManagerComponent.Instance.GetLayer(UILayerNames.TipLayer).transform;
                     self.CursorImage.transform.localPosition = Vector3.zero;
                     self.CursorImage.rectTransform.anchoredPosition = Input.mousePosition;
                 }));

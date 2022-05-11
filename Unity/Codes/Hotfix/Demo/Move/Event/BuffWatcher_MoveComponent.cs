@@ -3,7 +3,7 @@
     [BuffWatcher(ActionControlType.Move,true)]
     public class BuffWatcher_MoveComponent_AddMoveBand:IBuffWatcher
     {
-        public void Run(Unit unit,Buff buff)
+        public void Run(Unit unit)
         {
             var mc = unit.GetComponent<MoveComponent>();
             if (mc!=null)
@@ -18,7 +18,7 @@
     [BuffWatcher(ActionControlType.Move,false)]
     public class BuffWatcher_MoveComponent_RemoveMoveBand:IBuffWatcher
     {
-        public void Run(Unit unit,Buff buff)
+        public void Run(Unit unit)
         {
             var mc = unit.GetComponent<MoveComponent>();
             if (mc!=null)

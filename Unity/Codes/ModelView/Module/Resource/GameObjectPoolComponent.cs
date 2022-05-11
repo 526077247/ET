@@ -1,5 +1,4 @@
-﻿using AssetBundles;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -30,7 +29,6 @@ namespace ET
 	[ChildType]
 	public class GameObjectPoolComponent : Entity,IAwake,IDestroy
 	{
-		public AddressablesManager AddressablesManager;
 		public Transform __cacheTransRoot;
 		public static GameObjectPoolComponent Instance { get; set; }
 		public LruCache<string, GameObject> __goPool;

@@ -8,8 +8,7 @@ using UnityEngine;
 namespace ET
 {
 	[FriendClass(typeof(UIWindow))]
-	[FriendClass(typeof(UILayersComponent))]
-    public class InnerOpenWindow_GetGameObject : AEventAsync<UIEventType.InnerOpenWindow>
+	public class InnerOpenWindow_GetGameObject : AEventAsync<UIEventType.InnerOpenWindow>
     {
 	    protected override async ETTask Run(UIEventType.InnerOpenWindow args)
         {
@@ -25,7 +24,7 @@ namespace ET
 				return;
 			}
 			var trans = go.transform;
-			trans.SetParent(UIManagerComponent.Instance.GetComponent<UILayersComponent>().layers[target.Layer].transform, false);
+			trans.SetParent(UIManagerComponent.Instance.GetLayer(target.Layer).transform, false);
 			trans.name = target.Name;
 			
 			view.AddUIComponent<UITransform,Transform>("", trans);

@@ -27,6 +27,7 @@ namespace ET
         public override void Awake(SpellComponent self)
         {
             self.Skill = null;
+            self.Enable = true;
         }
     }
     [ObjectSystem]
@@ -43,6 +44,27 @@ namespace ET
     public static class SpellComponentSystem
     {
         /// <summary>
+        /// 设置是否生效
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="enable"></param>
+        public static void SetEnable(this SpellComponent self, bool enable)
+        {
+            self.Enable = enable;
+            if (self.Skill!=null&&!self.Enable)
+            {
+                TimerComponent.Instance.Remove(ref self.TimerId);
+            }
+        }
+        /// <summary>
+        /// 获取是否生效
+        /// </summary>
+        /// <param name="self"></param>
+        public static bool GetEnable(this SpellComponent self)
+        {
+            return self.Enable;
+        }
+        /// <summary>
         /// 释放对目标技能
         /// </summary>
         /// <param name="self"></param>
@@ -50,6 +72,7 @@ namespace ET
         /// <param name="targetEntity"></param>
         public static void SpellWithTarget(this SpellComponent self, SkillAbility spellSkill, CombatUnitComponent targetEntity)
         {
+            if (!self.Enable) return;
             if (self.Skill != null)
                 return;
             if(!spellSkill.CanUse())return;
@@ -77,6 +100,7 @@ namespace ET
         /// <param name="point"></param>
         public static void SpellWithPoint(this SpellComponent self,SkillAbility spellSkill, Vector3 point)
         {
+            if (!self.Enable) return;
             if (self.Skill != null)
                 return;
             if(!spellSkill.CanUse())return;
@@ -104,6 +128,7 @@ namespace ET
         /// <param name="point"></param>
         public static void SpellWithDirect(this SpellComponent self,SkillAbility spellSkill, Vector3 point)
         {
+            if (!self.Enable) return;
             if (self.Skill != null)
                 return;
             if(!spellSkill.CanUse())return;
@@ -144,7 +169,7 @@ namespace ET
             } 
             while (self.Para.Interval<=0);
             self.CurrentSkillStep = index;
-            TimerComponent.Instance.NewOnceTimer(TimeHelper.ServerNow() + self.Para.Interval, TimerType.PlayNextSkillStep, self);
+            self.TimerId = TimerComponent.Instance.NewOnceTimer(TimeHelper.ServerNow() + self.Para.Interval, TimerType.PlayNextSkillStep, self);
         }
 
         static void SetParaStep(this SkillPara para,int index)
