@@ -152,6 +152,8 @@ namespace ET
 
                 if (errorCount > 0||warningCount > 0)
                 {
+					if (PlayerPrefs.GetInt("AutoBuild") == 1)//如果开启了自动编译要Cancel掉，否则会死循环
+						CancelAutoBuildCode();
                     for (int i = 0; i < compilerMessages.Length; i++)
                     {
                         if (compilerMessages[i].type == CompilerMessageType.Error||compilerMessages[i].type == CompilerMessageType.Warning)
