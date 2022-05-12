@@ -85,12 +85,12 @@ namespace ET
             var oldgrid = self.Cell;
             if (cell != oldgrid)//跨格子了：AOI刷新
             {
-                self.ChangeTo(cell,oldpos);
+                self.ChangeTo(cell);
             }
             //触发器刷新 自己进入或离开别人的
             if (self.Collider != null)
             {
-                self.Collider.AfterChangeBroadcastToOther(oldpos,self.Collider.GetRealRot());
+                self.Collider.AfterChangeBroadcastToOther(self.Collider.GetRealPos(oldpos),self.Collider.GetRealRot());
             }
             
             //触发器刷新 别人进入或离开自己的
@@ -141,7 +141,7 @@ namespace ET
         /// </summary>
         /// <param name="self"></param>
         /// <param name="newgrid"></param>
-        public static void ChangeTo(this AOIUnitComponent self,AOICell newgrid,Vector3 oldPos)
+        public static void ChangeTo(this AOIUnitComponent self,AOICell newgrid)
         {
             AOICell oldgrid = self.Cell;
             Log.Info(self.Id+"From: "+"  grid x:"+ oldgrid.posx+",y:"+ oldgrid.posy+ "  ChangeTo:grid x:"+ newgrid.posx+",y:"+ newgrid.posy);

@@ -386,7 +386,7 @@ namespace ET
                         for (int i = 0; i < colliders.Count; i++)
                         {
                             var collider = colliders[i];
-                            if (!pre.Contains(collider)&&self.IsInTrigger(collider,self.GetRealPos(),
+                            if (!pre.Contains(collider)&&collider.Selecter.Contains(unit.Type)&&self.IsInTrigger(collider,self.GetRealPos(),
                                     self.GetRealRot(),collider.GetRealPos(),collider.GetRealRot()))
                             {
                                 pre.Add(collider);
@@ -403,7 +403,7 @@ namespace ET
                         for (int i = 0; i < colliders.Count; i++)
                         {
                             var collider = colliders[i];
-                            if (!after.Contains(collider)&&self.IsInTrigger(collider,self.GetRealPos(beforePosition),
+                            if (!after.Contains(collider)&&collider.Selecter.Contains(unit.Type)&&self.IsInTrigger(collider,self.GetRealPos(beforePosition),
                                     beforeRotation,collider.GetRealPos(),collider.GetRealRot()))
                             {
                                 after.Add(collider);
@@ -419,12 +419,12 @@ namespace ET
                         for (int i = 0; i < colliders.Count; i++)
                         {
                             var collider = colliders[i];
-                            if (!after.Contains(collider)&&self.IsInTrigger(collider,self.GetRealPos(beforePosition),
+                            if (!after.Contains(collider)&&collider.Selecter.Contains(unit.Type)&&self.IsInTrigger(collider,self.GetRealPos(beforePosition),
                                     beforeRotation,collider.GetRealPos(),collider.GetRealRot()))
                             {
                                 after.Add(collider);
                             }
-                            if (!pre.Contains(collider)&&self.IsInTrigger(collider,self.GetRealPos(),
+                            if (!pre.Contains(collider)&&collider.Selecter.Contains(unit.Type)&&self.IsInTrigger(collider,self.GetRealPos(),
                                     self.GetRealRot(),collider.GetRealPos(),collider.GetRealRot()))
                             {
                                 pre.Add(collider);
@@ -498,8 +498,9 @@ namespace ET
                     if (flag >= 0) //格子在范围内部
                     {
                         triggers.Add(item, -1);
+                        // Log.Info("old "+flag+" "+ item.posx+","+item.posy);
                     }
-                    // Log.Info("old "+flag+" "+ item.posx+","+item.posy);
+                    
                 }
             }
 
@@ -516,8 +517,8 @@ namespace ET
                             triggers[item]++;
                         else
                             triggers.Add(item,1);
+                        // Log.Info("new "+flag+" "+ item.posx+","+item.posy);
                     }
-                    // Log.Info("new "+flag+" "+ item.posx+","+item.posy);
                 }
             }
 
@@ -533,10 +534,11 @@ namespace ET
                     for (int i = 0; i < item.Key.Triggers.Count; i++)
                     {
                         var collider = item.Key.Triggers[i];
-                        if (!pre.Contains(collider)&&self.IsInTrigger(collider,self.GetRealPos(),
+                        if (!pre.Contains(collider)&&collider.Selecter.Contains(unit.Type)&& self.IsInTrigger(collider,self.GetRealPos(),
                                 self.GetRealRot(),collider.GetRealPos(),collider.GetRealRot()))
                         {
                             pre.Add(collider);
+                            // Log.Info(" pre.Add "+collider.Id);
                         }
                             
                     }
@@ -547,10 +549,11 @@ namespace ET
                     for (int i = 0; i < item.Key.Triggers.Count; i++)
                     {
                         var collider = item.Key.Triggers[i];
-                        if (!after.Contains(collider)&&self.IsInTrigger(collider,self.GetRealPos(beforePosition),
+                        if (!after.Contains(collider)&&collider.Selecter.Contains(unit.Type)&&self.IsInTrigger(collider,self.GetRealPos(beforePosition),
                                 beforeRotation,collider.GetRealPos(),collider.GetRealRot()))
                         {
                             after.Add(collider);
+                            // Log.Info(" after.Add "+collider.Id);
                         }
                             
                     }
@@ -560,15 +563,17 @@ namespace ET
                     for (int i = 0; i < item.Key.Triggers.Count; i++)
                     {
                         var collider = item.Key.Triggers[i];
-                        if (!after.Contains(collider)&&self.IsInTrigger(collider,self.GetRealPos(beforePosition),
+                        if (!after.Contains(collider)&&collider.Selecter.Contains(unit.Type)&&self.IsInTrigger(collider,self.GetRealPos(beforePosition),
                                 beforeRotation,collider.GetRealPos(),collider.GetRealRot()))
                         {
                             after.Add(collider);
+                            // Log.Info(" after.Add "+collider.Id);
                         }
-                        if (!pre.Contains(collider)&&self.IsInTrigger(collider,self.GetRealPos(),
+                        if (!pre.Contains(collider)&&collider.Selecter.Contains(unit.Type)&&self.IsInTrigger(collider,self.GetRealPos(),
                                 self.GetRealRot(),collider.GetRealPos(),collider.GetRealRot()))
                         {
                             pre.Add(collider);
+                            // Log.Info(" pre.Add "+collider.Id);
                         }
                     }
                 }
@@ -597,12 +602,13 @@ namespace ET
             //判断事件
             foreach (var item in colliderDic)
             {
+                // Log.Info(" colliderDic "+item.Key.Id+"  "+item.Value);
                 if(self==item.Key) continue;
-                if (item.Value <0 &&(self.Flag == AOITriggerType.All || self.Flag == AOITriggerType.Exit))//离开
+                if (item.Value <0 &&(item.Key.Flag == AOITriggerType.All || item.Key.Flag == AOITriggerType.Exit))//离开
                 {
                     item.Key.OnTrigger(self,AOITriggerType.Exit);
                 }
-                else if (item.Value >0 &&(self.Flag == AOITriggerType.All || self.Flag == AOITriggerType.Enter))//进入
+                else if (item.Value >0 &&(item.Key.Flag == AOITriggerType.All || item.Key.Flag == AOITriggerType.Enter))//进入
                 {
                     item.Key.OnTrigger(self,AOITriggerType.Enter);
                 }
@@ -696,7 +702,7 @@ namespace ET
                     for (int i = 0; i < item.Key.Triggers.Count; i++)
                     {
                         var collider = item.Key.Triggers[i];
-                        if (!pre.Contains(collider)&&self.IsInTrigger(collider,self.GetRealPos(),
+                        if (!pre.Contains(collider)&&collider.Selecter.Contains(unit.Type)&&self.IsInTrigger(collider,self.GetRealPos(),
                                 self.GetRealRot(),collider.GetRealPos(),collider.GetRealRot()))
                         {
                             pre.Add(collider);
@@ -710,7 +716,7 @@ namespace ET
                     for (int i = 0; i < item.Key.Triggers.Count; i++)
                     {
                         var collider = item.Key.Triggers[i];
-                        if (!after.Contains(collider)&&self.IsInTrigger(collider,self.GetRealPos(beforePosition),
+                        if (!after.Contains(collider)&&collider.Selecter.Contains(unit.Type)&&self.IsInTrigger(collider,self.GetRealPos(beforePosition),
                                 beforeRotation,collider.GetRealPos(),collider.GetRealRot()))
                         {
                             after.Add(collider);
@@ -723,12 +729,12 @@ namespace ET
                     for (int i = 0; i < item.Key.Triggers.Count; i++)
                     {
                         var collider = item.Key.Triggers[i];
-                        if (!after.Contains(collider)&&self.IsInTrigger(collider,self.GetRealPos(beforePosition),
+                        if (!after.Contains(collider)&&collider.Selecter.Contains(unit.Type)&&self.IsInTrigger(collider,self.GetRealPos(beforePosition),
                                 beforeRotation,collider.GetRealPos(),collider.GetRealRot()))
                         {
                             after.Add(collider);
                         }
-                        if (!pre.Contains(collider)&&self.IsInTrigger(collider,self.GetRealPos(),
+                        if (!pre.Contains(collider)&&collider.Selecter.Contains(unit.Type)&&self.IsInTrigger(collider,self.GetRealPos(),
                                 self.GetRealRot(),collider.GetRealPos(),collider.GetRealRot()))
                         {
                             pre.Add(collider);
@@ -761,18 +767,18 @@ namespace ET
             foreach (var item in colliderDic)
             {
                 if(self==item.Key) continue;
-                if (item.Value <0 &&(self.Flag == AOITriggerType.All || self.Flag == AOITriggerType.Exit))//离开
+                if (item.Value <0 )//离开
                 {
-                    if(self.IsCollider)
+                    if(self.IsCollider&&(item.Key.Flag == AOITriggerType.All || item.Key.Flag == AOITriggerType.Exit))
                         item.Key.OnTrigger(self,AOITriggerType.Exit);
-                    else if(item.Key.IsCollider)
+                    else if(item.Key.IsCollider&&(self.Flag == AOITriggerType.All || self.Flag == AOITriggerType.Exit))
                         self.OnTrigger(item.Key,AOITriggerType.Exit);
                 }
-                else if (item.Value >0 &&(self.Flag == AOITriggerType.All || self.Flag == AOITriggerType.Enter))//进入
+                else if (item.Value >0 )//进入
                 {
-                    if(self.IsCollider)
+                    if(self.IsCollider&&(item.Key.Flag == AOITriggerType.All || item.Key.Flag == AOITriggerType.Enter))
                         item.Key.OnTrigger(self,AOITriggerType.Enter);
-                    else if(item.Key.IsCollider)
+                    else if(item.Key.IsCollider&&(self.Flag == AOITriggerType.All || self.Flag == AOITriggerType.Enter))
                         self.OnTrigger(item.Key,AOITriggerType.Enter);
                 }
  
