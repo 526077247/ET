@@ -66,7 +66,7 @@ namespace ET
             self.__onclick = () =>
             {
                 //AkSoundEngine.PostEvent("ConFirmation", Camera.main.gameObject);
-                callback();
+                callback?.Invoke();
             };
             self.unity_uibutton.onClick.AddListener(self.__onclick);
         }

@@ -97,7 +97,7 @@ namespace ET
             for (int i = 0; i < self.SphereTriggers.Count; i++)
             {
                 var item = self.SphereTriggers[i];
-                item.AfterChangePosition(oldpos);
+                item.AfterChangePosition(self.Collider.GetRealPos(oldpos));
             }
         }
         /// <summary>

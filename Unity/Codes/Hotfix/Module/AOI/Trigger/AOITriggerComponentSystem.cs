@@ -386,7 +386,7 @@ namespace ET
                         for (int i = 0; i < colliders.Count; i++)
                         {
                             var collider = colliders[i];
-                            if (!pre.Contains(collider)&&collider.Selecter.Contains(unit.Type)&&self.IsInTrigger(collider,self.GetRealPos(),
+                            if (!pre.Contains(collider)&&self.IsInTrigger(collider,self.GetRealPos(),
                                     self.GetRealRot(),collider.GetRealPos(),collider.GetRealRot()))
                             {
                                 pre.Add(collider);
@@ -403,7 +403,7 @@ namespace ET
                         for (int i = 0; i < colliders.Count; i++)
                         {
                             var collider = colliders[i];
-                            if (!after.Contains(collider)&&collider.Selecter.Contains(unit.Type)&&self.IsInTrigger(collider,self.GetRealPos(beforePosition),
+                            if (!after.Contains(collider)&&self.IsInTrigger(collider,self.GetRealPos(beforePosition),
                                     beforeRotation,collider.GetRealPos(),collider.GetRealRot()))
                             {
                                 after.Add(collider);
@@ -419,12 +419,12 @@ namespace ET
                         for (int i = 0; i < colliders.Count; i++)
                         {
                             var collider = colliders[i];
-                            if (!after.Contains(collider)&&collider.Selecter.Contains(unit.Type)&&self.IsInTrigger(collider,self.GetRealPos(beforePosition),
+                            if (!after.Contains(collider)&&self.IsInTrigger(collider,self.GetRealPos(beforePosition),
                                     beforeRotation,collider.GetRealPos(),collider.GetRealRot()))
                             {
                                 after.Add(collider);
                             }
-                            if (!pre.Contains(collider)&&collider.Selecter.Contains(unit.Type)&&self.IsInTrigger(collider,self.GetRealPos(),
+                            if (!pre.Contains(collider)&&self.IsInTrigger(collider,self.GetRealPos(),
                                     self.GetRealRot(),collider.GetRealPos(),collider.GetRealRot()))
                             {
                                 pre.Add(collider);
