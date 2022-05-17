@@ -7,28 +7,19 @@ namespace ET
     /// </summary>
     public class SpellComponent : Entity,IAwake,IDestroy,ITransfer
     {
-       
         /// <summary>
         /// 当前步骤
         /// </summary>
-        [BsonIgnore]
-        public int CurrentSkillStep;
-        /// <summary>
-        /// 当前技能
-        /// </summary>
-        [BsonIgnore]
-        public SkillAbility Skill;
+        public int NextSkillStep;
+
+        public int CurSkillConfigId;//当前技能Id
         /// <summary>
         /// 当前参数
         /// </summary>
-        [BsonIgnore]
-        public SkillPara Para = new SkillPara();
-
-        /// <summary>
-        /// 是否生效
-        /// </summary>
-        public bool Enable;
+        public SkillPara Para;
 
         public long TimerId;
+
+        public bool Enable { get; set; } = true;
     }
 }

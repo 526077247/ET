@@ -2,6 +2,13 @@
 using System.Collections.Generic;
 namespace ET
 {
+    public class SkillStepPara
+    {
+        public int Index;
+        public object[] Paras;
+        public int Interval;
+        public int Count;//作用单位数
+    }
     public class SkillPara
     {
         public Vector3 Position;
@@ -11,13 +18,10 @@ namespace ET
         public List<int> CostId;
         public List<int> Cost;
         public SkillAbility Ability;
-
+        public int CurIndex;
         #region 步骤参数
-        
-        public int Index;
-        public object[] Paras;
-        public int Interval;
-        
+
+        public List<SkillStepPara> StepPara = new List<SkillStepPara>();
 
         #endregion
 
@@ -35,9 +39,7 @@ namespace ET
             CostId.Clear();
             Cost.Clear();
             Ability = null;
-            Index = -1;
-            Paras = null;
-            Interval = 0;
+            StepPara.Clear();
         }
 
     }

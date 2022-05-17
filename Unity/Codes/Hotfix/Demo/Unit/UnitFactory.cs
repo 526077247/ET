@@ -112,17 +112,17 @@ namespace ET
         /// <param name="configId"></param>
         /// <param name="pos"></param>
         /// <param name="rota"></param>
-        /// <param name="from"></param>
+        /// <param name="para"></param>
         /// <returns></returns>
-        public static Unit CreateSkillCollider(Scene currentScene, int configId,Vector3 pos,Quaternion rota,CombatUnitComponent from)
+        public static Unit CreateSkillCollider(Scene currentScene,int configId, Vector3 pos,Quaternion rota,SkillPara para)
         {
 	        UnitComponent unitComponent = currentScene.GetComponent<UnitComponent>();
 	        Unit unit = unitComponent.AddChild<Unit,int>(configId);
         
 	        unit.Position = pos;
 	        unit.Rotation = rota;
-	        unit.AddComponent<SkillColliderComponent, int,CombatUnitComponent>(configId,from);
-	        unit.AddComponent<AOIUnitComponent,Vector3,Quaternion, UnitType>(pos,rota,unit.Type);
+	        unit.AddComponent<SkillColliderComponent, SkillPara>(para);
+	        unit.AddComponent<AOIUnitComponent,Vector3,Quaternion, UnitType>(pos,rota,UnitType.Skill);
 	        return unit;
         }
 

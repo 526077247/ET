@@ -5,8 +5,7 @@ namespace ET
      /// <summary>
     /// 消耗计算
     /// </summary>
-    [FriendClass(typeof(CombatUnitComponent))]
-    [SkillWatcher(SkillStepType.Cost)]
+     [SkillWatcher(SkillStepType.Cost)]
     public class SkillWatcher_Cost : ISkillWatcher
     {
 
@@ -14,18 +13,19 @@ namespace ET
         {
 #if SERVER
             Log.Info("SkillWatcher_Cost");
-            if (para.Paras.Length != 3)
+            if (para.StepPara[para.CurIndex].Paras.Length != 3)
             {
                 Log.Error(para.Ability.SkillConfig.Id+"技能配置消耗属性和公式数量不对");
                 return;
             }
 
-            var idKey = para.Paras[0].ToString();
+            var stepPara = para.StepPara[para.CurIndex];
+            var idKey = stepPara.Paras[0].ToString();
             if(NumericType.Map.TryGetValue(idKey,out int attrId))
             {
                 var cost = 0;
-                var costFormulaId = int.Parse(para.Paras[2].ToString());
-                var costNum = int.Parse(para.Paras[1].ToString());
+                var costFormulaId = int.Parse(stepPara.Paras[2].ToString());
+                var costNum = int.Parse(stepPara.Paras[1].ToString());
                 if (attrId < NumericType.Max) attrId = attrId * 10 + 1;
                 FormulaConfig formula = FormulaConfigCategory.Instance.Get(costFormulaId);
                 if (formula != null)

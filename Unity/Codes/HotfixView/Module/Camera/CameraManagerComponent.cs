@@ -45,10 +45,13 @@ namespace ET
         }
         public static void SetCameraStackAtLoadingDone(this CameraManagerComponent self)
         {
-            self.m_scene_main_camera_go = GameObject.Find("Main Camera");
+            self.m_scene_main_camera_go = Camera.main.gameObject;
             self.m_scene_main_camera = self.m_scene_main_camera_go.GetComponent<Camera>();
+            var render = self.m_scene_main_camera.GetUniversalAdditionalCameraData();
+            render.renderPostProcessing = true;
+            render.renderType = CameraRenderType.Base;
+            render.SetRenderer(1);
             var ui_camera = UIManagerComponent.Instance.GetUICamera();
-            self.m_scene_main_camera.GetUniversalAdditionalCameraData().renderType = CameraRenderType.Base;
             __AddOverlayCamera(self.m_scene_main_camera, ui_camera);
         }
 

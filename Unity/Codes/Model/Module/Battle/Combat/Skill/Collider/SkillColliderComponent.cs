@@ -1,15 +1,34 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using System.Collections.Generic;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace ET
 {
-    public class SkillColliderComponent:Entity,IAwake<int,CombatUnitComponent>
+    public class SkillColliderComponent:Entity,IAwake<SkillPara>
     {
         public int ConfigId;
         [BsonIgnore]
         public SkillJudgeConfig Config => SkillJudgeConfigCategory.Instance.Get(ConfigId);
+        
         /// <summary>
-        /// 来源
+        /// 来源Id
         /// </summary>
-        public CombatUnitComponent From;
+        public long FromId;
+
+        /// <summary>
+        /// 创建时间
+        /// </summary>
+        public long CreateTime { get; set; }
+
+        [BsonIgnore]
+        public Unit Unit => this.GetParent<Unit>();
+
+        public SkillStepPara Para;
+        
+        public List<int> CostId;
+        public List<int> Cost;
+
+        public int SkillConfigId;
+        [BsonIgnore] 
+        public SkillConfig SkillConfig => SkillConfigCategory.Instance.Get(SkillConfigId);
     }
 }

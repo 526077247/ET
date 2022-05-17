@@ -10,6 +10,7 @@
         public const int PlayNextSkillStep = 1005;//技能步骤
         public const int RemoveBuff = 1006;//移除Buff
         public const int MoveAndSpellSkill = 1007;//从施法范围外移动到最远施法位置施法
+        public const int GenerateSkillCollider = 1008;//延时生成触发器
         // 不能超过10000
     }
 }

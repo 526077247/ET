@@ -13,7 +13,7 @@ namespace ET
         {
             try
             {
-                self.PlayNextSkillStep(self.CurrentSkillStep);
+                self.PlayNextSkillStep(self.NextSkillStep);
             }
             catch (Exception e)
             {
@@ -26,8 +26,7 @@ namespace ET
     {
         public override void Awake(SpellComponent self)
         {
-            self.Skill = null;
-            self.Enable = true;
+            self.CurSkillConfigId = 0;
         }
     }
     [ObjectSystem]
@@ -35,7 +34,7 @@ namespace ET
     {
         public override void Destroy(SpellComponent self)
         {
-            self.Skill = null;
+            self.CurSkillConfigId = 0;
         }
     }
     [FriendClass(typeof(SpellComponent))]
@@ -44,25 +43,29 @@ namespace ET
     public static class SpellComponentSystem
     {
         /// <summary>
-        /// 设置是否生效
+        /// 当前技能
+        /// </summary>
+        public static SkillAbility GetSkill(this SpellComponent self)
+        {
+            if (self.GetParent<CombatUnitComponent>().TryGetSkillAbility(self.CurSkillConfigId, out var res))
+            {
+                return res;
+            }
+            return null;
+        } 
+        /// <summary>
+        /// 设置是否可施法
         /// </summary>
         /// <param name="self"></param>
         /// <param name="enable"></param>
         public static void SetEnable(this SpellComponent self, bool enable)
         {
             self.Enable = enable;
-            if (self.Skill!=null&&!self.Enable)
+            if (!self.Enable&&self.CurSkillConfigId != 0)
             {
+                self.CurSkillConfigId = 0;
                 TimerComponent.Instance.Remove(ref self.TimerId);
             }
-        }
-        /// <summary>
-        /// 获取是否生效
-        /// </summary>
-        /// <param name="self"></param>
-        public static bool GetEnable(this SpellComponent self)
-        {
-            return self.Enable;
         }
         /// <summary>
         /// 释放对目标技能
@@ -73,10 +76,11 @@ namespace ET
         public static void SpellWithTarget(this SpellComponent self, SkillAbility spellSkill, CombatUnitComponent targetEntity)
         {
             if (!self.Enable) return;
-            if (self.Skill != null)
+            if (self.CurSkillConfigId != 0)
                 return;
             if(!spellSkill.CanUse())return;
-            self.Skill = spellSkill;
+
+            self.CurSkillConfigId = spellSkill.ConfigId;
             var nowpos = self.GetParent<CombatUnitComponent>().unit.Position;
             var nowpos2 = targetEntity.unit.Position;
             if (Vector2.Distance(new Vector2(nowpos.x, nowpos.z), new Vector2(nowpos2.x, nowpos2.z)) >
@@ -84,12 +88,12 @@ namespace ET
             {
                 return;
             }
-            self.Para.Clear();
+            self.Para = new SkillPara();
             self.Para.From = self.GetParent<CombatUnitComponent>();
             self.Para.Ability = spellSkill;
             self.Para.To = targetEntity;
 
-            self.Skill.LastSpellTime = TimeHelper.ClientNow();
+            self.GetSkill().LastSpellTime = TimeHelper.ServerNow();
             self.PlayNextSkillStep(0);
         }
         /// <summary>
@@ -101,10 +105,10 @@ namespace ET
         public static void SpellWithPoint(this SpellComponent self,SkillAbility spellSkill, Vector3 point)
         {
             if (!self.Enable) return;
-            if (self.Skill != null)
+            if (self.CurSkillConfigId != 0)
                 return;
             if(!spellSkill.CanUse())return;
-            self.Skill = spellSkill;
+            self.CurSkillConfigId = spellSkill.ConfigId;
             var nowpos = self.GetParent<CombatUnitComponent>().unit.Position;
             if (Vector2.Distance(new Vector2(nowpos.x, nowpos.z), new Vector2(point.x, point.z)) >
                 spellSkill.SkillConfig.PreviewRange[0])
@@ -112,12 +116,12 @@ namespace ET
                 var dir =new Vector3(point.x - nowpos.x,0, point.z - nowpos.z).normalized;
                 point = nowpos + dir * spellSkill.SkillConfig.PreviewRange[0];
             }
-            self.Para.Clear();
+            self.Para= new SkillPara();
             self.Para.Position = point;
             self.Para.From = self.GetParent<CombatUnitComponent>();
             self.Para.Ability = spellSkill;
 
-            self.Skill.LastSpellTime = TimeHelper.ClientNow();
+            self.GetSkill().LastSpellTime = TimeHelper.ServerNow();
             self.PlayNextSkillStep(0);
         }
         /// <summary>
@@ -129,21 +133,21 @@ namespace ET
         public static void SpellWithDirect(this SpellComponent self,SkillAbility spellSkill, Vector3 point)
         {
             if (!self.Enable) return;
-            if (self.Skill != null)
+            if (self.CurSkillConfigId != 0)
                 return;
             if(!spellSkill.CanUse())return;
-            self.Skill = spellSkill;
+            self.CurSkillConfigId = spellSkill.ConfigId;
             var nowpos = self.GetParent<CombatUnitComponent>().unit.Position;
             point = new Vector3(point.x, nowpos.y, point.z);
             var Rotation = Quaternion.LookRotation(point - nowpos,Vector3.up);
             
-            self.Para.Clear();
+            self.Para = new SkillPara();
             self.Para.Position = point;
             self.Para.Rotation = Rotation;
             self.Para.From = self.GetParent<CombatUnitComponent>();
             self.Para.Ability = spellSkill;
 
-            self.Skill.LastSpellTime = TimeHelper.ClientNow();
+            self.GetSkill().LastSpellTime = TimeHelper.ServerNow();
             self.PlayNextSkillStep(0);
         }
         /// <summary>
@@ -155,37 +159,45 @@ namespace ET
         {
             do
             {
-                if (self.Skill==null||self.Skill.StepType==null||index >=self.Skill.StepType.Count)
+                if (self.CurSkillConfigId==0||self.GetSkill().StepType==null||index >=self.GetSkill().StepType.Count)
                 {
-                    if(self.Skill!=null) self.Skill.LastSpellOverTime = TimeHelper.ClientNow();
-                    self.Skill = null;
+                    if(self.CurSkillConfigId!=0) self.GetSkill().LastSpellOverTime = TimeHelper.ServerNow();
+                    self.CurSkillConfigId = 0;
+                    self.Para = null;
                     return;
                 }
 
-                var id = self.Skill.StepType[index];
+                var id = self.GetSkill().StepType[index];
                 self.Para.SetParaStep(index);
                 SkillWatcherComponent.Instance.Run(id, self.Para);
                 index++;
             } 
-            while (self.Para.Interval<=0);
-            self.CurrentSkillStep = index;
-            self.TimerId = TimerComponent.Instance.NewOnceTimer(TimeHelper.ServerNow() + self.Para.Interval, TimerType.PlayNextSkillStep, self);
+            while (self.Para.StepPara[index-1].Interval<=0);
+            self.NextSkillStep = index;
+            self.TimerId = TimerComponent.Instance.NewOnceTimer(
+                TimeHelper.ServerNow() + self.Para.StepPara[index-1].Interval, TimerType.PlayNextSkillStep, self);
         }
 
         static void SetParaStep(this SkillPara para,int index)
         {
             if(para.Ability==null) return;
-            para.Index = index;
-            para.Paras = null;
-            para.Interval = 0;
+            
+            var stepPara = new SkillStepPara();
+            stepPara.Index = index;
+            stepPara.Paras = null;
+            stepPara.Interval = 0;
             if (para.Ability.Paras != null && index < para.Ability.Paras.Count)
             {
-                para.Paras = para.Ability.Paras[index];
+                stepPara.Paras = para.Ability.Paras[index];
             }
             if (para.Ability.TimeLine != null && index < para.Ability.TimeLine.Count)
             {
-                para.Interval = para.Ability.TimeLine[index];
+                stepPara.Interval = para.Ability.TimeLine[index];
             }
+            stepPara.Count = 0;
+            
+            para.CurIndex = index;
+            para.StepPara.Add(stepPara);
         }
     }
 }

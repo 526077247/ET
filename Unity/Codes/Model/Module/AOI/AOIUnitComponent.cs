@@ -15,7 +15,7 @@ namespace ET
     {
         public Vector3 Position;
         public Quaternion Rotation;
-        public AOISceneComponent Scene;
+        public AOISceneComponent Scene{ get; set; }
         public UnitType Type { get; set; }
         private AOICell cell;
         public AOICell Cell
