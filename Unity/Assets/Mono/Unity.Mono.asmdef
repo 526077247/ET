@@ -6,7 +6,8 @@
         "Unity.Addressables",
         "Unity.ResourceManager",
         "Unity.RenderPipelines.Universal.Runtime",
-        "Unity.ThirdParty"
+        "Unity.ThirdParty",
+        "Unity.RenderPipelines.Core.Runtime"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
