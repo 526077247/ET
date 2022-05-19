@@ -16,6 +16,7 @@ public class AltasHelper
     ///=========================================================================================
     public static string AtlasName = "Atlas";
     public static string DiscreteImagesName = "DiscreteImages";
+    public static string DynamicAtlasName = "DynamicAtlas";
     /// <summary>
     /// 将UI目录下的小图 打成  图集
     /// </summary>
@@ -39,6 +40,8 @@ public class AltasHelper
             bool hasAtlas = false;
             //目录是否有DiscreteImages目录
             bool hasDiscreteImages = false;
+            //目录是否有DynamicAtlas目录
+            bool hasDynamicAtlas = false;
             foreach (DirectoryInfo seconddirInfo in dirInfo.GetDirectories())
             {
                 if (seconddirInfo.Name == AtlasName)
@@ -49,6 +52,11 @@ public class AltasHelper
                 if (seconddirInfo.Name == DiscreteImagesName)
                 {
                     hasDiscreteImages = true;
+                }
+
+                if (seconddirInfo.Name == DynamicAtlasName)
+                {
+                    hasDynamicAtlas = true;
                 }
             }
 
@@ -77,6 +85,13 @@ public class AltasHelper
                 //DiscreteImages目录下的所以图片
                 DirectoryInfo discreteImagesDirInfo = new DirectoryInfo(Path.Combine(dirInfo.FullName, DiscreteImagesName));
                 SetImagesFormat(discreteImagesDirInfo);
+            }
+
+            if (hasDynamicAtlas)
+            {
+                //DynamicAtlas目录下的所以图片
+                DirectoryInfo discreteImagesDirInfo = new DirectoryInfo(Path.Combine(dirInfo.FullName, DiscreteImagesName));
+                SetImagesFormat(discreteImagesDirInfo,true);
             }
 
         }
@@ -128,7 +143,7 @@ public class AltasHelper
                 }
 
                 TextureImporterPlatformSettings platformSetting = importer.GetPlatformTextureSettings("iPhone");
-                platformSetting.maxTextureSize = 1024;
+                platformSetting.maxTextureSize = 2048;
                 platformSetting.resizeAlgorithm = TextureResizeAlgorithm.Mitchell;
                 platformSetting.overridden = true;
                 //.compressionQuality = 100;
@@ -137,7 +152,7 @@ public class AltasHelper
                 importer.SetPlatformTextureSettings(platformSetting);
 
                 platformSetting = importer.GetPlatformTextureSettings("Android");
-                platformSetting.maxTextureSize = 1024;
+                platformSetting.maxTextureSize = 2048;
                 platformSetting.resizeAlgorithm = TextureResizeAlgorithm.Mitchell;
                 platformSetting.overridden = true;
                 // platformSetting.textureCompression = type;
@@ -247,7 +262,7 @@ public class AltasHelper
         TextureImporterPlatformSettings platformSetting = new TextureImporterPlatformSettings()
         {
             name = "Android",
-            maxTextureSize = 1024,
+            maxTextureSize = 2048,
             format = _format,
             overridden = true,
         };
@@ -257,7 +272,7 @@ public class AltasHelper
         platformSetting = new TextureImporterPlatformSettings()
         {
             name = "iPhone",
-            maxTextureSize = 1024,
+            maxTextureSize = 2048,
             format = _format,
             overridden = true,
         };
@@ -433,13 +448,13 @@ public class AltasHelper
                     TextureImporterPlatformSettings setting = textureImporter.GetPlatformTextureSettings("Android");
                     setting.overridden = true;
                     setting.format = TextureImporterFormat.ASTC_6x6;  //设置格式
-                    setting.maxTextureSize = 1024;
+                    setting.maxTextureSize = 2048;
                     textureImporter.SetPlatformTextureSettings(setting);
 
                     setting = textureImporter.GetPlatformTextureSettings("iphone");
                     setting.overridden = true;
                     setting.format = TextureImporterFormat.ASTC_6x6;  //设置格式
-                    setting.maxTextureSize = 1024;
+                    setting.maxTextureSize = 2048;
                     textureImporter.SetPlatformTextureSettings(setting);
 
                     textureImporter.SaveAndReimport();
@@ -464,9 +479,9 @@ public class AltasHelper
         if (textures != null && textures.Length > 0)
         {
             //Debug.LogError(atlasName + " width:" + textures[0].width + " height:" + textures[0].height);
-            if (textures[0].width > 1024 || textures[0].height > 1024)
+            if (textures[0].width > 2048 || textures[0].height > 2048)
             {
-                Debug.LogError(atlasName + "大小超过了1024*1024");
+                Debug.LogError(atlasName + "大小超过了2048*2048");
             }
         }
     }

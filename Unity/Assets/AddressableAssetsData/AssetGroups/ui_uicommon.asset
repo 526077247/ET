@@ -45,6 +45,41 @@ MonoBehaviour:
     - default
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
+  - m_GUID: 60cfd84ae231a4943b3f0f6cf0dcf409
+    m_Address: UI/UICommon/Atlas/Blue_gradient.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 040be0e474e09894ca320b08d9462cc8
+    m_Address: UI/UICommon/Atlas/Green_gradient.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 1258ac417dd158a48b05eeedb739c469
+    m_Address: UI/UICommon/Atlas/Orange_gradient.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 28c51f93b6260224c867f45f411a0e85
+    m_Address: UI/UICommon/Atlas/Red_gradient.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: fa9ec1936cfc1f24cb402d0cf8e46e82
+    m_Address: UI/UICommon/Atlas/whiteblock.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: dd1f300d6062fee48bf00a13907517b6, type: 2}
   m_SchemaSet:

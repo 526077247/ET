@@ -17,10 +17,10 @@ namespace ET
             var slc = self.AddComponent<SceneLoadComponent>();
             var role = UnitConfigCategory.Instance.GetAll();
             foreach (var item in role)
-                slc.PreLoadTask.Add(slc.AddPreloadGameObject(item.Value.Perfab, 1));
+                slc.AddPreloadGameObject(item.Value.Perfab, 1);
             //可以走配表
-            slc.PreLoadTask.Add(slc.AddPreloadGameObject("GameAssets/Map/Prefabs/Ground.prefab", 1));
-            slc.PreLoadTask.Add(slc.AddPreloadGameObject("GameAssets/Map/Prefabs/Cube.prefab", 10));
+            slc.AddPreloadGameObject("GameAssets/Map/Prefabs/Ground.prefab", 1);
+            slc.AddPreloadGameObject("GameAssets/Map/Prefabs/Cube.prefab", 10);
             return slc;
         }
     }

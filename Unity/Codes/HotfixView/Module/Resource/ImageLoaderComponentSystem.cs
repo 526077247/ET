@@ -5,8 +5,6 @@ using UnityEngine.U2D;
 namespace ET
 {
     [FriendClass(typeof(ImageLoaderComponent))]
-    [FriendClass(typeof(SpriteValue))]
-    [FriendClass(typeof(SpriteAtlasValue))]
     public static class ImageLoaderComponentSystem
     {
         [ObjectSystem]
@@ -17,8 +15,10 @@ namespace ET
                 ImageLoaderComponent.Instance = self;
                 self.m_cacheSingleSprite = new LruCache<string, SpriteValue>();
                 self.m_cacheSpriteAtlas = new LruCache<string, SpriteAtlasValue>();
+                self.m_cacheDynamicAtlas = new Dictionary<string, DynamicAtlas>();
                 self.InitSingleSpriteCache(self.m_cacheSingleSprite);
                 self.InitSpriteAtlasCache(self.m_cacheSpriteAtlas);
+                PreLoad().Coroutine();
             }
         }
         [ObjectSystem]
@@ -27,7 +27,20 @@ namespace ET
             public override void Destroy(ImageLoaderComponent self)
             {
                 self.Clear();
+                self.m_cacheDynamicAtlas = null;
+                self.m_cacheSingleSprite = null;
+                self.m_cacheSpriteAtlas = null;
                 ImageLoaderComponent.Instance = null;
+            }
+        }
+
+        static async ETTask PreLoad()
+        {
+            for (int i = 0; i < 2; i++)//看情况提前预加载，加载会卡顿
+            {
+                await TimerComponent.Instance.WaitAsync(1);
+                var temp = DynamicAtlasPage.OnCreate(i, DynamicAtlasGroup.Size_2048, DynamicAtlasGroup.Size_2048,null);
+                temp.Dispose();
             }
         }
         static void InitSpriteAtlasCache(this ImageLoaderComponent self,LruCache<string, SpriteAtlasValue> cache)
@@ -49,8 +62,8 @@ namespace ET
                 value.ref_count = 0;
             });
         }
-
-        static void InitSingleSpriteCache(this ImageLoaderComponent self,LruCache<string, SpriteValue> cache)
+        
+        static void InitSingleSpriteCache(this ImageLoaderComponent self, LruCache<string, SpriteValue> cache)
         {
             cache.SetCheckCanPopCallback((string key, SpriteValue value) => {
                 return value.ref_count == 0;
@@ -61,6 +74,7 @@ namespace ET
                 value.ref_count = 0;
             });
         }
+
         //异步加载图片 会自动识别图集：回调方式（image 和button已经封装 外部使用时候 谨慎使用）
         public static async ETTask<Sprite> LoadImageAsync(this ImageLoaderComponent self,string image_path, Action<Sprite> callback = null)
         {
@@ -70,17 +84,19 @@ namespace ET
             {
                 coroutineLock =
                     await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Resources, image_path.GetHashCode());
-                self.__GetSpriteLoadInfoByPath(image_path, out Type asset_type, out string asset_address,
+                self.__GetSpriteLoadInfoByPath(image_path, out int asset_type, out string asset_address,
                     out string subasset_name);
-                if (asset_type == self.sprite_type)
+                if (asset_type == ImageLoaderComponent.SpriteType.Sprite)
                 {
-                    res = await self.__LoadSingleImageAsyncInternal(self.m_cacheSingleSprite, asset_address, subasset_name,
-                        callback);
+                    res = await self.__LoadSingleImageAsyncInternal( asset_address,callback);
+                }
+                if (asset_type == ImageLoaderComponent.SpriteType.DynSpriteAtlas)
+                {
+                    res = await self.__LoadDynSpriteImageAsyncInternal(asset_address, callback);
                 }
                 else
                 {
-                    res = await self.__LoadSpriteImageAsyncInternal(self.m_cacheSpriteAtlas, asset_address, subasset_name,
-                        callback);
+                    res = await self.__LoadSpriteImageAsyncInternal(asset_address, subasset_name, callback);
                 }
             }
             catch (Exception ex)
@@ -99,9 +115,9 @@ namespace ET
         {
             if (string.IsNullOrEmpty(image_path))
                 return;
-            self.__GetSpriteLoadInfoByPath(image_path, out Type asset_type, out string asset_address, out string subasset_name);
+            self.__GetSpriteLoadInfoByPath(image_path, out int asset_type, out string asset_address, out string subasset_name);
 
-            if (asset_type == self.sprite_atlas_type)
+            if (asset_type == ImageLoaderComponent.SpriteType.SpriteAtlas)
             {
                 if (self.m_cacheSpriteAtlas.TryOnlyGet(image_path, out SpriteAtlasValue value))
                 {
@@ -119,6 +135,15 @@ namespace ET
                             value.ref_count = value.ref_count - 1;
                         }
                     }
+                }
+            }
+            else if (asset_type == ImageLoaderComponent.SpriteType.DynSpriteAtlas)
+            {
+                var index = asset_address.IndexOf(self.DYN_ATLAS_KEY);
+                var path = asset_address.Substring(0, index);
+                if (self.m_cacheDynamicAtlas.TryGetValue(path, out var value))
+                {
+                    value.RemoveTexture(image_path, true);
                 }
             }
             else
@@ -152,8 +177,7 @@ namespace ET
             }
             return res;
         }
-
-
+        
         //异步加载图片： 回调方式，按理除了预加载的时候其余时候是不需要关心图集的
         public static async ETTask<Sprite> LoadSingleImageAsync(this ImageLoaderComponent self,string atlas_path, Action<Sprite> callback = null)
         {
@@ -280,7 +304,7 @@ namespace ET
             callback?.Invoke(null);
             return null;
         }
-        static void __GetSpriteLoadInfoByPath(this ImageLoaderComponent self,string image_path, out Type asset_type, out string asset_address, out string subasset_name)
+        static void __GetSpriteLoadInfoByPath(this ImageLoaderComponent self,string image_path, out int asset_type, out string asset_address, out string subasset_name)
         {
             asset_address = image_path;
             subasset_name = "";
@@ -288,10 +312,21 @@ namespace ET
             if (index < 0)
             {
                 //没有找到/atlas/，则是散图
-                asset_type = self.sprite_type;
-                return;
+                index = image_path.IndexOf(self.DYN_ATLAS_KEY);
+                if (index < 0)
+                {
+                    //是散图
+                    asset_type = ImageLoaderComponent.SpriteType.Sprite;
+                    return;
+                }
+                else
+                {
+                    //是动态图集
+                    asset_type = ImageLoaderComponent.SpriteType.DynSpriteAtlas;
+                    return;
+                }
             }
-            asset_type = self.sprite_atlas_type;
+            asset_type = ImageLoaderComponent.SpriteType.SpriteAtlas;
             var substr = image_path.Substring(index + self.ATLAS_KEY.Length);
             var subIndex = substr.IndexOf('/');
             string atlasPath;
@@ -321,50 +356,10 @@ namespace ET
             subasset_name = spriteName;
         }
 
-        static async ETTask<Sprite> __LoadSingleImageAsyncInternal(this ImageLoaderComponent self,LruCache<string, SpriteValue> cacheCls, string asset_address, string subasset_name, Action<Sprite> callback)
+        static async ETTask<Sprite> __LoadSpriteImageAsyncInternal(this ImageLoaderComponent self,
+             string asset_address, string subasset_name, Action<Sprite> callback)
         {
-            var cached = false;
-            if (cacheCls.TryGet(asset_address, out SpriteValue value_c))
-            {
-                if (value_c.asset == null)
-                {
-                    cacheCls.Remove(asset_address);
-                }
-                else
-                {
-                    value_c.ref_count++;
-                    Sprite result;
-                    result = value_c.asset;
-                    callback?.Invoke(result);
-                    return result;
-                }
-            }
-            if (!cached)
-            {
-                var asset = await ResourcesComponent.Instance.LoadAsync<Sprite>(asset_address);
-                if (asset != null)
-                {
-                    var result = asset;
-                    if (cacheCls.TryGet(asset_address, out value_c))
-                    {
-                        value_c.asset = result;
-                        value_c.ref_count = value_c.ref_count + 1;
-                    }
-                    else
-                    {
-                        value_c = new SpriteValue { asset = result, ref_count = 1 };
-                        cacheCls.Set(asset_address, value_c);
-                    }
-                    callback?.Invoke(result);
-                    return result;
-                }
-            }
-            callback?.Invoke(null);
-            return null;
-        }
-
-        static async ETTask<Sprite> __LoadSpriteImageAsyncInternal(this ImageLoaderComponent self,LruCache<string, SpriteAtlasValue> cacheCls, string asset_address, string subasset_name, Action<Sprite> callback)
-        {
+            LruCache<string, SpriteAtlasValue> cacheCls = self.m_cacheSpriteAtlas;
             var cached = false;
             if (cacheCls.TryGet(asset_address, out SpriteAtlasValue value_c))
             {
@@ -460,7 +455,67 @@ namespace ET
 
         }
 
-        
+        static async ETTask<Sprite> __LoadDynSpriteImageAsyncInternal(this ImageLoaderComponent self,
+             string asset_address, Action<Sprite> callback)
+        {
+            Dictionary<string, DynamicAtlas> cacheCls = self.m_cacheDynamicAtlas;
+            var index = asset_address.IndexOf(self.DYN_ATLAS_KEY);
+            var path = asset_address.Substring(0, index);
+            if (cacheCls.TryGetValue(path, out DynamicAtlas value_c))
+            {
+                Sprite result;
+                if (value_c.TryGetSprite(asset_address,out result))
+                {
+                    callback?.Invoke(result);
+                    return result;
+                }
+                else
+                {
+                    var texture = await ResourcesComponent.Instance.LoadAsync<Texture>(asset_address);
+                    if (texture == null)
+                    {
+                        Log.Error("image not found:" + asset_address);
+                        callback?.Invoke(null);
+                        return null;
+                    }
+                    value_c.SetTexture(asset_address,texture);
+                    ResourcesComponent.Instance.ReleaseAsset(texture);//动态图集拷贝过了，直接释放
+                    if (value_c.TryGetSprite(asset_address,out  result))
+                    {
+                        callback?.Invoke(result);
+                        return result;
+                    }
+                    Log.Error("image not found:" + asset_address );
+                    callback?.Invoke(null);
+                    return null;
+                }
+            }
+            else
+            {
+                Log.Info(self.Id +" "+ cacheCls.Count);
+                Log.Info("CreateNewDynamicAtlas  ||"+path+"||");
+                value_c = new DynamicAtlas(DynamicAtlasGroup.Size_2048);
+                cacheCls.Add(path,value_c);
+                Log.Info(self.Id +" "+ cacheCls.Count);
+                var texture = await ResourcesComponent.Instance.LoadAsync<Texture>(asset_address);
+                if (texture == null)
+                {
+                    Log.Error("image not found:" + asset_address );
+                    callback?.Invoke(null);
+                    return null;
+                }
+                value_c.SetTexture(asset_address,texture);
+                ResourcesComponent.Instance.ReleaseAsset(texture);//动态图集拷贝过了，直接释放
+                if (value_c.TryGetSprite(asset_address,out var result))
+                {
+                    callback?.Invoke(result);
+                    return result;
+                }
+                Log.Error("image not found:" + asset_address);
+                callback?.Invoke(null);
+                return null;
+            }
+        }
         #endregion
 
         public static void Clear(this ImageLoaderComponent self)
@@ -487,6 +542,13 @@ namespace ET
                 }
             );
             self.m_cacheSingleSprite.Clear();
+
+            foreach (var item in self.m_cacheDynamicAtlas)
+            {
+                item.Value.Dispose();
+            }
+            self.m_cacheDynamicAtlas.Clear();
+            Log.Info("ImageLoaderComponent Clear");
         }
     }
 }

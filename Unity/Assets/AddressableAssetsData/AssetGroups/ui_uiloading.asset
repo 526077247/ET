@@ -52,6 +52,97 @@ MonoBehaviour:
     - default
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
+  - m_GUID: 0df89b3f7fa7f453f97b65522ee1a7fa
+    m_Address: UI/UILoading/Atlas/loading_rotate_0.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: c1a8b91abb7e542bcb36beac9b1e7452
+    m_Address: UI/UILoading/Atlas/loading_rotate_1.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: c2c5f2bcc87df4809abd0e6dbb79443c
+    m_Address: UI/UILoading/Atlas/loading_rotate_10.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: a7c647b3e00814a14befda31e915cb99
+    m_Address: UI/UILoading/Atlas/loading_rotate_11 .png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 287d3376718d94de19782cbef5be49c0
+    m_Address: UI/UILoading/Atlas/loading_rotate_11.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: d0b58df8c61f3475aa792baf51fdd436
+    m_Address: UI/UILoading/Atlas/loading_rotate_2.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 4ae24b15d9cf3465dae32debf31ed198
+    m_Address: UI/UILoading/Atlas/loading_rotate_3.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: d5d19c73da9a048f785ba8f6cd6ac0a3
+    m_Address: UI/UILoading/Atlas/loading_rotate_4.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 20ab65ec5faab4a4a9aec5f53ab58664
+    m_Address: UI/UILoading/Atlas/loading_rotate_5.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 91d868d22903b4f3a80d0c6647c42842
+    m_Address: UI/UILoading/Atlas/loading_rotate_6.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 7c4cba3a1cdf3445eb6cbbd1e39f4c18
+    m_Address: UI/UILoading/Atlas/loading_rotate_7.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 482a183e4d8b64347b84fde9fa6bf485
+    m_Address: UI/UILoading/Atlas/loading_rotate_8.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 1b27fabd0a01f4f92b6e10e96654ed5a
+    m_Address: UI/UILoading/Atlas/loading_rotate_9.png
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: dd1f300d6062fee48bf00a13907517b6, type: 2}
   m_SchemaSet:

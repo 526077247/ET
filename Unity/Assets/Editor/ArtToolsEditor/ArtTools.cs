@@ -8,7 +8,7 @@ public class ArtTools
     public static void CreateArtSubFolder()
     {
         string[] ArtFolderNames = { "Animations", "Materials", "Models", "Textures", "Prefabs" };
-        string[] UIFolderNames = { "Animations", "Atlas", "DiscreteImages", "Prefabs" };
+        string[] UIFolderNames = { "Animations", "Atlas", "DiscreteImages", "Prefabs","DynamicAtlas" };
         string[] guids = Selection.assetGUIDs;
         for (int i = 0; i < guids.Length; i++)
         {
