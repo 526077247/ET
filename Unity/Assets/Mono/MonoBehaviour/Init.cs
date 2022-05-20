@@ -102,6 +102,7 @@ namespace ET
 			{
 				Log.Debug("ReStart");
 				CodeLoader.Instance.OnApplicationQuit();
+				CodeLoader.Instance.Dispose();
 				CodeLoader.Instance.Start();
 				CodeLoader.Instance.isReStart = false;
 			}

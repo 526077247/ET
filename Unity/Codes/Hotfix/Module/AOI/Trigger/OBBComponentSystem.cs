@@ -26,11 +26,12 @@ namespace ET
         /// 获取8个顶点，注意用完dispose
         /// </summary>
         /// <param name="self"></param>
+        /// <param name="realPos"></param>
+        /// <param name="realRot"></param>
         /// <returns></returns>
-        public static ListComponent<Vector3> GetAllVertex(this OBBComponent self)
+        public static ListComponent<Vector3> GetAllVertex(this OBBComponent self,Vector3 realPos,Quaternion realRot)
         {
             ListComponent<Vector3> res = ListComponent<Vector3>.Create();
-            var trigger = self.GetParent<AOITriggerComponent>();
             for (float i = -0.5f; i < 0.5f; i++)
             {
                 for (float j = -0.5f; j < 0.5f; j++)
@@ -38,7 +39,7 @@ namespace ET
                     for (float k = -0.5f; k < 0.5f; k++)
                     {
                         Vector3 temp = new Vector3(self.Scale.x*i,self.Scale.y*j,self.Scale.z*k);
-                        temp = trigger.GetRealPos() + trigger.GetRealRot() * temp;
+                        temp = realPos + realRot * temp;
                         res.Add(temp);
                     }
                 }
@@ -47,7 +48,174 @@ namespace ET
             return res;
         }
 
+        /// <summary>
+        /// 获取12条边，注意用完dispose
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="realPos"></param>
+        /// <param name="realRot"></param>
+        /// <returns></returns>
+        public static ListComponent<Ray> GetAllSide(this OBBComponent self, Vector3 realPos, Quaternion realRot)
+        {
+            ListComponent<Ray> res = ListComponent<Ray>.Create();
+            Vector3 temp = realPos + realRot * new Vector3(self.Scale.x,self.Scale.y,self.Scale.z);
+            Ray ray = new Ray()
+            {
+                Start = temp,
+                Dir = realRot * Vector3.left,
+                Distance = self.Scale.x
+            };
+            res.Add(ray);
+            ray = new Ray()
+            {
+                Start = temp,
+                Dir = realRot * Vector3.down,
+                Distance = self.Scale.y
+            };
+            res.Add(ray);
+            ray = new Ray()
+            {
+                Start = temp,
+                Dir = realRot * Vector3.back,
+                Distance = self.Scale.z
+            };
+            res.Add(ray);
+            
+            temp = realPos + realRot * new Vector3(-self.Scale.x,-self.Scale.y,-self.Scale.z);
+            ray = new Ray()
+            {
+                Start = temp,
+                Dir = realRot * Vector3.right,
+                Distance = self.Scale.x
+            };
+            res.Add(ray);
+            ray = new Ray()
+            {
+                Start = temp,
+                Dir = realRot * Vector3.up,
+                Distance = self.Scale.y
+            };
+            res.Add(ray);
+            ray = new Ray()
+            {
+                Start = temp,
+                Dir = realRot * Vector3.forward,
+                Distance = self.Scale.z
+            };
+            res.Add(ray);
 
+            temp = realPos + realRot * new Vector3(-self.Scale.x,self.Scale.y,self.Scale.z);
+            ray = new Ray()
+            {
+                Start = temp,
+                Dir = realRot * Vector3.up,
+                Distance = self.Scale.y
+            };
+            res.Add(ray);
+            ray = new Ray()
+            {
+                Start = temp,
+                Dir = realRot * Vector3.forward,
+                Distance = self.Scale.z
+            };
+            res.Add(ray);
+
+                
+            temp = realPos + realRot * new Vector3(self.Scale.x,self.Scale.y,-self.Scale.z);
+            ray = new Ray()
+            {
+                Start = temp,
+                Dir = realRot * Vector3.right,
+                Distance = self.Scale.x
+            };
+            res.Add(ray);
+            ray = new Ray()
+            {
+                Start = temp,
+                Dir = realRot * Vector3.up,
+                Distance = self.Scale.y
+            };
+            res.Add(ray);
+
+            temp = realPos + realRot * new Vector3(self.Scale.x,-self.Scale.y,self.Scale.z);
+            ray = new Ray()
+            {
+                Start = temp,
+                Dir = realRot * Vector3.right,
+                Distance = self.Scale.x
+            };
+            res.Add(ray);
+            ray = new Ray()
+            {
+                Start = temp,
+                Dir = realRot * Vector3.forward,
+                Distance = self.Scale.z
+            };
+            res.Add(ray);
+            
+            return res;
+        }
+
+        /// <summary>
+        /// 判断触发器是否在触发器移到指定位置后之相交
+        /// </summary>
+        /// <param name="trigger1"></param>
+        /// <param name="trigger2"></param>
+        /// <param name="pos1"></param>
+        /// <param name="rotation1"></param>
+        /// <param name="pos2"></param>
+        /// <param name="rotation2"></param>
+        /// <returns></returns>
+        public static bool IsInTrigger(this OBBComponent trigger1, OBBComponent trigger2, Vector3 pos1, 
+            Quaternion rotation1, Vector3 pos2, Quaternion rotation2)
+        {
+            // Log.Info("判断OBB触发");
+            //第一种情况一方有一个点在对方内部即为触发
+            using (var list = trigger1.GetAllVertex(pos1,rotation1))
+            {
+                for (int i = 0; i < list.Count; i++)
+                {
+                    if(IsPointInTrigger(trigger2,list[i],pos2,rotation2))
+                    {
+                        return true;
+                    }
+                }
+            }
+            using (var list = trigger2.GetAllVertex(pos2,rotation2))
+            {
+                for (int i = 0; i < list.Count; i++)
+                {
+                    if(IsPointInTrigger(trigger1,list[i],pos1,rotation1))
+                    {
+                        return true;
+                    }
+                }
+            }
+            //第二种情况，没有点在对方内部，但边和对方面相交了
+            using (var list = trigger1.GetAllSide(pos1,rotation1))
+            {
+                for (int i = 0; i < list.Count; i++)
+                {
+                    if (trigger2.IsRayInTrigger(list[i], pos2, rotation2))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+        /// <summary>
+        /// 判断某个点是否在触发器移到指定位置后之内
+        /// </summary>
+        /// <param name="trigger"></param>
+        /// <param name="position"></param>
+        /// <param name="center"></param>
+        /// <param name="rotation"></param>
+        /// <returns></returns>
+        public static bool IsPointInTrigger(this OBBComponent trigger, Vector3 position,Vector3 center,Quaternion rotation)
+        {
+            return AOIHelper.IsPointInTrigger(position, center, rotation, trigger.Scale);
+        }
         /// <summary>
         /// 判断射线是否在触发器移到指定位置后之内
         /// </summary>
