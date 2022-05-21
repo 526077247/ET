@@ -90,7 +90,7 @@ namespace ET
                         obj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                         obj.GetComponent<Collider>().isTrigger = true;
                         obj.transform.parent = showObj.GameObject.transform;
-                        obj.transform.localPosition = item.Offset;
+                        obj.transform.localPosition = new Vector3(0,item.OffsetY,0);
                         obj.transform.localScale = new Vector3(item.Radius*2,item.Radius*2,item.Radius*2);
                     }
                     else if (item.TriggerType == TriggerShapeType.Cube)
@@ -98,7 +98,7 @@ namespace ET
                         obj = GameObject.CreatePrimitive(PrimitiveType.Cube);
                         obj.GetComponent<Collider>().isTrigger = true;
                         obj.transform.parent = showObj.GameObject.transform;
-                        obj.transform.localPosition = item.Offset;
+                        obj.transform.localPosition = new Vector3(0,item.OffsetY,0);
                         obj.transform.localRotation = Quaternion.identity;
                         obj.transform.localScale = item.GetComponent<OBBComponent>().Scale;
                     }

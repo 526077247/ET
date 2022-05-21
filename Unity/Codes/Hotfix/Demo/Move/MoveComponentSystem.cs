@@ -12,6 +12,7 @@ namespace ET
         {
             try
             {
+                if (self.IsDisposed) return;
                 self.MoveForward(false);
             }
             catch (Exception e)
@@ -26,7 +27,7 @@ namespace ET
     {
         public override void Destroy(MoveComponent self)
         {
-            self.Clear();
+            self.Stop();
         }
     }
 
@@ -189,7 +190,8 @@ namespace ET
                 // 如果是最后一个点
                 if (self.N >= self.Targets.Count - 1)
                 {
-                    unit.Position = self.NextTarget;
+                    if(self.Targets.Count>0)
+                        unit.Position = self.NextTarget;
                     unit.Rotation = self.To;
                     Action<bool> callback = self.Callback;
                     self.Callback = null;

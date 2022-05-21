@@ -162,9 +162,15 @@ namespace ET
         private static void RaycastHits(Ray ray, AOICell cell,Vector3 inPoint,ListComponent<RaycastHit> hits,
             HashSetComponent<AOITriggerComponent> triggers, DictionaryComponent<UnitType, bool> type)
         {
-            for (int i = 0; i < cell.Triggers.Count; i++)
+            for (int i = cell.Triggers.Count-1; i >=0 ; i--)
             {
                 var item = cell.Triggers[i];
+                if (item.IsDisposed)
+                {
+                    cell.Triggers.RemoveAt(i);
+                    Log.Warning("自动移除不成功");
+                    continue;
+                }
                 if (item.IsCollider &&!triggers.Contains(item)&& type.ContainsKey(UnitType.ALL) ||
                     type.ContainsKey(item.GetParent<AOIUnitComponent>().Type))
                 {

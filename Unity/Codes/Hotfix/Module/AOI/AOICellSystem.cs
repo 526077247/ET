@@ -10,7 +10,7 @@ using UnityEngine;
 namespace ET
 {
     [ObjectSystem]
-    public class AOICellAwakeSystem : AwakeSystem<AOICell>
+    public class AOIGridAwakeSystem : AwakeSystem<AOICell>
     {
         public override void Awake(AOICell self)
         {
@@ -24,7 +24,7 @@ namespace ET
         }
     }
     [ObjectSystem]
-    public class AOICellDestroySystem : DestroySystem<AOICell>
+    public class AOIGridDestroySystem : DestroySystem<AOICell>
     {
         public override void Destroy(AOICell self)
         {
@@ -50,36 +50,16 @@ namespace ET
         /// <param name="position"></param>
         /// <param name="rotation"></param>
         /// <returns></returns>
-        public static int GetRelationshipWithTrigger(this AOICell self, AOITriggerComponent trigger,Vector3? position = null,Quaternion? rotation = null)
+        public static int GetRelationshipWithTrigger(this AOICell self, AOITriggerComponent trigger,Vector3 position ,Quaternion rotation)
         {
-            var unit = trigger.GetParent<AOIUnitComponent>();
-            Vector3 tempPos;
-            if (position != null)
-            {
-                tempPos = (Vector3) position;
-            }
-            else
-            {
-                tempPos = trigger.GetRealPos();
-            }
-            Quaternion tempRot;
-            if (rotation != null)
-            {
-                tempRot = (Quaternion) rotation;
-            }
-            else
-            {
-                tempRot = unit.Rotation;
-            }
-
             if (trigger.TriggerType == TriggerShapeType.Cube)
             {
                 var obb = trigger.GetComponent<OBBComponent>();
-                return AOIHelper.GetGridRelationshipWithOBB(tempPos, tempRot,obb.Scale,self.xMax-self.xMin,self.posx,self.posy);
+                return AOIHelper.GetGridRelationshipWithOBB(position, rotation,obb.Scale,self.xMax-self.xMin,self.posx,self.posy);
             }
             else
             {
-                return AOIHelper.GetGridRelationshipWithSphere(tempPos,trigger.Radius,self.xMax-self.xMin,self.posx,self.posy);
+                return AOIHelper.GetGridRelationshipWithSphere(position,trigger.Radius,self.xMax-self.xMin,self.posx,self.posy);
             }
             
         }
@@ -96,8 +76,10 @@ namespace ET
             {
                 if (!trigger.DebugMap.ContainsKey(self)) trigger.DebugMap[self] = 0;
                 trigger.DebugMap[self]++;
-                trigger.LogInfo.Add("AddTriggerListener "+self.posx+","+self.posy+"  "+DateTime.Now+"\r\n"+new StackTrace());
+                trigger.LogInfo.Add("AddTriggerListener "+self.posx+","+self.posy+"  "+trigger.GetRealPos()+"  "+
+                                    DateTime.Now.ToString("HH:mm:ss fff:ffffff")+"\r\n"+new StackTrace());
             }
+            trigger.FollowCell.Add(self);
             self.Triggers.Add(trigger);
         }
         /// <summary>
@@ -112,8 +94,11 @@ namespace ET
             {
                 if (!trigger.DebugMap.ContainsKey(self)) trigger.DebugMap[self] = 0;
                 trigger.DebugMap[self]--;
-                trigger.LogInfo.Add("RemoveTriggerListener "+self.posx+","+self.posy+"  "+DateTime.Now+"\r\n"+new StackTrace());
+                trigger.LogInfo.Add("RemoveTriggerListener "+self.posx+","+self.posy+"  "+trigger.GetRealPos()+"  "+
+                                    DateTime.Now.ToString("HH:mm:ss fff:ffffff")+"\r\n"+new StackTrace());
             }
+            if (self.IsDisposed) return;
+            trigger.FollowCell.Remove(self);
             self.Triggers.Remove(trigger);
         }
         /// <summary>
@@ -173,6 +158,7 @@ namespace ET
         /// <param name="unit"></param>
         public static void Remove(this AOICell self, AOIUnitComponent unit)
         {
+            if (self == null || self.IsDisposed) return;
             if (self.idUnits.ContainsKey(unit.Type))
             {
                 for (int i = 0; i < self.ListenerUnits.Count; i++)
@@ -241,10 +227,17 @@ namespace ET
         public static ListComponent<AOITriggerComponent> GetAllCollider(this AOICell self, List<UnitType> types,AOITriggerComponent except)
         {
             var res = ListComponent<AOITriggerComponent>.Create();
+            if (self.IsDisposed) return res;
             var isAll = types.Contains(UnitType.ALL);
-            for (int i = 0; i < self.Triggers.Count; i++)
+            for (int i = self.Triggers.Count-1; i >=0 ; i--)
             {
                 var item = self.Triggers[i];
+                if (item.IsDisposed)
+                {
+                    self.Triggers.RemoveAt(i);
+                    Log.Warning("自动移除不成功");
+                    continue;
+                }
                 if(!item.IsCollider||item==except) continue;
                 
                 if (isAll||types.Contains(item.GetParent<AOIUnitComponent>().Type))
@@ -265,6 +258,7 @@ namespace ET
         public static ListComponent<AOICell> GetNearbyGrid(this AOICell self,int turnNum)
         {
             var scene = self.DomainScene().GetComponent<AOISceneComponent>();
+            if (scene == null) return ListComponent<AOICell>.Create();
             return scene.GetNearbyGrid(turnNum, self.posx, self.posy);
         }
 
@@ -297,9 +291,13 @@ namespace ET
         public static ListComponent<AOIUnitComponent> GetNearbyUnit(this AOICell self, int turnNum, UnitType type = UnitType.ALL)
         {
             var grid = self.GetNearbyGrid(turnNum);
-            var res = grid.GetAllUnit(type);
-            grid.Dispose();
-            return res;
+            if (grid != null)
+            {
+                var res = grid.GetAllUnit(type);
+                grid.Dispose();
+                return res;
+            }
+            return ListComponent<AOIUnitComponent>.Create();
         }
     }
 }

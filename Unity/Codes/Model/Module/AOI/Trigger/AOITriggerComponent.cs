@@ -23,6 +23,7 @@ namespace ET
         public bool IsCollider { get; set; }
         public DictionaryComponent<AOICell, int> DebugMap;
         public ListComponent<string> LogInfo;
-        public Vector3 Offset;
+        public float OffsetY;
+        public ListComponent<AOICell> FollowCell;
     }
 }

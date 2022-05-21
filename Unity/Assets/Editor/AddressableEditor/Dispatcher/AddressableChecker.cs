@@ -77,7 +77,7 @@ namespace AssetBundles
                     if (f.Extension.Equals(".png"))//如果是图片，就检测一下是否是  UI 目录下的小图
                     {
                         //Logger.LogError("png 111 name:" + f.FullName);
-                        if (f.FullName.Contains(Path.Combine("Assets", "AssetsPackage", "UI")) && f.FullName.Contains("Atlas"))
+                        if (f.FullName.Contains(Path.Combine("Assets", "AssetsPackage", "UI")) && f.FullName.Contains("/Atlas/"))
                         {
                             //Logger.LogError("png name:" + f.FullName);
                             continue;

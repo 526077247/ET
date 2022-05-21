@@ -8,7 +8,8 @@ namespace ET
         {
             EventType.ChangePosition args = changePosition as EventType.ChangePosition;;
             AOIUnitComponent aoiUnitComponent = args.Unit.GetComponent<AOIUnitComponent>();
-            aoiUnitComponent?.Move(args.Unit.Position);
+            if (aoiUnitComponent == null || aoiUnitComponent.IsDisposed) return;
+            aoiUnitComponent.Move(args.Unit.Position);
         }
     }
 }

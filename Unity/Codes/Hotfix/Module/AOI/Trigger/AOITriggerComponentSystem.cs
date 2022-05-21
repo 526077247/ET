@@ -17,6 +17,7 @@ namespace ET
             }
             self.Radius = a;
             self.Handler = b;
+            self.FollowCell = ListComponent<AOICell>.Create();
         }
     }
     [ObjectSystem]
@@ -75,7 +76,7 @@ namespace ET
         /// <returns></returns>
         public static Vector3 GetRealPos(this AOITriggerComponent self)
         {
-            return self.GetParent<AOIUnitComponent>().Position + self.Offset;
+            return self.GetParent<AOIUnitComponent>().Position + new Vector3(0,self.OffsetY,0);
         }
         /// <summary>
         /// 获取偏移后的位置
@@ -85,7 +86,7 @@ namespace ET
         /// <returns></returns>
         public static Vector3 GetRealPos(this AOITriggerComponent self, Vector3 pos)
         {
-            return pos + self.Offset;
+            return pos + new Vector3(0,self.OffsetY,0);
         }
         /// <summary>
         /// 获取偏移后的位置
@@ -127,8 +128,10 @@ namespace ET
         static void AddTriggerListener(this AOIUnitComponent self,AOITriggerComponent trigger,AOITriggerType type,bool broadcast = true)
         {
             var len = self.Scene.gridLen;
-            int count = (int)Math.Ceiling((double)trigger.Radius / len);
+            int count = (int)Mathf.Ceil(trigger.Radius / len);
             if (count > 2) Log.Info("检测范围超过2格，触发半径："+ trigger.Radius);
+            var pos = trigger.GetRealPos();
+            var rot = trigger.GetRealRot();
             if (!broadcast)
             {
                 using (var grids = self.GetNearbyGrid(count))
@@ -136,7 +139,7 @@ namespace ET
                     for (int i = 0; i < grids.Count; i++)
                     {
                         var item = grids[i];
-                        var flag = item.GetRelationshipWithTrigger(trigger);
+                        var flag = item.GetRelationshipWithTrigger(trigger,pos,rot);
                         if (flag >= 0) //格子在范围有重叠部分
                         {
                             item.AddTriggerListener(trigger);
@@ -153,7 +156,7 @@ namespace ET
                     for (int i = 0; i < grids.Count; i++)
                     {
                         var item = grids[i];
-                        var flag = item.GetRelationshipWithTrigger(trigger);
+                        var flag = item.GetRelationshipWithTrigger(trigger,pos,rot);
                         // Log.Info("grids pos "+item.posx+" "+item.posy+" flag"+flag);
                         if (flag >= 0) //格子在范围有重叠部分
                         {
@@ -182,9 +185,15 @@ namespace ET
                             if (trigger.IsCollider)
                             {
                                 var unitType = trigger.GetParent<AOIUnitComponent>().Type;
-                                for (int j = 0; j < item.Triggers.Count; j++)
+                                for (int j =  item.Triggers.Count-1; j >=0; j--)
                                 {
                                     var collider = item.Triggers[j];
+                                    if (collider.IsDisposed)
+                                    {
+                                        item.Triggers.RemoveAt(j);
+                                        Log.Warning("自动移除不成功");
+                                        continue;
+                                    }
                                     if (collider == trigger) continue;
                                     if (!collider.Selecter.Contains(unitType)) continue;
                                     if (collider.Flag != AOITriggerType.Enter && collider.Flag != AOITriggerType.All)
@@ -342,44 +351,36 @@ namespace ET
             self.SphereTriggers.Remove(trigger);
             #region 添加监听事件，并判断触发离开触发器
             var len = self.Scene.gridLen;
-            int count = (int)Math.Ceiling((double)trigger.Radius / len);
+            int count = (int)Mathf.Ceil(trigger.Radius / len);
             if (count > 2) Log.Info("检测范围超过2格，触发半径："+ trigger.Radius);
-            using (var grids = self.GetNearbyGrid(count))
+            HashSetComponent<AOITriggerComponent> temp = HashSetComponent<AOITriggerComponent>.Create();
+            for (int i = trigger.FollowCell.Count-1; i >=0 ; i--)
             {
-                HashSetComponent<AOITriggerComponent> temp = HashSetComponent<AOITriggerComponent>.Create();
-                for (int i = 0; i < grids.Count; i++)
-                {
-                    var item = grids[i];
-                    var flag = item.GetRelationshipWithTrigger(trigger);
-                    if (flag >= 0)//格子与范围不完全重叠
-                    {
-                        item.RemoveTriggerListener(trigger);
-                        //离开触发器
-                        if (trigger.Flag == AOITriggerType.All || trigger.Flag == AOITriggerType.Exit)//注意不能放前面判断
-                        {
-                            using (var colliders = item.GetAllCollider(trigger.Selecter,trigger))
-                            {
-                                for (int j = 0; j < colliders.Count; j++)
-                                {
-                                    var collider = colliders[j];
-                                    if (trigger.IsInTrigger(collider,trigger.GetRealPos(),
-                                            trigger.GetRealRot(),collider.GetRealPos(),collider.GetRealRot()))
-                                    {
-                                        if(collider==trigger) continue;
-                                        temp.Add(collider);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                foreach (var item in temp)
-                {
-                    trigger.OnTrigger(item,AOITriggerType.Exit);
-                }
-
-                temp.Dispose();
+                 var item = trigger.FollowCell[i];
+                 item.RemoveTriggerListener(trigger);
+                 //离开触发器
+                 if (trigger.Flag == AOITriggerType.All || trigger.Flag == AOITriggerType.Exit)//注意不能放前面判断
+                 {
+                     using (var colliders = item.GetAllCollider(trigger.Selecter,trigger))
+                     {
+                         for (int j = 0; j < colliders.Count; j++)
+                         {
+                             var collider = colliders[j];
+                             if (trigger.IsInTrigger(collider,trigger.GetRealPos(),
+                                     trigger.GetRealRot(),collider.GetRealPos(),collider.GetRealRot()))
+                             {
+                                 if(collider==trigger) continue;
+                                 temp.Add(collider);
+                             }
+                         }
+                     }
+                 }                   
             }
+            foreach (var item in temp)
+            {
+                trigger.OnTrigger(item,AOITriggerType.Exit);
+            }
+            temp.Dispose();
             trigger.Dispose();
             #endregion
         }
@@ -415,33 +416,25 @@ namespace ET
         {
             var unit = self.GetParent<AOIUnitComponent>();
             var len = unit.Scene.gridLen;
-            int count = (int)Math.Ceiling((double)self.Radius / len);
+            int count = (int)Mathf.Ceil(self.Radius / len);
             if (count > 2) Log.Info("检测范围超过2格，触发半径："+ self.Radius);
             DictionaryComponent<AOICell,int> triggers = DictionaryComponent<AOICell, int>.Create();
             DictionaryComponent<AOITriggerComponent,int> colliderDic = DictionaryComponent<AOITriggerComponent, int>.Create();
 
-            using (var grids = unit.Scene.GetNearbyGrid(count, beforePosition))
+            for (int i = 0; i < self.FollowCell.Count; i++)
             {
-                for (int i = 0; i < grids.Count; i++)
-                {
-                    var item = grids[i];
-                    //旧的
-                    var flag = item.GetRelationshipWithTrigger(self,beforePosition,beforeRotation);
-                    if (flag >= 0) //格子在范围内部
-                    {
-                        triggers.Add(item, -1);
-                    }
-                    // Log.Info("old "+flag+" "+ item.posx+","+item.posy);
-                }
+                //旧的
+                triggers.Add(self.FollowCell[i], -1);
             }
 
-            using (var grids = unit.Scene.GetNearbyGrid(count, unit.Position))
+            var nowPos = self.GetRealPos(unit.Position);
+            using (var grids = unit.Scene.GetNearbyGrid(count,nowPos))
             {
                 //新的
                 for (int i = 0; i < grids.Count; i++)
                 {
                     var item = grids[i];
-                    var flag = item.GetRelationshipWithTrigger(self);
+                    var flag = item.GetRelationshipWithTrigger(self,nowPos,self.GetRealRot());
                     if ( flag>= 0)//格子在范围内部
                     {
                         if (triggers.ContainsKey(item))
@@ -564,41 +557,33 @@ namespace ET
             if(!self.IsCollider) return;
             var unit = self.GetParent<AOIUnitComponent>();
             var len = unit.Scene.gridLen;
-            int count = (int)Math.Ceiling((double)self.Radius / len);
+            int count = (int)Mathf.Ceil(self.Radius / len);
             if (count > 2) Log.Info("检测范围超过2格，触发半径："+ self.Radius);
             DictionaryComponent<AOICell,int> triggers = DictionaryComponent<AOICell, int>.Create();
             DictionaryComponent<AOITriggerComponent,int> colliderDic = DictionaryComponent<AOITriggerComponent, int>.Create();
 
-            using (var grids = unit.Scene.GetNearbyGrid(count, beforePosition))
+            
+            for (int i = 0; i < self.FollowCell.Count; i++)
             {
-                for (int i = 0; i < grids.Count; i++)
-                {
-                    var item = grids[i];
-                    //旧的
-                    var flag = item.GetRelationshipWithTrigger(self,beforePosition,beforeRotation);
-                    if (flag >= 0) //格子在范围内部
-                    {
-                        triggers.Add(item, -1);
-                        // Log.Info("old "+flag+" "+ item.posx+","+item.posy);
-                    }
-                    
-                }
+                //旧的
+                triggers.Add(self.FollowCell[i], -1);
             }
+            
 
-            using (var grids = unit.Scene.GetNearbyGrid(count, unit.Position))
+            var nowPos = self.GetRealPos(unit.Position);
+            using (var grids = unit.Scene.GetNearbyGrid(count,nowPos))
             {
                 //新的
                 for (int i = 0; i < grids.Count; i++)
                 {
                     var item = grids[i];
-                    var flag = item.GetRelationshipWithTrigger(self);
+                    var flag = item.GetRelationshipWithTrigger(self,nowPos,self.GetRealRot());
                     if ( flag>= 0)//格子在范围内部
                     {
                         if (triggers.ContainsKey(item))
                             triggers[item]++;
                         else
                             triggers.Add(item,1);
-                        // Log.Info("new "+flag+" "+ item.posx+","+item.posy);
                     }
                 }
             }
@@ -612,9 +597,15 @@ namespace ET
                 if (item.Value > 0)//之前无现在有
                 {
                     // item.Key.AddTriggerListener(self);
-                    for (int i = 0; i < item.Key.Triggers.Count; i++)
+                    for (int i = item.Key.Triggers.Count-1; i >=0; i--)
                     {
                         var collider = item.Key.Triggers[i];
+                        if (collider.IsDisposed)
+                        {
+                            item.Key.Triggers.RemoveAt(i);
+                            Log.Warning("自动移除不成功");
+                            continue;
+                        }
                         if (!pre.Contains(collider)&&collider.Selecter.Contains(unit.Type)&& self.IsInTrigger(collider,self.GetRealPos(),
                                 self.GetRealRot(),collider.GetRealPos(),collider.GetRealRot()))
                         {
@@ -627,9 +618,15 @@ namespace ET
                 else if (item.Value < 0)//之前有现在无
                 {
                     // item.Key.RemoveTriggerListener(self);
-                    for (int i = 0; i < item.Key.Triggers.Count; i++)
+                    for (int i = item.Key.Triggers.Count-1; i >=0; i--)
                     {
                         var collider = item.Key.Triggers[i];
+                        if (collider.IsDisposed)
+                        {
+                            item.Key.Triggers.RemoveAt(i);
+                            Log.Warning("自动移除不成功");
+                            continue;
+                        }
                         if (!after.Contains(collider)&&collider.Selecter.Contains(unit.Type)&&self.IsInTrigger(collider,self.GetRealPos(beforePosition),
                                 beforeRotation,collider.GetRealPos(),collider.GetRealRot()))
                         {
@@ -641,9 +638,15 @@ namespace ET
                 }
                 else//之前有现在有，但坐标变了
                 {
-                    for (int i = 0; i < item.Key.Triggers.Count; i++)
+                    for (int i = item.Key.Triggers.Count-1; i >=0; i--)
                     {
                         var collider = item.Key.Triggers[i];
+                        if (collider.IsDisposed)
+                        {
+                            item.Key.Triggers.RemoveAt(i);
+                            Log.Warning("自动移除不成功");
+                            continue;
+                        }
                         if (!after.Contains(collider)&&collider.Selecter.Contains(unit.Type)&&self.IsInTrigger(collider,self.GetRealPos(beforePosition),
                                 beforeRotation,collider.GetRealPos(),collider.GetRealRot()))
                         {
@@ -711,33 +714,25 @@ namespace ET
         {
             var unit = self.GetParent<AOIUnitComponent>();
             var len = unit.Scene.gridLen;
-            int count = (int)Math.Ceiling((double)self.Radius / len);
+            int count = (int)Mathf.Ceil(self.Radius / len);
             if (count > 2) Log.Info("检测范围超过2格，触发半径："+ self.Radius);
             DictionaryComponent<AOICell,int> triggers = DictionaryComponent<AOICell, int>.Create();
             DictionaryComponent<AOITriggerComponent,int> colliderDic = DictionaryComponent<AOITriggerComponent, int>.Create();
 
-            using (var grids = unit.Scene.GetNearbyGrid(count, beforePosition))
+            for (int i = 0; i < self.FollowCell.Count; i++)
             {
-                for (int i = 0; i < grids.Count; i++)
-                {
-                    var item = grids[i];
-                    //旧的
-                    var flag = item.GetRelationshipWithTrigger(self,beforePosition,beforeRotation);
-                    if (flag >= 0) //格子在范围内部
-                    {
-                        triggers.Add(item, -1);
-                    }
-                    // Log.Info("old "+flag+" "+ item.posx+","+item.posy);
-                }
+                //旧的
+                triggers.Add(self.FollowCell[i], -1);
             }
 
-            using (var grids = unit.Scene.GetNearbyGrid(count, unit.Position))
+            var nowPos = self.GetRealPos(unit.Position);
+            using (var grids = unit.Scene.GetNearbyGrid(count,nowPos))
             {
                 //新的
                 for (int i = 0; i < grids.Count; i++)
                 {
                     var item = grids[i];
-                    var flag = item.GetRelationshipWithTrigger(self);
+                    var flag = item.GetRelationshipWithTrigger(self,nowPos,self.GetRealRot());
                     if ( flag>= 0)//格子在范围内部
                     {
                         if (triggers.ContainsKey(item))
@@ -758,18 +753,30 @@ namespace ET
                 if (item.Value > 0)
                 {
                     item.Key.AddTriggerListener(self);
-                    for (int i = 0; i < item.Key.Triggers.Count; i++)
+                    for (int i = item.Key.Triggers.Count-1; i >=0; i--)
                     {
                         var collider = item.Key.Triggers[i];
+                        if (collider.IsDisposed)
+                        {
+                            item.Key.Triggers.RemoveAt(i);
+                            Log.Warning("自动移除不成功");
+                            continue;
+                        }
                         pre.Add(collider);
                     }
                 }
                 else if (item.Value < 0)
                 {
                     item.Key.RemoveTriggerListener(self);
-                    for (int i = 0; i < item.Key.Triggers.Count; i++)
+                    for (int i = item.Key.Triggers.Count-1; i >=0; i--)
                     {
                         var collider = item.Key.Triggers[i];
+                        if (collider.IsDisposed)
+                        {
+                            item.Key.Triggers.RemoveAt(i);
+                            Log.Warning("自动移除不成功");
+                            continue;
+                        }
                         after.Add(collider);
                     }
                 }
@@ -780,9 +787,15 @@ namespace ET
                 if (item.Value > 0)//之前无现在有
                 {
                     item.Key.AddTriggerListener(self);
-                    for (int i = 0; i < item.Key.Triggers.Count; i++)
+                    for (int i = item.Key.Triggers.Count-1; i >=0; i--)
                     {
                         var collider = item.Key.Triggers[i];
+                        if (collider.IsDisposed)
+                        {
+                            item.Key.Triggers.RemoveAt(i);
+                            Log.Warning("自动移除不成功");
+                            continue;
+                        }
                         if (!pre.Contains(collider)&&collider.Selecter.Contains(unit.Type)&&self.IsInTrigger(collider,self.GetRealPos(),
                                 self.GetRealRot(),collider.GetRealPos(),collider.GetRealRot()))
                         {
@@ -794,9 +807,15 @@ namespace ET
                 else if (item.Value < 0)//之前有现在无
                 {
                     item.Key.RemoveTriggerListener(self);
-                    for (int i = 0; i < item.Key.Triggers.Count; i++)
+                    for (int i = item.Key.Triggers.Count-1; i >=0; i--)
                     {
                         var collider = item.Key.Triggers[i];
+                        if (collider.IsDisposed)
+                        {
+                            item.Key.Triggers.RemoveAt(i);
+                            Log.Warning("自动移除不成功");
+                            continue;
+                        }
                         if (!after.Contains(collider)&&collider.Selecter.Contains(unit.Type)&&self.IsInTrigger(collider,self.GetRealPos(beforePosition),
                                 beforeRotation,collider.GetRealPos(),collider.GetRealRot()))
                         {
@@ -807,9 +826,15 @@ namespace ET
                 }
                 else//之前有现在有，但坐标变了
                 {
-                    for (int i = 0; i < item.Key.Triggers.Count; i++)
+                   for (int i = item.Key.Triggers.Count-1; i >=0; i--)
                     {
                         var collider = item.Key.Triggers[i];
+                        if (collider.IsDisposed)
+                        {
+                            item.Key.Triggers.RemoveAt(i);
+                            Log.Warning("自动移除不成功");
+                            continue;
+                        }
                         if (!after.Contains(collider)&&collider.Selecter.Contains(unit.Type)&&self.IsInTrigger(collider,self.GetRealPos(beforePosition),
                                 beforeRotation,collider.GetRealPos(),collider.GetRealRot()))
                         {
