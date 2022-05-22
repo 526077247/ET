@@ -15,55 +15,36 @@ MonoBehaviour:
   m_GroupName: renderassets
   m_Data:
     m_SerializedData: []
-  m_GUID: cc8a3e0f66ad4024ebb003a410c945b8
+  m_GUID: 437dc2935e746ea43bc283c1a96abe08
   m_SerializeEntries:
   - m_GUID: c3179d02f14ad314484e1be0b76f32d1
     m_Address: RenderAssets/Brightness Saturation And Contrast.shader
     m_ReadOnly: 0
-    m_SerializedLabels:
-    - default
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: c68f346f6d8214f40ba06db2493153de
+    m_Address: RenderAssets/ForwardRenderer_Default.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 2b781c4511663a74ba49fbae621794f2
+    m_Address: RenderAssets/ForwardRenderer_Game.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
   - m_GUID: 30a5af332b2d938438214b1d77ff8759
     m_Address: RenderAssets/Global Volume Profile.asset
     m_ReadOnly: 0
-    m_SerializedLabels:
-    - default
-    m_MainAsset: {fileID: 0}
-    m_TargetAsset: {fileID: 0}
-  - m_GUID: 09fc41cd300f1af4eba1586a1573c3c3
-    m_Address: RenderAssets/Main Camera Profile.asset
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - default
-    m_MainAsset: {fileID: 0}
-    m_TargetAsset: {fileID: 0}
-  - m_GUID: 88f52b3eeaa091a4db9534ac917b3b99
-    m_Address: RenderAssets/MyRenderer.asset
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - default
-    m_MainAsset: {fileID: 0}
-    m_TargetAsset: {fileID: 0}
-  - m_GUID: 2b781c4511663a74ba49fbae621794f2
-    m_Address: RenderAssets/MyRenderer_Renderer.asset
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - default
+    m_SerializedLabels: []
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
   - m_GUID: ed7ab17b5e3d14d41806113826ee2070
     m_Address: RenderAssets/UniversalRenderPipelineAsset.asset
     m_ReadOnly: 0
-    m_SerializedLabels:
-    - default
-    m_MainAsset: {fileID: 0}
-    m_TargetAsset: {fileID: 0}
-  - m_GUID: c68f346f6d8214f40ba06db2493153de
-    m_Address: RenderAssets/UniversalRenderPipelineAsset_Renderer.asset
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - default
+    m_SerializedLabels: []
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
   m_ReadOnly: 0

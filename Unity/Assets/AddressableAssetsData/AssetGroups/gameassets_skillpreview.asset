@@ -101,6 +101,42 @@ MonoBehaviour:
     - default
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
+  - m_GUID: 81a3c6ea5a48e9c4b8397c0d8806bda8
+    m_Address: GameAssets/SkillPreview/Materials/001.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: b6978d3a0e7552f4f8a9c6296c0718b4
+    m_Address: GameAssets/SkillPreview/Materials/002.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 92cde5980fad632469d6d9b4b6ff8bd2
+    m_Address: GameAssets/SkillPreview/Prefabs/001.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 6ceb59210365c9d4da42ae597797ae83
+    m_Address: GameAssets/SkillPreview/Prefabs/002.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 10b930ea220e5aa4490c65d21c3664a3
+    m_Address: GameAssets/SkillPreview/Textures/001.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 25af37bc4f206834daa9b0b96454d448
+    m_Address: GameAssets/SkillPreview/Textures/002.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: dd1f300d6062fee48bf00a13907517b6, type: 2}
   m_SchemaSet:
