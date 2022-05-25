@@ -16,6 +16,7 @@ namespace ET
                 self.LogInfo = ListComponent<string>.Create();
             }
             self.Radius = a;
+            self.SqrRadius = a * a;
             self.Handler = b;
             self.FollowCell = ListComponent<AOICell>.Create();
         }
@@ -26,7 +27,7 @@ namespace ET
     {
         public override void Destroy(AOITriggerComponent self)
         {
-            Log.Info("RemoverTrigger"+self.Id);
+            // Log.Info("RemoverTrigger"+self.Id);
             if(self.TriggerType!=TriggerShapeType.Cube)//OBB的在子组件处理
                 self.GetParent<AOIUnitComponent>().RemoverTrigger(self);
             self.Handler=null;
@@ -66,7 +67,7 @@ namespace ET
     {
         public static void OnTrigger(this AOITriggerComponent self, AOITriggerComponent other, AOITriggerType type)
         {
-            Log.Info("OnTrigger"+type);
+            // Log.Info("OnTrigger"+type);
             self.Handler?.Invoke(other.GetParent<AOIUnitComponent>(),type);
         }
         /// <summary>
@@ -174,7 +175,7 @@ namespace ET
                                                 trigger.GetRealPos(),
                                                 trigger.GetRealRot(), collider.GetRealPos(), collider.GetRealRot()))
                                         {
-                                            Log.Info("grids pos " + item.posx + " " + item.posy);
+                                            // Log.Info("grids pos " + item.posx + " " + item.posy);
                                             temp1.Add(collider);
                                         }
                                     }
@@ -202,7 +203,7 @@ namespace ET
                                             collider.GetRealPos(),
                                             collider.GetRealRot(), trigger.GetRealPos(), trigger.GetRealRot()))
                                     {
-                                        Log.Info("grids pos " + item.posx + " " + item.posy);
+                                        // Log.Info("grids pos " + item.posx + " " + item.posy);
                                         temp2.Add(collider);
                                     }
                                 }
@@ -918,9 +919,9 @@ namespace ET
             // Log.Info("IsInTrigger");
             var pos1 = trigger1.GetRealPos(position1);
             var pos2 = trigger1.GetRealPos(position2);
-            var dis = Vector3.Distance(pos1, pos2);
+            var sqrDis = Vector3.SqrMagnitude(pos1- pos2);
             // Log.Info("dis"+dis+"pos1"+pos1+"pos2"+pos2+"trigger1.Radius"+trigger1.Radius+"trigger2.Radius"+trigger2.Radius);
-            bool isSphereTrigger = trigger1.Radius+trigger2.Radius > dis;
+            bool isSphereTrigger = Mathf.Pow(trigger1.Radius+trigger2.Radius,2) > sqrDis;
             if (trigger1.TriggerType == TriggerShapeType.Sphere && trigger2.TriggerType == TriggerShapeType.Sphere)//判断球触发
             {
                 // Log.Info("判断球触发");
@@ -989,19 +990,19 @@ namespace ET
                 {
                     if (-yMax > temp.y&& -zMax > temp.z)
                     {
-                        return Vector3.Distance(temp, new Vector3(temp.x, -yMax, -zMax)) <= triggerSphere.Radius;
+                        return Vector3.SqrMagnitude(temp- new Vector3(temp.x, -yMax, -zMax)) <= triggerSphere.SqrRadius;
                     }
                     if (-yMax > temp.y&& temp.z > zMax)
                     {
-                        return Vector3.Distance(temp, new Vector3(temp.x, -yMax, zMax)) <= triggerSphere.Radius;
+                        return Vector3.SqrMagnitude(temp- new Vector3(temp.x, -yMax, zMax)) <= triggerSphere.SqrRadius;
                     }
                     if (temp.y > yMax && -zMax > temp.z)
                     {
-                        return Vector3.Distance(temp, new Vector3(temp.x, yMax, -zMax)) <= triggerSphere.Radius;
+                        return Vector3.SqrMagnitude(temp- new Vector3(temp.x, yMax, -zMax)) <= triggerSphere.SqrRadius;
                     }
                     if (temp.y > yMax && temp.z > zMax)
                     {
-                        return Vector3.Distance(temp, new Vector3(temp.x, yMax, zMax)) <= triggerSphere.Radius;
+                        return Vector3.SqrMagnitude(temp- new Vector3(temp.x, yMax, zMax)) <= triggerSphere.SqrRadius;
                     }
                 }
                 //两个轴出立方
@@ -1009,19 +1010,19 @@ namespace ET
                 {
                     if (-xMax > temp.x&& -zMax > temp.z)
                     {
-                        return Vector3.Distance(temp, new Vector3(-xMax, temp.y, -zMax)) <= triggerSphere.Radius;
+                        return Vector3.SqrMagnitude(temp- new Vector3(-xMax, temp.y, -zMax)) <= triggerSphere.SqrRadius;
                     }
                     if (-xMax > temp.x&& temp.z > zMax)
                     {
-                        return Vector3.Distance(temp, new Vector3(-xMax, temp.y, zMax)) <= triggerSphere.Radius;
+                        return Vector3.SqrMagnitude(temp- new Vector3(-xMax, temp.y, zMax)) <= triggerSphere.SqrRadius;
                     }
                     if (temp.x > xMax && -zMax > temp.z)
                     {
-                        return Vector3.Distance(temp, new Vector3(xMax, temp.y, -zMax)) <= triggerSphere.Radius;
+                        return Vector3.SqrMagnitude(temp- new Vector3(xMax, temp.y, -zMax)) <= triggerSphere.SqrRadius;
                     }
                     if (temp.x > xMax && temp.z > zMax)
                     {
-                        return Vector3.Distance(temp, new Vector3(xMax, temp.y, zMax)) <= triggerSphere.Radius;
+                        return Vector3.SqrMagnitude(temp- new Vector3(xMax, temp.y, zMax)) <= triggerSphere.SqrRadius;
                     }
                 }
                 //两个轴出立方
@@ -1029,19 +1030,19 @@ namespace ET
                 {
                     if (-yMax > temp.y&& -xMax > temp.x)
                     {
-                        return Vector3.Distance(temp, new Vector3(-xMax, -yMax, temp.z)) <= triggerSphere.Radius;
+                        return Vector3.SqrMagnitude(temp- new Vector3(-xMax, -yMax, temp.z)) <= triggerSphere.SqrRadius;
                     }
                     if (-yMax > temp.y&& temp.x > xMax)
                     {
-                        return Vector3.Distance(temp, new Vector3(xMax, -yMax, temp.z)) <= triggerSphere.Radius;
+                        return Vector3.SqrMagnitude(temp- new Vector3(xMax, -yMax, temp.z)) <= triggerSphere.SqrRadius;
                     }
                     if (temp.y > yMax && -xMax > temp.x)
                     {
-                        return Vector3.Distance(temp, new Vector3(-xMax, yMax, temp.z)) <= triggerSphere.Radius;
+                        return Vector3.SqrMagnitude(temp- new Vector3(-xMax, yMax, temp.z)) <= triggerSphere.SqrRadius;
                     }
                     if (temp.y > yMax && temp.x > xMax)
                     {
-                        return Vector3.Distance(temp, new Vector3(xMax, yMax, temp.z)) <= triggerSphere.Radius;
+                        return Vector3.SqrMagnitude(temp- new Vector3(xMax, yMax, temp.z)) <= triggerSphere.SqrRadius;
                     }
                 }
                 #endregion
@@ -1051,7 +1052,7 @@ namespace ET
                 {
                     for (int i = 0; i < points.Count; i++)
                     {
-                        if (Vector3.Distance(temp, points[i]) > triggerSphere.Radius)
+                        if (Vector3.SqrMagnitude(temp- points[i]) > triggerSphere.SqrRadius)
                         {
                             return false;
                         }
@@ -1078,8 +1079,8 @@ namespace ET
         /// <returns></returns>
         public static bool IsPointInTrigger(this AOITriggerComponent trigger, Vector3 position,Vector3 center,Quaternion rotation)
         {
-            var dis = Vector3.Distance(center, position);
-            if (trigger.Radius < dis) return false;
+            var sqrDis = Vector3.SqrMagnitude(center- position);
+            if (trigger.SqrRadius < sqrDis) return false;
             if (trigger.TriggerType==TriggerShapeType.Cube)
             {
                 var obb = trigger.GetComponent<OBBComponent>();

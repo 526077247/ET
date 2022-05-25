@@ -23,6 +23,7 @@ namespace ET
         public static int GetGridRelationshipWithSphere(Vector3 position,float radius, 
             int gridLen, int posx, int posy)
         {
+            var sqr = radius * radius;
             var xMin = posx * gridLen;
             var xMax = xMin + gridLen;
             var yMin = posy * gridLen;
@@ -38,12 +39,12 @@ namespace ET
                 // Log.Info("center.x >= xMax");
                 if (point.y > yMax) //圆心在格子右上方
                 {
-                    if (Vector2.Distance(point, new Vector2(xMax, yMax)) > radius)
+                    if (Vector2.SqrMagnitude(point-new Vector2(xMax, yMax)) > sqr)
                         return -1;
                 }
                 else if (point.y < yMin) //圆心在格子右下方
                 {
-                    if (Vector2.Distance(point, new Vector2(xMax, yMin)) > radius)
+                    if (Vector2.SqrMagnitude(point- new Vector2(xMax, yMin)) > sqr)
                         return -1;
                 }
                 else //圆心在格子右侧方
@@ -57,12 +58,12 @@ namespace ET
                 // Log.Info("center.x <= xMin");
                 if (point.y >= yMax) //圆心在格子左上方
                 {
-                    if (Vector2.Distance(point, new Vector2(xMin, yMax)) > radius)
+                    if (Vector2.SqrMagnitude(point- new Vector2(xMin, yMax)) > sqr)
                         return -1;
                 }
                 else if (point.y <= yMin) //圆心在格子左下方
                 {
-                    if (Vector2.Distance(point, new Vector2(xMin, yMin)) > radius)
+                    if (Vector2.SqrMagnitude(point- new Vector2(xMin, yMin)) > sqr)
                         return -1;
                 }
                 else //圆心在格子左侧方
@@ -89,31 +90,31 @@ namespace ET
             else if (point.x > cenx && point.y > ceny) //圆心在格子内右上方
             {
                 // Log.Info("圆心在格子内右上方");
-                if (Vector2.Distance(point,new Vector2(xMin,yMin))<radius)
+                if (Vector2.SqrMagnitude(point-new Vector2(xMin,yMin))<sqr)
                     return 1;
             }
             else if (point.x > cenx && point.y < ceny) //圆心在格子内右下方
             {
                 // Log.Info("圆心在格子内右下方");
-                if (Vector2.Distance(point,new Vector2(xMin,yMax))<radius)
+                if (Vector2.SqrMagnitude(point-new Vector2(xMin,yMax))<sqr)
                     return 1;
             }
             else if (point.x < cenx && point.y > ceny) //圆心在格子内左上方
             {
                 // Log.Info("圆心在格子内左上方");
-                if (Vector2.Distance(point,new Vector2(xMax,yMin))<radius)
+                if (Vector2.SqrMagnitude(point-new Vector2(xMax,yMin))<sqr)
                     return 1;
             }
             else if (point.x < cenx && point.y < ceny) //圆心在格子内左下方
             {
                 // Log.Info("圆心在格子内左下方");
-                if (Vector2.Distance(point,new Vector2(xMax,yMax))<radius)
+                if (Vector2.SqrMagnitude(point-new Vector2(xMax,yMax))<sqr)
                     return 1;
             }
             //圆心在格子内中心 0或1
             else
             {
-                Log.Info("圆心x:" + point.x + " y:" + point.y + " -- 格子x:" + posx + " 格子y:" + posy);
+                // Log.Info("圆心x:" + point.x + " y:" + point.y + " -- 格子x:" + posx + " 格子y:" + posy);
                 if (gridLen*0.7072f < radius) return 1;
             }
             // Log.Info("0");

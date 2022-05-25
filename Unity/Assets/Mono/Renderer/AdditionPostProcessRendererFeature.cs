@@ -1,47 +1,47 @@
 namespace UnityEngine.Rendering.Universal
 {
     /// <summary>
-    /// ¿É±à³ÌäÖÈ¾¹¦ÄÜ
-    /// ±ØĞëÒª¼Ì³ĞScriptableRendererFeature³éÏóÀà£¬
-    /// ²¢ÇÒÊµÏÖAddRenderPasses¸úCreateº¯Êı
+    /// å¯ç¼–ç¨‹æ¸²æŸ“åŠŸèƒ½
+    /// å¿…é¡»è¦ç»§æ‰¿ScriptableRendererFeatureæŠ½è±¡ç±»ï¼Œ
+    /// å¹¶ä¸”å®ç°AddRenderPassesè·ŸCreateå‡½æ•°
     /// </summary>
     public class AdditionPostProcessRendererFeature : ScriptableRendererFeature
     {
-        // ÓÃÓÚºó´¦ÀíµÄShader 
+        // ç”¨äºåå¤„ç†çš„Shader 
         public Shader shader;
-        // ºó´¦ÀíPass
+        // åå¤„ç†Pass
         AdditionPostProcessPass postPass;
-        // ¸ù¾İShaderÉú³ÉµÄ²ÄÖÊ
+        // æ ¹æ®Shaderç”Ÿæˆçš„æè´¨
         Material _Material = null;
 
-        //ÔÚÕâÀï£¬Äú¿ÉÒÔÔÚäÖÈ¾Æ÷ÖĞ×¢ÈëÒ»¸ö»ò¶à¸öäÖÈ¾Í¨µÀ¡£
-        //Ã¿¸öÉãÏñ»úÉèÖÃÒ»´ÎäÖÈ¾Æ÷Ê±£¬½«µ÷ÓÃ´Ë·½·¨¡£
+        //åœ¨è¿™é‡Œï¼Œæ‚¨å¯ä»¥åœ¨æ¸²æŸ“å™¨ä¸­æ³¨å…¥ä¸€ä¸ªæˆ–å¤šä¸ªæ¸²æŸ“é€šé“ã€‚
+        //æ¯ä¸ªæ‘„åƒæœºè®¾ç½®ä¸€æ¬¡æ¸²æŸ“å™¨æ—¶ï¼Œå°†è°ƒç”¨æ­¤æ–¹æ³•ã€‚
         public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
         {
-            // ¼ì²âShaderÊÇ·ñ´æÔÚ
+            // æ£€æµ‹Shaderæ˜¯å¦å­˜åœ¨
             if (shader == null)
                 return;
 
-            // ´´½¨²ÄÖÊ
+            // åˆ›å»ºæè´¨
             if (_Material == null)
                 _Material = CoreUtils.CreateEngineMaterial(shader);
 
-            // »ñÈ¡µ±Ç°äÖÈ¾Ïà»úµÄÄ¿±êÑÕÉ«£¬Ò²¾ÍÊÇÖ÷ÎÆÀí
+            // è·å–å½“å‰æ¸²æŸ“ç›¸æœºçš„ç›®æ ‡é¢œè‰²ï¼Œä¹Ÿå°±æ˜¯ä¸»çº¹ç†
             var cameraColorTarget = renderer.cameraColorTarget;
 
-            // ÉèÖÃµ÷ÓÃºó´¦ÀíPass
+            // è®¾ç½®è°ƒç”¨åå¤„ç†Pass
             postPass.Setup(cameraColorTarget, _Material);
 
-            // Ìí¼Ó¸ÃPassµ½äÖÈ¾¹ÜÏßÖĞ
+            // æ·»åŠ è¯¥Passåˆ°æ¸²æŸ“ç®¡çº¿ä¸­
             renderer.EnqueuePass(postPass);
         }
 
 
-        // ¶ÔÏó³õÊ¼»¯Ê±»áµ÷ÓÃ¸Ãº¯Êı
+        // å¯¹è±¡åˆå§‹åŒ–æ—¶ä¼šè°ƒç”¨è¯¥å‡½æ•°
         public override void Create()
         {
             postPass = new AdditionPostProcessPass();
-            // äÖÈ¾Ê±»ú = Í¸Ã÷ÎïÌåäÖÈ¾ºó
+            // æ¸²æŸ“æ—¶æœº = é€æ˜ç‰©ä½“æ¸²æŸ“å
             postPass.renderPassEvent = RenderPassEvent.AfterRenderingTransparents;
         }
     }

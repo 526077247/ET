@@ -254,7 +254,7 @@ namespace ET
                     hit = new Vector3(ray.Start.x, ray.Start.y, zMax);
                 }
                 hit = rotation * ray.Start + center;
-                if (Vector3.Distance(hit, ray.Start) > ray.Distance) return false;
+                if (Vector3.SqrMagnitude(hit- ray.Start) > ray.SqrDistance) return false;
                 return -xMax <= ray.Start.x && ray.Start.x <= xMax &&
                        -yMax <= ray.Start.y && ray.Start.y <= yMax;
             }
@@ -271,7 +271,7 @@ namespace ET
                     hit = new Vector3(ray.Start.x, yMax, ray.Start.z);
                 }
                 hit = rotation * ray.Start + center;
-                if (Vector3.Distance(hit, ray.Start) > ray.Distance) return false;
+                if (Vector3.SqrMagnitude(hit- ray.Start) > ray.SqrDistance) return false;
                 return -xMax <= ray.Start.x && ray.Start.x <= xMax &&
                        -zMax <= ray.Start.z && ray.Start.z <= zMax;
             }
@@ -288,7 +288,7 @@ namespace ET
                     hit = new Vector3(xMax, ray.Start.y, ray.Start.z);
                 }
                 hit = rotation * ray.Start + center;
-                if (Vector3.Distance(hit, ray.Start) > ray.Distance) return false;
+                if (Vector3.SqrMagnitude(hit- ray.Start) > ray.SqrDistance) return false;
                 return -yMax <= ray.Start.y && ray.Start.y <= yMax &&
                        -zMax <= ray.Start.z && ray.Start.z <= zMax;
             }
@@ -304,7 +304,7 @@ namespace ET
                     {
                         hit = new Vector3(ray.Start.x, hit2d.x, hit2d.y);
                         hit = rotation * ray.Start + center;
-                        if (Vector3.Distance(hit, ray.Start) > ray.Distance) return false;
+                        if (Vector3.SqrMagnitude(hit- ray.Start) > ray.SqrDistance) return false;
                         return true;
                     }
                 }
@@ -319,7 +319,7 @@ namespace ET
                     {
                         hit = new Vector3(hit2d.x,ray.Start.y,hit2d.y);
                         hit = rotation * ray.Start + center;
-                        if (Vector3.Distance(hit, ray.Start) > ray.Distance) return false;
+                        if (Vector3.SqrMagnitude(hit- ray.Start) > ray.SqrDistance) return false;
                         return true;
                     }
                 }
@@ -334,7 +334,7 @@ namespace ET
                     {
                         hit = new Vector3(hit2d.x,hit2d.y,ray.Start.z);
                         hit = rotation * ray.Start + center;
-                        if (Vector3.Distance(hit, ray.Start) > ray.Distance) return false;
+                        if (Vector3.SqrMagnitude(hit-ray.Start) > ray.SqrDistance) return false;
                         return true;
                     }
                 }
@@ -379,7 +379,7 @@ namespace ET
                 }
             }
             hit = rotation * hit + center;
-            if (Vector3.Distance(hit, ray.Start) > ray.Distance) return false;
+            if (Vector3.SqrMagnitude(hit- ray.Start) > ray.SqrDistance) return false;
             return true;
         }
         
@@ -421,7 +421,7 @@ namespace ET
                     hit = new Vector3(ray.Start.x, ray.Start.y, zMax);
                 }
                 hit = rotation * ray.Start + center;
-                if (Vector3.Distance(hit, ray.Start) > ray.Distance) return false;
+                if (Vector3.SqrMagnitude(hit- ray.Start) > ray.SqrDistance) return false;
                 return -xMax <= ray.Start.x && ray.Start.x <= xMax &&
                        -yMax <= ray.Start.y && ray.Start.y <= yMax;
             }
@@ -438,7 +438,7 @@ namespace ET
                     hit = new Vector3(ray.Start.x, yMax, ray.Start.z);
                 }
                 hit = rotation * ray.Start + center;
-                if (Vector3.Distance(hit, ray.Start) > ray.Distance) return false;
+                if (Vector3.SqrMagnitude(hit- ray.Start) > ray.SqrDistance) return false;
                 return -xMax <= ray.Start.x && ray.Start.x <= xMax &&
                        -zMax <= ray.Start.z && ray.Start.z <= zMax;
             }
@@ -455,7 +455,7 @@ namespace ET
                     hit = new Vector3(xMax, ray.Start.y, ray.Start.z);
                 }
                 hit = rotation * ray.Start + center;
-                if (Vector3.Distance(hit, ray.Start) > ray.Distance) return false;
+                if (Vector3.SqrMagnitude(hit- ray.Start) > ray.SqrDistance) return false;
                 return -yMax <= ray.Start.y && ray.Start.y <= yMax &&
                        -zMax <= ray.Start.z && ray.Start.z <= zMax;
             }
@@ -471,7 +471,7 @@ namespace ET
                     {
                         hit = new Vector3(ray.Start.x, hit2d.x, hit2d.y);
                         hit = rotation * ray.Start + center;
-                        if (Vector3.Distance(hit, ray.Start) > ray.Distance) return false;
+                        if (Vector3.SqrMagnitude(hit- ray.Start) > ray.SqrDistance) return false;
                         return true;
                     }
                 }
@@ -486,7 +486,7 @@ namespace ET
                     {
                         hit = new Vector3(hit2d.x,ray.Start.y,hit2d.y);
                         hit = rotation * ray.Start + center;
-                        if (Vector3.Distance(hit, ray.Start) > ray.Distance) return false;
+                        if (Vector3.SqrMagnitude(hit- ray.Start) > ray.SqrDistance) return false;
                         return true;
                     }
                 }
@@ -501,7 +501,7 @@ namespace ET
                     {
                         hit = new Vector3(hit2d.x,hit2d.y,ray.Start.z);
                         hit = rotation * ray.Start + center;
-                        if (Vector3.Distance(hit, ray.Start) > ray.Distance) return false;
+                        if (Vector3.SqrMagnitude(hit- ray.Start) > ray.SqrDistance) return false;
                         return true;
                     }
                 }
@@ -546,7 +546,7 @@ namespace ET
                 }
             }
             hit = rotation * hit + center;
-            if (Vector3.Distance(hit, ray.Start) > ray.Distance) return false;
+            if (Vector3.SqrMagnitude(hit- ray.Start) > ray.SqrDistance) return false;
             return true;
         }
         

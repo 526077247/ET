@@ -16,11 +16,12 @@ namespace ET
     public class AOITriggerComponent:Entity,IAwake<float,Action<AOIUnitComponent, AOITriggerType>>,IDestroy
     {
         public float Radius;
+        public float SqrRadius;
         public AOITriggerType Flag;
         public List<UnitType> Selecter;
         public Action<AOIUnitComponent, AOITriggerType> Handler;
         public int TriggerType = TriggerShapeType.Sphere;//
-        public bool IsCollider { get; set; }
+        public bool IsCollider{ get; set; }
         public DictionaryComponent<AOICell, int> DebugMap;
         public ListComponent<string> LogInfo;
         public float OffsetY;

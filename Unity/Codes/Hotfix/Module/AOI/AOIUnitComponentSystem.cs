@@ -41,6 +41,7 @@ namespace ET
     }
     [FriendClass(typeof(AOIUnitComponent))]
     [FriendClass(typeof(AOICell))]
+    [FriendClass(typeof(AOITriggerComponent))]
     public static class AOIUnitComponentSystem
     {
 
@@ -97,6 +98,7 @@ namespace ET
             for (int i = 0; i < self.SphereTriggers.Count; i++)
             {
                 var item = self.SphereTriggers[i];
+                if (item.Selecter == null || item.Selecter.Count == 0) continue;
                 item.AfterChangePosition(item.GetRealPos(oldpos));
             }
         }
@@ -113,6 +115,7 @@ namespace ET
             for (int i = 0; i < self.SphereTriggers.Count; i++)
             {
                 var item = self.SphereTriggers[i];
+                if (item.Selecter == null || item.Selecter.Count == 0) continue;
                 item.AfterChangeRotation(oldRotation);
             }
         }

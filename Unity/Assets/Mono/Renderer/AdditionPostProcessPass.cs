@@ -1,22 +1,22 @@
 namespace UnityEngine.Rendering.Universal
 {
     /// <summary>
-    /// ¸½¼ÓµÄºó´¦ÀíPass
+    /// é™„åŠ çš„åå¤„ç†Pass
     /// </summary>
     public class AdditionPostProcessPass : ScriptableRenderPass
     {
-        //±êÇ©Ãû£¬ÓÃÓÚĞøÖ¡µ÷ÊÔÆ÷ÖĞÏÔÊ¾»º³åÇøÃû³Æ
+        //æ ‡ç­¾åï¼Œç”¨äºç»­å¸§è°ƒè¯•å™¨ä¸­æ˜¾ç¤ºç¼“å†²åŒºåç§°
         const string CommandBufferTag = "AdditionalPostProcessing Pass";
 
-        // ÓÃÓÚºó´¦ÀíµÄ²ÄÖÊ
+        // ç”¨äºåå¤„ç†çš„æè´¨
         public Material m_Material;
 
-        // ÊôĞÔ²ÎÊı×é¼ş
+        // å±æ€§å‚æ•°ç»„ä»¶
         BrightnessSaturationContrast m_BrightnessSaturationContrast;
 
-        // ÑÕÉ«äÖÈ¾±êÊ¶·û
+        // é¢œè‰²æ¸²æŸ“æ ‡è¯†ç¬¦
         RenderTargetIdentifier m_ColorAttachment;
-        // ÁÙÊ±µÄäÖÈ¾Ä¿±ê
+        // ä¸´æ—¶çš„æ¸²æŸ“ç›®æ ‡
         RenderTargetHandle m_TemporaryColorTexture01;
 
         public AdditionPostProcessPass()
@@ -24,7 +24,7 @@ namespace UnityEngine.Rendering.Universal
             m_TemporaryColorTexture01.Init("_TemporaryColorTexture1");
         }
 
-        // ÉèÖÃäÖÈ¾²ÎÊı
+        // è®¾ç½®æ¸²æŸ“å‚æ•°
         public void Setup(RenderTargetIdentifier _ColorAttachment, Material Material)
         {
             this.m_ColorAttachment = _ColorAttachment;
@@ -33,52 +33,52 @@ namespace UnityEngine.Rendering.Universal
         }
 
         /// <summary>
-        /// URP»á×Ô¶¯µ÷ÓÃ¸ÃÖ´ĞĞ·½·¨
+        /// URPä¼šè‡ªåŠ¨è°ƒç”¨è¯¥æ‰§è¡Œæ–¹æ³•
         /// </summary>
         /// <param name="context"></param>
         /// <param name="renderingData"></param>
         public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
         {
-            // ´ÓVolume¿ò¼ÜÖĞ»ñÈ¡ËùÓĞ¶ÑÕ»
+            // ä»Volumeæ¡†æ¶ä¸­è·å–æ‰€æœ‰å †æ ˆ
             var stack = VolumeManager.instance.stack;
-            // ´Ó¶ÑÕ»ÖĞ²éÕÒ¶ÔÓ¦µÄÊôĞÔ²ÎÊı×é¼ş
+            // ä»å †æ ˆä¸­æŸ¥æ‰¾å¯¹åº”çš„å±æ€§å‚æ•°ç»„ä»¶
             m_BrightnessSaturationContrast = stack.GetComponent<BrightnessSaturationContrast>();
 
-            // ´ÓÃüÁî»º³åÇø³ØÖĞ»ñÈ¡Ò»¸ö´ø±êÇ©µÄäÖÈ¾ÃüÁî£¬¸Ã±êÇ©Ãû¿ÉÒÔÔÚºóĞøÖ¡µ÷ÊÔÆ÷ÖĞ¼ûµ½
+            // ä»å‘½ä»¤ç¼“å†²åŒºæ± ä¸­è·å–ä¸€ä¸ªå¸¦æ ‡ç­¾çš„æ¸²æŸ“å‘½ä»¤ï¼Œè¯¥æ ‡ç­¾åå¯ä»¥åœ¨åç»­å¸§è°ƒè¯•å™¨ä¸­è§åˆ°
             var cmd = CommandBufferPool.Get(CommandBufferTag);
 
-            // µ÷ÓÃäÖÈ¾º¯Êı
+            // è°ƒç”¨æ¸²æŸ“å‡½æ•°
             Render(cmd, ref renderingData);
 
-            // Ö´ĞĞÃüÁî»º³åÇø
+            // æ‰§è¡Œå‘½ä»¤ç¼“å†²åŒº
             context.ExecuteCommandBuffer(cmd);
-            // ÊÍ·ÅÃüÁî»º´æ
+            // é‡Šæ”¾å‘½ä»¤ç¼“å­˜
             CommandBufferPool.Release(cmd);
-            // ÊÍ·ÅÁÙÊ±RT
+            // é‡Šæ”¾ä¸´æ—¶RT
             cmd.ReleaseTemporaryRT(m_TemporaryColorTexture01.id);
         }
 
-        // äÖÈ¾
+        // æ¸²æŸ“
         void Render(CommandBuffer cmd, ref RenderingData renderingData)
         {
-            // VolumeComponentÊÇ·ñ¿ªÆô£¬ÇÒ·ÇSceneÊÓÍ¼ÉãÏñ»ú
+            // VolumeComponentæ˜¯å¦å¼€å¯ï¼Œä¸”éSceneè§†å›¾æ‘„åƒæœº
             if (m_BrightnessSaturationContrast.IsActive() && !renderingData.cameraData.isSceneViewCamera)
             {
-                // Ğ´Èë²ÎÊı
+                // å†™å…¥å‚æ•°
                 m_Material.SetFloat("_Brightness", m_BrightnessSaturationContrast.brightness.value);
                 m_Material.SetFloat("_Saturation", m_BrightnessSaturationContrast.saturation.value);
                 m_Material.SetFloat("_Contrast", m_BrightnessSaturationContrast.contrast.value);
 
-                // »ñÈ¡Ä¿±êÏà»úµÄÃèÊöĞÅÏ¢
+                // è·å–ç›®æ ‡ç›¸æœºçš„æè¿°ä¿¡æ¯
                 RenderTextureDescriptor opaqueDesc = renderingData.cameraData.cameraTargetDescriptor;
-                // ÉèÖÃÉî¶È»º³åÇø
+                // è®¾ç½®æ·±åº¦ç¼“å†²åŒº
                 opaqueDesc.depthBufferBits = 0;
-                // Í¨¹ıÄ¿±êÏà»úµÄäÖÈ¾ĞÅÏ¢´´½¨ÁÙÊ±»º³åÇø
+                // é€šè¿‡ç›®æ ‡ç›¸æœºçš„æ¸²æŸ“ä¿¡æ¯åˆ›å»ºä¸´æ—¶ç¼“å†²åŒº
                 cmd.GetTemporaryRT(m_TemporaryColorTexture01.id, opaqueDesc);
 
-                // Í¨¹ı²ÄÖÊ£¬½«¼ÆËã½á¹û´æÈëÁÙÊ±»º³åÇø
+                // é€šè¿‡æè´¨ï¼Œå°†è®¡ç®—ç»“æœå­˜å…¥ä¸´æ—¶ç¼“å†²åŒº
                 cmd.Blit(m_ColorAttachment, m_TemporaryColorTexture01.Identifier(), m_Material);
-                // ÔÙ´ÓÁÙÊ±»º³åÇø´æÈëÖ÷ÎÆÀí
+                // å†ä»ä¸´æ—¶ç¼“å†²åŒºå­˜å…¥ä¸»çº¹ç†
                 cmd.Blit(m_TemporaryColorTexture01.Identifier(), m_ColorAttachment);
             }
         }

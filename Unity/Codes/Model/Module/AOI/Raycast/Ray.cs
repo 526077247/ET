@@ -16,7 +16,10 @@ namespace ET
         /// 长度
         /// </summary>
         public float Distance;
-        
+        /// <summary>
+        /// 长度
+        /// </summary>
+        public float SqrDistance;
         /// <summary>
         /// 世界空间转模型空间
         /// </summary>
@@ -31,6 +34,7 @@ namespace ET
                 Dir = Quaternion.Inverse(b) * self.Dir,
                 Start = Quaternion.Inverse(b) * (self.Start - c),
                 Distance = self.Distance,
+                SqrDistance = self.Distance*self.Distance
             };
         }
         

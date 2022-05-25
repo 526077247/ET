@@ -1,18 +1,18 @@
 using System;
 
-// Í¨ÓÃäÖÈ¾¹ÜÏß³ÌĞò¼¯
+// é€šç”¨æ¸²æŸ“ç®¡çº¿ç¨‹åºé›†
 namespace UnityEngine.Rendering.Universal
 {
-    // ÊµÀı»¯Àà     Ìí¼Óµ½Volume×é¼ş²Ëµ¥ÖĞ
+    // å®ä¾‹åŒ–ç±»     æ·»åŠ åˆ°Volumeç»„ä»¶èœå•ä¸­
     [Serializable, VolumeComponentMenu("Addition-Post-processing/BrightnessSaturationContrast")]
-    // ¼Ì³ĞVolumeComponent×é¼şºÍIPostProcessComponent½Ó¿Ú£¬ÓÃÒÔ¼Ì³ĞVolume¿ò¼Ü
+    // ç»§æ‰¿VolumeComponentç»„ä»¶å’ŒIPostProcessComponentæ¥å£ï¼Œç”¨ä»¥ç»§æ‰¿Volumeæ¡†æ¶
     public class BrightnessSaturationContrast : VolumeComponent, IPostProcessComponent
     {
-        // ÔÚ¿ò¼ÜÏÂµÄÊôĞÔÓëUnity³£¹æÊôĞÔ²»Ò»Ñù£¬ÀıÈç Int ÓÉ ClampedIntParameter È¡´ú¡£
+        // åœ¨æ¡†æ¶ä¸‹çš„å±æ€§ä¸Unityå¸¸è§„å±æ€§ä¸ä¸€æ ·ï¼Œä¾‹å¦‚ Int ç”± ClampedIntParameter å–ä»£ã€‚
         public ClampedFloatParameter brightness = new ClampedFloatParameter(0f, 0, 3);
         public ClampedFloatParameter saturation = new ClampedFloatParameter(0f, 0, 3);
         public ClampedFloatParameter contrast = new ClampedFloatParameter(0f, 0, 3);
-        // ÊµÏÖ½Ó¿Ú
+        // å®ç°æ¥å£
         public bool IsActive()
         {
             return active;
