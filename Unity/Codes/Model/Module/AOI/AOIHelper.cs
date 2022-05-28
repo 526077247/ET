@@ -230,40 +230,6 @@ namespace ET
         }
 
         /// <summary>
-        /// 获取x，z平面投影与球的关系：false无关 true相交
-        /// </summary>
-        public static bool IsGridIntersectWithOBB(Vector3 position ,Quaternion rotation ,Vector3 scale,int gridLen,
-            int xMin,int yMin,float radius,float sqrRadius)
-        {
-            
-            var res = IsGridIntersectWithSphere(position, radius,gridLen,xMin,yMin,sqrRadius);
-            if (res)
-            {
-                //判断格子4个顶点是否在碰撞体内
-                if (IsPointInTrigger(new Vector3(xMin, position.y, yMin),position,rotation,scale))
-                {
-                    return true;
-                }
-                var xMax = xMin + gridLen;
-                if (IsPointInTrigger(new Vector3(xMax, position.y, yMin),position,rotation,scale))
-                {
-                    return true;
-                }
-                var yMax = yMin + gridLen;
-                if (IsPointInTrigger(new Vector3(xMin, position.y, yMax),position,rotation,scale))
-                {
-                    return true;
-                }
-                if (IsPointInTrigger(new Vector3(xMax, position.y, yMax),position,rotation,scale))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }     
-                
-        /// <summary>
         /// 当触发器在指定位置旋转到指定角度时，检测点是否在触发器内
         /// </summary>
         /// <param name="scale"></param>

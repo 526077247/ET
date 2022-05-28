@@ -80,18 +80,8 @@ namespace ET
         public static bool IsIntersectWithTrigger(this AOICell self, AOITriggerComponent trigger,Vector3 position ,Quaternion rotation)
         {
             var len = self.GetParent<AOISceneComponent>().gridLen;
-            if (trigger.TriggerType == TriggerShapeType.Cube)
-            {
-                var obb = trigger.GetComponent<OBBComponent>();
-                return AOIHelper.IsGridIntersectWithOBB(position, rotation,obb.Scale,len,self.xMin,
-                    self.yMin,trigger.Radius,trigger.SqrRadius);
-            }
-            else
-            {
-                return AOIHelper.IsGridIntersectWithSphere(position,trigger.Radius,len,self.xMin,
-                    self.yMin,trigger.SqrRadius);
-            }
-            
+            return AOIHelper.IsGridIntersectWithSphere(position,trigger.Radius,len,self.xMin,
+                self.yMin,trigger.SqrRadius);
         }
         /// <summary>
         /// 添加触发器监视
