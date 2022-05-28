@@ -64,12 +64,16 @@ namespace ET
                     int y = (int)Math.Floor( sceneObject.Position.z / self.GridLen);
                     float radius = Mathf.Sqrt(sceneObject.Scale.x*sceneObject.Scale.x+sceneObject.Scale.y*sceneObject.Scale.y+sceneObject.Scale.z*sceneObject.Scale.z)/2;
                     int count = (int)Math.Ceiling(radius / self.GridLen);//环境多加一格
+                    float cellSqrRadius = Mathf.Pow(self.GridLen, 2) * 2;
+                    float cellRadius = Mathf.Sqrt(cellSqrRadius);
                     for (int i = x-count; i <= x+count; i++)
                     {
+                        var xMin = i * self.GridLen;
                         for (int j = y-count; j <=y+count; j++)
                         {
+                            var yMin = j* self.GridLen;
                             var res = AOIHelper.GetGridRelationshipWithOBB(sceneObject.Position, sceneObject.Rotation,
-                                sceneObject.Scale, self.GridLen, i, j);
+                                sceneObject.Scale, self.GridLen, xMin, yMin,cellRadius,cellSqrRadius);
                             if (res >= 0)
                             {
                                 var id = AOIHelper.CreateCellId(i, j);

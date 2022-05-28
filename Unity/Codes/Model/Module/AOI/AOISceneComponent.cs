@@ -9,7 +9,7 @@ namespace ET
     [ChildType(typeof(AOICell))]
     public class AOISceneComponent:Entity,IAwake<int>,IDestroy,IUpdate
     {
-        public int gridLen;
+        public int gridLen { get; set; }
         public float halfDiagonal;
     }
     

@@ -37,10 +37,10 @@ namespace ET
         /// <param name="self"></param>
         /// <param name="pos"></param>
         /// <param name="create">没有是否创建</param>
-        public static AOICell GetAOIGrid(this AOISceneComponent self,Vector3 pos,bool create = true)
+        public static AOICell GetAOICell(this AOISceneComponent self,Vector3 pos,bool create = true)
         {
-            int xIndex = (int)Math.Floor(pos.x / self.gridLen);
-            int yIndex = (int)Math.Floor(pos.z / self.gridLen);
+            int xIndex = (int)pos.x / self.gridLen;
+            int yIndex = (int)pos.z / self.gridLen;
             
             return self.GetCell(xIndex,yIndex,create);
         }
@@ -50,21 +50,20 @@ namespace ET
         /// </summary>
         /// <param name="self"></param>
         /// <param name="unit"></param>
-        public static void RegisterUnit(this AOISceneComponent self,AOIUnitComponent unit)
+        public static void RegisterUnit(this AOISceneComponent self, AOIUnitComponent unit)
         {
             unit.Scene = self;
-            AOICell cell = self.GetAOIGrid(unit.Position);
+            AOICell cell = self.GetAOICell(unit.Position);
             cell.Add(unit);
-            Log.Info("RegisterUnit:" + unit.Id + "  Position:" + unit.Position + "  grid x:"+ cell.posx+",y:"+ cell.posy+" type"+unit.Type+" range"+unit.Range);
-
-            using (var ListenerGrids = cell.GetNearbyGrid(unit.Range))
+            // Log.Info("RegisterUnit:" + unit.Id + "  Position:" + unit.Position + "  grid x:"+ cell.posx+",y:"+ cell.posy+" type"+unit.Type);
+            if (unit.Type == UnitType.Player)
             {
-                for (int i = 0; i < ListenerGrids.Count; i++)
+                using (var ListenerGrids = cell.GetNearbyGrid(unit.Range))
                 {
-                    var item = ListenerGrids[i];
-                    item.AddListener(unit);
-                    if (unit.Type == UnitType.Player)
+                    for (int i = 0; i < ListenerGrids.Count; i++)
                     {
+                        var item = ListenerGrids[i];
+                        item.AddListener(unit);
                         using (var list = item.GetAllUnit())
                         {
                             for (int j = 0; j < list.Count; j++)
@@ -77,6 +76,7 @@ namespace ET
                                 });
                             }
                         }
+
                     }
                 }
             }
@@ -89,7 +89,7 @@ namespace ET
         /// <param name="unit"></param>
         public static void RemoveUnit(this AOISceneComponent self, AOIUnitComponent unit)
         {
-            Log.Info("RemoveUnit:" + unit.Id);
+            // Log.Info("RemoveUnit:" + unit.Id);
             unit.Scene = null;
             if (unit.Cell != null)
             {
@@ -171,7 +171,7 @@ namespace ET
         /// <returns></returns>
         public static ListComponent<AOICell> GetNearbyGrid(this AOISceneComponent self,int turnNum,Vector3 pos)
         {
-            var grid = self.GetAOIGrid(pos);
+            var grid = self.GetAOICell(pos);
             ListComponent<AOICell> res = ListComponent<AOICell>.Create();
             for (int i = 0; i <= turnNum*2+1; i++)
             {

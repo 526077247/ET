@@ -15,10 +15,13 @@ namespace ET
         public long FromId;
 
         /// <summary>
-        /// 创建时间
+        /// 创建逻辑触发器时间，非显示View的时间
         /// </summary>
-        public long CreateTime { get; set; }
-
+        public long CreateColliderTime { get; set; }
+        /// <summary>
+        /// 创建View的时间
+        /// </summary>
+        public long CreateViewTime { get; set; }
         [BsonIgnore]
         public Unit Unit => this.GetParent<Unit>();
 

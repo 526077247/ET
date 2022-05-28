@@ -47,9 +47,9 @@ namespace ET
 			
 			// 加入aoi
 			var aoiu = unit.AddComponent<AOIUnitComponent,Vector3,Quaternion, UnitType,int>
-					(unit.Position,unit.Rotation,UnitType.Player,numericComponent.GetAsInt(NumericType.AOI));
+					(unit.Position,unit.Rotation,unit.Type,numericComponent.GetAsInt(NumericType.AOI));
 			
-			aoiu.AddSphereTrigger(0.5f, AOITriggerType.None, null, true);
+			aoiu.AddSphereCollider(0.5f);
 			response.NewInstanceId = unit.InstanceId;
 			
 			reply();

@@ -13,14 +13,17 @@ namespace ET
     /// <summary>
     /// 球形触发器
     /// </summary>
-    public class AOITriggerComponent:Entity,IAwake<float,Action<AOIUnitComponent, AOITriggerType>>,IDestroy
+    public class AOITriggerComponent:Entity,IAwake<float,Action<AOIUnitComponent, AOITriggerType>>,IAwake<float>,IDestroy
     {
         public float Radius;
         public float SqrRadius;
         public AOITriggerType Flag;
         public List<UnitType> Selecter;
         public Action<AOIUnitComponent, AOITriggerType> Handler;
-        public int TriggerType = TriggerShapeType.Sphere;//
+        public int TriggerType = TriggerShapeType.Sphere;//形状
+        /// <summary>
+        /// 是否“碰撞器”，碰撞器不挂触发事件
+        /// </summary>
         public bool IsCollider{ get; set; }
         public DictionaryComponent<AOICell, int> DebugMap;
         public ListComponent<string> LogInfo;

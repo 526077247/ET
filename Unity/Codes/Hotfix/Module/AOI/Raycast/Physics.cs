@@ -151,7 +151,7 @@ namespace ET
                         //垂直于地图
                         else
                             break;
-                        if(Vector3.Distance(inPoint,ray.Start)>ray.Distance)
+                        if(Vector3.SqrMagnitude(inPoint-ray.Start)>ray.SqrDistance)
                             break;
                     }
                 }

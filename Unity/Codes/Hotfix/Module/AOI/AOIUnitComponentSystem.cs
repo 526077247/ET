@@ -82,24 +82,25 @@ namespace ET
         {
             var oldpos = self.Position;
             self.Position = position;
-            AOICell cell = self.Scene.GetAOIGrid(position);
-            var oldgrid = self.Cell;
-            if (cell != oldgrid)//跨格子了：AOI刷新
+            AOICell cell = self.Scene.GetAOICell(position);
+            var oldCell = self.Cell;
+            var changeCell = cell != oldCell;
+            if (changeCell)//跨格子了：AOI刷新
             {
                 self.ChangeTo(cell);
             }
-            //触发器刷新 自己进入或离开别人的
+            //“碰撞器”刷新 自己进入或离开别人的
             if (self.Collider != null)
             {
-                self.Collider.AfterChangeBroadcastToOther(self.Collider.GetRealPos(oldpos),self.Collider.GetRealRot());
+                self.Collider.AfterColliderChangeBroadcastToOther(self.Collider.GetRealPos(oldpos),self.Collider.GetRealRot(),changeCell);
             }
             
             //触发器刷新 别人进入或离开自己的
             for (int i = 0; i < self.SphereTriggers.Count; i++)
             {
                 var item = self.SphereTriggers[i];
-                if (item.Selecter == null || item.Selecter.Count == 0) continue;
-                item.AfterChangePosition(item.GetRealPos(oldpos));
+                if (item.IsCollider || item.Selecter == null || item.Selecter.Count == 0) continue;
+                item.AfterTriggerChangeBroadcastToMe(item.GetRealPos(oldpos));
             }
         }
         /// <summary>
@@ -115,8 +116,8 @@ namespace ET
             for (int i = 0; i < self.SphereTriggers.Count; i++)
             {
                 var item = self.SphereTriggers[i];
-                if (item.Selecter == null || item.Selecter.Count == 0) continue;
-                item.AfterChangeRotation(oldRotation);
+                if (item.IsCollider||item.Selecter == null || item.Selecter.Count == 0) continue;
+                item.AfterTriggerChangeRotationBroadcastToMe(oldRotation);
             }
         }
 
@@ -152,7 +153,7 @@ namespace ET
             using (DictionaryComponent<AOIUnitComponent, int> dic = DictionaryComponent<AOIUnitComponent, int>.Create())
             {
                 //Remove
-                if (oldgrid.idUnits.ContainsKey(self.Type))
+                if (oldgrid.typeUnits.ContainsKey(self.Type))
                 {
                     for (int i = 0; i < oldgrid.ListenerUnits.Count; i++)
                     {
@@ -163,7 +164,7 @@ namespace ET
                         }
                     }
 
-                    oldgrid.idUnits[self.Type].Remove(self);
+                    oldgrid.typeUnits[self.Type].Remove(self);
                     self.Cell = null;
                 }
                 else
@@ -173,11 +174,11 @@ namespace ET
 
                 //Add
                 self.Cell = newgrid;
-                if (Define.Debug && newgrid.idUnits[self.Type].Contains(self))
+                if (Define.Debug && newgrid.typeUnits[self.Type].Contains(self))
                 {
                     Log.Error("newgrid.idUnits[self.Type].Contains(self)");
                 }
-                newgrid.idUnits[self.Type].Add(self);
+                newgrid.typeUnits[self.Type].Add(self);
                 for (int i = 0; i < newgrid.ListenerUnits.Count; i++)
                 {
                     var item = newgrid.ListenerUnits[i];
@@ -207,72 +208,77 @@ namespace ET
                 }
             }
             #endregion
-
             #region 广播给自己 && 刷新监听
-            var older = oldgrid.GetNearbyGrid(self.Range);
-            var newer = newgrid.GetNearbyGrid(self.Range);
-            DictionaryComponent<AOICell, int> temp = DictionaryComponent<AOICell, int>.Create();
-            for (int i = 0; i < older.Count; i++)
-            {
-                var item = older[i];
-                temp[item] = -1;
-            }
-            for (int i = 0; i < newer.Count; i++)
-            {
-                var item = newer[i];
-                if (temp.ContainsKey(item))
-                    temp[item] = 0;
-                else
-                    temp[item] = 1;
-            }
-            ListComponent<AOIUnitComponent> adder = ListComponent<AOIUnitComponent>.Create();
-            ListComponent<AOIUnitComponent> remover = ListComponent<AOIUnitComponent>.Create();
-            foreach (var item in temp)
-            {
-                if (item.Value > 0)
-                {
-                    item.Key.AddListener(self);
-                    adder.AddRange(item.Key.GetAllUnit());
-                }
-                else if (item.Value < 0)
-                {
-                    item.Key.RemoveListener(self);
-                    remover.AddRange(item.Key.GetAllUnit());
-                }
-            }
             if (self.Type == UnitType.Player)
             {
+                var older = oldgrid.GetNearbyGrid(self.Range);
+                var newer = newgrid.GetNearbyGrid(self.Range);
+                DictionaryComponent<AOICell, int> temp = DictionaryComponent<AOICell, int>.Create();
+                for (int i = 0; i < older.Count; i++)
+                {
+                    var item = older[i];
+                    temp[item] = -1;
+                }
+
+                for (int i = 0; i < newer.Count; i++)
+                {
+                    var item = newer[i];
+                    if (temp.ContainsKey(item))
+                        temp[item] = 0;
+                    else
+                        temp[item] = 1;
+                }
+
+                ListComponent<AOIUnitComponent> adder = ListComponent<AOIUnitComponent>.Create();
+                ListComponent<AOIUnitComponent> remover = ListComponent<AOIUnitComponent>.Create();
+                foreach (var item in temp)
+                {
+                    if (item.Value > 0)
+                    {
+                        item.Key.AddListener(self);
+                        adder.AddRange(item.Key.GetAllUnit());
+                    }
+                    else if (item.Value < 0)
+                    {
+                        item.Key.RemoveListener(self);
+                        remover.AddRange(item.Key.GetAllUnit());
+                    }
+                }
+
                 for (int i = 0; i < adder.Count; i++)
                 {
                     var item = adder[i];
                     if (item == self) continue;
-                    Log.Info("AOIRegisterUnit"+item.Id);
+                    Log.Info("AOIRegisterUnit" + item.Id);
                     Game.EventSystem.Publish(new EventType.AOIRegisterUnit
                     {
                         Receive = self,
                         Unit = item
                     });
                 }
+
                 for (int i = 0; i < remover.Count; i++)
                 {
                     var item = remover[i];
                     if (item == self) continue;
-                    Log.Info("AOIRemoveUnit"+item.Id);
+                    Log.Info("AOIRemoveUnit" + item.Id);
                     Game.EventSystem.Publish(new EventType.AOIRemoveUnit()
                     {
                         Receive = self,
                         Unit = item
                     });
                 }
+
+                temp.Dispose();
+                newer.Dispose();
+                older.Dispose();
+                adder.Dispose();
+                remover.Dispose();
+
+                
             }
-            temp.Dispose();
-            newer.Dispose();
-            older.Dispose();
-            adder.Dispose();
-            remover.Dispose();
             #endregion
 
-            
         }
         /// <summary>
         /// 获取自己能被谁看到

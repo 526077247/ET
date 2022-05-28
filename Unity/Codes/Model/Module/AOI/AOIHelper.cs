@@ -21,101 +21,99 @@ namespace ET
         /// 获取x，z平面投影与球的关系：-1无关 0相交或包括碰撞器 1在碰撞器内部
         /// </summary>
         public static int GetGridRelationshipWithSphere(Vector3 position,float radius, 
-            int gridLen, int posx, int posy)
+            int gridLen, int xMin, int yMin,float sqrRadius)
         {
-            var sqr = radius * radius;
-            var xMin = posx * gridLen;
-            var xMax = xMin + gridLen;
-            var yMin = posy * gridLen;
-            var yMax = yMin + gridLen;
-            var cenx = xMin + gridLen / 2;
-            var ceny = yMin + gridLen / 2;
+            int yMax;
+            
             Vector2 point = new Vector2(position.x,position.z) ;
-            // Log.Info(center.x+" "+self.posx+" "+xMin+" "+xMax);
-            // Log.Info(center.y+" "+self.posy+" "+yMin+" "+yMax);
             //圆心在格子外 0或-1
-            if (point.x >= xMax) //圆心在格子右方
+            if (point.x <= xMin) //圆心在格子左方
             {
-                // Log.Info("center.x >= xMax");
-                if (point.y > yMax) //圆心在格子右上方
+                if (point.y <= yMin) //圆心在格子左下方
                 {
-                    if (Vector2.SqrMagnitude(point-new Vector2(xMax, yMax)) > sqr)
+                    if (Vector2.SqrMagnitude(point - new Vector2(xMin, yMin)) > sqrRadius)
                         return -1;
                 }
-                else if (point.y < yMin) //圆心在格子右下方
+                else
                 {
-                    if (Vector2.SqrMagnitude(point- new Vector2(xMax, yMin)) > sqr)
-                        return -1;
-                }
-                else //圆心在格子右侧方
-                {
-                    if ((point.x - xMax) > radius)
-                        return -1;
-                }
-            }
-            else if (point.x <= xMin) //圆心在格子左方
-            {
-                // Log.Info("center.x <= xMin");
-                if (point.y >= yMax) //圆心在格子左上方
-                {
-                    if (Vector2.SqrMagnitude(point- new Vector2(xMin, yMax)) > sqr)
-                        return -1;
-                }
-                else if (point.y <= yMin) //圆心在格子左下方
-                {
-                    if (Vector2.SqrMagnitude(point- new Vector2(xMin, yMin)) > sqr)
-                        return -1;
-                }
-                else //圆心在格子左侧方
-                {
-                    if ((xMin - point.x) > radius)
-                        return -1;
+                    yMax = yMin + gridLen;
+                    if (point.y >= yMax) //圆心在格子左上方
+                    {
+                        if (Vector2.SqrMagnitude(point - new Vector2(xMin, yMax)) > sqrRadius)
+                            return -1;
+                    }
+                    else //圆心在格子左侧方
+                    {
+                        if ((xMin - point.x) > radius)
+                            return -1;
+                    }
                 }
             }
-            else if (point.y > yMax) //圆心在格子上方
-            {
-                // Log.Info("center.y > yMax");
-                if (point.x > xMin && point.x < xMax) //圆心在格子上侧方
-                    if ((point.x - yMax) > radius)
-                        return -1;
-            }
-            else if (point.y < yMin) //圆心在格子下方
-            {
-                // Log.Info("center.y < yMin");
-                if (point.x > xMin && point.x < xMax) //圆心在格子下侧方
-                    if ((yMin - point.y) > radius)
-                        return -1;
-            }
-            //圆心在格子内 0或1
-            else if (point.x > cenx && point.y > ceny) //圆心在格子内右上方
-            {
-                // Log.Info("圆心在格子内右上方");
-                if (Vector2.SqrMagnitude(point-new Vector2(xMin,yMin))<sqr)
-                    return 1;
-            }
-            else if (point.x > cenx && point.y < ceny) //圆心在格子内右下方
-            {
-                // Log.Info("圆心在格子内右下方");
-                if (Vector2.SqrMagnitude(point-new Vector2(xMin,yMax))<sqr)
-                    return 1;
-            }
-            else if (point.x < cenx && point.y > ceny) //圆心在格子内左上方
-            {
-                // Log.Info("圆心在格子内左上方");
-                if (Vector2.SqrMagnitude(point-new Vector2(xMax,yMin))<sqr)
-                    return 1;
-            }
-            else if (point.x < cenx && point.y < ceny) //圆心在格子内左下方
-            {
-                // Log.Info("圆心在格子内左下方");
-                if (Vector2.SqrMagnitude(point-new Vector2(xMax,yMax))<sqr)
-                    return 1;
-            }
-            //圆心在格子内中心 0或1
             else
             {
-                // Log.Info("圆心x:" + point.x + " y:" + point.y + " -- 格子x:" + posx + " 格子y:" + posy);
-                if (gridLen*0.7072f < radius) return 1;
+                var xMax = xMin + gridLen;
+                yMax = yMin + gridLen;
+                if (point.x >= xMax) //圆心在格子右方
+                {
+                    if (point.y > yMax) //圆心在格子右上方
+                    {
+                        if (Vector2.SqrMagnitude(point-new Vector2(xMax, yMax)) > sqrRadius)
+                            return -1;
+                    }
+                    else if (point.y < yMin) //圆心在格子右下方
+                    {
+                        if (Vector2.SqrMagnitude(point- new Vector2(xMax, yMin)) > sqrRadius)
+                            return -1;
+                    }
+                    else //圆心在格子右侧方
+                    {
+                        if ((point.x - xMax) > radius)
+                            return -1;
+                    }
+                }
+                else if (point.y > yMax) //圆心在格子上方
+                {
+                    if (point.x > xMin && point.x < xMax) //圆心在格子上侧方
+                        if ((point.x - yMax) > radius)
+                            return -1;
+                }
+                else if (point.y < yMin) //圆心在格子下方
+                {
+                    if (point.x > xMin && point.x < xMax) //圆心在格子下侧方
+                        if ((yMin - point.y) > radius)
+                            return -1;
+                }
+                else
+                {
+                    var cenx = xMin + gridLen / 2;
+                    var ceny = yMin + gridLen / 2;
+                    //圆心在格子内 0或1
+                    if (point.x > cenx && point.y > ceny) //圆心在格子内右上方
+                    {
+                        if (Vector2.SqrMagnitude(point - new Vector2(xMin, yMin)) < sqrRadius)
+                            return 1;
+                    }
+                    else if (point.x > cenx && point.y < ceny) //圆心在格子内右下方
+                    {
+                        if (Vector2.SqrMagnitude(point - new Vector2(xMin, yMax)) < sqrRadius)
+                            return 1;
+                    }
+                    else if (point.x < cenx && point.y > ceny) //圆心在格子内左上方
+                    {
+                        if (Vector2.SqrMagnitude(point - new Vector2(xMax, yMin)) < sqrRadius)
+                            return 1;
+                    }
+                    else if (point.x < cenx && point.y < ceny) //圆心在格子内左下方
+                    {
+                        if (Vector2.SqrMagnitude(point - new Vector2(xMax, yMax)) < sqrRadius)
+                            return 1;
+                    }
+                    //圆心在格子内中心 0或1
+                    else
+                    {
+                        if (gridLen * 0.7072f < radius) return 1;
+                    }
+                }
             }
             // Log.Info("0");
             return 0;
@@ -124,14 +122,10 @@ namespace ET
         /// <summary>
         /// 获取x，z平面投影与OBB的关系：-1无关 0相交或包括碰撞器 1在碰撞器内部
         /// </summary>
-        public static int GetGridRelationshipWithOBB(Vector3 position ,Quaternion rotation ,Vector3 scale,int gridLen,int posx,int posy)
+        public static int GetGridRelationshipWithOBB(Vector3 position ,Quaternion rotation ,Vector3 scale,int gridLen,
+            int xMin,int yMin,float radius,float sqrRadius)
         {
-            var xMin = posx * gridLen;
-            var xMax = xMin + gridLen;
-            var yMin = posy * gridLen;
-            var yMax = yMin + gridLen;
-            float radius = Mathf.Sqrt(scale.x*scale.x+scale.y*scale.y+scale.z*scale.z)/2;
-            var res = GetGridRelationshipWithSphere(position, radius,gridLen,posx,posy);
+            var res = GetGridRelationshipWithSphere(position, radius,gridLen,xMin,yMin,sqrRadius);
             if (res>=0)
             {
                 //判断格子4个顶点是否在碰撞体内
@@ -139,10 +133,12 @@ namespace ET
                 {
                     return 0;
                 }
+                var xMax = xMin + gridLen;
                 if (!IsPointInTrigger(new Vector3(xMax, position.y, yMin),position,rotation,scale))
                 {
                     return 0;
                 }
+                var yMax = yMin + gridLen;
                 if (!IsPointInTrigger(new Vector3(xMin, position.y, yMax),position,rotation,scale))
                 {
                     return 0;
@@ -157,6 +153,116 @@ namespace ET
 
             return res;
         }
+        
+        /// <summary>
+        /// 获取x，z平面投影与球的关系：false无关 true相交
+        /// </summary>
+        public static bool IsGridIntersectWithSphere(Vector3 position, float radius,
+            int gridLen, int xMin, int yMin,float sqrRadius)
+        {
+            int yMax;
+            
+            Vector2 point = new Vector2(position.x,position.z) ;
+            //圆心在格子外 0或-1
+            if (point.x <= xMin) //圆心在格子左方
+            {
+                if (point.y <= yMin) //圆心在格子左下方
+                {
+                    if (Vector2.SqrMagnitude(point - new Vector2(xMin, yMin)) > sqrRadius)
+                        return false;
+                }
+                else
+                {
+                    yMax = yMin + gridLen;
+                    if (point.y >= yMax) //圆心在格子左上方
+                    {
+                        if (Vector2.SqrMagnitude(point - new Vector2(xMin, yMax)) > sqrRadius)
+                            return false;
+                    }
+                    else //圆心在格子左侧方
+                    {
+                        if ((xMin - point.x) > radius)
+                            return false;
+                    }
+                }
+            }
+            else
+            {
+                var xMax = xMin + gridLen;
+                yMax = yMin + gridLen;
+                if (point.x >= xMax) //圆心在格子右方
+                {
+                    if (point.y > yMax) //圆心在格子右上方
+                    {
+                        if (Vector2.SqrMagnitude(point-new Vector2(xMax, yMax)) > sqrRadius)
+                            return false;
+                    }
+                    else if (point.y < yMin) //圆心在格子右下方
+                    {
+                        if (Vector2.SqrMagnitude(point- new Vector2(xMax, yMin)) > sqrRadius)
+                            return false;
+                    }
+                    else //圆心在格子右侧方
+                    {
+                        if ((point.x - xMax) > radius)
+                            return false;
+                    }
+                }
+                else if (point.y > yMax) //圆心在格子上方
+                {
+                    if (point.x > xMin && point.x < xMax) //圆心在格子上侧方
+                        if ((point.x - yMax) > radius)
+                            return false;
+                }
+                else if (point.y < yMin) //圆心在格子下方
+                {
+                    if (point.x > xMin && point.x < xMax) //圆心在格子下侧方
+                        if ((yMin - point.y) > radius)
+                            return false;
+                }
+                //圆心在格子内 0或1
+                else
+                {
+                }
+            }
+            // Log.Info("0");
+            return true;
+        }
+
+        /// <summary>
+        /// 获取x，z平面投影与球的关系：false无关 true相交
+        /// </summary>
+        public static bool IsGridIntersectWithOBB(Vector3 position ,Quaternion rotation ,Vector3 scale,int gridLen,
+            int xMin,int yMin,float radius,float sqrRadius)
+        {
+            
+            var res = IsGridIntersectWithSphere(position, radius,gridLen,xMin,yMin,sqrRadius);
+            if (res)
+            {
+                //判断格子4个顶点是否在碰撞体内
+                if (IsPointInTrigger(new Vector3(xMin, position.y, yMin),position,rotation,scale))
+                {
+                    return true;
+                }
+                var xMax = xMin + gridLen;
+                if (IsPointInTrigger(new Vector3(xMax, position.y, yMin),position,rotation,scale))
+                {
+                    return true;
+                }
+                var yMax = yMin + gridLen;
+                if (IsPointInTrigger(new Vector3(xMin, position.y, yMax),position,rotation,scale))
+                {
+                    return true;
+                }
+                if (IsPointInTrigger(new Vector3(xMax, position.y, yMax),position,rotation,scale))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }     
+                
         /// <summary>
         /// 当触发器在指定位置旋转到指定角度时，检测点是否在触发器内
         /// </summary>

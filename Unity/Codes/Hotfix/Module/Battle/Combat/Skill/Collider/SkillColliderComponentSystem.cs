@@ -42,57 +42,74 @@ namespace ET
             self.Cost = para.Cost;
             self.CostId = para.CostId;
             self.SkillConfigId = para.Ability.SkillConfig.Id;
-            self.CreateTime = TimeHelper.ServerNow();
+
             self.FromId = para.From.Id;
             self.Para = stepPara;
             if (int.TryParse(stepPara.Paras[0].ToString(), out var colliderId))
             {
                 self.ConfigId = colliderId;
-                
-                #region 添加触发器
-
                 int deltaTime = 0;
-                if (stepPara.Paras.Length >= 6)
+                if (self.Para.Paras.Length >= 6)
                 {
-                    int.TryParse(stepPara.Paras[5].ToString(), out deltaTime);
+                    int.TryParse(self.Para.Paras[5].ToString(), out deltaTime);
                 }
                 if (deltaTime <= 0)
                 {
                     deltaTime = 1;//等下一帧
                 }
-                if (self.Config.ColliderShape == SkillColliderShapeType.None)
-                {
-                    return;
-                }
-                else if (self.Config.ColliderShape == SkillColliderShapeType.Sphere||
-                         self.Config.ColliderShape == SkillColliderShapeType.OBB)
-                {
-                    
-                    TimerComponent.Instance.NewOnceTimer(self.CreateTime + deltaTime,
-                        TimerType.GenerateSkillCollider, self);
-                }
-                else
-                {
-                    Log.Error("碰撞体形状未处理" + self.Config.ColliderType);
-                    return;
-                }
 
-                #endregion
-
-                TimerComponent.Instance.NewOnceTimer(self.CreateTime + self.Config.Time,
-                    TimerType.SkillColliderRemove, self.Unit);
+                self.CreateViewTime = TimeHelper.ServerNow();
+                self.CreateColliderTime =self.CreateViewTime + deltaTime;
+                self.OnCreate();
+            }
+            else
+            {
+                Log.Error("stepPara.Paras[0] Error! "+stepPara.Paras[0]);
             }
         }
     }
     [FriendClass(typeof(SkillColliderComponent))]
     public static class SkillColliderComponentSystem
     {
+        public static void OnCreate(this SkillColliderComponent self)
+        {
+            #region 添加触发器
+            
+            if (self.Config.ColliderShape == SkillColliderShapeType.None)
+            {
+                return;
+            }
+            else if (self.Config.ColliderShape == SkillColliderShapeType.Sphere||
+                     self.Config.ColliderShape == SkillColliderShapeType.OBB)
+            {
+                if (self.CreateColliderTime <= TimeHelper.ServerNow())
+                {
+                    self.GenerateSkillCollider();
+                }
+                else
+                {
+                    TimerComponent.Instance.NewOnceTimer(self.CreateColliderTime, TimerType.GenerateSkillCollider, self);
+                }
+            }
+            else
+            {
+                Log.Error("碰撞体形状未处理" + self.Config.ColliderType);
+                return;
+            }
+
+            #endregion
+
+            TimerComponent.Instance.NewOnceTimer(self.CreateViewTime + self.Config.Time,
+                TimerType.SkillColliderRemove, self.Unit);
+        }
+        
         public static void GenerateSkillCollider(this SkillColliderComponent self)
         {
             var aoiUnit = self.Unit.Parent.GetChild<Unit>(self.FromId).GetComponent<AOIUnitComponent>();
             var skillAOIUnit = self.Unit.GetComponent<AOIUnitComponent>();
             if (skillAOIUnit == null||skillAOIUnit.IsDisposed)
             {
+                Log.Info("skillAOIUnit == null||skillAOIUnit.IsDisposed");
                 return;
             }
             if (self.Config.ColliderShape == SkillColliderShapeType.OBB)
@@ -112,7 +129,7 @@ namespace ET
                             CostId = self.CostId,
                             Type = e
                         });
-                    }, false, UnitType.ALL);//测试为所有
+                    },  UnitType.ALL);
             }
             else if (self.Config.ColliderShape == SkillColliderShapeType.Sphere)
             {
@@ -129,7 +146,7 @@ namespace ET
                             CostId = self.CostId,
                             Type = e
                         });
-                    }, false, UnitType.ALL);//测试为所有
+                    }, UnitType.ALL);
             }
             else
             {

@@ -28,6 +28,7 @@ namespace ET
         public void OnColliderIn(AOIUnitComponent from, AOIUnitComponent to, SkillStepPara stepPara, List<int> costId,
             List<int> cost,SkillConfig config)
         {
+            if(from==null) return;//伤害源死了
             var combatU = to.Parent.GetComponent<CombatUnitComponent>();
 
             // Log.Info("触发"+type.ToString()+to.Id+"  "+from.Id);
