@@ -6,9 +6,9 @@ using UnityEngine;
 namespace ET
 {
     [ObjectSystem]
-    public class AOITriggerComponentAwakeSystem : AwakeSystem<AOITriggerComponent,float,Action<AOIUnitComponent, AOITriggerType>>
+    public class AOITriggerAwakeSystem : AwakeSystem<AOITrigger,float,Action<AOIUnitComponent, AOITriggerType>>
     {
-        public override void Awake(AOITriggerComponent self,float a,Action<AOIUnitComponent, AOITriggerType> b)
+        public override void Awake(AOITrigger self,float a,Action<AOIUnitComponent, AOITriggerType> b)
         {
             if (Define.Debug)
             {
@@ -22,9 +22,9 @@ namespace ET
         }
     }
     [ObjectSystem]
-    public class AOITriggerComponentAwakeSystem1 : AwakeSystem<AOITriggerComponent,float>
+    public class AOITriggerAwakeSystem1 : AwakeSystem<AOITrigger,float>
     {
-        public override void Awake(AOITriggerComponent self,float a)
+        public override void Awake(AOITrigger self,float a)
         {
             if (Define.Debug)
             {
@@ -38,9 +38,9 @@ namespace ET
     }
     [ObjectSystem]
     [FriendClass(typeof(AOICell))]
-    public class AOITriggerComponentDestroySystem : DestroySystem<AOITriggerComponent>
+    public class AOITriggerDestroySystem : DestroySystem<AOITrigger>
     {
-        public override void Destroy(AOITriggerComponent self)
+        public override void Destroy(AOITrigger self)
         {
             // Log.Info("RemoverTrigger"+self.Id);
             if(self.TriggerType!=TriggerShapeType.Cube)//OBB的在子组件处理
@@ -74,13 +74,13 @@ namespace ET
         }
     }
     [FriendClass(typeof(OBBComponent))]
-    [FriendClass(typeof(AOITriggerComponent))]
+    [FriendClass(typeof(AOITrigger))]
     [FriendClass(typeof(AOIUnitComponent))]
     [FriendClass(typeof(AOISceneComponent))]
     [FriendClass(typeof(AOICell))]
-    public static class AOITriggerComponentSystem
+    public static class AOITriggerSystem
     {
-        public static void OnTrigger(this AOITriggerComponent self, AOITriggerComponent other, AOITriggerType type)
+        public static void OnTrigger(this AOITrigger self, AOITrigger other, AOITriggerType type)
         {
             // Log.Info("OnTrigger"+type);
             self.Handler?.Invoke(other.GetParent<AOIUnitComponent>(),type);
@@ -90,7 +90,7 @@ namespace ET
         /// </summary>
         /// <param name="self"></param>
         /// <returns></returns>
-        public static Vector3 GetRealPos(this AOITriggerComponent self)
+        public static Vector3 GetRealPos(this AOITrigger self)
         {
             return self.GetParent<AOIUnitComponent>().Position + new Vector3(0,self.OffsetY,0);
         }
@@ -100,7 +100,7 @@ namespace ET
         /// <param name="self"></param>
         /// <param name="pos"></param>
         /// <returns></returns>
-        public static Vector3 GetRealPos(this AOITriggerComponent self, Vector3 pos)
+        public static Vector3 GetRealPos(this AOITrigger self, Vector3 pos)
         {
             return pos + new Vector3(0,self.OffsetY,0);
         }
@@ -109,7 +109,7 @@ namespace ET
         /// </summary>
         /// <param name="self"></param>
         /// <returns></returns>
-        public static Quaternion GetRealRot(this AOITriggerComponent self)
+        public static Quaternion GetRealRot(this AOITrigger self)
         {
             return self.GetParent<AOIUnitComponent>().Rotation;
         }
@@ -123,10 +123,10 @@ namespace ET
         /// <param name="isCollider"></param>
         /// <param name="selecter"></param>
         /// <returns></returns>
-        static AOITriggerComponent AddTrigger(this AOIUnitComponent self, float radius, AOITriggerType type,
+        static AOITrigger AddTrigger(this AOIUnitComponent self, float radius, AOITriggerType type,
             Action<AOIUnitComponent, AOITriggerType> handler, params UnitType[] selecter)
         {
-            AOITriggerComponent trigger = self.AddChild<AOITriggerComponent,float,Action<AOIUnitComponent, AOITriggerType>>(radius,handler);
+            AOITrigger trigger = self.AddChild<AOITrigger,float,Action<AOIUnitComponent, AOITriggerType>>(radius,handler);
             trigger.Flag = type;
             trigger.Selecter = new List<UnitType>(selecter);
             trigger.TriggerType=TriggerShapeType.Sphere;
@@ -140,9 +140,9 @@ namespace ET
         /// <param name="self"></param>
         /// <param name="radius"></param>
         /// <returns></returns>
-        static AOITriggerComponent AddCollider(this AOIUnitComponent self, float radius)
+        static AOITrigger AddCollider(this AOIUnitComponent self, float radius)
         {
-            AOITriggerComponent trigger = self.AddChild<AOITriggerComponent,float>(radius);
+            AOITrigger trigger = self.AddChild<AOITrigger,float>(radius);
             trigger.Selecter = null;
             trigger.TriggerType=TriggerShapeType.Sphere;
             trigger.IsCollider = true;
@@ -156,7 +156,7 @@ namespace ET
         /// <param name="trigger"></param>
         /// <param name="type"></param>
         /// <param name="broadcast">是否需要检测触发</param>
-        static void AddTriggerListener(this AOIUnitComponent self,AOITriggerComponent trigger,AOITriggerType type,bool broadcast = true)
+        static void AddTriggerListener(this AOIUnitComponent self,AOITrigger trigger,AOITriggerType type,bool broadcast = true)
         {
             var len = self.Scene.gridLen;
             int count = (int)Mathf.Ceil(trigger.Radius / len);
@@ -182,8 +182,8 @@ namespace ET
             {
                 using (var grids = self.GetNearbyGrid(count))
                 {
-                    HashSetComponent<AOITriggerComponent> temp1 = HashSetComponent<AOITriggerComponent>.Create();
-                    HashSetComponent<AOITriggerComponent> temp2 = HashSetComponent<AOITriggerComponent>.Create();
+                    HashSetComponent<AOITrigger> temp1 = HashSetComponent<AOITrigger>.Create();
+                    HashSetComponent<AOITrigger> temp2 = HashSetComponent<AOITrigger>.Create();
                     for (int i = 0; i < grids.Count; i++)
                     {
                         var item = grids[i];
@@ -236,7 +236,7 @@ namespace ET
         /// <param name="self"></param>
         /// <param name="trigger"></param>
         /// <param name="broadcast">是否需要检测触发</param>
-        static void AddColliderListener(this AOIUnitComponent self,AOITriggerComponent trigger,bool broadcast = true)
+        static void AddColliderListener(this AOIUnitComponent self,AOITrigger trigger,bool broadcast = true)
         {
             var len = self.Scene.gridLen;
             int count = (int)Mathf.Ceil(trigger.Radius / len);
@@ -262,8 +262,8 @@ namespace ET
             {
                 using (var grids = self.GetNearbyGrid(count))
                 {
-                    HashSetComponent<AOITriggerComponent> temp1 = HashSetComponent<AOITriggerComponent>.Create();
-                    HashSetComponent<AOITriggerComponent> temp2 = HashSetComponent<AOITriggerComponent>.Create();
+                    HashSetComponent<AOITrigger> temp1 = HashSetComponent<AOITrigger>.Create();
+                    HashSetComponent<AOITrigger> temp2 = HashSetComponent<AOITrigger>.Create();
                     for (int i = 0; i < grids.Count; i++)
                     {
                         var item = grids[i];
@@ -325,7 +325,7 @@ namespace ET
         /// <param name="handler">当触发发生事件</param>
         /// <param name="selecter">筛选AOI类型</param>
         /// <returns></returns>
-        public static AOITriggerComponent AddSphereTrigger(this AOIUnitComponent self, float radius, AOITriggerType flag, 
+        public static AOITrigger AddSphereTrigger(this AOIUnitComponent self, float radius, AOITriggerType flag, 
             Action<AOIUnitComponent, AOITriggerType> handler, params UnitType[] selecter)
         {
             #region 数据初始化
@@ -344,7 +344,7 @@ namespace ET
         /// <param name="self"></param>
         /// <param name="radius">半径</param>a
         /// <returns></returns>
-        public static AOITriggerComponent AddSphereCollider(this AOIUnitComponent self, float radius)
+        public static AOITrigger AddSphereCollider(this AOIUnitComponent self, float radius)
         {
             if (self.Collider != null)
             {
@@ -370,7 +370,7 @@ namespace ET
         /// <param name="handler">当触发发生事件</param>
         /// <param name="selecter">筛选AOI类型</param>
         /// <returns></returns>
-        public static AOITriggerComponent AddSphereTriggerWithoutBroadcast(this AOIUnitComponent self, float radius, AOITriggerType flag, 
+        public static AOITrigger AddSphereTriggerWithoutBroadcast(this AOIUnitComponent self, float radius, AOITriggerType flag, 
             Action<AOIUnitComponent, AOITriggerType> handler, params UnitType[] selecter)
         {
             #region 数据初始化
@@ -389,7 +389,7 @@ namespace ET
         /// <param name="self"></param>
         /// <param name="radius">半径</param>a
         /// <returns></returns>
-        public static AOITriggerComponent AddSphereColliderWithoutBroadcast(this AOIUnitComponent self, float radius)
+        public static AOITrigger AddSphereColliderWithoutBroadcast(this AOIUnitComponent self, float radius)
         {
             if (self.Collider != null)
             {
@@ -415,7 +415,7 @@ namespace ET
         /// <param name="handler">当触发发生事件</param>
         /// <param name="selecter">筛选AOI类型</param>
         /// <returns></returns>
-        public static AOITriggerComponent AddOBBTrigger(this AOIUnitComponent self, Vector3 scale, AOITriggerType flag,
+        public static AOITrigger AddOBBTrigger(this AOIUnitComponent self, Vector3 scale, AOITriggerType flag,
             Action<AOIUnitComponent, AOITriggerType> handler, params UnitType[] selecter)
         {
             float radius = Mathf.Sqrt(scale.x*scale.x+scale.y*scale.y+scale.z*scale.z)/2;
@@ -435,7 +435,7 @@ namespace ET
         /// <param name="self"></param>
         /// <param name="scale">长宽高</param>
         /// <returns></returns>
-        public static AOITriggerComponent AddOBBCollider(this AOIUnitComponent self, Vector3 scale)
+        public static AOITrigger AddOBBCollider(this AOIUnitComponent self, Vector3 scale)
         {
             if (self.Collider != null)
             {
@@ -462,7 +462,7 @@ namespace ET
         /// <param name="handler">当触发发生事件</param>
         /// <param name="selecter">筛选AOI类型</param>
         /// <returns></returns>
-        public static AOITriggerComponent AddOBBTriggerWithoutBroadcast(this AOIUnitComponent self, Vector3 scale, AOITriggerType flag,
+        public static AOITrigger AddOBBTriggerWithoutBroadcast(this AOIUnitComponent self, Vector3 scale, AOITriggerType flag,
             Action<AOIUnitComponent, AOITriggerType> handler, params UnitType[] selecter)
         {
             float radius = Mathf.Sqrt(scale.x*scale.x+scale.y*scale.y+scale.z*scale.z)/2;
@@ -482,7 +482,7 @@ namespace ET
         /// <param name="self"></param>
         /// <param name="scale">长宽高</param>
         /// <returns></returns>
-        public static AOITriggerComponent AddOBBColliderWithoutBroadcast(this AOIUnitComponent self, Vector3 scale)
+        public static AOITrigger AddOBBColliderWithoutBroadcast(this AOIUnitComponent self, Vector3 scale)
         {
             if (self.Collider != null)
             {
@@ -506,14 +506,14 @@ namespace ET
         /// </summary>
         /// <param name="self"></param>
         /// <param name="trigger"></param>
-        public static void RemoverTrigger(this AOIUnitComponent self, AOITriggerComponent trigger)
+        public static void RemoverTrigger(this AOIUnitComponent self, AOITrigger trigger)
         {
             self.SphereTriggers.Remove(trigger);
             #region 添加监听事件，并判断触发离开触发器
             var len = self.Scene.gridLen;
             int count = (int)Mathf.Ceil(trigger.Radius / len);
             if (count > 2) Log.Info("检测范围超过2格，触发半径："+ trigger.Radius);
-            HashSetComponent<AOITriggerComponent> temp = HashSetComponent<AOITriggerComponent>.Create();
+            HashSetComponent<AOITrigger> temp = HashSetComponent<AOITrigger>.Create();
             for (int i = trigger.FollowCell.Count-1; i >=0 ; i--)
             {
                  var item = trigger.FollowCell[i];
@@ -550,7 +550,7 @@ namespace ET
         /// </summary>
         /// <param name="self"></param>
         /// <param name="beforePosition"></param>
-        public static void AfterTriggerChangeBroadcastToMe(this AOITriggerComponent self,Vector3 beforePosition)
+        public static void AfterTriggerChangeBroadcastToMe(this AOITrigger self,Vector3 beforePosition)
         {
             if (self.IsCollider) return;
             var unit = self.GetParent<AOIUnitComponent>();
@@ -587,8 +587,8 @@ namespace ET
             #region 筛选格子里的单位
 
             Quaternion beforeRotation = self.GetRealRot();
-            HashSetComponent<AOITriggerComponent> pre = HashSetComponent<AOITriggerComponent>.Create();//之前有的
-            HashSetComponent<AOITriggerComponent> after = HashSetComponent<AOITriggerComponent>.Create();//现在有的
+            HashSetComponent<AOITrigger> pre = HashSetComponent<AOITrigger>.Create();//之前有的
+            HashSetComponent<AOITrigger> after = HashSetComponent<AOITrigger>.Create();//现在有的
             //不完全包围的格子需要逐个计算
             foreach (var item in triggers)
             {
@@ -651,8 +651,8 @@ namespace ET
             triggers.Dispose();
             if (pre.Count > 0 || after.Count > 0)
             {
-                DictionaryComponent<AOITriggerComponent, int> colliderDic =
-                    DictionaryComponent<AOITriggerComponent, int>.Create();
+                DictionaryComponent<AOITrigger, int> colliderDic =
+                    DictionaryComponent<AOITrigger, int>.Create();
                 foreach (var collider in pre)
                 {
                     colliderDic.Add(collider, 1);
@@ -706,7 +706,7 @@ namespace ET
         /// </summary>
         /// <param name="self"></param>
         /// <param name="before"></param>
-        public static void AfterTriggerChangeRotationBroadcastToMe(this AOITriggerComponent self,Quaternion before)
+        public static void AfterTriggerChangeRotationBroadcastToMe(this AOITrigger self,Quaternion before)
         {
             if (self.IsCollider) return;
             if (self.TriggerType==TriggerShapeType.Sphere) return;
@@ -742,8 +742,8 @@ namespace ET
             }
 
             #region 筛选格子里的单位
-            HashSetComponent<AOITriggerComponent> pre = HashSetComponent<AOITriggerComponent>.Create();//之前有的
-            HashSetComponent<AOITriggerComponent> after = HashSetComponent<AOITriggerComponent>.Create();//现在有的
+            HashSetComponent<AOITrigger> pre = HashSetComponent<AOITrigger>.Create();//之前有的
+            HashSetComponent<AOITrigger> after = HashSetComponent<AOITrigger>.Create();//现在有的
             //完全包围的格子不需要逐个计算
             foreach (var item in triggers)
             {
@@ -854,8 +854,8 @@ namespace ET
             triggers.Dispose();
             if (pre.Count > 0 || after.Count > 0)
             {
-                DictionaryComponent<AOITriggerComponent, int> colliderDic =
-                    DictionaryComponent<AOITriggerComponent, int>.Create();
+                DictionaryComponent<AOITrigger, int> colliderDic =
+                    DictionaryComponent<AOITrigger, int>.Create();
                 foreach (var collider in pre)
                 {
                     colliderDic.Add(collider, -1);
@@ -918,12 +918,12 @@ namespace ET
         /// <param name="beforePosition"></param>
         /// <param name="beforeRotation"></param>
         /// <param name="changeCell">是否跨格子</param>
-        public static void AfterColliderChangeBroadcastToOther(this AOITriggerComponent self,Vector3 beforePosition,Quaternion beforeRotation,bool changeCell)
+        public static void AfterColliderChangeBroadcastToOther(this AOITrigger self,Vector3 beforePosition,Quaternion beforeRotation,bool changeCell)
         {
             if(!self.IsCollider) return;
             var unit = self.GetParent<AOIUnitComponent>();
-            HashSetComponent<AOITriggerComponent> pre = HashSetComponent<AOITriggerComponent>.Create(); //之前有的
-            HashSetComponent<AOITriggerComponent> after = HashSetComponent<AOITriggerComponent>.Create(); //现在有的
+            HashSetComponent<AOITrigger> pre = HashSetComponent<AOITrigger>.Create(); //之前有的
+            HashSetComponent<AOITrigger> after = HashSetComponent<AOITrigger>.Create(); //现在有的
             
             var nowPos = self.GetRealPos();
             var cell = unit.Cell;
@@ -1066,8 +1066,8 @@ namespace ET
 
             if (pre.Count > 0 || after.Count > 0)
             {
-                DictionaryComponent<AOITriggerComponent, int> colliderDic =
-                    DictionaryComponent<AOITriggerComponent, int>.Create();
+                DictionaryComponent<AOITrigger, int> colliderDic =
+                    DictionaryComponent<AOITrigger, int>.Create();
                 foreach (var collider in pre)
                 {
                     colliderDic.Add(collider, 1);
@@ -1126,7 +1126,7 @@ namespace ET
         /// <param name="position2"></param>
         /// <param name="rotation2"></param>
         /// <returns></returns>
-        public static bool IsInTrigger(this AOITriggerComponent trigger1, AOITriggerComponent trigger2,
+        public static bool IsInTrigger(this AOITrigger trigger1, AOITrigger trigger2,
             Vector3 position1, Quaternion rotation1, Vector3 position2, Quaternion rotation2)
         {
             if(trigger1==null||trigger2==null)
@@ -1298,7 +1298,7 @@ namespace ET
         /// <param name="center"></param>
         /// <param name="rotation"></param>
         /// <returns></returns>
-        public static bool IsPointInTrigger(this AOITriggerComponent trigger, Vector3 position,Vector3 center,Quaternion rotation)
+        public static bool IsPointInTrigger(this AOITrigger trigger, Vector3 position,Vector3 center,Quaternion rotation)
         {
             var sqrDis = Vector3.SqrMagnitude(center- position);
             if (trigger.SqrRadius < sqrDis) return false;
@@ -1319,7 +1319,7 @@ namespace ET
         /// <param name="center"></param>
         /// <param name="rotation"></param>
         /// <returns></returns>
-        public static bool IsRayInTrigger(this AOITriggerComponent trigger,Ray ray, Vector3 center,Quaternion rotation)
+        public static bool IsRayInTrigger(this AOITrigger trigger,Ray ray, Vector3 center,Quaternion rotation)
         {
             //求点到直线的距离
             var dis = Math.Sqrt(Vector3.Cross(ray.Start - center, ray.Dir).sqrMagnitude / ray.Dir.sqrMagnitude);
@@ -1346,7 +1346,7 @@ namespace ET
         /// <param name="center"></param>
         /// <param name="rotation"></param>
         /// <returns></returns>
-        public static bool IsRayInTrigger(this AOITriggerComponent trigger,Ray ray, Vector3 center,Quaternion rotation,out Vector3 hit)
+        public static bool IsRayInTrigger(this AOITrigger trigger,Ray ray, Vector3 center,Quaternion rotation,out Vector3 hit)
         {
             hit = Vector3.zero;
             //求点到直线的距离

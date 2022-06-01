@@ -15,7 +15,7 @@ namespace ET
     {
         public override void Destroy(OBBComponent self)
         {
-            var trigger = self.GetParent<AOITriggerComponent>();
+            var trigger = self.GetParent<AOITrigger>();
             trigger.GetParent<AOIUnitComponent>().RemoverTrigger(trigger);
         }
     }

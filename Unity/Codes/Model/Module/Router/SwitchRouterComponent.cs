@@ -7,6 +7,7 @@ namespace ET
     /// <summary>
     /// 在session上挂载的保存路由信息的组件.切换路由用
     /// </summary>
+    [ComponentOf(typeof(Session))]
     public class RouterDataComponent : Entity,IAwake
     {
         public long Gateid;
@@ -44,6 +45,7 @@ namespace ET
     /// <summary>
     /// 切换路由组件
     /// </summary>
+    [ComponentOf(typeof(Session))]
     public class SwitchRouterComponent : Entity,IAwake
     {
         

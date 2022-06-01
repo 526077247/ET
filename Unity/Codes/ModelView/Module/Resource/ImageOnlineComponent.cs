@@ -11,7 +11,7 @@ namespace ET
         public Sprite sprite;
     }
 
-    
+    [ComponentOf(typeof(Scene))]
     public class ImageOnlineComponent:Entity,IAwake,IDestroy
     {
         public static ImageOnlineComponent Instance { get; set; }

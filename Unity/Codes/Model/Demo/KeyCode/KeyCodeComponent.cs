@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace ET
 {
+    [ComponentOf(typeof(Scene))]
     public class KeyCodeComponent:Entity,IAwake,IDestroy
     {
         public static KeyCodeComponent Instance;

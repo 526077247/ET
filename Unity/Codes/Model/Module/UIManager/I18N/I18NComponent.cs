@@ -5,6 +5,7 @@ using System;
 
 namespace ET
 {
+    [ComponentOf(typeof(Scene))]
     public class I18NComponent : Entity,IAwake,IDestroy
     {
         public static I18NComponent Instance;

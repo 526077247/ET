@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 namespace ET
 {
-
+    [ComponentOf(typeof(SpellPreviewComponent))]
     public class TargetSelectComponent:Entity,IAwake,IDestroy,IUpdate,IShow<Action<Unit>,int[]>,IHide
     {
         public ETTask<GameObject> waiter;

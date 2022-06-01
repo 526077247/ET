@@ -2,6 +2,7 @@
 
 namespace ET
 {
+    [ComponentOf(typeof(Scene))]
     public class SkillStepComponent:Entity,IAwake,IDestroy
     {
         public static SkillStepComponent Instance;

@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace ET
 {
+    [ComponentOf(typeof(Scene))]
     public class RedDotComponent: Entity,IAwake,IDestroy
     {
         public static RedDotComponent Instance;

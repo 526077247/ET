@@ -41,7 +41,7 @@ namespace ET
     }
     [FriendClass(typeof(AOIUnitComponent))]
     [FriendClass(typeof(AOICell))]
-    [FriendClass(typeof(AOITriggerComponent))]
+    [FriendClass(typeof(AOITrigger))]
     public static class AOIUnitComponentSystem
     {
 

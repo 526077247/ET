@@ -19,9 +19,9 @@ namespace ET
             {
                 self.typeUnits.Add((UnitType)i, new List<AOIUnitComponent>());
             }
-            self.Triggers = new List<AOITriggerComponent>();
+            self.Triggers = new List<AOITrigger>();
             self.ListenerUnits = new List<AOIUnitComponent>();
-            self.Colliders = new List<AOITriggerComponent>();
+            self.Colliders = new List<AOITrigger>();
         }
     }
     [ObjectSystem]
@@ -40,7 +40,7 @@ namespace ET
         }
     }
     [FriendClass(typeof(AOICell))]
-    [FriendClass(typeof(AOITriggerComponent))]
+    [FriendClass(typeof(AOITrigger))]
     [FriendClass(typeof(AOIUnitComponent))]
     [FriendClass(typeof(OBBComponent))]
     public static class AOICellSystem
@@ -53,7 +53,7 @@ namespace ET
         /// <param name="position"></param>
         /// <param name="rotation"></param>
         /// <returns></returns>
-        public static int GetRelationshipWithTrigger(this AOICell self, AOITriggerComponent trigger,Vector3 position ,Quaternion rotation)
+        public static int GetRelationshipWithTrigger(this AOICell self, AOITrigger trigger,Vector3 position ,Quaternion rotation)
         {
             var len = self.GetParent<AOISceneComponent>().gridLen;
             if (trigger.TriggerType == TriggerShapeType.Cube)
@@ -77,7 +77,7 @@ namespace ET
         /// <param name="position"></param>
         /// <param name="rotation"></param>
         /// <returns></returns>
-        public static bool IsIntersectWithTrigger(this AOICell self, AOITriggerComponent trigger,Vector3 position ,Quaternion rotation)
+        public static bool IsIntersectWithTrigger(this AOICell self, AOITrigger trigger,Vector3 position ,Quaternion rotation)
         {
             var len = self.GetParent<AOISceneComponent>().gridLen;
             return AOIHelper.IsGridIntersectWithSphere(position,trigger.Radius,len,self.xMin,
@@ -89,7 +89,7 @@ namespace ET
         /// <param name="self"></param>
         /// <param name="trigger"></param>
         /// <returns></returns>
-        public static void AddTriggerListener(this AOICell self, AOITriggerComponent trigger)
+        public static void AddTriggerListener(this AOICell self, AOITrigger trigger)
         {
             if (Define.Debug)
             {
@@ -110,7 +110,7 @@ namespace ET
         /// <param name="self"></param>
         /// <param name="trigger"></param>
         /// <returns></returns>
-        public static void RemoveTriggerListener(this AOICell self, AOITriggerComponent trigger)
+        public static void RemoveTriggerListener(this AOICell self, AOITrigger trigger)
         {
             if (Define.Debug)
             {
@@ -249,9 +249,9 @@ namespace ET
         /// <param name="types"></param>
         /// <param name="except"></param>
         /// <returns></returns>
-        public static ListComponent<AOITriggerComponent> GetAllCollider(this AOICell self, List<UnitType> types,AOITriggerComponent except)
+        public static ListComponent<AOITrigger> GetAllCollider(this AOICell self, List<UnitType> types,AOITrigger except)
         {
-            var res = ListComponent<AOITriggerComponent>.Create();
+            var res = ListComponent<AOITrigger>.Create();
             if (self.IsDisposed) return res;
             var isAll = types.Contains(UnitType.ALL);
             for (int i = self.Colliders.Count-1; i >=0 ; i--)
@@ -281,10 +281,10 @@ namespace ET
         /// <param name="types"></param>
         /// <param name="except"></param>
         /// <returns></returns>
-        public static ListComponent<AOITriggerComponent> GetAllTrigger(this AOICell self, List<UnitType> types,
-            AOITriggerComponent except)
+        public static ListComponent<AOITrigger> GetAllTrigger(this AOICell self, List<UnitType> types,
+            AOITrigger except)
         {
-            var res = ListComponent<AOITriggerComponent>.Create();
+            var res = ListComponent<AOITrigger>.Create();
             if (self.IsDisposed) return res;
             var isAll = types.Contains(UnitType.ALL);
             for (int i = self.Colliders.Count-1; i >=0 ; i--)

@@ -10,7 +10,8 @@ namespace ET
     /// <summary>1
     /// 使用时注意 平面是x,z；竖直方向是y
     /// </summary>
-    [ChildType(typeof(AOITriggerComponent))]
+    [ChildType(typeof(AOITrigger))]
+    [ComponentOf(typeof(Unit))]
     public class AOIUnitComponent:Entity,IAwake<Vector3,Quaternion,UnitType,int>,IAwake<Vector3,Quaternion,UnitType>,IDestroy
     {
         public Vector3 Position;
@@ -34,9 +35,9 @@ namespace ET
         }
 
         public int Range;
-        public readonly List<AOITriggerComponent> SphereTriggers = new List<AOITriggerComponent>();//自己的触发器
+        public readonly List<AOITrigger> SphereTriggers = new List<AOITrigger>();//自己的触发器
         // public float MaxTriggerRadius=0;
-        public AOITriggerComponent Collider
+        public AOITrigger Collider
         {
             get
             {

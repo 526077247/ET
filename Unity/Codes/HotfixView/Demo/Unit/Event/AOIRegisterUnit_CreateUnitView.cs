@@ -3,7 +3,7 @@ using System;
 namespace ET
 {
     [FriendClass(typeof(AOIUnitComponent))]
-    [FriendClass(typeof(AOITriggerComponent))]
+    [FriendClass(typeof(AOITrigger))]
     [FriendClass(typeof(OBBComponent))]
     [FriendClass(typeof(GameObjectComponent))]
     [FriendClass(typeof(GlobalComponent))]

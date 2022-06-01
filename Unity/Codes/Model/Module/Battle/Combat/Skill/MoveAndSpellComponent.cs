@@ -2,6 +2,7 @@
 using MongoDB.Bson.Serialization.Attributes;
 namespace ET
 {
+    [ComponentOf(typeof(CombatUnitComponent))]
     public class MoveAndSpellComponent:Entity,IAwake,IDestroy,ITransfer
     {
         [BsonIgnore]

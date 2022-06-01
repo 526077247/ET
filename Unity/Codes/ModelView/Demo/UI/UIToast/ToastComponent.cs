@@ -8,6 +8,7 @@ using UnityEngine;
 namespace ET
 {
     [ChildType(typeof(UIToast))]
+    [ComponentOf(typeof(Scene))]
     public class ToastComponent:Entity,IAwake,IDestroy
     {
         public static ToastComponent Instance;

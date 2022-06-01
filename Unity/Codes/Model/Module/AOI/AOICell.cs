@@ -17,8 +17,8 @@ namespace ET
         public float halfDiagonal;//半对角线长度
         public Dictionary<UnitType,List<AOIUnitComponent>> typeUnits;
         public List<AOIUnitComponent> ListenerUnits;//关注此Cell的Unit
-        public List<AOITriggerComponent> Triggers;//关注此Cell的触发器
-        public List<AOITriggerComponent> Colliders;//此Cell的碰撞器
+        public List<AOITrigger> Triggers;//关注此Cell的触发器
+        public List<AOITrigger> Colliders;//此Cell的碰撞器
     }
     
 }

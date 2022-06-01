@@ -17,7 +17,7 @@ namespace ET
         public SpriteAtlas asset;
         public int ref_count;
     }
-
+    [ComponentOf(typeof(Scene))]
     public class ImageLoaderComponent : Entity,IAwake,IDestroy
     {
         public readonly string ATLAS_KEY = "/Atlas/";

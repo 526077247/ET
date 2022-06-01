@@ -7,6 +7,7 @@ namespace ET
 		public string hash;
 
 	}
+	[ComponentOf(typeof(Scene))]
 	public class ServerConfigComponent: Entity,IAwake
     {
 		public readonly string ServerKey = "ServerId";

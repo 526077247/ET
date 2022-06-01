@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 namespace ET
 {
+    [ComponentOf(typeof(Scene))]
     public class SoundComponent:Entity,IAwake,IDestroy
     {
         public static SoundComponent Instance;

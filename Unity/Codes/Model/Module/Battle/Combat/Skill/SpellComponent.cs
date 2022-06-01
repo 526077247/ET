@@ -5,6 +5,7 @@ namespace ET
     /// <summary>
     /// 技能施法组件
     /// </summary>
+    [ComponentOf(typeof(CombatUnitComponent))]
     public class SpellComponent : Entity,IAwake,IDestroy,ITransfer
     {
         /// <summary>

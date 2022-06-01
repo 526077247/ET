@@ -9,7 +9,7 @@ using UnityEngine;
 using System.Threading;
 namespace ET
 {
-    
+    [ComponentOf]
     public class DownloadComponent:Entity,IAwake,IDestroy,IUpdate
     {
         public static bool isInit = false;

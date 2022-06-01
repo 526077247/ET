@@ -7,7 +7,7 @@ using System;
 
 namespace ET
 {
-    
+    [ComponentOf(typeof(SpellPreviewComponent))]
     public class PointSelectComponent : Entity,IAwake,IUpdate,IDestroy,IShow<Action<Vector3>,int[]>,IHide
     {
         public ETTask<GameObject> waiter;

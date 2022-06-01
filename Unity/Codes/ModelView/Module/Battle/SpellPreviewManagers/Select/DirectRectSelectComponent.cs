@@ -2,7 +2,7 @@
 using UnityEngine;
 namespace ET
 {
-
+    [ComponentOf(typeof(SpellPreviewComponent))]
     public class DirectRectSelectComponent:Entity,IAwake,IUpdate,IDestroy,IShow<Action<Vector3>,int[]>,IHide
     {
         public bool IsShow;

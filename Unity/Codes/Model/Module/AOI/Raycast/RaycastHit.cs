@@ -6,7 +6,7 @@ namespace ET
     {
         public Vector3 Hit;
 
-        public AOITriggerComponent Trigger;
+        public AOITrigger Trigger;
 
         public float Distance;
     }

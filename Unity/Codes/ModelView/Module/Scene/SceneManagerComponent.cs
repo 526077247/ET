@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace ET
 {
+    [ComponentOf(typeof(Scene))]
     public class SceneManagerComponent:Entity,IAwake,IDestroy
     {
         public List<string> ScenesChangeIgnoreClean { get; set; }

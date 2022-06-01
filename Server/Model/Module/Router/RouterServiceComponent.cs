@@ -24,6 +24,7 @@ namespace ET
     /// <summary>
     /// 软路由服务组件
     /// </summary>
+    [ComponentOf(typeof(Scene))]
     public sealed class RouterServiceComponent : Entity,IAwake<IPEndPoint>,IUpdate,IDestroy
     {
         // RouterService创建的时间

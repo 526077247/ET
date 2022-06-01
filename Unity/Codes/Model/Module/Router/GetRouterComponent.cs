@@ -7,6 +7,7 @@ namespace ET
     /// <summary>
     /// 初始获取路由组件
     /// </summary>
+    [ComponentOf(typeof(Scene))]
     public class GetRouterComponent : Entity,IAwake<long,long>,IUpdate,IDestroy
     {
         public int ChangeTimes;

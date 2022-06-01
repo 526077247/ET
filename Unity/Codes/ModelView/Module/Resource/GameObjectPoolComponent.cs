@@ -27,6 +27,7 @@ namespace ET
 	//	不管是销毁还是回收，都不要污染go，保证干净
 	//--]]
 	[ChildType]
+	[ComponentOf(typeof(Scene))]
 	public class GameObjectPoolComponent : Entity,IAwake,IDestroy
 	{
 		public Transform __cacheTransRoot;

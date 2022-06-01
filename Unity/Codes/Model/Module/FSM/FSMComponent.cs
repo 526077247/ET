@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace ET
 {
     [ChildType]
+    [ComponentOf]
     public class FSMComponent:Entity,IAwake,IDestroy
     {
         public Dictionary<Type,Entity> m_dic = new Dictionary<Type, Entity>(); //状态机维护的一组状态

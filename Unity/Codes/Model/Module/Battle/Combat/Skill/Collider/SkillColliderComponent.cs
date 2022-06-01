@@ -3,6 +3,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace ET
 {
+    [ComponentOf(typeof(Unit))]
     public class SkillColliderComponent:Entity,IAwake<SkillPara>
     {
         public int ConfigId;

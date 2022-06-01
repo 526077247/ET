@@ -4,7 +4,7 @@ namespace ET
 {
     [FriendClass(typeof(AOISceneComponent))]
     [FriendClass(typeof(AOICell))]
-    [FriendClass(typeof(AOITriggerComponent))]
+    [FriendClass(typeof(AOITrigger))]
     [FriendClass(typeof(AOIUnitComponent))]
     public static class Physics
     {
@@ -14,7 +14,7 @@ namespace ET
             if (type == null) return false;
             using (DictionaryComponent<UnitType, bool> typeTemp = DictionaryComponent<UnitType, bool>.Create())
             {
-                using (HashSetComponent<AOITriggerComponent> temp = HashSetComponent<AOITriggerComponent>.Create())
+                using (HashSetComponent<AOITrigger> temp = HashSetComponent<AOITrigger>.Create())
                 {
                     for (int i = 0; i < type.Length; i++)
                     {
@@ -160,7 +160,7 @@ namespace ET
         }
 
         private static void RaycastHits(Ray ray, AOICell cell,Vector3 inPoint,ListComponent<RaycastHit> hits,
-            HashSetComponent<AOITriggerComponent> triggers, DictionaryComponent<UnitType, bool> type)
+            HashSetComponent<AOITrigger> triggers, DictionaryComponent<UnitType, bool> type)
         {
             for (int i = cell.Triggers.Count-1; i >=0 ; i--)
             {
