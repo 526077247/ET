@@ -90,7 +90,7 @@ namespace ET
                 {
                     res = await self.__LoadSingleImageAsyncInternal( asset_address,callback);
                 }
-                if (asset_type == ImageLoaderComponent.SpriteType.DynSpriteAtlas)
+                else if (asset_type == ImageLoaderComponent.SpriteType.DynSpriteAtlas)
                 {
                     res = await self.__LoadDynSpriteImageAsyncInternal(asset_address, callback);
                 }

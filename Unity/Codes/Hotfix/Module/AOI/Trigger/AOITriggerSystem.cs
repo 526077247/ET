@@ -43,8 +43,13 @@ namespace ET
         public override void Destroy(AOITrigger self)
         {
             // Log.Info("RemoverTrigger"+self.Id);
-            if(self.TriggerType!=TriggerShapeType.Cube)//OBB的在子组件处理
-                self.GetParent<AOIUnitComponent>().RemoverTrigger(self);
+            if (self.TriggerType != TriggerShapeType.Cube) //OBB的在子组件处理
+            {
+                if(!self.IsCollider)
+                    self.GetParent<AOIUnitComponent>().RemoverTrigger(self);
+                else
+                    self.GetParent<AOIUnitComponent>().RemoverCollider(self);
+            }
             self.Handler=null;
             
             if (Define.Debug)
@@ -509,32 +514,31 @@ namespace ET
         public static void RemoverTrigger(this AOIUnitComponent self, AOITrigger trigger)
         {
             self.SphereTriggers.Remove(trigger);
-            #region 添加监听事件，并判断触发离开触发器
+            #region 移除监听事件，并判断触发离开触发器
             var len = self.Scene.gridLen;
             int count = (int)Mathf.Ceil(trigger.Radius / len);
             if (count > 2) Log.Info("检测范围超过2格，触发半径："+ trigger.Radius);
             HashSetComponent<AOITrigger> temp = HashSetComponent<AOITrigger>.Create();
             for (int i = trigger.FollowCell.Count-1; i >=0 ; i--)
             {
-                 var item = trigger.FollowCell[i];
-                 item.RemoveTriggerListener(trigger);
-                 //离开触发器
-                 if (trigger.Flag == AOITriggerType.All || trigger.Flag == AOITriggerType.Exit)//注意不能放前面判断
-                 {
-                     using (var colliders = item.GetAllCollider(trigger.Selecter,trigger))
-                     {
-                         for (int j = 0; j < colliders.Count; j++)
-                         {
-                             var collider = colliders[j];
-                             if (trigger.IsInTrigger(collider,trigger.GetRealPos(),
-                                     trigger.GetRealRot(),collider.GetRealPos(),collider.GetRealRot()))
-                             {
-                                 if(collider==trigger) continue;
-                                 temp.Add(collider);
-                             }
-                         }
-                     }
-                 }                   
+                var item = trigger.FollowCell[i];
+                item.RemoveTriggerListener(trigger);
+                //离开触发器
+                if (trigger.Flag == AOITriggerType.All || trigger.Flag == AOITriggerType.Exit)//注意不能放前面判断
+                {
+                    using (var colliders = item.GetAllCollider(trigger.Selecter,trigger))
+                    {
+                        for (int j = 0; j < colliders.Count; j++)
+                        {
+                            var collider = colliders[j];
+                            if (trigger.IsInTrigger(collider,trigger.GetRealPos(),
+                                    trigger.GetRealRot(),collider.GetRealPos(),collider.GetRealRot()))
+                            {
+                                temp.Add(collider);
+                            }
+                        }
+                    }
+                }                   
             }
             foreach (var item in temp)
             {
@@ -544,7 +548,39 @@ namespace ET
             trigger.Dispose();
             #endregion
         }
-        
+        public static void RemoverCollider(this AOIUnitComponent self, AOITrigger collider)
+        {
+            self.SphereTriggers.Remove(collider);
+            #region 添加监听事件，并判断触发离开触发器
+            var len = self.Scene.gridLen;
+            int count = (int)Mathf.Ceil(collider.Radius / len);
+            if (count > 2) Log.Info("检测范围超过2格，触发半径："+ collider.Radius);
+            HashSetComponent<AOITrigger> temp = HashSetComponent<AOITrigger>.Create();
+            for (int i = collider.FollowCell.Count-1; i >=0 ; i--)
+            {
+                var item = collider.FollowCell[i];
+                item.RemoveTriggerListener(collider);
+                //离开触发器
+                for (int j = 0; j < item.Triggers.Count; j++)
+                {
+                    var trigger = item.Triggers[j];
+                    if (collider.Parent.Id == self.Parent.Id) continue;
+                    if (trigger.Flag!=AOITriggerType.Exit&&trigger.Flag!=AOITriggerType.All&&trigger.IsInTrigger(collider,trigger.GetRealPos(),
+                            trigger.GetRealRot(),collider.GetRealPos(),collider.GetRealRot()))
+                    {
+                        temp.Add(collider);
+                    }
+                }
+                           
+            }
+            foreach (var item in temp)
+            {
+                item.OnTrigger(collider,AOITriggerType.Exit);
+            }
+            temp.Dispose();
+            collider.Dispose();
+            #endregion
+        }
         /// <summary>
         /// 触发器自己坐标改变后，看别人有没有进来或离开
         /// </summary>
