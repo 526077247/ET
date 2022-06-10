@@ -594,6 +594,11 @@ namespace ET
                         continue;
                     }
 
+                    if (!headInfo.FieldAttribute.Contains(configTypeStr))
+                    {
+                        continue;
+                    }
+
                     if (headInfo.FieldType == "json")
                     {
                         continue;
