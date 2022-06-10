@@ -633,6 +633,11 @@ namespace ET
                         return $"[{value}]";
                     }
                 case "string[]":
+                    if(string.IsNullOrEmpty(value)) return "[]";
+                    if (value.StartsWith("\""))
+                    {
+                        return $"[{value}]";
+                    }
                     var list = value.Split(",");
                     value = "";
                     for (int i = 0; i < list.Length; i++)

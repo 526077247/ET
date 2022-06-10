@@ -72,12 +72,6 @@ namespace ET
                         AttrExporter.Export();
                         return 0;
                     }
-                    case AppType.SkillExporter:
-                    {
-                        Game.Options.Console = 1;
-                        SkillChecker.Export();
-                        return 0;
-                    }
                 }
             }
             catch (Exception e)

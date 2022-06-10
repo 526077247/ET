@@ -17,11 +17,10 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 297fe8ba6738ede449244bc52a132a2f
   m_SerializeEntries:
-  - m_GUID: 093b45c82ecb03f4c8a9274fc72ea1d4
-    m_Address: GameAssets/Config/Map.xml
+  - m_GUID: 2acde9e3f5499c240b224ccce2ca6e33
+    m_Address: GameAssets/Config/Map.json
     m_ReadOnly: 0
-    m_SerializedLabels:
-    - default
+    m_SerializedLabels: []
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
   m_ReadOnly: 0

@@ -20,8 +20,7 @@ MonoBehaviour:
   - m_GUID: e91ff95ebfb4f5b4ca96861b6fbb1d10
     m_Address: Skill/Skill_1004/Prefabs/SkillExecution_1004.prefab
     m_ReadOnly: 0
-    m_SerializedLabels:
-    - default
+    m_SerializedLabels: []
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
   m_ReadOnly: 0

@@ -1,8 +1,7 @@
-﻿using System.Xml;
-using AssetBundles;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using System;
+
 namespace ET
 {
     [ObjectSystem]
@@ -25,44 +24,33 @@ namespace ET
     {
         public static async ETTask Init(this AOISceneViewComponent self)
         {
-            #region 从XML初始化场景物体信息
+            #region 从Json初始化场景物体信息
             self.DynamicSceneMap = new Dictionary<string, AOISceneViewComponent.DynamicScene>();
-            string xmlPath = "GameAssets/Config/Map.xml";
+            string xmlPath = "GameAssets/Config/Map.json";
             var content = await ResourcesComponent.Instance.LoadAsync<TextAsset>(xmlPath);
-            XmlDocument xmlDocument = new XmlDocument();
-            xmlDocument.LoadXml(content.text);
-            // 使用 XPATH 获取所有 gameObject 节点
-            XmlNodeList xmlNodeList = xmlDocument.LastChild.ChildNodes;
-            foreach(XmlNode scene in xmlNodeList)
+            List<AOISceneViewComponent.DynamicScene> root = null;
+            try
             {
-                var sceneName = scene.Attributes["sceneName"].Value;
-                AOISceneViewComponent.DynamicScene item = new AOISceneViewComponent.DynamicScene();
+                root= JsonHelper.FromJson<List<AOISceneViewComponent.DynamicScene>>(content.text);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex);
+            }
+            
+            if (root == null) return;
+            foreach(var item in root)
+            {
+                var sceneName = item.sceneName;
                 self.DynamicSceneMap.Add(sceneName,item);
-                item.Objects = new List<AOISceneViewComponent.DynamicSceneObject>();
                 item.GridMapObjects = new Dictionary<long, List<AOISceneViewComponent.DynamicSceneObject>>();
-                foreach (XmlNode xmlNode in scene.ChildNodes)
+                for (int index = 0; index < item.Objects.Count; index++)
                 {
-                    AOISceneViewComponent.DynamicSceneObject sceneObject = new AOISceneViewComponent.DynamicSceneObject();
-                    string gameObjectName = xmlNode.Attributes["objectName"].Value;
-                    string objectPath = xmlNode.Attributes["objectPath"].Value;
-                    sceneObject.Path = objectPath;
-                    XmlNode positionXmlNode = xmlNode.SelectSingleNode("descendant::position");
-                    XmlNode rotationXmlNode = xmlNode.SelectSingleNode("descendant::rotation");
-                    XmlNode scaleXmlNode = xmlNode.SelectSingleNode("descendant::scale");
-
-                    if (positionXmlNode != null && rotationXmlNode != null && scaleXmlNode != null)
-                    {
-                        sceneObject.Position=new Vector3(float.Parse(positionXmlNode.Attributes["x"].Value),
-                            float.Parse(positionXmlNode.Attributes["y"].Value), float.Parse(positionXmlNode.Attributes["z"].Value));
-                        sceneObject.Rotation=Quaternion.Euler(new Vector3(float.Parse(rotationXmlNode.Attributes["x"].Value),
-                            float.Parse(rotationXmlNode.Attributes["y"].Value), float.Parse(rotationXmlNode.Attributes["z"].Value)));
-                        sceneObject.Scale=new Vector3(float.Parse(scaleXmlNode.Attributes["x"].Value),
-                            float.Parse(scaleXmlNode.Attributes["y"].Value), float.Parse(scaleXmlNode.Attributes["z"].Value));
-                    }
-                    item.Objects.Add(sceneObject);
-                    int x = (int)Math.Floor( sceneObject.Position.x / self.GridLen);
-                    int y = (int)Math.Floor( sceneObject.Position.z / self.GridLen);
-                    float radius = Mathf.Sqrt(sceneObject.Scale.x*sceneObject.Scale.x+sceneObject.Scale.y*sceneObject.Scale.y+sceneObject.Scale.z*sceneObject.Scale.z)/2;
+                    var sceneObject = item.Objects[index];
+                    int x = (int)Math.Floor( sceneObject.transform.Position.x / self.GridLen);
+                    int y = (int)Math.Floor( sceneObject.transform.Position.z / self.GridLen);
+                    float radius = Mathf.Sqrt(sceneObject.transform.Scale.x*sceneObject.transform.Scale.x+sceneObject.transform.Scale.y*
+                        sceneObject.transform.Scale.y+sceneObject.transform.Scale.z*sceneObject.transform.Scale.z)/2;
                     int count = (int)Math.Ceiling(radius / self.GridLen);//环境多加一格
                     float cellSqrRadius = Mathf.Pow(self.GridLen, 2) * 2;
                     float cellRadius = Mathf.Sqrt(cellSqrRadius);
@@ -72,8 +60,8 @@ namespace ET
                         for (int j = y-count; j <=y+count; j++)
                         {
                             var yMin = j* self.GridLen;
-                            var res = AOIHelper.GetGridRelationshipWithOBB(sceneObject.Position, sceneObject.Rotation,
-                                sceneObject.Scale, self.GridLen, xMin, yMin,cellRadius,cellSqrRadius);
+                            var res = AOIHelper.GetGridRelationshipWithOBB(sceneObject.transform.Position, sceneObject.transform.Rotation,
+                                sceneObject.transform.Scale, self.GridLen, xMin, yMin,cellRadius,cellSqrRadius);
                             if (res >= 0)
                             {
                                 var id = AOIHelper.CreateCellId(i, j);
@@ -87,7 +75,6 @@ namespace ET
                     }
                 }
             }
-            xmlDocument = null;
             #endregion
             
         }
@@ -309,12 +296,12 @@ namespace ET
                                     continue;
                                 }
 
-                                Log.Info("AOISceneView Load " + obj.Path);
+                                Log.Info("AOISceneView Load " + obj.objectPath);
                                 //没有
                                 self.DynamicSceneObjectMapObj[obj] = new AOISceneViewComponent.DynamicSceneViewObj();
                                 viewObj = self.DynamicSceneObjectMapObj[obj];
                                 viewObj.IsLoading = true;
-                                GameObjectPoolComponent.Instance.GetGameObjectAsync(obj.Path, (view) =>
+                                GameObjectPoolComponent.Instance.GetGameObjectAsync(obj.objectPath, (view) =>
                                 {
                                     if (!viewObj.IsLoading) //加载出来后已经不需要的
                                     {
@@ -323,9 +310,9 @@ namespace ET
                                     }
                                     viewObj.Obj = view;
                                     viewObj.IsLoading = false;
-                                    view.transform.position = obj.Position;
-                                    view.transform.rotation = obj.Rotation;
-                                    view.transform.localScale = obj.Scale;
+                                    view.transform.position = obj.transform.Position;
+                                    view.transform.rotation = obj.transform.Rotation;
+                                    view.transform.localScale = obj.transform.Scale;
                                     view.transform.parent = GlobalComponent.Instance.Scene;
                                 }).Coroutine();
                             }
@@ -344,7 +331,7 @@ namespace ET
                             //不需要显示但有
                             if (self.DynamicSceneObjectMapCount[obj] <= 0 && self.DynamicSceneObjectMapObj.ContainsKey(obj))
                             {
-                                Log.Info("AOISceneView Remove " + obj.Path);
+                                Log.Info("AOISceneView Remove " + obj.objectPath);
                                 var viewObj = self.DynamicSceneObjectMapObj[obj];
                                 if (viewObj.Obj == null) //还在加载
                                 {

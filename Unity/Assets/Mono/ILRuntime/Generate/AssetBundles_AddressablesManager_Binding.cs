@@ -48,20 +48,6 @@ namespace ILRuntime.Runtime.Generated
                     lst.Add(m);
                 }
             }
-            args = new Type[]{typeof(UnityEngine.TextAsset)};
-            if (genericMethods.TryGetValue("LoadAssetAsync", out lst))
-            {
-                foreach(var m in lst)
-                {
-                    if(m.MatchGenericParameters(args, typeof(ET.ETTask<UnityEngine.TextAsset>), typeof(System.String)))
-                    {
-                        method = m.MakeGenericMethod(args);
-                        app.RegisterCLRMethodRedirection(method, LoadAssetAsync_4);
-
-                        break;
-                    }
-                }
-            }
             args = new Type[]{typeof(UnityEngine.GameObject)};
             if (genericMethods.TryGetValue("LoadAssetAsync", out lst))
             {
@@ -70,7 +56,7 @@ namespace ILRuntime.Runtime.Generated
                     if(m.MatchGenericParameters(args, typeof(ET.ETTask<UnityEngine.GameObject>), typeof(System.String)))
                     {
                         method = m.MakeGenericMethod(args);
-                        app.RegisterCLRMethodRedirection(method, LoadAssetAsync_5);
+                        app.RegisterCLRMethodRedirection(method, LoadAssetAsync_4);
 
                         break;
                     }
@@ -84,7 +70,7 @@ namespace ILRuntime.Runtime.Generated
                     if(m.MatchGenericParameters(args, typeof(ET.ETTask<UnityEngine.U2D.SpriteAtlas>), typeof(System.String)))
                     {
                         method = m.MakeGenericMethod(args);
-                        app.RegisterCLRMethodRedirection(method, LoadAssetAsync_6);
+                        app.RegisterCLRMethodRedirection(method, LoadAssetAsync_5);
 
                         break;
                     }
@@ -98,7 +84,7 @@ namespace ILRuntime.Runtime.Generated
                     if(m.MatchGenericParameters(args, typeof(ET.ETTask<UnityEngine.Sprite>), typeof(System.String)))
                     {
                         method = m.MakeGenericMethod(args);
-                        app.RegisterCLRMethodRedirection(method, LoadAssetAsync_7);
+                        app.RegisterCLRMethodRedirection(method, LoadAssetAsync_6);
 
                         break;
                     }
@@ -112,7 +98,7 @@ namespace ILRuntime.Runtime.Generated
                     if(m.MatchGenericParameters(args, typeof(ET.ETTask<UnityEngine.Texture>), typeof(System.String)))
                     {
                         method = m.MakeGenericMethod(args);
-                        app.RegisterCLRMethodRedirection(method, LoadAssetAsync_8);
+                        app.RegisterCLRMethodRedirection(method, LoadAssetAsync_7);
 
                         break;
                     }
@@ -124,6 +110,20 @@ namespace ILRuntime.Runtime.Generated
                 foreach(var m in lst)
                 {
                     if(m.MatchGenericParameters(args, typeof(ET.ETTask<UnityEngine.Material>), typeof(System.String)))
+                    {
+                        method = m.MakeGenericMethod(args);
+                        app.RegisterCLRMethodRedirection(method, LoadAssetAsync_8);
+
+                        break;
+                    }
+                }
+            }
+            args = new Type[]{typeof(UnityEngine.TextAsset)};
+            if (genericMethods.TryGetValue("LoadAssetAsync", out lst))
+            {
+                foreach(var m in lst)
+                {
+                    if(m.MatchGenericParameters(args, typeof(ET.ETTask<UnityEngine.TextAsset>), typeof(System.String)))
                     {
                         method = m.MakeGenericMethod(args);
                         app.RegisterCLRMethodRedirection(method, LoadAssetAsync_9);
@@ -258,7 +258,7 @@ namespace ILRuntime.Runtime.Generated
             AssetBundles.AddressablesManager instance_of_this_method = (AssetBundles.AddressablesManager)typeof(AssetBundles.AddressablesManager).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
-            var result_of_this_method = instance_of_this_method.LoadAssetAsync<UnityEngine.TextAsset>(@addressPath);
+            var result_of_this_method = instance_of_this_method.LoadAssetAsync<UnityEngine.GameObject>(@addressPath);
 
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
@@ -277,7 +277,7 @@ namespace ILRuntime.Runtime.Generated
             AssetBundles.AddressablesManager instance_of_this_method = (AssetBundles.AddressablesManager)typeof(AssetBundles.AddressablesManager).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
-            var result_of_this_method = instance_of_this_method.LoadAssetAsync<UnityEngine.GameObject>(@addressPath);
+            var result_of_this_method = instance_of_this_method.LoadAssetAsync<UnityEngine.U2D.SpriteAtlas>(@addressPath);
 
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
@@ -296,7 +296,7 @@ namespace ILRuntime.Runtime.Generated
             AssetBundles.AddressablesManager instance_of_this_method = (AssetBundles.AddressablesManager)typeof(AssetBundles.AddressablesManager).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
-            var result_of_this_method = instance_of_this_method.LoadAssetAsync<UnityEngine.U2D.SpriteAtlas>(@addressPath);
+            var result_of_this_method = instance_of_this_method.LoadAssetAsync<UnityEngine.Sprite>(@addressPath);
 
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
@@ -315,7 +315,7 @@ namespace ILRuntime.Runtime.Generated
             AssetBundles.AddressablesManager instance_of_this_method = (AssetBundles.AddressablesManager)typeof(AssetBundles.AddressablesManager).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
-            var result_of_this_method = instance_of_this_method.LoadAssetAsync<UnityEngine.Sprite>(@addressPath);
+            var result_of_this_method = instance_of_this_method.LoadAssetAsync<UnityEngine.Texture>(@addressPath);
 
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
@@ -334,7 +334,7 @@ namespace ILRuntime.Runtime.Generated
             AssetBundles.AddressablesManager instance_of_this_method = (AssetBundles.AddressablesManager)typeof(AssetBundles.AddressablesManager).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
-            var result_of_this_method = instance_of_this_method.LoadAssetAsync<UnityEngine.Texture>(@addressPath);
+            var result_of_this_method = instance_of_this_method.LoadAssetAsync<UnityEngine.Material>(@addressPath);
 
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
@@ -353,7 +353,7 @@ namespace ILRuntime.Runtime.Generated
             AssetBundles.AddressablesManager instance_of_this_method = (AssetBundles.AddressablesManager)typeof(AssetBundles.AddressablesManager).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
-            var result_of_this_method = instance_of_this_method.LoadAssetAsync<UnityEngine.Material>(@addressPath);
+            var result_of_this_method = instance_of_this_method.LoadAssetAsync<UnityEngine.TextAsset>(@addressPath);
 
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }

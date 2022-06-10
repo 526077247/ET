@@ -134,8 +134,7 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_Dictionary_2_Int32_List_1_Int32_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Int32_List_1_Object_Array_Binding.Register(app);
             System_Collections_Generic_List_1_Object_Array_Binding.Register(app);
-            ET_ETTask_1_TextAsset_Binding.Register(app);
-            UnityEngine_TextAsset_Binding.Register(app);
+            System_Reflection_PropertyInfo_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Int32_Int64_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Type_Object_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_Byte_Array_Binding.Register(app);
@@ -158,16 +157,15 @@ namespace ILRuntime.Runtime.Generated
             ET_Recast_Binding.Register(app);
             ET_MathHelper_Binding.Register(app);
             AssetBundles_AddressablesManager_Binding.Register(app);
-            ET_ETAsyncTaskMethodBuilder_1_TextAsset_Binding.Register(app);
             ET_ETAsyncTaskMethodBuilder_1_GameObject_Binding.Register(app);
             ET_ETAsyncTaskMethodBuilder_1_SpriteAtlas_Binding.Register(app);
             ET_ETAsyncTaskMethodBuilder_1_Sprite_Binding.Register(app);
             ET_ETAsyncTaskMethodBuilder_1_Texture_Binding.Register(app);
             ET_ETAsyncTaskMethodBuilder_1_Material_Binding.Register(app);
-            System_Action_1_TextAsset_Binding.Register(app);
-            UnityEngine_Object_Binding.Register(app);
+            ET_ETAsyncTaskMethodBuilder_1_TextAsset_Binding.Register(app);
             System_Action_1_GameObject_Binding.Register(app);
             ET_ETTask_1_GameObject_Binding.Register(app);
+            UnityEngine_Object_Binding.Register(app);
             System_Action_1_SpriteAtlas_Binding.Register(app);
             ET_ETTask_1_SpriteAtlas_Binding.Register(app);
             System_Action_1_Sprite_Binding.Register(app);
@@ -176,6 +174,8 @@ namespace ILRuntime.Runtime.Generated
             ET_ETTask_1_Texture_Binding.Register(app);
             System_Action_1_Material_Binding.Register(app);
             ET_ETTask_1_Material_Binding.Register(app);
+            System_Action_1_TextAsset_Binding.Register(app);
+            ET_ETTask_1_TextAsset_Binding.Register(app);
             System_Net_IPAddress_Binding.Register(app);
             System_Net_IPEndPoint_Binding.Register(app);
             System_Net_Sockets_Socket_Binding.Register(app);
@@ -332,11 +332,7 @@ namespace ILRuntime.Runtime.Generated
             UnityEngine_Sprite_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_Material_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_ILTypeInstance_ILTypeInstance_Binding.Register(app);
-            System_Xml_XmlDocument_Binding.Register(app);
-            System_Xml_XmlNode_Binding.Register(app);
-            System_Xml_XmlNodeList_Binding.Register(app);
-            System_Collections_IEnumerator_Binding.Register(app);
-            System_Xml_XmlAttributeCollection_Binding.Register(app);
+            UnityEngine_TextAsset_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Int64_List_1_ILTypeInstance_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_ILTypeInstance_ILTypeInstance_Binding_Enumerator_Binding.Register(app);
             System_Collections_Generic_KeyValuePair_2_ILTypeInstance_ILTypeInstance_Binding.Register(app);
@@ -384,7 +380,6 @@ namespace ILRuntime.Runtime.Generated
             ET_MonoPool_Binding.Register(app);
             LitJson_JsonMapper_Binding.Register(app);
             System_Reflection_FieldInfo_Binding.Register(app);
-            System_Reflection_PropertyInfo_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_Type_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_Type_Binding_Enumerator_Binding.Register(app);
             System_Collections_Generic_KeyValuePair_2_String_Type_Binding.Register(app);
@@ -408,6 +403,7 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_IEnumerable_1_KeyValuePair_2_Type_Int32_Binding.Register(app);
             System_Collections_Generic_IEnumerator_1_KeyValuePair_2_Type_Int32_Binding.Register(app);
             System_Collections_Generic_KeyValuePair_2_Type_Int32_Binding.Register(app);
+            System_Collections_IEnumerator_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Type_UnOrderMultiMap_2_Type_Object_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Type_Queue_1_ILTypeInstance_Binding.Register(app);
             System_Collections_Generic_Queue_1_ILTypeInstance_Binding.Register(app);

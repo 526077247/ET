@@ -14,7 +14,6 @@ namespace ET
         CHExcelExporter,//策划导表校验
         ChapterExporter,//单独导表剧情
         AttrExporter,//导属性
-        SkillExporter,//导技能配置
     }
     
     public class Options

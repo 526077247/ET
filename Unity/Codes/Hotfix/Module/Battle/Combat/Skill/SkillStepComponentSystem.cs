@@ -1,8 +1,5 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-#if NOT_UNITY
-using System.IO;
-#endif
+﻿using System;
+using System.Collections.Generic;
 
 namespace ET
 {
@@ -33,13 +30,8 @@ namespace ET
     [FriendClass(typeof(SkillAbility))]
     public static class SkillStepComponentSystem
     {
-        public static 
-#if !NOT_UNITY
-                async ETTask 
-#else
-                void
-#endif
-                GetSkillStepInfo(this SkillStepComponent self,int configId,SkillAbility skill)
+        public static void GetSkillStepInfo(this SkillStepComponent self,int configId, out List<int> timeline,
+            out List<int> steptype, out List<object[]> paras)
         {
            
             bool needinit = false;
@@ -48,37 +40,65 @@ namespace ET
                 needinit = true;
                 self.TimeLine[configId] = new List<int>();
             }
-            skill.TimeLine = self.TimeLine[configId];
+            timeline = self.TimeLine[configId];
             
             if (!self.StepType.ContainsKey(configId))
             {
                 needinit = true;
                 self.StepType[configId] = new List<int>();
             }
-            skill.StepType = self.StepType[configId];
+            steptype = self.StepType[configId];
             
             if (!self.Params.ContainsKey(configId))
             {
                 needinit = true;
                 self.Params[configId] = new List<object[]>();
             }
-            skill.Paras = self.Params[configId];
+            paras = self.Params[configId];
+            
             if (needinit)
             {
-                Log.Info("GetSkillStepInfo "+configId);
-                var config = SkillConfigCategory.Instance.Get(configId);
-                
-#if NOT_UNITY
-                var text = File.ReadAllText($"../Skill/{config.JsonFile}.json");
-#else
-                var text = (await ResourcesComponent.Instance.LoadAsync<TextAsset>($"Skill/Config/{config.JsonFile}.json")).text;
-#endif
-                var list = JsonHelper.FromJson<List<SkillStep>>(text);
-                for (int i = 0; i < list.Count; i++)
+                SkillStepConfig config = SkillStepConfigCategory.Instance.Get(configId);
+                var type = config.GetType();
+                for (int i = 0; i < config.ParaCount; i++)
                 {
-                    self.TimeLine[configId].Add(list[i].Trigger);
-                    self.StepType[configId].Add(list[i].Type);
-                    self.Params[configId].Add(list[i].Params);
+                    object timelineItem = null;
+                    object steptypeItem = null;
+                    object stepParameterItem = null;
+                    try
+                    {
+                        var stepParameter = type.GetProperty("StepParameter" + i);
+                        var stepStyle = type.GetProperty("StepStyle" + i);
+                        var triggerTime = type.GetProperty("TriggerTime" + i);
+                        timelineItem = triggerTime.GetValue(config);
+                        if(timelineItem!=null)
+                            timeline.Add((int)timelineItem);
+                        else
+                            timeline.Add(0);
+                        
+                        steptypeItem = stepStyle.GetValue(config);
+                        if(steptypeItem!=null)
+                            steptype.Add((int)steptypeItem);
+                        else
+                            steptype.Add(0);
+                        stepParameterItem = stepParameter.GetValue(config);
+                        if (stepParameterItem != null)
+                        {
+                            var list = (string[]) stepParameterItem;
+                            object[] temp = new object[list.Length];
+                            for (int j = 0; j < temp.Length; j++)
+                            {
+                                temp[j] = list[j];
+                            }
+                            paras.Add(temp);
+                        }
+                        else
+                            paras.Add(new object[0]);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Error(configId+" Load Fail! at "+i+" values:"+timelineItem+" "+steptypeItem+" "+stepParameterItem+" "+"\r\n"+ex);
+                    }
                 }
             }
         }
