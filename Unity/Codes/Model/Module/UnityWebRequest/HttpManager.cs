@@ -30,7 +30,7 @@ public class HttpManager
     }
     public UnityWebRequest HttpPost(string url, Dictionary<string, string> headers = null, Dictionary<string, string> param = null, int timeout = DEFAULT_TIMEOUT)
     {
-        byte[] postBytes = System.Text.Encoding.Default.GetBytes(JsonUtility.ToJson(param));
+        byte[] postBytes = System.Text.Encoding.Default.GetBytes(JsonHelper.ToJson(param));
         var request = new UnityWebRequest(url, "POST");
         request.certificateHandler = certificateHandler;
         request.uploadHandler = (UploadHandler)new UploadHandlerRaw(postBytes);
@@ -133,7 +133,7 @@ public class HttpManager
         {
             try
             {
-                return LitJson.JsonMapper.ToObject<T>(op.downloadHandler.text);
+                return JsonHelper.FromJson<T>(op.downloadHandler.text);
             }
             catch
             {

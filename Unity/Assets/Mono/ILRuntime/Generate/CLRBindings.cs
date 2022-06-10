@@ -43,7 +43,6 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_KeyValuePair_2_String_String_Binding.Register(app);
             System_IDisposable_Binding.Register(app);
             System_Text_Encoding_Binding.Register(app);
-            UnityEngine_JsonUtility_Binding.Register(app);
             UnityEngine_Networking_UploadHandlerRaw_Binding.Register(app);
             UnityEngine_Networking_DownloadHandlerBuffer_Binding.Register(app);
             UnityEngine_Networking_UnityWebRequestTexture_Binding.Register(app);
@@ -63,7 +62,6 @@ namespace ILRuntime.Runtime.Generated
             ET_ETTask_1_Boolean_Binding.Register(app);
             UnityEngine_Networking_DownloadHandler_Binding.Register(app);
             ET_StringHelper_Binding.Register(app);
-            LitJson_JsonMapper_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Int32_ILTypeInstance_Binding.Register(app);
             ET_TimeHelper_Binding.Register(app);
             ET_ETAsyncTaskMethodBuilder_Binding.Register(app);
@@ -105,8 +103,6 @@ namespace ILRuntime.Runtime.Generated
             System_Activator_Binding.Register(app);
             System_Reflection_MemberInfo_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Byte_List_1_ILTypeInstance_Binding.Register(app);
-            System_Nullable_1_Vector3_Binding.Register(app);
-            System_Nullable_1_Quaternion_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_ILTypeInstance_Int32_Binding.Register(app);
             System_DateTime_Binding.Register(app);
             System_Diagnostics_StackTrace_Binding.Register(app);
@@ -122,10 +118,9 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_Dictionary_2_Byte_Boolean_Binding.Register(app);
             System_Collections_Generic_HashSet_1_ILTypeInstance_Binding.Register(app);
             ET_ListComponent_1_String_Binding.Register(app);
-            System_Boolean_Binding.Register(app);
             System_Action_2_ILTypeInstance_Int32_Binding.Register(app);
-            System_Collections_Generic_HashSet_1_ILTypeInstance_Binding_Enumerator_Binding.Register(app);
             UnityEngine_Mathf_Binding.Register(app);
+            System_Collections_Generic_HashSet_1_ILTypeInstance_Binding_Enumerator_Binding.Register(app);
             UnityEngine_Vector2_Binding.Register(app);
             ET_DictionaryComponent_2_Int32_ILTypeInstance_Binding.Register(app);
             ET_DictionaryComponent_2_Int32_Int32_Binding.Register(app);
@@ -387,6 +382,7 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_List_1_Action_Binding.Register(app);
             System_Collections_Generic_List_1_Action_Binding_Enumerator_Binding.Register(app);
             ET_MonoPool_Binding.Register(app);
+            LitJson_JsonMapper_Binding.Register(app);
             System_Reflection_FieldInfo_Binding.Register(app);
             System_Reflection_PropertyInfo_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_Type_Binding.Register(app);

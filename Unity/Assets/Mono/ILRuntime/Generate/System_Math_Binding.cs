@@ -32,11 +32,11 @@ namespace ILRuntime.Runtime.Generated
             method = type.GetMethod("Floor", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, Floor_2);
             args = new Type[]{typeof(System.Double)};
-            method = type.GetMethod("Ceiling", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, Ceiling_3);
-            args = new Type[]{typeof(System.Double)};
             method = type.GetMethod("Sqrt", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, Sqrt_4);
+            app.RegisterCLRMethodRedirection(method, Sqrt_3);
+            args = new Type[]{typeof(System.Double)};
+            method = type.GetMethod("Ceiling", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, Ceiling_4);
             args = new Type[]{typeof(System.Int32)};
             method = type.GetMethod("Abs", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, Abs_5);
@@ -99,24 +99,7 @@ namespace ILRuntime.Runtime.Generated
             return __ret + 1;
         }
 
-        static StackObject* Ceiling_3(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
-        {
-            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            StackObject* ptr_of_this_method;
-            StackObject* __ret = ILIntepreter.Minus(__esp, 1);
-
-            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.Double @a = *(double*)&ptr_of_this_method->Value;
-
-
-            var result_of_this_method = System.Math.Ceiling(@a);
-
-            __ret->ObjectType = ObjectTypes.Double;
-            *(double*)&__ret->Value = result_of_this_method;
-            return __ret + 1;
-        }
-
-        static StackObject* Sqrt_4(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* Sqrt_3(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
@@ -127,6 +110,23 @@ namespace ILRuntime.Runtime.Generated
 
 
             var result_of_this_method = System.Math.Sqrt(@d);
+
+            __ret->ObjectType = ObjectTypes.Double;
+            *(double*)&__ret->Value = result_of_this_method;
+            return __ret + 1;
+        }
+
+        static StackObject* Ceiling_4(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        {
+            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
+            StackObject* ptr_of_this_method;
+            StackObject* __ret = ILIntepreter.Minus(__esp, 1);
+
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
+            System.Double @a = *(double*)&ptr_of_this_method->Value;
+
+
+            var result_of_this_method = System.Math.Ceiling(@a);
 
             __ret->ObjectType = ObjectTypes.Double;
             *(double*)&__ret->Value = result_of_this_method;

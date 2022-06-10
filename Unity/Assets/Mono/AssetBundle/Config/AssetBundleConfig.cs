@@ -75,7 +75,7 @@ namespace AssetBundles
          */
         private void ReadConfigInfo(string text)
         {
-            var config = JsonUtility.FromJson<Config>(text);
+            var config = LitJson.JsonMapper.ToObject<Config>(text);
             if (!string.IsNullOrEmpty(config.remote_cdn_url))
             {
                 this.remote_cdn_url = config.remote_cdn_url;
