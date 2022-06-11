@@ -18,7 +18,7 @@ namespace ET
         public float Radius;
         public float SqrRadius;
         public AOITriggerType Flag;
-        public List<UnitType> Selecter;
+        public ListComponent<UnitType> Selecter;
         public Action<AOIUnitComponent, AOITriggerType> Handler;
         public int TriggerType = TriggerShapeType.Sphere;//形状
         /// <summary>

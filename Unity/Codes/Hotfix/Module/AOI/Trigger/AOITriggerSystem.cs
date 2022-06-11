@@ -15,6 +15,7 @@ namespace ET
                 self.DebugMap = DictionaryComponent<AOICell, int>.Create();
                 self.LogInfo = ListComponent<string>.Create();
             }
+            self.Selecter = ListComponent<UnitType>.Create();
             self.Radius = a;
             self.SqrRadius = a * a;
             self.Handler = b;
@@ -31,8 +32,10 @@ namespace ET
                 self.DebugMap = DictionaryComponent<AOICell, int>.Create();
                 self.LogInfo = ListComponent<string>.Create();
             }
+            self.Selecter = ListComponent<UnitType>.Create();
             self.Radius = a;
             self.SqrRadius = a * a;
+            self.Handler = null;
             self.FollowCell = ListComponent<AOICell>.Create();
         }
     }
@@ -42,6 +45,7 @@ namespace ET
     {
         public override void Destroy(AOITrigger self)
         {
+            if(self.IsDisposed) return;
             // Log.Info("RemoverTrigger"+self.Id);
             if (self.TriggerType != TriggerShapeType.Cube) //OBB的在子组件处理
             {
@@ -50,8 +54,11 @@ namespace ET
                 else
                     self.GetParent<AOIUnitComponent>().RemoverCollider(self);
             }
+            self.Selecter.Dispose();
+            self.Selecter = null;
             self.Handler=null;
-            
+            self.FollowCell.Dispose();
+            self.FollowCell = null;
             if (Define.Debug)
             {
                 bool hasErr = false;
@@ -125,7 +132,6 @@ namespace ET
         /// <param name="radius"></param>
         /// <param name="type"></param>
         /// <param name="handler"></param>
-        /// <param name="isCollider"></param>
         /// <param name="selecter"></param>
         /// <returns></returns>
         static AOITrigger AddTrigger(this AOIUnitComponent self, float radius, AOITriggerType type,
@@ -133,7 +139,8 @@ namespace ET
         {
             AOITrigger trigger = self.AddChild<AOITrigger,float,Action<AOIUnitComponent, AOITriggerType>>(radius,handler);
             trigger.Flag = type;
-            trigger.Selecter = new List<UnitType>(selecter);
+           
+            trigger.Selecter.AddRange(selecter);
             trigger.TriggerType=TriggerShapeType.Sphere;
             trigger.IsCollider = false;
             self.SphereTriggers.Add(trigger);
