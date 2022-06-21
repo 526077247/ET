@@ -92,6 +92,30 @@ namespace ET
     [FriendClass(typeof(AOICell))]
     public static class AOITriggerSystem
     {
+        /// <summary>
+        /// 设置是否生效
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="enable"></param>
+        public static void SetEnable(this AOITrigger self, bool enable)
+        {
+            if(self.Enable == enable) return;
+            self.Enable = enable;
+            if (self.Enable)
+            {
+                if(self.IsCollider)
+                    self.GetParent<AOIUnitComponent>().AddColliderListener(self);
+                else
+                    self.GetParent<AOIUnitComponent>().AddTriggerListener(self,self.Flag);
+            }
+            else
+            {
+                if(self.IsCollider)
+                    self.GetParent<AOIUnitComponent>().RemoverColliderListener(self);
+                else
+                    self.GetParent<AOIUnitComponent>().RemoveTriggerListener(self);
+            }
+        }
         public static void OnTrigger(this AOITrigger self, AOITrigger other, AOITriggerType type)
         {
             // Log.Info("OnTrigger"+type);
@@ -521,6 +545,16 @@ namespace ET
         public static void RemoverTrigger(this AOIUnitComponent self, AOITrigger trigger)
         {
             self.SphereTriggers.Remove(trigger);
+            self.RemoveTriggerListener(trigger);
+            trigger.Dispose();
+        }
+        /// <summary>
+        /// 移除监听事件，并判断触发离开触发器
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="trigger"></param>
+        public static void RemoveTriggerListener(this AOIUnitComponent self, AOITrigger trigger)
+        {
             #region 移除监听事件，并判断触发离开触发器
             var len = self.Scene.gridLen;
             int count = (int)Mathf.Ceil(trigger.Radius / len);
@@ -538,6 +572,7 @@ namespace ET
                         for (int j = 0; j < colliders.Count; j++)
                         {
                             var collider = colliders[j];
+                            if (collider.Parent.Id == self.Parent.Id) continue;
                             if (trigger.IsInTrigger(collider,trigger.GetRealPos(),
                                     trigger.GetRealRot(),collider.GetRealPos(),collider.GetRealRot()))
                             {
@@ -552,13 +587,29 @@ namespace ET
                 trigger.OnTrigger(item,AOITriggerType.Exit);
             }
             temp.Dispose();
-            trigger.Dispose();
+            
             #endregion
         }
+        /// <summary>
+        /// 移除碰撞器
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="collider"></param>
         public static void RemoverCollider(this AOIUnitComponent self, AOITrigger collider)
         {
             self.SphereTriggers.Remove(collider);
-            #region 添加监听事件，并判断触发离开触发器
+            self.RemoverColliderListener(collider);
+            collider.Dispose();
+        }
+
+        /// <summary>
+        /// 移除监听事件，并判断触发离开触发器
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="collider"></param>
+        public static void RemoverColliderListener(this AOIUnitComponent self, AOITrigger collider)
+        {
+            #region 移除监听事件，并判断触发离开触发器
             var len = self.Scene.gridLen;
             int count = (int)Mathf.Ceil(collider.Radius / len);
             if (count > 2) Log.Info("检测范围超过2格，触发半径："+ collider.Radius);
@@ -585,7 +636,6 @@ namespace ET
                 item.OnTrigger(collider,AOITriggerType.Exit);
             }
             temp.Dispose();
-            collider.Dispose();
             #endregion
         }
         /// <summary>
@@ -1181,9 +1231,7 @@ namespace ET
                 return false;
             }
             // Log.Info("IsInTrigger");
-            var pos1 = trigger1.GetRealPos(position1);
-            var pos2 = trigger1.GetRealPos(position2);
-            var sqrDis = Vector3.SqrMagnitude(pos1- pos2);
+            var sqrDis = Vector3.SqrMagnitude(position1- position2);
             // Log.Info("dis"+dis+"pos1"+pos1+"pos2"+pos2+"trigger1.Radius"+trigger1.Radius+"trigger2.Radius"+trigger2.Radius);
             bool isSphereTrigger = Mathf.Pow(trigger1.Radius+trigger2.Radius,2) > sqrDis;
             if (trigger1.TriggerType == TriggerShapeType.Sphere && trigger2.TriggerType == TriggerShapeType.Sphere)//判断球触发
@@ -1194,22 +1242,22 @@ namespace ET
             if (!isSphereTrigger) return false;//外接球不相交
             if (trigger1.TriggerType == TriggerShapeType.Cube && trigger2.TriggerType == TriggerShapeType.Cube)//判断OBB触发
             {
-                return trigger1.IsInTrigger(trigger2, pos1, rotation1, pos2, rotation2);
+                return trigger1.IsInTrigger(trigger2, position1, rotation1, position2, rotation2);
             }
             else if(trigger1.TriggerType <= TriggerShapeType.Cube && trigger2.TriggerType <= TriggerShapeType.Cube)//判断OBB和球触发
             {
                 // Log.Info("判断OBB和球触发");
                 var triggerOBB = trigger1;
                 var triggerSphere = trigger2;
-                var posOBB = pos1;
-                var posSp = pos2;
+                var posOBB = position1;
+                var posSp = position2;
                 var rotOBB = rotation1;
                 if (trigger2.TriggerType == TriggerShapeType.Cube)
                 {
                     triggerOBB = trigger2;
                     triggerSphere = trigger1;
-                    posOBB = pos2;
-                    posSp = pos1;
+                    posOBB = position2;
+                    posSp = position1;
                     rotOBB = rotation2;
                 }
                 var obb = triggerOBB.GetComponent<OBBComponent>();

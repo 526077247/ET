@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace ET
@@ -10,5 +6,9 @@ namespace ET
     public class UIInput: Entity,IAwake,IOnCreate,IOnEnable
     {
         public InputField unity_uiinput;
+
+        public UnityAction<string> __OnValueChange;
+
+        public UnityAction<string> __OnEndEdit;
     }
 }

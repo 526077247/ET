@@ -1,6 +1,7 @@
-﻿namespace ET;
-
-public static class Define
+﻿namespace ET
 {
-    public static bool Debug = false;
+    public static class Define
+    {
+        public static readonly bool Debug = true;
+    }
 }

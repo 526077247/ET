@@ -29,5 +29,6 @@ namespace ET
         public ListComponent<string> LogInfo;
         public float OffsetY;
         public ListComponent<AOICell> FollowCell;
+        public bool Enable;
     }
 }

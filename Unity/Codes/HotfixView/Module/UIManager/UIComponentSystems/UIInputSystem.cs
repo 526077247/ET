@@ -32,6 +32,39 @@ namespace ET
             self.ActivatingComponent();
             self.unity_uiinput.text = text;
         }
+        public static void SetOnValueChanged(this UIInput self, Action func)
+        {
+            self.ActivatingComponent();
+            self.RemoveOnValueChanged();
+            self.__OnValueChange = (a) =>
+            {
+                func?.Invoke();
+            };
+            self.unity_uiinput.onValueChanged.AddListener(self.__OnValueChange);
+        }
 
+        public static void RemoveOnValueChanged(this UIInput self)
+        {
+            if(self.__OnValueChange!=null)
+                self.unity_uiinput.onValueChanged.RemoveListener(self.__OnValueChange);
+        }
+        
+        
+        public static void SetOnEndEdit(this UIInput self, Action func)
+        {
+            self.ActivatingComponent();
+            self.RemoveOnEndEdit();
+            self.__OnEndEdit = (a) =>
+            {
+                func?.Invoke();
+            };
+            self.unity_uiinput.onEndEdit.AddListener(self.__OnEndEdit);
+        }
+        
+        public static void RemoveOnEndEdit(this UIInput self)
+        {
+            if(self.__OnEndEdit!=null)
+                self.unity_uiinput.onEndEdit.RemoveListener(self.__OnEndEdit);
+        }
     }
 }

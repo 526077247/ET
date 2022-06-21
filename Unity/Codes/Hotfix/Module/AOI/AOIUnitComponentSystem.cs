@@ -90,7 +90,7 @@ namespace ET
                 self.ChangeTo(cell);
             }
             //“碰撞器”刷新 自己进入或离开别人的
-            if (self.Collider != null)
+            if (self.Collider != null&&self.Collider.Enable)
             {
                 self.Collider.AfterColliderChangeBroadcastToOther(self.Collider.GetRealPos(oldpos),self.Collider.GetRealRot(),changeCell);
             }
@@ -99,7 +99,7 @@ namespace ET
             for (int i = 0; i < self.SphereTriggers.Count; i++)
             {
                 var item = self.SphereTriggers[i];
-                if (item.IsCollider || item.Selecter == null || item.Selecter.Count == 0) continue;
+                if (item.IsCollider ||!item.Enable|| item.Selecter == null || item.Selecter.Count == 0) continue;
                 item.AfterTriggerChangeBroadcastToMe(item.GetRealPos(oldpos));
             }
         }
@@ -116,7 +116,7 @@ namespace ET
             for (int i = 0; i < self.SphereTriggers.Count; i++)
             {
                 var item = self.SphereTriggers[i];
-                if (item.IsCollider||item.Selecter == null || item.Selecter.Count == 0) continue;
+                if (item.IsCollider||!item.Enable||item.Selecter == null || item.Selecter.Count == 0) continue;
                 item.AfterTriggerChangeRotationBroadcastToMe(oldRotation);
             }
         }
