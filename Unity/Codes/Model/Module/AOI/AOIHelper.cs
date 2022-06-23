@@ -160,9 +160,15 @@ namespace ET
         public static bool IsGridIntersectWithSphere(Vector3 position, float radius,
             int gridLen, int xMin, int yMin,float sqrRadius)
         {
-            int yMax;
-            
-            Vector2 point = new Vector2(position.x,position.z) ;
+            var xMax = xMin + gridLen;
+            int yMax = yMin + gridLen;
+            Vector2 point = new Vector2(position.x,position.z);
+            if (point.x < xMin - radius || point.x > xMax + radius || point.y < yMin - radius ||
+                point.y > yMax + radius)
+                return false;
+            //圆心在格子内 0或1
+            if (point.x >= xMin || point.x <= xMax || point.y >= yMin || point.y <= yMax)
+                return true;
             //圆心在格子外 0或-1
             if (point.x <= xMin) //圆心在格子左方
             {
@@ -188,8 +194,7 @@ namespace ET
             }
             else
             {
-                var xMax = xMin + gridLen;
-                yMax = yMin + gridLen;
+                
                 if (point.x >= xMax) //圆心在格子右方
                 {
                     if (point.y > yMax) //圆心在格子右上方
