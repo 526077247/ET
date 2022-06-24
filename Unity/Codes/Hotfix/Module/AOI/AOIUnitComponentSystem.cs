@@ -100,7 +100,7 @@ namespace ET
             {
                 var item = self.SphereTriggers[i];
                 if (item.IsCollider ||!item.Enable|| item.Selecter == null || item.Selecter.Count == 0) continue;
-                item.AfterTriggerChangeBroadcastToMe(item.GetRealPos(oldpos));
+                item.AfterTriggerChangeBroadcastToMe(item.GetRealPos(oldpos),changeCell);
             }
         }
         /// <summary>
