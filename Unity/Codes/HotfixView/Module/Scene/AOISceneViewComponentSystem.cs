@@ -11,8 +11,8 @@ namespace ET
         {
             AOISceneViewComponent.Instance = self;
             self.GridLen = len;
-            self.DynamicSceneObjectMapCount = new Dictionary<AOISceneViewComponent.DynamicSceneObject, int>();
-            self.DynamicSceneObjectMapObj = new Dictionary<AOISceneViewComponent.DynamicSceneObject, AOISceneViewComponent.DynamicSceneViewObj>();
+            self.DynamicSceneObjectMapCount = new Dictionary<AssetsObject, int>();
+            self.DynamicSceneObjectMapObj = new Dictionary<AssetsObject, AOISceneViewComponent.DynamicSceneViewObj>();
             self.Init().Coroutine();
         }
         
@@ -28,10 +28,10 @@ namespace ET
             self.DynamicSceneMap = new Dictionary<string, AOISceneViewComponent.DynamicScene>();
             string xmlPath = "GameAssets/Config/Map.json";
             var content = await ResourcesComponent.Instance.LoadAsync<TextAsset>(xmlPath);
-            List<AOISceneViewComponent.DynamicScene> root = null;
+            AssetsRoot root = null;
             try
             {
-                root= JsonHelper.FromJson<List<AOISceneViewComponent.DynamicScene>>(content.text);
+                root= JsonHelper.FromJson<AssetsRoot>(content.text);
             }
             catch (Exception ex)
             {
@@ -39,18 +39,20 @@ namespace ET
             }
             
             if (root == null) return;
-            foreach(var item in root)
+            foreach(var scene in root.Scenes)
             {
-                var sceneName = item.sceneName;
-                self.DynamicSceneMap.Add(sceneName,item);
-                item.GridMapObjects = new Dictionary<long, List<AOISceneViewComponent.DynamicSceneObject>>();
+                AOISceneViewComponent.DynamicScene item = new AOISceneViewComponent.DynamicScene();
+                item.sceneName = scene.Name;
+                item.Objects = scene.Objects;
+                self.DynamicSceneMap.Add(item.sceneName,item);
+                item.GridMapObjects = new Dictionary<long, List<AssetsObject>>();
                 for (int index = 0; index < item.Objects.Count; index++)
                 {
                     var sceneObject = item.Objects[index];
-                    int x = (int)Math.Floor( sceneObject.transform.Position.x / self.GridLen);
-                    int y = (int)Math.Floor( sceneObject.transform.Position.z / self.GridLen);
-                    float radius = Mathf.Sqrt(sceneObject.transform.Scale.x*sceneObject.transform.Scale.x+sceneObject.transform.Scale.y*
-                        sceneObject.transform.Scale.y+sceneObject.transform.Scale.z*sceneObject.transform.Scale.z)/2;
+                    int x = (int)Math.Floor( sceneObject.Transform.Position.x / self.GridLen);
+                    int y = (int)Math.Floor( sceneObject.Transform.Position.z / self.GridLen);
+                    float radius = Mathf.Sqrt(sceneObject.Transform.Scale.x*sceneObject.Transform.Scale.x+sceneObject.Transform.Scale.y*
+                        sceneObject.Transform.Scale.y+sceneObject.Transform.Scale.z*sceneObject.Transform.Scale.z)/2;
                     int count = (int)Math.Ceiling(radius / self.GridLen);//环境多加一格
                     float cellSqrRadius = Mathf.Pow(self.GridLen, 2) * 2;
                     float cellRadius = Mathf.Sqrt(cellSqrRadius);
@@ -60,14 +62,14 @@ namespace ET
                         for (int j = y-count; j <=y+count; j++)
                         {
                             var yMin = j* self.GridLen;
-                            var res = AOIHelper.GetGridRelationshipWithOBB(sceneObject.transform.Position, sceneObject.transform.Rotation,
-                                sceneObject.transform.Scale, self.GridLen, xMin, yMin,cellRadius,cellSqrRadius);
+                            var res = AOIHelper.GetGridRelationshipWithOBB(sceneObject.Transform.Position, sceneObject.Transform.Rotation,
+                                sceneObject.Transform.Scale, self.GridLen, xMin, yMin,radius,radius*radius);
                             if (res >= 0)
                             {
                                 var id = AOIHelper.CreateCellId(i, j);
                                 if (!item.GridMapObjects.ContainsKey(id))
                                 {
-                                    item.GridMapObjects.Add(id,new List<AOISceneViewComponent.DynamicSceneObject>());
+                                    item.GridMapObjects.Add(id,new List<AssetsObject>());
                                 }
                                 item.GridMapObjects[id].Add(sceneObject);
                             }
@@ -296,12 +298,12 @@ namespace ET
                                     continue;
                                 }
 
-                                Log.Info("AOISceneView Load " + obj.objectPath);
+                                Log.Info("AOISceneView Load " + obj.PrefabPath);
                                 //没有
                                 self.DynamicSceneObjectMapObj[obj] = new AOISceneViewComponent.DynamicSceneViewObj();
                                 viewObj = self.DynamicSceneObjectMapObj[obj];
                                 viewObj.IsLoading = true;
-                                GameObjectPoolComponent.Instance.GetGameObjectAsync(obj.objectPath, (view) =>
+                                GameObjectPoolComponent.Instance.GetGameObjectAsync(obj.PrefabPath, (view) =>
                                 {
                                     if (!viewObj.IsLoading) //加载出来后已经不需要的
                                     {
@@ -310,9 +312,9 @@ namespace ET
                                     }
                                     viewObj.Obj = view;
                                     viewObj.IsLoading = false;
-                                    view.transform.position = obj.transform.Position;
-                                    view.transform.rotation = obj.transform.Rotation;
-                                    view.transform.localScale = obj.transform.Scale;
+                                    view.transform.position = obj.Transform.Position;
+                                    view.transform.rotation = obj.Transform.Rotation;
+                                    view.transform.localScale = obj.Transform.Scale;
                                     view.transform.parent = GlobalComponent.Instance.Scene;
                                 }).Coroutine();
                             }
@@ -331,7 +333,7 @@ namespace ET
                             //不需要显示但有
                             if (self.DynamicSceneObjectMapCount[obj] <= 0 && self.DynamicSceneObjectMapObj.ContainsKey(obj))
                             {
-                                Log.Info("AOISceneView Remove " + obj.objectPath);
+                                Log.Info("AOISceneView Remove " + obj.PrefabPath);
                                 var viewObj = self.DynamicSceneObjectMapObj[obj];
                                 if (viewObj.Obj == null) //还在加载
                                 {

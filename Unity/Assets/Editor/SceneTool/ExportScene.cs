@@ -1,182 +1,180 @@
 using UnityEngine;
 using UnityEditor;
-using System.Collections;
+
 using System.Collections.Generic;
-using System.Xml;
 using System.IO;
-using System.Text;
 
-public class ExportScene: Editor
+namespace ET
 {
-    // [MenuItem("Assets/Export Scene To XML From Selection")]
-    static void ExportXML()
+    internal class MapExport2Nav: Editor
     {
-        string path = EditorUtility.SaveFilePanel("Save Resource", "", "New Resource", "xml");
-        if (path.Length != 0)
+        [MenuItem("Tools/NavMesh/导入场景mesh")]
+        static void ImportSceneMesh()
         {
-            Object[] selectedAssetList = Selection.GetFiltered(typeof (Object), SelectionMode.DeepAssets);
-            // 如果存在场景文件，删除
-            if (File.Exists(path)) File.Delete(path);
-            
-            XmlDocument xmlDocument = new XmlDocument();
-            // 创建XML属性
-            XmlDeclaration xmlDeclaration = xmlDocument.CreateXmlDeclaration("1.0", "utf-8", null);
-            xmlDocument.AppendChild(xmlDeclaration);
-            // 创建XML根标志
-            XmlElement rootXmlElement = xmlDocument.CreateElement("root");
-            //遍历所有的游戏对象
-            foreach (Object selectObject in selectedAssetList)
+            string path = EditorUtility.OpenFilePanel("选择场景json文件", "", "json");
+            if (path.Length != 0)
             {
-                // 场景名称
-                string sceneName = selectObject.name;
-                // 场景路径
-                string scenePath = AssetDatabase.GetAssetPath(selectObject);
-                // 打开这个关卡
-                EditorApplication.OpenScene(scenePath);
-
-                // 创建场景标志
-                XmlElement sceneXmlElement = xmlDocument.CreateElement("scene");
-                sceneXmlElement.SetAttribute("sceneName", sceneName);
-
-                foreach (GameObject sceneObject in Object.FindObjectsOfType(typeof (GameObject)))
+                var jsonStr = File.ReadAllText(path);
+                var data = LitJson.JsonMapper.ToObject<AssetsRoot>(jsonStr);
+                EditorApplication.OpenScene("Assets/MapEditor/Map.unity");
+                for (int i = 0; i < data.Scenes.Count; i++)
                 {
-                    // 如果对象是激活状态
-                    if (sceneObject.transform.parent == null && sceneObject.activeSelf)
+                    var scene = data.Scenes[i];
+                    GameObject sceneObj = GameObject.Find(scene.Name);
+                    if(sceneObj!=null)
+                        DestroyImmediate(sceneObj);
+                    sceneObj = new GameObject(scene.Name);
+                    for (int j = 0; j < scene.Objects.Count; j++)
                     {
-                        // 判断是否是预设
-                        if (PrefabUtility.GetPrefabType(sceneObject) == PrefabType.PrefabInstance)
+                        var objInfo = scene.Objects[j];
+                        GameObject obj = null;
+                        string addressPath;
+                        switch (objInfo.Type)
                         {
-                            // 获取引用预设对象
-                            Object prefabObject = EditorUtility.GetPrefabParent(sceneObject);
-                            
-                            if (prefabObject != null)
-                            {
-                                XmlElement gameObjectXmlElement = xmlDocument.CreateElement("gameObject");
-                                gameObjectXmlElement.SetAttribute("objectName", sceneObject.name);
-                                gameObjectXmlElement.SetAttribute("objectPath", AssetDatabase.GetAssetPath(prefabObject).Replace("Assets/AssetsPackage/",""));
-
-                                XmlElement transformXmlElement = xmlDocument.CreateElement("transform");
-
-                                // 位置信息
-                                XmlElement positionXmlElement = xmlDocument.CreateElement("position");
-                                positionXmlElement.SetAttribute("x", sceneObject.transform.position.x.ToString());
-                                positionXmlElement.SetAttribute("y", sceneObject.transform.position.y.ToString());
-                                positionXmlElement.SetAttribute("z", sceneObject.transform.position.z.ToString());
-
-                                // 旋转信息
-                                XmlElement rotationXmlElement = xmlDocument.CreateElement("rotation");
-                                rotationXmlElement.SetAttribute("x", sceneObject.transform.rotation.eulerAngles.x.ToString());
-                                rotationXmlElement.SetAttribute("y", sceneObject.transform.rotation.eulerAngles.y.ToString());
-                                rotationXmlElement.SetAttribute("z", sceneObject.transform.rotation.eulerAngles.z.ToString());
-
-                                // 缩放信息
-                                XmlElement scaleXmlElement = xmlDocument.CreateElement("scale");
-                                scaleXmlElement.SetAttribute("x", sceneObject.transform.localScale.x.ToString());
-                                scaleXmlElement.SetAttribute("y", sceneObject.transform.localScale.y.ToString());
-                                scaleXmlElement.SetAttribute("z", sceneObject.transform.localScale.z.ToString());
-
-                               
-
-                                transformXmlElement.AppendChild(positionXmlElement);
-                                transformXmlElement.AppendChild(rotationXmlElement);
-                                transformXmlElement.AppendChild(scaleXmlElement);
-
-                                gameObjectXmlElement.AppendChild(transformXmlElement);
-                                sceneXmlElement.AppendChild(gameObjectXmlElement);
-                            }
-                        }
-                    }
-                }
-
-                rootXmlElement.AppendChild(sceneXmlElement);
-                
-            }
-            xmlDocument.AppendChild(rootXmlElement);
-            // 保存场景数据
-            xmlDocument.Save(path);
-            // 刷新Project视图
-            AssetDatabase.Refresh();
-        }
-    }
-
-    [MenuItem("Assets/Export Scene To Json From Selection")]
-    static void ExportJson()
-    {
-        string path = EditorUtility.SaveFilePanel("Save Resource", "", "New Resource", "json");
-        if (path.Length != 0)
-        {
-            Object[] selectedAssetList = Selection.GetFiltered(typeof (Object), SelectionMode.DeepAssets);
-            // 如果存在场景文件，删除
-            if (File.Exists(path)) File.Delete(path);
-            List<Dictionary<string, object>> root = new List<Dictionary<string, object>>();
-
-            //遍历所有的游戏对象
-            foreach (Object selectObject in selectedAssetList)
-            {
-                // 场景名称
-                string sceneName = selectObject.name;
-                // 场景路径
-                string scenePath = AssetDatabase.GetAssetPath(selectObject);
-                // 打开这个关卡
-                EditorApplication.OpenScene(scenePath);
-                Dictionary<string, object> sceneRoot = new Dictionary<string, object>();
-                root.Add(sceneRoot);
-                sceneRoot.Add("sceneName",sceneName);
-                List<Dictionary<string, object>> scene= new List<Dictionary<string, object>>();
-                sceneRoot.Add("Objects",scene);
-                foreach (GameObject sceneObject in Object.FindObjectsOfType(typeof (GameObject)))
-                {
-                    // 如果对象是激活状态
-                    if (sceneObject.transform.parent == null && sceneObject.activeSelf)
-                    {
-                        // 判断是否是预设
-                        if (PrefabUtility.GetPrefabType(sceneObject) == PrefabType.PrefabInstance)
-                        {
-                            // 获取引用预设对象
-                            Object prefabObject = EditorUtility.GetPrefabParent(sceneObject);
-
-                            if (prefabObject != null)
-                            {
-                                Dictionary<string, object> obj = new Dictionary<string, object>();
-                                scene.Add(obj);
-                                obj.Add("objectName", sceneObject.name);
-                                obj.Add("objectPath", AssetDatabase.GetAssetPath(prefabObject).Replace("Assets/AssetsPackage/", ""));
-
-                                Dictionary<string, float[]> transform = new Dictionary<string, float[]>();
+                            case "Prefab":
+                                addressPath = "Assets/AssetsPackage/" + objInfo.PrefabPath;
+                                var prefab = AssetDatabase.LoadAssetAtPath(addressPath, typeof (GameObject)) as GameObject;
+                                if(prefab==null) continue;
+                                obj = Instantiate(prefab,sceneObj.transform);
+                                obj.name = objInfo.Name;
+                                obj.transform.localPosition = objInfo.Transform.Position;
+                                obj.transform.localRotation = objInfo.Transform.Rotation;
+                                obj.transform.localScale = objInfo.Transform.Scale;
                                 
-
-                                // 位置信息
-                                transform.Add("position",
-                                    new[] { sceneObject.transform.position.x, sceneObject.transform.position.y, sceneObject.transform.position.z });
-
-                                // 旋转信息
-                                transform.Add("rotation",
-                                    new[]
-                                    {
-                                        sceneObject.transform.rotation.x, sceneObject.transform.rotation.y, sceneObject.transform.rotation.z,
-                                        sceneObject.transform.rotation.w
-                                    });
-
-                                // 缩放信息
-                                transform.Add("scale",
-                                    new[]
-                                    {
-                                        sceneObject.transform.localScale.x, sceneObject.transform.localScale.y,
-                                        sceneObject.transform.localScale.z
-                                    });
-                                obj.Add("transform", transform);
+                                break;
+                            case "Terrain":
+                                addressPath = "Assets/AssetsPackage/" + objInfo.TerrainPath;
+                                var terrainData =  AssetDatabase.LoadAssetAtPath(addressPath, typeof(TerrainData)) as TerrainData;
+                                if(terrainData==null) continue;
+                                obj = new GameObject(objInfo.Name);
+                                obj.transform.parent = sceneObj.transform;
+                                obj.transform.localPosition = objInfo.Transform.Position;
+                                obj.transform.localRotation = objInfo.Transform.Rotation;
+                                obj.transform.localScale = objInfo.Transform.Scale;
+                                
+                                obj.AddComponent<MeshFilter>();
+                                obj.AddComponent<MeshRenderer>();
+                                var mesh = obj.AddComponent<ExportMesh>();
+                                mesh.terrainData = terrainData;
+                                mesh.Generic();
+                                break;
+                            default:
+                                UnityEngine.Debug.Log("未处理的类型：" + objInfo.Type);
+                                break;
+                        }
+                        if (obj != null)
+                        {
+                            var mesh = obj.GetComponentsInChildren<MeshFilter>();
+                            for (int k = 0; k < mesh.Length; k++)
+                            {
+                                // if (mesh[k].GetComponent<Spine.Unity.SkeletonAnimation>() != null) continue;
+                                mesh[k].gameObject.tag = "NavMesh";
+                                mesh[k].gameObject.isStatic = true;
                             }
                         }
                     }
                 }
-
-
             }
+        }
+        
+        [MenuItem("Assets/导出场景到Josn数据")]
+        static void ExportJson()
+        {
+            string path = EditorUtility.SaveFilePanel("Save Resource", "", "Map", "json");
+            if (path.Length != 0)
+            {
+                Object[] selectedAssetList = Selection.GetFiltered(typeof (Object), SelectionMode.DeepAssets);
+                // 如果存在场景文件，删除
+                if (File.Exists(path)) File.Delete(path);
+                AssetsRoot root = new AssetsRoot();
+                root.Scenes = new List<AssetsScene>();
+                
+                //遍历所有的游戏对象
+                foreach (Object selectObject in selectedAssetList)
+                {
+                    // 场景名称
+                    string sceneName = selectObject.name;
+                    // 场景路径
+                    string scenePath = AssetDatabase.GetAssetPath(selectObject);
+                    // 打开这个关卡
+                    EditorApplication.OpenScene(scenePath);
+                    AssetsScene sceneRoot = new AssetsScene();
+                    root.Scenes.Add(sceneRoot);
+                    sceneRoot.Name = sceneName;
+                    sceneRoot.Objects = new List<AssetsObject>();
+                    var scene = sceneRoot.Objects;
+                    foreach (GameObject sceneObject in Object.FindObjectsOfType(typeof (GameObject)))
+                    {
+                        // 如果对象是激活状态
+                        if (sceneObject.transform.parent == null && sceneObject.activeSelf)
+                        {
+                            ChangeObj2Data(sceneObject, scene);
+                        }
+                    }
+                }
 
-            // 保存场景数据
-            File.WriteAllText(path, LitJson.JsonMapper.ToJson(root));
-            // 刷新Project视图
-            AssetDatabase.Refresh();
+                // 保存场景数据
+                File.WriteAllText(path, LitJson.JsonMapper.ToJson(root));
+                // 刷新Project视图
+                AssetDatabase.Refresh();
+            }
+        }
+
+        public static void ChangeObj2Data(GameObject sceneObject,List<AssetsObject> scene)
+        {
+            var terrain = sceneObject.GetComponent<TerrainCollider>();
+            if (terrain != null)
+            {
+                if(terrain.terrainData==null) return;
+                AssetsObject obj = new AssetsObject();
+                scene.Add(obj);
+                obj.Name = sceneObject.name;
+                obj.Type = "Terrain";
+                string prefabObject = EditorUtility.GetAssetPath(terrain.terrainData);
+                obj.TerrainPath = prefabObject.Replace("Assets/AssetsPackage/", "");
+
+                AddTransformInfo(obj, sceneObject);
+            }
+            // 判断是否是预设
+            else if (PrefabUtility.GetPrefabType(sceneObject) == PrefabType.PrefabInstance)
+            {
+                // 获取引用预设对象
+                Object prefabObject = EditorUtility.GetPrefabParent(sceneObject);
+            
+                if (prefabObject != null)
+                {
+                    AssetsObject obj = new AssetsObject();
+                    scene.Add(obj);
+                    obj.Name = sceneObject.name;
+                    obj.Type = "Prefab";
+                    obj.PrefabPath = AssetDatabase.GetAssetPath(prefabObject).Replace("Assets/AssetsPackage/", "");
+            
+                    AddTransformInfo(obj, sceneObject);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < sceneObject.transform.childCount; i++)
+                {
+                    ChangeObj2Data(sceneObject.transform.GetChild(i).gameObject, scene);
+                }
+            }
+        }
+
+        public static void AddTransformInfo(AssetsObject obj,GameObject sceneObject)
+        {
+            AssetsTransform transform = new AssetsTransform();
+
+
+            // 位置信息
+            transform.Position = sceneObject.transform.position;
+
+            // 旋转信息
+            transform.Rotation = sceneObject.transform.rotation;
+
+            // 缩放信息
+            transform.Scale = sceneObject.transform.localScale;
+            obj.Transform = transform;
         }
     }
 }
