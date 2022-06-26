@@ -43,6 +43,19 @@ namespace ET
 
             switch (Game.Options.AppType)
             {
+                case AppType.IDE:
+                {
+                    Game.Scene.AddComponent<NetInnerComponent, IPEndPoint, int>(processConfig.InnerIPPort, SessionStreamDispatcherType.SessionStreamDispatcherServerInner);
+
+                    var processScenes = StartSceneConfigCategory.Instance.GetAllList();
+                    foreach (StartSceneConfig startConfig in processScenes)
+                    {
+                        await SceneFactory.Create(Game.Scene, startConfig.Id, startConfig.InstanceId, startConfig.Zone, startConfig.Name,
+                            startConfig.Type, startConfig);
+                    }
+
+                    break;
+                }
                 case AppType.Server:
                 {
                     Game.Scene.AddComponent<NetInnerComponent, IPEndPoint, int>(processConfig.InnerIPPort, SessionStreamDispatcherType.SessionStreamDispatcherServerInner);

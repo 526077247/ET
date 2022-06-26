@@ -7,6 +7,7 @@ namespace ET
     public enum AppType:byte
     {
         Server,
+        IDE,
         Watcher, // 每台物理机一个守护进程，用来启动该物理机上的所有进程
         GameTool,
         ExcelExporter,
@@ -20,7 +21,7 @@ namespace ET
     {
         public static Options Instance { get; set; }
         
-        [Option("AppType", Required = false, Default = AppType.Server, HelpText = "AppType enum")]
+        [Option("AppType", Required = false, Default = AppType.IDE, HelpText = "AppType enum")]
         public AppType AppType { get; set; }
 
         [Option("Process", Required = false, Default = 1)]

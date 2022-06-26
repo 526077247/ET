@@ -235,14 +235,6 @@ namespace ET
                 //}
                 //Task.WaitAll(tasks.ToArray());
 
-                // 导出StartConfig
-                string startConfigPath = Path.Combine(excelDir, "StartConfig");
-                DirectoryInfo directoryInfo = new DirectoryInfo(startConfigPath);
-                foreach (FileInfo subStartConfig in directoryInfo.GetFiles("*", SearchOption.AllDirectories))
-                {
-                    ExportExcel(subStartConfig.FullName);
-                }
-
                 Log.Console("Export Excel Sucess!");
             }
             catch (Exception e)
