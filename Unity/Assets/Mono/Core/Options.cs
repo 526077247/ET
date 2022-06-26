@@ -36,7 +36,7 @@ namespace ET
         [Option("Console", Required = false, Default = 0)]
         public int Console { get; set; } = 0;
 
-        [Option("StartConfig", Required = false, Default = "")]
+        [Option("StartConfig", Required = false, Default = "StartConfig/Localhost")]
         public string StartConfig { get; set; } = "";
         
         // 进程启动是否创建该进程的scenes
