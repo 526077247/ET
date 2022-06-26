@@ -19,6 +19,7 @@ namespace ET
             self.Radius = a;
             self.SqrRadius = a * a;
             self.Handler = b;
+            self.Enable = true;
             self.FollowCell = ListComponent<AOICell>.Create();
         }
     }
@@ -36,6 +37,7 @@ namespace ET
             self.Radius = a;
             self.SqrRadius = a * a;
             self.Handler = null;
+            self.Enable = true;
             self.FollowCell = ListComponent<AOICell>.Create();
         }
     }
