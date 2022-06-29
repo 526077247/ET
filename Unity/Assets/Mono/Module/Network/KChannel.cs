@@ -210,6 +210,12 @@ namespace ET
 			if (!this.IsRouterConnected)
 			{
 				this.RouterReconnect();
+				if (RouterConnectedCount > 10)
+				{
+					Log.Error($"kChannel connect retry limit: {this.Id} {this.RemoteConn} {timeNow} {this.CreateTime} {this.ChannelType} {this.RemoteAddress}");
+					this.OnError(ErrorCore.ERR_SocketCantSend);
+					return;
+				}
 			}
 			// 如果还没连接上，发送连接请求
 			if (!this.IsConnected)
@@ -509,6 +515,7 @@ namespace ET
 				Log.Info($"kchannel ChangeRouter {this.Id} {this.LocalConn} {this.RemoteConn} {this.RealAddress} {this.socket.LocalEndPoint}");
 				// 300毫秒后再次update发送connect请求
 				this.Service.AddToUpdateNextTime(timeNow + 300, this.Id);
+				RouterConnectedCount++;
 			}
 			catch (Exception e)
 			{
@@ -517,9 +524,11 @@ namespace ET
 			}
 		}
 		public bool IsRouterConnected = true;
+		public int RouterConnectedCount;
 		public void HandleRouterReconnect()
 		{
 			this.IsRouterConnected = true;
+			this.RouterConnectedCount = 0;
 		}
 	}
 }

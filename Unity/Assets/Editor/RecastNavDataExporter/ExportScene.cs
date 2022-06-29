@@ -132,7 +132,7 @@ namespace ET
                 obj.Type = "Terrain";
                 string prefabObject = EditorUtility.GetAssetPath(terrain.terrainData);
                 obj.TerrainPath = prefabObject.Replace("Assets/AssetsPackage/", "");
-
+                obj.Size = terrain.bounds.size;
                 AddTransformInfo(obj, sceneObject);
             }
             // 判断是否是预设
@@ -148,7 +148,11 @@ namespace ET
                     obj.Name = sceneObject.name;
                     obj.Type = "Prefab";
                     obj.PrefabPath = AssetDatabase.GetAssetPath(prefabObject).Replace("Assets/AssetsPackage/", "");
-            
+                    var mesh = sceneObject.GetComponentInChildren<Renderer>();
+                    if (mesh != null)
+                        obj.Size = mesh.bounds.size;
+                    else
+                        obj.Size = terrain.transform.localScale;
                     AddTransformInfo(obj, sceneObject);
                 }
             }

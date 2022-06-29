@@ -1,10 +1,13 @@
-﻿namespace ET
+﻿using UnityEngine;
+
+namespace ET
 {
     internal class AssetsObject
     {
         public string Name;
         public string Type;
 
+        public Vector3 Size;//网格长宽
         public AssetsTransform Transform;
 
         #region Type-Terrain

@@ -320,21 +320,20 @@ namespace ET
                                     Log.Info($"kservice RouterReconnect: {kChannel.Id} {remoteConn} {localConn}");
                                     this.socket.SendTo(buffer, 0, 9, SocketFlags.None, kChannel.RemoteAddress);
                                 }
-                            }
-
-                            try
-                            {
-                                byte[] buffer = this.cache;
-                                buffer.WriteTo(0, KcpProtocalType.ACK);
-                                buffer.WriteTo(1, kChannel.LocalConn);
-                                buffer.WriteTo(5, kChannel.RemoteConn);
-                                Log.Info($"kservice syn: {kChannel.Id} {remoteConn} {localConn}");
-                                this.socket.SendTo(buffer, 0, 9, SocketFlags.None, kChannel.RemoteAddress);
-                            }
-                            catch (Exception e)
-                            {
-                                Log.Error(e);
-                                kChannel.OnError(ErrorCore.ERR_SocketCantSend);
+                                try
+                                {
+                                    byte[] buffer = this.cache;
+                                    buffer.WriteTo(0, KcpProtocalType.ACK);
+                                    buffer.WriteTo(1, kChannel.LocalConn);
+                                    buffer.WriteTo(5, kChannel.RemoteConn);
+                                    Log.Info($"kservice syn: {kChannel.Id} {remoteConn} {localConn}");
+                                    this.socket.SendTo(buffer, 0, 9, SocketFlags.None, kChannel.RemoteAddress);
+                                }
+                                catch (Exception e)
+                                {
+                                    Log.Error(e);
+                                    kChannel.OnError(ErrorCore.ERR_SocketCantSend);
+                                }
                             }
 
                             break;

@@ -47,7 +47,7 @@ namespace ET
     {
         public override void Destroy(AOITrigger self)
         {
-            if(self.IsDisposed) return;
+            if(self.FollowCell == null) return;
             // Log.Info("RemoverTrigger"+self.Id);
             if (self.TriggerType != TriggerShapeType.Cube) //OBB的在子组件处理
             {

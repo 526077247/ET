@@ -51,8 +51,8 @@ namespace ET
                     var sceneObject = item.Objects[index];
                     int x = (int)Math.Floor( sceneObject.Transform.Position.x / self.GridLen);
                     int y = (int)Math.Floor( sceneObject.Transform.Position.z / self.GridLen);
-                    float radius = Mathf.Sqrt(sceneObject.Transform.Scale.x*sceneObject.Transform.Scale.x+sceneObject.Transform.Scale.y*
-                        sceneObject.Transform.Scale.y+sceneObject.Transform.Scale.z*sceneObject.Transform.Scale.z)/2;
+                    float radius = Mathf.Sqrt(sceneObject.Size.x*sceneObject.Size.x+sceneObject.Size.y*
+                        sceneObject.Size.y+sceneObject.Size.z*sceneObject.Size.z)/2;
                     int count = (int)Math.Ceiling(radius / self.GridLen);//环境多加一格
                     float cellSqrRadius = Mathf.Pow(self.GridLen, 2) * 2;
                     float cellRadius = Mathf.Sqrt(cellSqrRadius);
@@ -63,7 +63,7 @@ namespace ET
                         {
                             var yMin = j* self.GridLen;
                             var res = AOIHelper.GetGridRelationshipWithOBB(sceneObject.Transform.Position, sceneObject.Transform.Rotation,
-                                sceneObject.Transform.Scale, self.GridLen, xMin, yMin,radius,radius*radius);
+                                sceneObject.Size, self.GridLen, xMin, yMin,radius,radius*radius);
                             if (res >= 0)
                             {
                                 var id = AOIHelper.CreateCellId(i, j);
