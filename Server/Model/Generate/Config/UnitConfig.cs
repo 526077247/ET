@@ -1,22 +1,22 @@
 using System;
 using System.Collections.Generic;
 using MongoDB.Bson.Serialization.Attributes;
-using ProtoBuf;
+using Nino.Serialization;
 
 namespace ET
 {
-    [ProtoContract]
+    [NinoSerialize]
     [Config]
     public partial class UnitConfigCategory : ProtoObject, IMerge
     {
         public static UnitConfigCategory Instance;
 		
-        [ProtoIgnore]
+        [NinoIgnore]
         [BsonIgnore]
         private Dictionary<int, UnitConfig> dict = new Dictionary<int, UnitConfig>();
 		
         [BsonElement]
-        [ProtoMember(1)]
+        [NinoMember(1)]
         private List<UnitConfig> list = new List<UnitConfig>();
 		
         public UnitConfigCategory()
@@ -76,32 +76,32 @@ namespace ET
         }
     }
 
-    [ProtoContract]
+    [NinoSerialize]
 	public partial class UnitConfig: ProtoObject, IConfig
 	{
 		/// <summary>Id</summary>
-		[ProtoMember(1)]
+		[NinoMember(1)]
 		public int Id { get; set; }
 		/// <summary>Type</summary>
-		[ProtoMember(2)]
+		[NinoMember(2)]
 		public int Type { get; set; }
 		/// <summary>名字</summary>
-		[ProtoMember(3)]
+		[NinoMember(3)]
 		public string Name { get; set; }
 		/// <summary>描述</summary>
-		[ProtoMember(4)]
+		[NinoMember(4)]
 		public string Desc { get; set; }
 		/// <summary>位置</summary>
-		[ProtoMember(5)]
+		[NinoMember(5)]
 		public int Position { get; set; }
 		/// <summary>身高</summary>
-		[ProtoMember(6)]
+		[NinoMember(6)]
 		public int Height { get; set; }
 		/// <summary>体重</summary>
-		[ProtoMember(7)]
+		[NinoMember(7)]
 		public int Weight { get; set; }
 		/// <summary>预制体路径</summary>
-		[ProtoMember(8)]
+		[NinoMember(8)]
 		public string Perfab { get; set; }
 
 	}

@@ -81,7 +81,7 @@ namespace ET
 
             StringBuilder sb = new StringBuilder();
             sb.Append("using ET;\n");
-            sb.Append("using ProtoBuf;\n");
+            sb.Append("using Nino.Serialization;\n");
             sb.Append("using System.Collections.Generic;\n");
             sb.Append($"namespace {ns}\n");
             sb.Append("{\n");
@@ -124,7 +124,7 @@ namespace ET
                     msgOpcode.Add(new OpcodeInfo() { Name = msgName, Opcode = ++startOpcode });
 
                     sb.Append($"\t[Message({opcodeClassName}.{msgName})]\n");
-                    sb.Append($"\t[ProtoContract]\n");
+                    sb.Append($"\t[NinoSerialize]\n");
                     sb.Append($"\tpublic partial class {msgName}: Object");
                     if (parentClass == "IActorMessage" || parentClass == "IActorRequest" || parentClass == "IActorResponse")
                     {
@@ -223,7 +223,7 @@ namespace ET
                 string name = ss[2];
                 int n = int.Parse(ss[4]);
 
-                sb.Append($"\t\t[ProtoMember({n})]\n");
+                sb.Append($"\t\t[NinoMember({n})]\n");
                 sb.Append($"\t\tpublic List<{type}> {name} = new List<{type}>();\n\n");
             }
             catch (Exception e)
@@ -281,7 +281,7 @@ namespace ET
                 int n = int.Parse(ss[3]);
                 string typeCs = ConvertType(type);
 
-                sb.Append($"\t\t[ProtoMember({n})]\n");
+                sb.Append($"\t\t[NinoMember({n})]\n");
                 sb.Append($"\t\tpublic {typeCs} {name} {{ get; set; }}\n\n");
             }
             catch (Exception e)

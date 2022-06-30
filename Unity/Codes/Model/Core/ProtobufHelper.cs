@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 #endif
 using System.IO;
-using ProtoBuf;
-using ProtoBuf.Meta;
 
 namespace ET
 {
@@ -17,34 +15,29 @@ namespace ET
 
         public static object FromBytes(Type type, byte[] bytes, int index, int count)
         {
-	        using (MemoryStream stream = new MemoryStream(bytes, index, count))
+	        object o = Nino.Serialization.Deserializer.DeserializeWhthoutGenerated(type, bytes,index,count);
+	        if (o is ISupportInitialize supportInitialize)
 	        {
-		        object o = RuntimeTypeModel.Default.Deserialize(stream, null, type);
-		        if (o is ISupportInitialize supportInitialize)
-		        {
-			        supportInitialize.EndInit();
-		        }
-		        return o;
+		        supportInitialize.EndInit();
 	        }
+	        return o;
         }
-
         public static byte[] ToBytes(object message)
         {
-	        using (MemoryStream stream = new MemoryStream())
-	        {
-		        ProtoBuf.Serializer.Serialize(stream, message);
-		        return stream.ToArray();
-	        }
+	        return Nino.Serialization.Serializer.SerializeWithoutGenerated(message.GetType(),message);
         }
 
         public static void ToStream(object message, MemoryStream stream)
         {
-            ProtoBuf.Serializer.Serialize(stream, message);
+	        var bytes =  Nino.Serialization.Serializer.SerializeWithoutGenerated(message.GetType(),message);
+	        stream.Write(bytes,0,bytes.Length);
         }
 
         public static object FromStream(Type type, MemoryStream stream)
         {
-	        object o = RuntimeTypeModel.Default.Deserialize(stream, null, type);
+	        var bytes = new byte[stream.Length - stream.Position];
+	        stream.Read(bytes, 0, bytes.Length);
+	        object o = Nino.Serialization.Deserializer.DeserializeWhthoutGenerated(type, bytes,0,bytes.Length);
 	        if (o is ISupportInitialize supportInitialize)
 	        {
 		        supportInitialize.EndInit();

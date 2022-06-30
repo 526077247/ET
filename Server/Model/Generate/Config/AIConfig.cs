@@ -1,22 +1,22 @@
 using System;
 using System.Collections.Generic;
 using MongoDB.Bson.Serialization.Attributes;
-using ProtoBuf;
+using Nino.Serialization;
 
 namespace ET
 {
-    [ProtoContract]
+    [NinoSerialize]
     [Config]
     public partial class AIConfigCategory : ProtoObject, IMerge
     {
         public static AIConfigCategory Instance;
 		
-        [ProtoIgnore]
+        [NinoIgnore]
         [BsonIgnore]
         private Dictionary<int, AIConfig> dict = new Dictionary<int, AIConfig>();
 		
         [BsonElement]
-        [ProtoMember(1)]
+        [NinoMember(1)]
         private List<AIConfig> list = new List<AIConfig>();
 		
         public AIConfigCategory()
@@ -76,23 +76,23 @@ namespace ET
         }
     }
 
-    [ProtoContract]
+    [NinoSerialize]
 	public partial class AIConfig: ProtoObject, IConfig
 	{
 		/// <summary>Id</summary>
-		[ProtoMember(1)]
+		[NinoMember(1)]
 		public int Id { get; set; }
 		/// <summary>所属ai</summary>
-		[ProtoMember(2)]
+		[NinoMember(2)]
 		public int AIConfigId { get; set; }
 		/// <summary>此ai中的顺序</summary>
-		[ProtoMember(3)]
+		[NinoMember(3)]
 		public int Order { get; set; }
 		/// <summary>节点名字</summary>
-		[ProtoMember(4)]
+		[NinoMember(4)]
 		public string Name { get; set; }
 		/// <summary>节点参数</summary>
-		[ProtoMember(5)]
+		[NinoMember(5)]
 		public int[] NodeParams { get; set; }
 
 	}

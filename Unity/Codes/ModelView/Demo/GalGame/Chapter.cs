@@ -1,24 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using MongoDB.Bson.Serialization.Attributes;
-using ProtoBuf;
+using Nino.Serialization;
 
 namespace ET
 {
-    [ProtoContract]
+    [NinoSerialize()]
     public partial class ChapterCategory : ProtoObject
     {
         public static ChapterCategory Instance;
         
-        [ProtoIgnore]
+        [NinoIgnore]
         [BsonIgnore]
         private Dictionary<int, Chapter> dict = new Dictionary<int, Chapter>();
 
         [BsonElement]
-        [ProtoMember(1)]
+        [NinoMember(1)]
         private List<Chapter> list = new List<Chapter>();
 
-        [ProtoIgnore]
+        [NinoIgnore]
         [BsonIgnore]
         public bool IsOrdered;
         public ChapterCategory()
@@ -76,36 +76,36 @@ namespace ET
         }
     }
 
-    [ProtoContract]
+    [NinoSerialize]
     public partial class Chapter : ProtoObject, IConfig
     {
-        [ProtoMember(1)]
+        [NinoMember(1)]
         public int Id { get; set; }
-        [ProtoMember(2)]
+        [NinoMember(2)]
         public string Command { get; set; }
-        [ProtoMember(3)]
+        [NinoMember(3)]
         public string Arg1 { get; set; }
-        [ProtoMember(4)]
+        [NinoMember(4)]
         public string Arg2 { get; set; }
-        [ProtoMember(5)]
+        [NinoMember(5)]
         public string Arg3 { get; set; }
-        [ProtoMember(6)]
+        [NinoMember(6)]
         public string Arg4 { get; set; }
-        [ProtoMember(7)]
+        [NinoMember(7)]
         public string Arg5 { get; set; }
-        [ProtoMember(8)]
+        [NinoMember(8)]
         public string Arg6 { get; set; }
-        [ProtoMember(9)]
+        [NinoMember(9)]
         public string WaitType { get; set; }
-        [ProtoMember(10)]
+        [NinoMember(10)]
         public string PageCtrl { get; set; }
-        [ProtoMember(11)]
+        [NinoMember(11)]
         public string Voice { get; set; }
-        [ProtoMember(12)]
+        [NinoMember(12)]
         public string WindowType { get; set; }
-        [ProtoMember(13)]
+        [NinoMember(13)]
         public string Chinese { get; set; }
-        [ProtoMember(14)]
+        [NinoMember(14)]
         public string English { get; set; }
         
     }

@@ -30,7 +30,7 @@ namespace ET
 				name = configType.FullName;
 			byte[] oneConfigBytes = self.ConfigLoader.GetOneConfigBytes(name);
 
-			object category = ProtobufHelper.FromBytes(configType, oneConfigBytes, 0, oneConfigBytes.Length);
+			object category = Nino.Serialization.Deserializer.DeserializeWhthoutGenerated(configType, oneConfigBytes,0,oneConfigBytes.Length);
 
 			if(cache)
 				self.AllConfig[configType] = category;
@@ -41,7 +41,7 @@ namespace ET
 		{
 			byte[] oneConfigBytes = self.ConfigLoader.GetOneConfigBytes(configType.FullName);
 
-			object category = ProtobufHelper.FromBytes(configType, oneConfigBytes, 0, oneConfigBytes.Length);
+			object category = Nino.Serialization.Deserializer.DeserializeWhthoutGenerated(configType, oneConfigBytes,0,oneConfigBytes.Length);
 
 			self.AllConfig[configType] = category;
 		}

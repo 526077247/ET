@@ -1,0 +1,149 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+        <ImplicitUsings>disable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <DefineConstants>TRACE2_0;NOT_UNITY;SERVER</DefineConstants>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <LangVersion>8.0</LangVersion>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <DefineConstants>TRACE2_0;SERVER;NOT_UNITY</DefineConstants>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <LangVersion>8.0</LangVersion>
+    </PropertyGroup>
+    <ItemGroup>
+        <None Remove="BenchmarkDotNet"/>
+        <None Remove="Newtonsoft.Json"/>
+        <None Remove="OdinSerializer"/>
+        <None Remove="MessagePack_1_7_3_6"/>
+        <None Remove="MessagePack"/>
+        <None Remove="Microsoft.NETCore.Runtime.CoreCLR"/>
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="BenchmarkDotNet" Version="0.12.1"/>
+        <PackageReference Include="Ceras" Version="4.1.7"/>
+        <PackageReference Include="FsPickler" Version="5.3.2"/>
+        <PackageReference Include="Hyperion" Version="0.12.2"/>
+        <PackageReference Include="Jil" Version="2.17.0"/>
+        <PackageReference Include="MsgPack.Cli" Version="1.0.1"/>
+        <PackageReference Include="protobuf-net" Version="2.4.4"/>
+        <PackageReference Include="SpanJson" Version="3.0.1"/>
+        <PackageReference Include="System.Text.Json" Version="4.6.0"/>
+        <PackageReference Include="Utf8Json" Version="1.3.7"/>
+        <PackageReference Include="Newtonsoft.Json" Version="12.0.3"/>
+        <PackageReference Include="Newtonsoft.Json.Bson" Version="1.0.2"/>
+        <PackageReference Include="MessagePack" Version="2.3.112"/>
+        <PackageReference Include="Microsoft.NETCore.Runtime.CoreCLR" Version="2.0.8"/>
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="..\..\Unity\Assets\ThirdParty\Nino\Shared\ThirdParty\System.Threading.Tasks.Extensions.dll">
+            <Link>Shared\ThirdParty\System.Threading.Tasks.Extensions.dll</Link>
+        </None>
+        <None Include="..\..\Unity\Assets\ThirdParty\Nino\Shared\ThirdParty\System.Buffers.dll">
+            <Link>Shared\ThirdParty\System.Buffers.dll</Link>
+        </None>
+        <None Include="..\..\Unity\Assets\ThirdParty\Nino\Shared\ThirdParty\System.IO.Pipelines.dll">
+            <Link>Shared\ThirdParty\System.IO.Pipelines.dll</Link>
+        </None>
+        <None Include="..\..\Unity\Assets\ThirdParty\Nino\Shared\ThirdParty\System.Runtime.CompilerServices.Unsafe.dll">
+            <Link>Shared\ThirdParty\System.Runtime.CompilerServices.Unsafe.dll</Link>
+        </None>
+        <None Include="..\..\Unity\Assets\ThirdParty\Nino\Shared\ThirdParty\System.Numerics.Vectors.dll">
+            <Link>Shared\ThirdParty\System.Numerics.Vectors.dll</Link>
+        </None>
+        <None Include="..\..\Unity\Assets\ThirdParty\Nino\Shared\ThirdParty\System.Numerics.dll">
+            <Link>Shared\ThirdParty\System.Numerics.dll</Link>
+        </None>
+        <None Include="..\..\Unity\Assets\ThirdParty\Nino\Shared\ThirdParty\System.Memory.dll">
+            <Link>Shared\ThirdParty\System.Memory.dll</Link>
+        </None>
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Include="..\..\Unity\Assets\ThirdParty\Nino\Shared\Util\Logger.cs">
+            <Link>Shared\Util\Logger.cs</Link>
+        </Compile>
+        <Compile Include="..\..\Unity\Assets\ThirdParty\Nino\Shared\Util\PowOf2.cs">
+            <Link>Shared\Util\PowOf2.cs</Link>
+        </Compile>
+        <Compile Include="..\..\Unity\Assets\ThirdParty\Nino\Shared\IO\Stream\FlexibleStream.cs">
+            <Link>Shared\IO\Stream\FlexibleStream.cs</Link>
+        </Compile>
+        <Compile Include="..\..\Unity\Assets\ThirdParty\Nino\Shared\IO\Stream\DeflateStream.cs">
+            <Link>Shared\IO\Stream\DeflateStream.cs</Link>
+        </Compile>
+        <Compile Include="..\..\Unity\Assets\ThirdParty\Nino\Shared\IO\Pool\ArrayPool.cs">
+            <Link>Shared\IO\Pool\ArrayPool.cs</Link>
+        </Compile>
+        <Compile Include="..\..\Unity\Assets\ThirdParty\Nino\Shared\IO\Pool\BufferPool.cs">
+            <Link>Shared\IO\Pool\BufferPool.cs</Link>
+        </Compile>
+        <Compile Include="..\..\Unity\Assets\ThirdParty\Nino\Shared\IO\Pool\ObjectPool.cs">
+            <Link>Shared\IO\Pool\ObjectPool.cs</Link>
+        </Compile>
+        <Compile Include="..\..\Unity\Assets\ThirdParty\Nino\Shared\IO\Buffer\ExtensibleBuffer.cs">
+            <Link>Shared\IO\Buffer\ExtensibleBuffer.cs</Link>
+        </Compile>
+        <Compile Include="..\..\Unity\Assets\ThirdParty\Nino\Shared\IO\Buffer\ExtensibleBufferExtensions.cs">
+            <Link>Shared\IO\Buffer\ExtensibleBufferExtensions.cs</Link>
+        </Compile>
+        <Compile Include="..\..\Unity\Assets\ThirdParty\Nino\Shared\Attributes\MonoPInvokeCallbackAttribute.cs">
+            <Link>Shared\Attributes\MonoPInvokeCallbackAttribute.cs</Link>
+        </Compile>
+        <Compile Include="..\..\Unity\Assets\ThirdParty\Nino\Shared\Mgr\CompressMgr.cs">
+            <Link>Shared\Mgr\CompressMgr.cs</Link>
+        </Compile>
+        <Compile Include="..\..\Unity\Assets\ThirdParty\Nino\Shared\Mgr\ConstMgr.cs">
+            <Link>Shared\Mgr\ConstMgr.cs</Link>
+        </Compile>
+        <Compile Include="..\..\Unity\Assets\ThirdParty\Nino\Shared\Collections\UncheckedStack.cs">
+            <Link>Shared\Collections\UncheckedStack.cs</Link>
+        </Compile>
+        <Compile Include="..\..\Unity\Assets\ThirdParty\Nino\Shared\Collections\UncheckedList.cs">
+            <Link>Shared\Collections\UncheckedList.cs</Link>
+        </Compile>
+        <Compile Include="..\..\Unity\Assets\ThirdParty\Nino\Shared\Collections\FunctorComparer.cs">
+            <Link>Shared\Collections\FunctorComparer.cs</Link>
+        </Compile>
+        <Compile Include="..\..\Unity\Assets\ThirdParty\Nino\Serialization\CodeGenerator.cs">
+            <Link>Serialization\CodeGenerator.cs</Link>
+        </Compile>
+        <Compile Include="..\..\Unity\Assets\ThirdParty\Nino\Serialization\ISerializationHelper.cs">
+            <Link>Serialization\ISerializationHelper.cs</Link>
+        </Compile>
+        <Compile Include="..\..\Unity\Assets\ThirdParty\Nino\Serialization\Deserializer.cs">
+            <Link>Serialization\Deserializer.cs</Link>
+        </Compile>
+        <Compile Include="..\..\Unity\Assets\ThirdParty\Nino\Serialization\Reader.cs">
+            <Link>Serialization\Reader.cs</Link>
+        </Compile>
+        <Compile Include="..\..\Unity\Assets\ThirdParty\Nino\Serialization\TypeModel.cs">
+            <Link>Serialization\TypeModel.cs</Link>
+        </Compile>
+        <Compile Include="..\..\Unity\Assets\ThirdParty\Nino\Serialization\Writer.cs">
+            <Link>Serialization\Writer.cs</Link>
+        </Compile>
+        <Compile Include="..\..\Unity\Assets\ThirdParty\Nino\Serialization\Serializer.cs">
+            <Link>Serialization\Serializer.cs</Link>
+        </Compile>
+        <Compile Include="..\..\Unity\Assets\ThirdParty\Nino\Serialization\Enums\CompressType.cs">
+            <Link>Serialization\Enums\CompressType.cs</Link>
+        </Compile>
+        <Compile Include="..\..\Unity\Assets\ThirdParty\Nino\Serialization\Attributes\CodeGenIgnoreAttribute.cs">
+            <Link>Serialization\Attributes\CodeGenIgnoreAttribute.cs</Link>
+        </Compile>
+        <Compile Include="..\..\Unity\Assets\ThirdParty\Nino\Serialization\Attributes\NinoIgnoreAttribute.cs">
+            <Link>Serialization\Attributes\NinoIgnoreAttribute.cs</Link>
+        </Compile>
+        <Compile Include="..\..\Unity\Assets\ThirdParty\Nino\Serialization\Attributes\NinoSerializeAttribute.cs">
+            <Link>Serialization\Attributes\NinoSerializeAttribute.cs</Link>
+        </Compile>
+        <Compile Include="..\..\Unity\Assets\ThirdParty\Nino\Serialization\Attributes\NinoMemberAttribute.cs">
+            <Link>Serialization\Attributes\NinoMemberAttribute.cs</Link>
+        </Compile>
+    </ItemGroup>
+</Project>

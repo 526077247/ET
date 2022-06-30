@@ -1,22 +1,22 @@
 using System;
 using System.Collections.Generic;
 using MongoDB.Bson.Serialization.Attributes;
-using ProtoBuf;
+using Nino.Serialization;
 
 namespace ET
 {
-    [ProtoContract]
+    [NinoSerialize]
     [Config]
     public partial class FormulaConfigCategory : ProtoObject, IMerge
     {
         public static FormulaConfigCategory Instance;
 		
-        [ProtoIgnore]
+        [NinoIgnore]
         [BsonIgnore]
         private Dictionary<int, FormulaConfig> dict = new Dictionary<int, FormulaConfig>();
 		
         [BsonElement]
-        [ProtoMember(1)]
+        [NinoMember(1)]
         private List<FormulaConfig> list = new List<FormulaConfig>();
 		
         public FormulaConfigCategory()
@@ -76,14 +76,14 @@ namespace ET
         }
     }
 
-    [ProtoContract]
+    [NinoSerialize]
 	public partial class FormulaConfig: ProtoObject, IConfig
 	{
 		/// <summary>Id</summary>
-		[ProtoMember(1)]
+		[NinoMember(1)]
 		public int Id { get; set; }
 		/// <summary>公式</summary>
-		[ProtoMember(2)]
+		[NinoMember(2)]
 		public string Formula { get; set; }
 
 	}

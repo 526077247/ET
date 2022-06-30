@@ -1,22 +1,22 @@
 using System;
 using System.Collections.Generic;
 using MongoDB.Bson.Serialization.Attributes;
-using ProtoBuf;
+using Nino.Serialization;
 
 namespace ET
 {
-    [ProtoContract]
+    [NinoSerialize]
     [Config]
     public partial class StagePosConfigCategory : ProtoObject, IMerge
     {
         public static StagePosConfigCategory Instance;
 		
-        [ProtoIgnore]
+        [NinoIgnore]
         [BsonIgnore]
         private Dictionary<int, StagePosConfig> dict = new Dictionary<int, StagePosConfig>();
 		
         [BsonElement]
-        [ProtoMember(1)]
+        [NinoMember(1)]
         private List<StagePosConfig> list = new List<StagePosConfig>();
 		
         public StagePosConfigCategory()
@@ -76,17 +76,17 @@ namespace ET
         }
     }
 
-    [ProtoContract]
+    [NinoSerialize]
 	public partial class StagePosConfig: ProtoObject, IConfig
 	{
 		/// <summary>Id</summary>
-		[ProtoMember(1)]
+		[NinoMember(1)]
 		public int Id { get; set; }
 		/// <summary>位置关键字（不能重复）</summary>
-		[ProtoMember(2)]
+		[NinoMember(2)]
 		public string NameKey { get; set; }
 		/// <summary>位置</summary>
-		[ProtoMember(3)]
+		[NinoMember(3)]
 		public float[] Position { get; set; }
 
 	}

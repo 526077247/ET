@@ -42,12 +42,12 @@ namespace ILRuntime.Runtime.Generated
                     lst.Add(m);
                 }
             }
-            args = new Type[]{typeof(System.Collections.Generic.List<ILRuntime.Runtime.Intepreter.ILTypeInstance>)};
+            args = new Type[]{typeof(ILRuntime.Runtime.Intepreter.ILTypeInstance)};
             if (genericMethods.TryGetValue("ToObject", out lst))
             {
                 foreach(var m in lst)
                 {
-                    if(m.MatchGenericParameters(args, typeof(System.Collections.Generic.List<ILRuntime.Runtime.Intepreter.ILTypeInstance>), typeof(System.String)))
+                    if(m.MatchGenericParameters(args, typeof(ILRuntime.Runtime.Intepreter.ILTypeInstance), typeof(System.String)))
                     {
                         method = m.MakeGenericMethod(args);
                         app.RegisterCLRMethodRedirection(method, ToObject_2);
@@ -155,7 +155,7 @@ namespace ILRuntime.Runtime.Generated
             __intp.Free(ptr_of_this_method);
 
 
-            var result_of_this_method = LitJson.JsonMapper.ToObject<System.Collections.Generic.List<ILRuntime.Runtime.Intepreter.ILTypeInstance>>(@json);
+            var result_of_this_method = LitJson.JsonMapper.ToObject<ILRuntime.Runtime.Intepreter.ILTypeInstance>(@json);
 
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }

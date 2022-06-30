@@ -27,7 +27,7 @@ namespace ET
 				
 				ProtobufHelper.Init();
 				MongoRegister.Init();
-				
+				NinoRegister.Init();
 				// 命令行参数
 				Options options = null;
 				Parser.Default.ParseArguments<Options>(args)

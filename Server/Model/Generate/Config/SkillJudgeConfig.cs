@@ -1,22 +1,22 @@
 using System;
 using System.Collections.Generic;
 using MongoDB.Bson.Serialization.Attributes;
-using ProtoBuf;
+using Nino.Serialization;
 
 namespace ET
 {
-    [ProtoContract]
+    [NinoSerialize]
     [Config]
     public partial class SkillJudgeConfigCategory : ProtoObject, IMerge
     {
         public static SkillJudgeConfigCategory Instance;
 		
-        [ProtoIgnore]
+        [NinoIgnore]
         [BsonIgnore]
         private Dictionary<int, SkillJudgeConfig> dict = new Dictionary<int, SkillJudgeConfig>();
 		
         [BsonElement]
-        [ProtoMember(1)]
+        [NinoMember(1)]
         private List<SkillJudgeConfig> list = new List<SkillJudgeConfig>();
 		
         public SkillJudgeConfigCategory()
@@ -76,31 +76,31 @@ namespace ET
         }
     }
 
-    [ProtoContract]
+    [NinoSerialize]
 	public partial class SkillJudgeConfig: ProtoObject, IConfig
 	{
 		/// <summary>Id</summary>
-		[ProtoMember(1)]
+		[NinoMember(1)]
 		public int Id { get; set; }
 		/// <summary>碰撞体类型类型(0固定位置碰撞体1固定朝向碰撞体2指定位置飞行碰撞体3朝向飞行碰撞体（锁定）4目标立刻结算)</summary>
-		[ProtoMember(2)]
+		[NinoMember(2)]
 		public int ColliderType { get; set; }
 		/// <summary>起始位置（1自身，2目标，3鼠标位置）</summary>
-		[ProtoMember(3)]
+		[NinoMember(3)]
 		public int StartPosType { get; set; }
 		/// <summary>碰撞体持续时间（单位:毫秒）</summary>
-		[ProtoMember(4)]
+		[NinoMember(4)]
 		public int Time { get; set; }
 		/// <summary>碰撞体形状(0.立即判断;1.矩形;2.圆形；3.扇形)</summary>
-		[ProtoMember(5)]
+		[NinoMember(5)]
 		public int ColliderShape { get; set; }
 		[BsonRepresentation(MongoDB.Bson.BsonType.Double, AllowTruncation = true)]
 		/// <summary>碰撞体形状参数(m)</summary>
-		[ProtoMember(6)]
+		[NinoMember(6)]
 		public float[] ColliderPara { get; set; }
 		[BsonRepresentation(MongoDB.Bson.BsonType.Double, AllowTruncation = true)]
 		/// <summary>速度（m/s）</summary>
-		[ProtoMember(7)]
+		[NinoMember(7)]
 		public float Speed { get; set; }
 
 	}

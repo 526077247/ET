@@ -1,22 +1,22 @@
 using System;
 using System.Collections.Generic;
 using MongoDB.Bson.Serialization.Attributes;
-using ProtoBuf;
+using Nino.Serialization;
 
 namespace ET
 {
-    [ProtoContract]
+    [NinoSerialize]
     [Config]
     public partial class SkillStepConfigCategory : ProtoObject, IMerge
     {
         public static SkillStepConfigCategory Instance;
 		
-        [ProtoIgnore]
+        [NinoIgnore]
         [BsonIgnore]
         private Dictionary<int, SkillStepConfig> dict = new Dictionary<int, SkillStepConfig>();
 		
         [BsonElement]
-        [ProtoMember(1)]
+        [NinoMember(1)]
         private List<SkillStepConfig> list = new List<SkillStepConfig>();
 		
         public SkillStepConfigCategory()
@@ -76,104 +76,104 @@ namespace ET
         }
     }
 
-    [ProtoContract]
+    [NinoSerialize]
 	public partial class SkillStepConfig: ProtoObject, IConfig
 	{
 		/// <summary>Id</summary>
-		[ProtoMember(1)]
+		[NinoMember(1)]
 		public int Id { get; set; }
 		/// <summary>参数数量</summary>
-		[ProtoMember(2)]
+		[NinoMember(2)]
 		public int ParaCount { get; set; }
 		/// <summary>时间节点0</summary>
-		[ProtoMember(3)]
+		[NinoMember(3)]
 		public int TriggerTime0 { get; set; }
 		/// <summary>步骤类型0</summary>
-		[ProtoMember(4)]
+		[NinoMember(4)]
 		public int StepStyle0 { get; set; }
 		/// <summary>步骤参数0</summary>
-		[ProtoMember(5)]
+		[NinoMember(5)]
 		public string[] StepParameter0 { get; set; }
 		/// <summary>时间节点1</summary>
-		[ProtoMember(6)]
+		[NinoMember(6)]
 		public int TriggerTime1 { get; set; }
 		/// <summary>步骤类型1</summary>
-		[ProtoMember(7)]
+		[NinoMember(7)]
 		public int StepStyle1 { get; set; }
 		/// <summary>步骤参数1</summary>
-		[ProtoMember(8)]
+		[NinoMember(8)]
 		public string[] StepParameter1 { get; set; }
 		/// <summary>时间节点2</summary>
-		[ProtoMember(9)]
+		[NinoMember(9)]
 		public int TriggerTime2 { get; set; }
 		/// <summary>步骤类型2</summary>
-		[ProtoMember(10)]
+		[NinoMember(10)]
 		public int StepStyle2 { get; set; }
 		/// <summary>步骤参数2</summary>
-		[ProtoMember(11)]
+		[NinoMember(11)]
 		public string[] StepParameter2 { get; set; }
 		/// <summary>时间节点3</summary>
-		[ProtoMember(12)]
+		[NinoMember(12)]
 		public int TriggerTime3 { get; set; }
 		/// <summary>步骤类型3</summary>
-		[ProtoMember(13)]
+		[NinoMember(13)]
 		public int StepStyle3 { get; set; }
 		/// <summary>步骤参数3</summary>
-		[ProtoMember(14)]
+		[NinoMember(14)]
 		public string[] StepParameter3 { get; set; }
 		/// <summary>时间节点4</summary>
-		[ProtoMember(15)]
+		[NinoMember(15)]
 		public int TriggerTime4 { get; set; }
 		/// <summary>步骤类型4</summary>
-		[ProtoMember(16)]
+		[NinoMember(16)]
 		public int StepStyle4 { get; set; }
 		/// <summary>步骤参数4</summary>
-		[ProtoMember(17)]
+		[NinoMember(17)]
 		public string[] StepParameter4 { get; set; }
 		/// <summary>时间节点5</summary>
-		[ProtoMember(18)]
+		[NinoMember(18)]
 		public int TriggerTime5 { get; set; }
 		/// <summary>步骤类型5</summary>
-		[ProtoMember(19)]
+		[NinoMember(19)]
 		public int StepStyle5 { get; set; }
 		/// <summary>步骤参数5</summary>
-		[ProtoMember(20)]
+		[NinoMember(20)]
 		public string[] StepParameter5 { get; set; }
 		/// <summary>时间节点6</summary>
-		[ProtoMember(21)]
+		[NinoMember(21)]
 		public int TriggerTime6 { get; set; }
 		/// <summary>步骤类型6</summary>
-		[ProtoMember(22)]
+		[NinoMember(22)]
 		public int StepStyle6 { get; set; }
 		/// <summary>步骤参数6</summary>
-		[ProtoMember(23)]
+		[NinoMember(23)]
 		public string[] StepParameter6 { get; set; }
 		/// <summary>时间节点7</summary>
-		[ProtoMember(24)]
+		[NinoMember(24)]
 		public int TriggerTime7 { get; set; }
 		/// <summary>步骤类型7</summary>
-		[ProtoMember(25)]
+		[NinoMember(25)]
 		public int StepStyle7 { get; set; }
 		/// <summary>步骤参数7</summary>
-		[ProtoMember(26)]
+		[NinoMember(26)]
 		public string[] StepParameter7 { get; set; }
 		/// <summary>时间节点8</summary>
-		[ProtoMember(27)]
+		[NinoMember(27)]
 		public int TriggerTime8 { get; set; }
 		/// <summary>步骤类型8</summary>
-		[ProtoMember(28)]
+		[NinoMember(28)]
 		public int StepStyle8 { get; set; }
 		/// <summary>步骤参数8</summary>
-		[ProtoMember(29)]
+		[NinoMember(29)]
 		public string[] StepParameter8 { get; set; }
 		/// <summary>时间节点9</summary>
-		[ProtoMember(30)]
+		[NinoMember(30)]
 		public int TriggerTime9 { get; set; }
 		/// <summary>步骤类型9</summary>
-		[ProtoMember(31)]
+		[NinoMember(31)]
 		public int StepStyle9 { get; set; }
 		/// <summary>步骤参数9</summary>
-		[ProtoMember(32)]
+		[NinoMember(32)]
 		public string[] StepParameter9 { get; set; }
 
 	}

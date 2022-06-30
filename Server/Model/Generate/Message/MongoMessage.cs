@@ -1,56 +1,56 @@
 using ET;
-using ProtoBuf;
+using Nino.Serialization;
 using System.Collections.Generic;
 namespace ET
 {
 	[Message(MongoOpcode.ObjectQueryResponse)]
-	[ProtoContract]
+	[NinoSerialize]
 	public partial class ObjectQueryResponse: Object, IActorResponse
 	{
-		[ProtoMember(90)]
+		[NinoMember(90)]
 		public int RpcId { get; set; }
 
-		[ProtoMember(91)]
+		[NinoMember(91)]
 		public int Error { get; set; }
 
-		[ProtoMember(92)]
+		[NinoMember(92)]
 		public string Message { get; set; }
 
-		[ProtoMember(1)]
+		[NinoMember(1)]
 		public Entity entity { get; set; }
 
 	}
 
 	[ResponseType(nameof(M2M_UnitTransferResponse))]
 	[Message(MongoOpcode.M2M_UnitTransferRequest)]
-	[ProtoContract]
+	[NinoSerialize]
 	public partial class M2M_UnitTransferRequest: Object, IActorRequest
 	{
-		[ProtoMember(1)]
+		[NinoMember(1)]
 		public int RpcId { get; set; }
 
-		[ProtoMember(2)]
+		[NinoMember(2)]
 		public Unit Unit { get; set; }
 
-		[ProtoMember(3)]
+		[NinoMember(3)]
 		public List<Entity> Entitys = new List<Entity>();
 
-		[ProtoMember(4)]
+		[NinoMember(4)]
 		public List<RecursiveEntitys> Map = new List<RecursiveEntitys>();
 
 	}
 
 	[Message(MongoOpcode.RecursiveEntitys)]
-	[ProtoContract]
+	[NinoSerialize]
 	public partial class RecursiveEntitys: Object
 	{
-		[ProtoMember(1)]
+		[NinoMember(1)]
 		public int IsChild { get; set; }
 
-		[ProtoMember(2)]
+		[NinoMember(2)]
 		public int ParentIndex { get; set; }
 
-		[ProtoMember(3)]
+		[NinoMember(3)]
 		public int ChildIndex { get; set; }
 
 	}

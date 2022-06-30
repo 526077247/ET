@@ -1,22 +1,22 @@
 using System;
 using System.Collections.Generic;
 using MongoDB.Bson.Serialization.Attributes;
-using ProtoBuf;
+using Nino.Serialization;
 
 namespace ET
 {
-    [ProtoContract]
+    [NinoSerialize]
     [Config]
     public partial class StartSceneConfigCategory : ProtoObject, IMerge
     {
         public static StartSceneConfigCategory Instance;
 		
-        [ProtoIgnore]
+        [NinoIgnore]
         [BsonIgnore]
         private Dictionary<int, StartSceneConfig> dict = new Dictionary<int, StartSceneConfig>();
 		
         [BsonElement]
-        [ProtoMember(1)]
+        [NinoMember(1)]
         private List<StartSceneConfig> list = new List<StartSceneConfig>();
 		
         public StartSceneConfigCategory()
@@ -76,26 +76,26 @@ namespace ET
         }
     }
 
-    [ProtoContract]
+    [NinoSerialize]
 	public partial class StartSceneConfig: ProtoObject, IConfig
 	{
 		/// <summary>Id</summary>
-		[ProtoMember(1)]
+		[NinoMember(1)]
 		public int Id { get; set; }
 		/// <summary>所属进程</summary>
-		[ProtoMember(2)]
+		[NinoMember(2)]
 		public int Process { get; set; }
 		/// <summary>所属区</summary>
-		[ProtoMember(3)]
+		[NinoMember(3)]
 		public int Zone { get; set; }
 		/// <summary>类型</summary>
-		[ProtoMember(4)]
+		[NinoMember(4)]
 		public string SceneType { get; set; }
 		/// <summary>名字</summary>
-		[ProtoMember(5)]
+		[NinoMember(5)]
 		public string Name { get; set; }
 		/// <summary>外网端口</summary>
-		[ProtoMember(6)]
+		[NinoMember(6)]
 		public int OuterPort { get; set; }
 
 	}

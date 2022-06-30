@@ -1,22 +1,22 @@
 using System;
 using System.Collections.Generic;
 using MongoDB.Bson.Serialization.Attributes;
-using ProtoBuf;
+using Nino.Serialization;
 
 namespace ET
 {
-    [ProtoContract]
+    [NinoSerialize]
     [Config]
     public partial class I18NConfigCategory : ProtoObject, IMerge
     {
         public static I18NConfigCategory Instance;
 		
-        [ProtoIgnore]
+        [NinoIgnore]
         [BsonIgnore]
         private Dictionary<int, I18NConfig> dict = new Dictionary<int, I18NConfig>();
 		
         [BsonElement]
-        [ProtoMember(1)]
+        [NinoMember(1)]
         private List<I18NConfig> list = new List<I18NConfig>();
 		
         public I18NConfigCategory()
@@ -76,20 +76,20 @@ namespace ET
         }
     }
 
-    [ProtoContract]
+    [NinoSerialize]
 	public partial class I18NConfig: ProtoObject, IConfig
 	{
 		/// <summary>Id</summary>
-		[ProtoMember(1)]
+		[NinoMember(1)]
 		public int Id { get; set; }
 		/// <summary>索引标识</summary>
-		[ProtoMember(2)]
+		[NinoMember(2)]
 		public string Key { get; set; }
 		/// <summary>简体中文</summary>
-		[ProtoMember(3)]
+		[NinoMember(3)]
 		public string Chinese { get; set; }
 		/// <summary>英文</summary>
-		[ProtoMember(4)]
+		[NinoMember(4)]
 		public string English { get; set; }
 
 	}

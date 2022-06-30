@@ -1,22 +1,22 @@
 using System;
 using System.Collections.Generic;
 using MongoDB.Bson.Serialization.Attributes;
-using ProtoBuf;
+using Nino.Serialization;
 
 namespace ET
 {
-    [ProtoContract]
+    [NinoSerialize]
     [Config]
     public partial class RoleExpressionConfigCategory : ProtoObject, IMerge
     {
         public static RoleExpressionConfigCategory Instance;
 		
-        [ProtoIgnore]
+        [NinoIgnore]
         [BsonIgnore]
         private Dictionary<int, RoleExpressionConfig> dict = new Dictionary<int, RoleExpressionConfig>();
 		
         [BsonElement]
-        [ProtoMember(1)]
+        [NinoMember(1)]
         private List<RoleExpressionConfig> list = new List<RoleExpressionConfig>();
 		
         public RoleExpressionConfigCategory()
@@ -76,20 +76,20 @@ namespace ET
         }
     }
 
-    [ProtoContract]
+    [NinoSerialize]
 	public partial class RoleExpressionConfig: ProtoObject, IConfig
 	{
 		/// <summary>Id</summary>
-		[ProtoMember(1)]
+		[NinoMember(1)]
 		public int Id { get; set; }
 		/// <summary>角色名多语言不能重复）</summary>
-		[ProtoMember(2)]
+		[NinoMember(2)]
 		public string NameKey { get; set; }
 		/// <summary>表情类型</summary>
-		[ProtoMember(3)]
+		[NinoMember(3)]
 		public string Expression { get; set; }
 		/// <summary>图片ab包路径</summary>
-		[ProtoMember(4)]
+		[NinoMember(4)]
 		public string Path { get; set; }
 
 	}

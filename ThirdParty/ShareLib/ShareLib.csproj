@@ -56,7 +56,6 @@
       <PackageReference Include="mongocsharpdriver" Version="2.13.3" />
       <PackageReference Include="MongoDB.Bson" Version="2.13.3" />
       <PackageReference Include="NLog" Version="4.7.12" />
-      <PackageReference Include="protobuf-net" Version="2.4.0" />
       <PackageReference Include="SharpZipLib" Version="1.3.3" />
     </ItemGroup>
 

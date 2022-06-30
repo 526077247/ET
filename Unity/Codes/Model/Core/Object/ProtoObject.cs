@@ -1,4 +1,5 @@
 using System;
+using Nino.Serialization;
 #if NOT_UNITY
 using System.ComponentModel;
 #endif
@@ -17,7 +18,7 @@ namespace ET
         void Dispose();
     }
 #endif
-    
+    [NinoSerialize]
     public abstract class ProtoObject: Object, ISupportInitialize
     {
         public object Clone()

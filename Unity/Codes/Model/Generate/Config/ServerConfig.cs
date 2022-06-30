@@ -1,22 +1,22 @@
 using System;
 using System.Collections.Generic;
 using MongoDB.Bson.Serialization.Attributes;
-using ProtoBuf;
+using Nino.Serialization;
 
 namespace ET
 {
-    [ProtoContract]
+    [NinoSerialize]
     [Config]
     public partial class ServerConfigCategory : ProtoObject, IMerge
     {
         public static ServerConfigCategory Instance;
 		
-        [ProtoIgnore]
+        [NinoIgnore]
         [BsonIgnore]
         private Dictionary<int, ServerConfig> dict = new Dictionary<int, ServerConfig>();
 		
         [BsonElement]
-        [ProtoMember(1)]
+        [NinoMember(1)]
         private List<ServerConfig> list = new List<ServerConfig>();
 		
         public ServerConfigCategory()
@@ -76,35 +76,35 @@ namespace ET
         }
     }
 
-    [ProtoContract]
+    [NinoSerialize]
 	public partial class ServerConfig: ProtoObject, IConfig
 	{
 		/// <summary>Id</summary>
-		[ProtoMember(1)]
+		[NinoMember(1)]
 		public int Id { get; set; }
 		/// <summary>标记</summary>
-		[ProtoMember(2)]
+		[NinoMember(2)]
 		public string Name { get; set; }
 		/// <summary>realm服地址</summary>
-		[ProtoMember(3)]
+		[NinoMember(3)]
 		public string RealmIp { get; set; }
 		/// <summary>更新列表cdn地址</summary>
-		[ProtoMember(4)]
+		[NinoMember(4)]
 		public string UpdateListUrl { get; set; }
 		/// <summary>路由cdn地址</summary>
-		[ProtoMember(5)]
+		[NinoMember(5)]
 		public string RouterListUrl { get; set; }
 		/// <summary>热更资源cdn地址</summary>
-		[ProtoMember(6)]
+		[NinoMember(6)]
 		public string ResUrl { get; set; }
 		/// <summary>测试更新列表cdn地址</summary>
-		[ProtoMember(7)]
+		[NinoMember(7)]
 		public string TestUpdateListUrl { get; set; }
 		/// <summary>服务器类型</summary>
-		[ProtoMember(8)]
+		[NinoMember(8)]
 		public int EnvId { get; set; }
 		/// <summary>是否默认值</summary>
-		[ProtoMember(9)]
+		[NinoMember(9)]
 		public int IsPriority { get; set; }
 
 	}

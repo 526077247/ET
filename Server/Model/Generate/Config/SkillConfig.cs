@@ -1,22 +1,22 @@
 using System;
 using System.Collections.Generic;
 using MongoDB.Bson.Serialization.Attributes;
-using ProtoBuf;
+using Nino.Serialization;
 
 namespace ET
 {
-    [ProtoContract]
+    [NinoSerialize]
     [Config]
     public partial class SkillConfigCategory : ProtoObject, IMerge
     {
         public static SkillConfigCategory Instance;
 		
-        [ProtoIgnore]
+        [NinoIgnore]
         [BsonIgnore]
         private Dictionary<int, SkillConfig> dict = new Dictionary<int, SkillConfig>();
 		
         [BsonElement]
-        [ProtoMember(1)]
+        [NinoMember(1)]
         private List<SkillConfig> list = new List<SkillConfig>();
 		
         public SkillConfigCategory()
@@ -76,44 +76,44 @@ namespace ET
         }
     }
 
-    [ProtoContract]
+    [NinoSerialize]
 	public partial class SkillConfig: ProtoObject, IConfig
 	{
 		/// <summary>Id</summary>
-		[ProtoMember(1)]
+		[NinoMember(1)]
 		public int Id { get; set; }
 		/// <summary>伤害作用对象(0自身1己方2敌方)</summary>
-		[ProtoMember(2)]
+		[NinoMember(2)]
 		public int DamageTarget { get; set; }
 		/// <summary>名字</summary>
-		[ProtoMember(3)]
+		[NinoMember(3)]
 		public string Name { get; set; }
 		/// <summary>图标</summary>
-		[ProtoMember(4)]
+		[NinoMember(4)]
 		public string Icon { get; set; }
 		/// <summary>稀有度</summary>
-		[ProtoMember(5)]
+		[NinoMember(5)]
 		public int RareLv { get; set; }
 		/// <summary>可用等级</summary>
-		[ProtoMember(6)]
+		[NinoMember(6)]
 		public int Lv { get; set; }
 		/// <summary>描述</summary>
-		[ProtoMember(7)]
+		[NinoMember(7)]
 		public string Description { get; set; }
 		/// <summary>冷却时间</summary>
-		[ProtoMember(8)]
+		[NinoMember(8)]
 		public int CDTime { get; set; }
 		/// <summary>施法模式（0：距离不够则选最大施法范围ps选目标的则不施法;1:距离不够走到最远距离施法）</summary>
-		[ProtoMember(9)]
+		[NinoMember(9)]
 		public int Mode { get; set; }
 		/// <summary>技能预览类型(0大圈选一个目标，1大圈选小圈，2从脚底出发指向型……)</summary>
-		[ProtoMember(10)]
+		[NinoMember(10)]
 		public int PreviewType { get; set; }
 		/// <summary>技能预览释放范围（0半径；1半径，小圈半径；2，长度，宽度）</summary>
-		[ProtoMember(11)]
+		[NinoMember(11)]
 		public int[] PreviewRange { get; set; }
 		/// <summary>技能配置</summary>
-		[ProtoMember(12)]
+		[NinoMember(12)]
 		public string JsonFile { get; set; }
 
 	}

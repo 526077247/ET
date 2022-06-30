@@ -1,22 +1,22 @@
 using System;
 using System.Collections.Generic;
 using MongoDB.Bson.Serialization.Attributes;
-using ProtoBuf;
+using Nino.Serialization;
 
 namespace ET
 {
-    [ProtoContract]
+    [NinoSerialize]
     [Config]
     public partial class StartProcessConfigCategory : ProtoObject, IMerge
     {
         public static StartProcessConfigCategory Instance;
 		
-        [ProtoIgnore]
+        [NinoIgnore]
         [BsonIgnore]
         private Dictionary<int, StartProcessConfig> dict = new Dictionary<int, StartProcessConfig>();
 		
         [BsonElement]
-        [ProtoMember(1)]
+        [NinoMember(1)]
         private List<StartProcessConfig> list = new List<StartProcessConfig>();
 		
         public StartProcessConfigCategory()
@@ -76,20 +76,20 @@ namespace ET
         }
     }
 
-    [ProtoContract]
+    [NinoSerialize]
 	public partial class StartProcessConfig: ProtoObject, IConfig
 	{
 		/// <summary>Id</summary>
-		[ProtoMember(1)]
+		[NinoMember(1)]
 		public int Id { get; set; }
 		/// <summary>所属机器</summary>
-		[ProtoMember(2)]
+		[NinoMember(2)]
 		public int MachineId { get; set; }
 		/// <summary>内网端口</summary>
-		[ProtoMember(3)]
+		[NinoMember(3)]
 		public int InnerPort { get; set; }
 		/// <summary>程序名</summary>
-		[ProtoMember(4)]
+		[NinoMember(4)]
 		public string AppName { get; set; }
 
 	}

@@ -1,22 +1,22 @@
 using System;
 using System.Collections.Generic;
 using MongoDB.Bson.Serialization.Attributes;
-using ProtoBuf;
+using Nino.Serialization;
 
 namespace ET
 {
-    [ProtoContract]
+    [NinoSerialize]
     [Config]
     public partial class RedDotConfigCategory : ProtoObject, IMerge
     {
         public static RedDotConfigCategory Instance;
 		
-        [ProtoIgnore]
+        [NinoIgnore]
         [BsonIgnore]
         private Dictionary<int, RedDotConfig> dict = new Dictionary<int, RedDotConfig>();
 		
         [BsonElement]
-        [ProtoMember(1)]
+        [NinoMember(1)]
         private List<RedDotConfig> list = new List<RedDotConfig>();
 		
         public RedDotConfigCategory()
@@ -76,17 +76,17 @@ namespace ET
         }
     }
 
-    [ProtoContract]
+    [NinoSerialize]
 	public partial class RedDotConfig: ProtoObject, IConfig
 	{
 		/// <summary>Id</summary>
-		[ProtoMember(1)]
+		[NinoMember(1)]
 		public int Id { get; set; }
 		/// <summary>标记</summary>
-		[ProtoMember(2)]
+		[NinoMember(2)]
 		public string Target { get; set; }
 		/// <summary>父节点</summary>
-		[ProtoMember(3)]
+		[NinoMember(3)]
 		public string Parent { get; set; }
 
 	}

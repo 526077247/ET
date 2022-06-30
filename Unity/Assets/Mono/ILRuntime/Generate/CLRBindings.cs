@@ -118,6 +118,7 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_Dictionary_2_Byte_Boolean_Binding.Register(app);
             System_Collections_Generic_HashSet_1_ILTypeInstance_Binding.Register(app);
             ET_ListComponent_1_String_Binding.Register(app);
+            ET_ListComponent_1_Byte_Binding.Register(app);
             System_Action_2_ILTypeInstance_Int32_Binding.Register(app);
             UnityEngine_Mathf_Binding.Register(app);
             System_Collections_Generic_HashSet_1_ILTypeInstance_Binding_Enumerator_Binding.Register(app);
@@ -136,6 +137,7 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_List_1_Object_Array_Binding.Register(app);
             System_Reflection_PropertyInfo_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Int32_Int64_Binding.Register(app);
+            Nino_Serialization_Deserializer_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Type_Object_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_Byte_Array_Binding.Register(app);
             System_Threading_Monitor_Binding.Register(app);
@@ -357,6 +359,7 @@ namespace ILRuntime.Runtime.Generated
             UnityEngine_ColorUtility_Binding.Register(app);
             BgAutoFit_Binding.Register(app);
             UnityEngine_UI_InputField_Binding.Register(app);
+            UnityEngine_Events_UnityEvent_1_String_Binding.Register(app);
             TMPro_TMP_InputField_Binding.Register(app);
             SuperScrollView_LoopGridView_Binding.Register(app);
             PointerClick_Binding.Register(app);
@@ -407,9 +410,7 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_Dictionary_2_Type_UnOrderMultiMap_2_Type_Object_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Type_Queue_1_ILTypeInstance_Binding.Register(app);
             System_Collections_Generic_Queue_1_ILTypeInstance_Binding.Register(app);
-            ProtoBuf_Meta_RuntimeTypeModel_Binding.Register(app);
-            ProtoBuf_Meta_TypeModel_Binding.Register(app);
-            ProtoBuf_Serializer_Binding.Register(app);
+            Nino_Serialization_Serializer_Binding.Register(app);
             ET_MultiMap_2_Int64_Int64_Binding.Register(app);
             System_Collections_Generic_SortedDictionary_2_Int64_List_1_Int64_Binding.Register(app);
             ET_WrapVector3_Binding.Register(app);

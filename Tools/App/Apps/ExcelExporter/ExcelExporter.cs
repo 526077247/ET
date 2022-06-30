@@ -9,8 +9,8 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Emit;
 using MongoDB.Bson.Serialization;
+using Nino.Serialization;
 using OfficeOpenXml;
-using ProtoBuf;
 using LicenseContext = OfficeOpenXml.LicenseContext;
 
 namespace ET
@@ -41,9 +41,10 @@ namespace ET
     }
 
     // 这里加个标签是为了防止编译时裁剪掉protobuf，因为整个tool工程没有用到protobuf，编译会去掉引用，然后动态编译就会出错
-    [ProtoContract]
+    [NinoSerialize()]
     class Table
     {
+        [NinoMember(1)]
         public bool C;
         public bool S;
         public int Index;
@@ -494,7 +495,7 @@ namespace ET
                     sb.Append("\t\t[BsonRepresentation(MongoDB.Bson.BsonType.Double, AllowTruncation = true)]\n");
                 }
                 sb.Append($"\t\t/// <summary>{headInfo.FieldDesc}</summary>\n");
-                sb.Append($"\t\t[ProtoMember({headInfo.FieldIndex})]\n");
+                sb.Append($"\t\t[NinoMember({headInfo.FieldIndex})]\n");
                 string fieldType = headInfo.FieldType;
                 if (fieldType == "int[][]")
                 {
@@ -681,8 +682,8 @@ namespace ET
             Type type = ass.GetType($"ET.{protoName}Category");
             Type subType = ass.GetType($"ET.{protoName}");
 
-            Serializer.NonGeneric.PrepareSerializer(type);
-            Serializer.NonGeneric.PrepareSerializer(subType);
+            // Serializer.NonGeneric.PrepareSerializer(type);
+            // Serializer.NonGeneric.PrepareSerializer(subType);
 
             IMerge final = Activator.CreateInstance(type) as IMerge;
 
@@ -702,8 +703,12 @@ namespace ET
 
             string path = Path.Combine(dir, $"{protoName}Category.bytes");
 
-            using FileStream file = File.Create(path);
-            Serializer.Serialize(file, final);
+            using(FileStream file = File.Create(path))
+            {
+                // Serializer.Serialize(file, final);
+                var bytes = Nino.Serialization.Serializer.SerializeWithoutGenerated(type,final,Encoding.UTF8);
+                file.Write(bytes);
+            }
         }
     }
 }

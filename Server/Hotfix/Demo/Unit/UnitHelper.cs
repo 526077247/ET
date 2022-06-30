@@ -29,12 +29,12 @@ namespace ET
             unitInfo.ForwardZ = forward.z;
 
             #region 移动信息
+            unitInfo.MoveInfo = new MoveInfo();
             MoveComponent moveComponent = unit.GetComponent<MoveComponent>();
             if (moveComponent != null)
             {
                 if (!moveComponent.IsArrived())
                 {
-                    unitInfo.MoveInfo = new MoveInfo();
                     for (int i = moveComponent.N; i < moveComponent.Targets.Count; ++i)
                     {
                         Vector3 pos = moveComponent.Targets[i];

@@ -2,13 +2,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using ProtoBuf;
+using Nino.Serialization;
 
 namespace ET
 {
 	public partial class AIConfigCategory
 	{
-		[ProtoIgnore]
+		[NinoIgnore]
 		[BsonIgnore]
 		public Dictionary<int, SortedDictionary<int, AIConfig>> AIConfigs = new Dictionary<int, SortedDictionary<int, AIConfig>>();
 

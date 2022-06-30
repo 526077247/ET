@@ -1,22 +1,22 @@
 using System;
 using System.Collections.Generic;
 using MongoDB.Bson.Serialization.Attributes;
-using ProtoBuf;
+using Nino.Serialization;
 
 namespace ET
 {
-    [ProtoContract]
+    [NinoSerialize]
     [Config]
     public partial class StartMachineConfigCategory : ProtoObject, IMerge
     {
         public static StartMachineConfigCategory Instance;
 		
-        [ProtoIgnore]
+        [NinoIgnore]
         [BsonIgnore]
         private Dictionary<int, StartMachineConfig> dict = new Dictionary<int, StartMachineConfig>();
 		
         [BsonElement]
-        [ProtoMember(1)]
+        [NinoMember(1)]
         private List<StartMachineConfig> list = new List<StartMachineConfig>();
 		
         public StartMachineConfigCategory()
@@ -76,20 +76,20 @@ namespace ET
         }
     }
 
-    [ProtoContract]
+    [NinoSerialize]
 	public partial class StartMachineConfig: ProtoObject, IConfig
 	{
 		/// <summary>Id</summary>
-		[ProtoMember(1)]
+		[NinoMember(1)]
 		public int Id { get; set; }
 		/// <summary>内网地址</summary>
-		[ProtoMember(2)]
+		[NinoMember(2)]
 		public string InnerIP { get; set; }
 		/// <summary>外网地址</summary>
-		[ProtoMember(3)]
+		[NinoMember(3)]
 		public string OuterIP { get; set; }
 		/// <summary>守护进程端口</summary>
-		[ProtoMember(4)]
+		[NinoMember(4)]
 		public string WatcherPort { get; set; }
 
 	}
