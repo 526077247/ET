@@ -20,7 +20,8 @@ MonoBehaviour:
   - m_GUID: 2acde9e3f5499c240b224ccce2ca6e33
     m_Address: GameAssets/Config/Map.json
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - default
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
   m_ReadOnly: 0

@@ -20,73 +20,85 @@ MonoBehaviour:
   - m_GUID: a058931dd3543234e94c05ced3fd8de6
     m_Address: Skill/Skill_1000/Materials/triangle_soft_ADD.mat
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - default
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
   - m_GUID: 719f8d52fe2e6b444b41c2f7a8fe587b
     m_Address: Skill/Skill_1000/Materials/cloud_2x2_soft_AB.mat
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - default
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
   - m_GUID: a42697d393a95e742a4b5a989ce9dc32
     m_Address: Skill/Skill_1000/Prefabs/SkillExecution_1000.prefab
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - default
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
   - m_GUID: 9cc42a00498da1940afe6a3f05099fa5
     m_Address: Skill/Skill_1000/Textures/nova_3x3_spritesheet.png
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - default
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
   - m_GUID: 11f7450de8b6c8c4d9a3fa39b78c143b
     m_Address: Skill/Skill_1000/Materials/aura_punch_ADD.mat
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - default
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
   - m_GUID: d91a7ceceb48b6d4eb7da66199435d99
     m_Address: Skill/Skill_1000/Textures/cloud_2x2_soft.png
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - default
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
   - m_GUID: da7ddd9092467374182355e1178b192e
     m_Address: Skill/Skill_1000/Materials/nova_3x3_spritesheet_ADD.mat
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - default
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
   - m_GUID: 4e38a1a2014ee1941965349917aaa234
     m_Address: Skill/Skill_1000/Textures/grab2.png
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - default
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
   - m_GUID: b18036fb1921bf44aa1e636f1bf63a2a
     m_Address: Skill/Skill_1000/Materials/grab2_ADD.mat
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - default
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
   - m_GUID: c21e9846e5a62354d8b9d86c2fa78a7d
     m_Address: Skill/Skill_1000/Textures/triangle_soft.png
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - default
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
   - m_GUID: dc459e47586770b49b1aa54a5bd66f68
     m_Address: Skill/Skill_1000/Textures/aura_punch.png
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - default
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
   - m_GUID: 56c3274d2f9ec214ab584a80b5ce2d6d
     m_Address: Skill/Skill_1000/Prefabs/CartoonyBodySlam.prefab
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - default
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
   m_ReadOnly: 0

@@ -96,14 +96,14 @@ namespace Nino.Serialization
 		/// <param name="data"></param>
 		/// <param name="encoding"></param>
 		/// <returns></returns>
-		public static object DeserializeWhthoutGenerated(Type type,byte[] data,int index,int count, Encoding encoding = null)
+		public static object DeserializeWithoutGenerated(Type type,byte[] data, Encoding encoding = null)
 		{
 			Type t = type;
 			//basic type
 			if (TypeModel.IsBasicType(t))
 			{
 				//start Deserialize
-				using (var reader = new Reader(CompressMgr.Decompress(data,index,count, out var len), len, encoding ?? DefaultEncoding))
+				using (var reader = new Reader(CompressMgr.Decompress(data, out var len), len, encoding ?? DefaultEncoding))
 				{
 					return ReadBasicType(t, reader);
 				}
@@ -148,7 +148,7 @@ namespace Nino.Serialization
 					//record
 					TypeModel.AddDeserializeAction(t, reader => helper.NinoReadMembers(reader));
 					//start Deserialize
-					using (var reader = new Reader(CompressMgr.Decompress(data, out var len), len, encoding ?? DefaultEncoding))
+					using (var reader = new Reader(CompressMgr.Decompress(data,out var len), len, encoding ?? DefaultEncoding))
 					{
 						return helper.NinoReadMembers(reader);
 					}

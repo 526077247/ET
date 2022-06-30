@@ -12,10 +12,26 @@ namespace ET
 	    public static void Init()
         {
         }
-
+	    public static object FromBytes(Type type, byte[] bytes)
+	    {
+		    if (bytes.Length == 0) return null;
+		    object o = Nino.Serialization.Deserializer.DeserializeWithoutGenerated(type, bytes);
+		    if (o is ISupportInitialize supportInitialize)
+		    {
+			    supportInitialize.EndInit();
+		    }
+		    return o;
+	    }
         public static object FromBytes(Type type, byte[] bytes, int index, int count)
         {
-	        object o = Nino.Serialization.Deserializer.DeserializeWhthoutGenerated(type, bytes,index,count);
+	        if (bytes.Length == 0) return null;
+	        if (index == 0 && count == bytes.Length) return FromBytes(type, bytes);
+	        var temp = new byte[count - index];
+	        for (int i = 0; i < count; i++)
+	        {
+		        temp[i] = bytes[index + i];
+	        }
+	        object o = Nino.Serialization.Deserializer.DeserializeWithoutGenerated(type, temp);
 	        if (o is ISupportInitialize supportInitialize)
 	        {
 		        supportInitialize.EndInit();
@@ -37,7 +53,7 @@ namespace ET
         {
 	        var bytes = new byte[stream.Length - stream.Position];
 	        stream.Read(bytes, 0, bytes.Length);
-	        object o = Nino.Serialization.Deserializer.DeserializeWhthoutGenerated(type, bytes,0,bytes.Length);
+	        object o = Nino.Serialization.Deserializer.DeserializeWithoutGenerated(type, bytes);
 	        if (o is ISupportInitialize supportInitialize)
 	        {
 		        supportInitialize.EndInit();

@@ -53,7 +53,6 @@
     <ItemGroup>
       <ProjectReference Include="..\..\ThirdParty\ETTask\ETTask.csproj" />
       <ProjectReference Include="..\..\ThirdParty\Nino\Nino.csproj" />
-      <ProjectReference Include="..\..\ThirdParty\Nino\Nino_Dotnet.csproj" />
       <ProjectReference Include="..\..\ThirdParty\ShareLib\ShareLib.csproj" />
     </ItemGroup>
     

@@ -10,7 +10,6 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Emit;
 using MongoDB.Bson.Serialization;
 using OfficeOpenXml;
-using ProtoBuf;
 using LicenseContext = OfficeOpenXml.LicenseContext;
 
 namespace ET
@@ -172,8 +171,8 @@ namespace ET
                 Directory.CreateDirectory(dir);
             }
 
-            Serializer.NonGeneric.PrepareSerializer(type);
-            Serializer.NonGeneric.PrepareSerializer(subType);
+            // Serializer.NonGeneric.PrepareSerializer(type);
+            // Serializer.NonGeneric.PrepareSerializer(subType);
 
 
             string json = File.ReadAllText(Path.Combine(string.Format(jsonDir, configType, relativeDir), $"{protoName}.txt"));
@@ -181,8 +180,12 @@ namespace ET
 
             string path = Path.Combine(dir, $"{protoName}Category.bytes");
 
-            using FileStream file = File.Create(path);
-            Serializer.Serialize(file, deserialize);
+            using(FileStream file = File.Create(path))
+            {
+                // Serializer.Serialize(file, final);
+                var bytes = Nino.Serialization.Serializer.SerializeWithoutGenerated(type,deserialize,Encoding.UTF8);
+                file.Write(bytes);
+            }
         }
     }
 }

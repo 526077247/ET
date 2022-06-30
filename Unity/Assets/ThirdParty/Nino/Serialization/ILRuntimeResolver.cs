@@ -256,7 +256,7 @@ namespace Nino.Serialization
         /// <returns></returns>
         private static unsafe ILRuntime.Runtime.Stack.StackObject* Deserialize_0(
             ILRuntime.Runtime.Intepreter.ILIntepreter intp, ILRuntime.Runtime.Stack.StackObject* esp,
-            IList<object> mStack,
+            List<object> mStack,
             ILRuntime.CLR.Method.CLRMethod method, bool isNewObj)
         {
             var domain = intp.AppDomain;
@@ -306,7 +306,7 @@ namespace Nino.Serialization
         /// <returns></returns>
         private static unsafe ILRuntime.Runtime.Stack.StackObject* Serialize_0(
             ILRuntime.Runtime.Intepreter.ILIntepreter intp, ILRuntime.Runtime.Stack.StackObject* esp,
-            IList<object> mStack,
+            List<object> mStack,
             ILRuntime.CLR.Method.CLRMethod method, bool isNewObj)
         {
             var domain = intp.AppDomain;

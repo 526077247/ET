@@ -146,11 +146,9 @@ namespace ET
             //注册Json的CLR
             LitJson.JsonMapper.RegisterILRuntimeCLRRedirection(appdomain);
             
-            //注册ProtoBuf的CLR
-            // PType.RegisterILRuntime(appdomain, typeFullName => CodeLoader.Instance.GetHotfixType(typeFullName));
-#if ILRuntime
+            //注册Nino的CLR
             Nino.Serialization.ILRuntimeResolver.RegisterILRuntimeClrRedirection(appdomain);
-#endif
+           
             
             ////////////////////////////////////
             // CLR绑定的注册，一定要记得将CLR绑定的注册写在CLR重定向的注册后面，因为同一个方法只能被重定向一次，只有先注册的那个才能生效

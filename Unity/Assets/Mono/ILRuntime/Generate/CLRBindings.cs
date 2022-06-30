@@ -141,7 +141,6 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_List_1_Object_Array_Binding.Register(app);
             System_Reflection_PropertyInfo_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Int32_Int64_Binding.Register(app);
-            Nino_Serialization_Deserializer_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Type_Object_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_Byte_Array_Binding.Register(app);
             System_Threading_Monitor_Binding.Register(app);
@@ -414,6 +413,7 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_Dictionary_2_Type_UnOrderMultiMap_2_Type_Object_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Type_Queue_1_ILTypeInstance_Binding.Register(app);
             System_Collections_Generic_Queue_1_ILTypeInstance_Binding.Register(app);
+            Nino_Serialization_Deserializer_Binding.Register(app);
             Nino_Serialization_Serializer_Binding.Register(app);
             ET_MultiMap_2_Int64_Int64_Binding.Register(app);
             System_Collections_Generic_SortedDictionary_2_Int64_List_1_Int64_Binding.Register(app);
