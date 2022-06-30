@@ -27,7 +27,7 @@ namespace ET
 	        if (bytes.Length == 0) return null;
 	        if (index == 0 && count == bytes.Length) return FromBytes(type, bytes);
 	        var temp = new byte[count - index];
-	        for (int i = 0; i < count; i++)
+	        for (int i = 0; i < temp.Length; i++)
 	        {
 		        temp[i] = bytes[index + i];
 	        }
