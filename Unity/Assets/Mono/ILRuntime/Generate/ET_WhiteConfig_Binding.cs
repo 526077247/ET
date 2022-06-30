@@ -11,7 +11,11 @@ using ILRuntime.Runtime.Intepreter;
 using ILRuntime.Runtime.Stack;
 using ILRuntime.Reflection;
 using ILRuntime.CLR.Utils;
-
+#if DEBUG && !DISABLE_ILRUNTIME_DEBUG
+using AutoList = System.Collections.Generic.List<object>;
+#else
+using AutoList = ILRuntime.Other.UncheckedList<object>;
+#endif
 namespace ILRuntime.Runtime.Generated
 {
     unsafe class ET_WhiteConfig_Binding
@@ -42,7 +46,7 @@ namespace ILRuntime.Runtime.Generated
             return ((ET.WhiteConfig)o).env_id;
         }
 
-        static StackObject* CopyToStack_env_id_0(ref object o, ILIntepreter __intp, StackObject* __ret, IList<object> __mStack)
+        static StackObject* CopyToStack_env_id_0(ref object o, ILIntepreter __intp, StackObject* __ret, AutoList __mStack)
         {
             var result_of_this_method = ((ET.WhiteConfig)o).env_id;
             __ret->ObjectType = ObjectTypes.Integer;
@@ -55,7 +59,7 @@ namespace ILRuntime.Runtime.Generated
             ((ET.WhiteConfig)o).env_id = (System.Int32)v;
         }
 
-        static StackObject* AssignFromStack_env_id_0(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
+        static StackObject* AssignFromStack_env_id_0(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, AutoList __mStack)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             System.Int32 @env_id = ptr_of_this_method->Value;
@@ -68,7 +72,7 @@ namespace ILRuntime.Runtime.Generated
             return ((ET.WhiteConfig)o).account;
         }
 
-        static StackObject* CopyToStack_account_1(ref object o, ILIntepreter __intp, StackObject* __ret, IList<object> __mStack)
+        static StackObject* CopyToStack_account_1(ref object o, ILIntepreter __intp, StackObject* __ret, AutoList __mStack)
         {
             var result_of_this_method = ((ET.WhiteConfig)o).account;
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
@@ -79,7 +83,7 @@ namespace ILRuntime.Runtime.Generated
             ((ET.WhiteConfig)o).account = (System.String)v;
         }
 
-        static StackObject* AssignFromStack_account_1(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
+        static StackObject* AssignFromStack_account_1(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, AutoList __mStack)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             System.String @account = (System.String)typeof(System.String).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);

@@ -11,7 +11,11 @@ using ILRuntime.Runtime.Intepreter;
 using ILRuntime.Runtime.Stack;
 using ILRuntime.Reflection;
 using ILRuntime.CLR.Utils;
-
+#if DEBUG && !DISABLE_ILRUNTIME_DEBUG
+using AutoList = System.Collections.Generic.List<object>;
+#else
+using AutoList = ILRuntime.Other.UncheckedList<object>;
+#endif
 namespace ILRuntime.Runtime.Generated
 {
     unsafe class ET_Resver_Binding
@@ -46,7 +50,7 @@ namespace ILRuntime.Runtime.Generated
             return ((ET.Resver)o).channel;
         }
 
-        static StackObject* CopyToStack_channel_0(ref object o, ILIntepreter __intp, StackObject* __ret, IList<object> __mStack)
+        static StackObject* CopyToStack_channel_0(ref object o, ILIntepreter __intp, StackObject* __ret, AutoList __mStack)
         {
             var result_of_this_method = ((ET.Resver)o).channel;
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
@@ -57,7 +61,7 @@ namespace ILRuntime.Runtime.Generated
             ((ET.Resver)o).channel = (System.Collections.Generic.List<System.String>)v;
         }
 
-        static StackObject* AssignFromStack_channel_0(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
+        static StackObject* AssignFromStack_channel_0(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, AutoList __mStack)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             System.Collections.Generic.List<System.String> @channel = (System.Collections.Generic.List<System.String>)typeof(System.Collections.Generic.List<System.String>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
@@ -70,7 +74,7 @@ namespace ILRuntime.Runtime.Generated
             return ((ET.Resver)o).update_tailnumber;
         }
 
-        static StackObject* CopyToStack_update_tailnumber_1(ref object o, ILIntepreter __intp, StackObject* __ret, IList<object> __mStack)
+        static StackObject* CopyToStack_update_tailnumber_1(ref object o, ILIntepreter __intp, StackObject* __ret, AutoList __mStack)
         {
             var result_of_this_method = ((ET.Resver)o).update_tailnumber;
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
@@ -81,7 +85,7 @@ namespace ILRuntime.Runtime.Generated
             ((ET.Resver)o).update_tailnumber = (System.Collections.Generic.List<System.String>)v;
         }
 
-        static StackObject* AssignFromStack_update_tailnumber_1(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
+        static StackObject* AssignFromStack_update_tailnumber_1(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, AutoList __mStack)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             System.Collections.Generic.List<System.String> @update_tailnumber = (System.Collections.Generic.List<System.String>)typeof(System.Collections.Generic.List<System.String>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
@@ -94,7 +98,7 @@ namespace ILRuntime.Runtime.Generated
             return ((ET.Resver)o).force_update;
         }
 
-        static StackObject* CopyToStack_force_update_2(ref object o, ILIntepreter __intp, StackObject* __ret, IList<object> __mStack)
+        static StackObject* CopyToStack_force_update_2(ref object o, ILIntepreter __intp, StackObject* __ret, AutoList __mStack)
         {
             var result_of_this_method = ((ET.Resver)o).force_update;
             __ret->ObjectType = ObjectTypes.Integer;
@@ -107,7 +111,7 @@ namespace ILRuntime.Runtime.Generated
             ((ET.Resver)o).force_update = (System.Int32)v;
         }
 
-        static StackObject* AssignFromStack_force_update_2(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
+        static StackObject* AssignFromStack_force_update_2(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, AutoList __mStack)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             System.Int32 @force_update = ptr_of_this_method->Value;

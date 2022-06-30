@@ -11,7 +11,11 @@ using ILRuntime.Runtime.Intepreter;
 using ILRuntime.Runtime.Stack;
 using ILRuntime.Reflection;
 using ILRuntime.CLR.Utils;
-
+#if DEBUG && !DISABLE_ILRUNTIME_DEBUG
+using AutoList = System.Collections.Generic.List<object>;
+#else
+using AutoList = ILRuntime.Other.UncheckedList<object>;
+#endif
 namespace ILRuntime.Runtime.Generated
 {
     unsafe class SuperScrollView_LoopListView2_Binding
@@ -66,7 +70,7 @@ namespace ILRuntime.Runtime.Generated
         }
 
 
-        static StackObject* NewListViewItem_0(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* NewListViewItem_0(ILIntepreter __intp, StackObject* __esp, AutoList __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
@@ -85,7 +89,7 @@ namespace ILRuntime.Runtime.Generated
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 
-        static StackObject* ClearListView_1(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* ClearListView_1(ILIntepreter __intp, StackObject* __esp, AutoList __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
@@ -100,7 +104,7 @@ namespace ILRuntime.Runtime.Generated
             return __ret;
         }
 
-        static StackObject* InitListView_2(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* InitListView_2(ILIntepreter __intp, StackObject* __esp, AutoList __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
@@ -126,7 +130,7 @@ namespace ILRuntime.Runtime.Generated
             return __ret;
         }
 
-        static StackObject* SetListItemCount_3(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* SetListItemCount_3(ILIntepreter __intp, StackObject* __esp, AutoList __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
@@ -147,7 +151,7 @@ namespace ILRuntime.Runtime.Generated
             return __ret;
         }
 
-        static StackObject* GetShownItemByItemIndex_4(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* GetShownItemByItemIndex_4(ILIntepreter __intp, StackObject* __esp, AutoList __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
@@ -165,7 +169,7 @@ namespace ILRuntime.Runtime.Generated
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 
-        static StackObject* MovePanelToItemIndex_5(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* MovePanelToItemIndex_5(ILIntepreter __intp, StackObject* __esp, AutoList __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
@@ -186,7 +190,7 @@ namespace ILRuntime.Runtime.Generated
             return __ret;
         }
 
-        static StackObject* RefreshAllShownItem_6(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* RefreshAllShownItem_6(ILIntepreter __intp, StackObject* __esp, AutoList __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
@@ -207,7 +211,7 @@ namespace ILRuntime.Runtime.Generated
             return ((SuperScrollView.LoopListView2)o).mOnBeginDragAction;
         }
 
-        static StackObject* CopyToStack_mOnBeginDragAction_0(ref object o, ILIntepreter __intp, StackObject* __ret, IList<object> __mStack)
+        static StackObject* CopyToStack_mOnBeginDragAction_0(ref object o, ILIntepreter __intp, StackObject* __ret, AutoList __mStack)
         {
             var result_of_this_method = ((SuperScrollView.LoopListView2)o).mOnBeginDragAction;
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
@@ -218,7 +222,7 @@ namespace ILRuntime.Runtime.Generated
             ((SuperScrollView.LoopListView2)o).mOnBeginDragAction = (System.Action)v;
         }
 
-        static StackObject* AssignFromStack_mOnBeginDragAction_0(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
+        static StackObject* AssignFromStack_mOnBeginDragAction_0(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, AutoList __mStack)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             System.Action @mOnBeginDragAction = (System.Action)typeof(System.Action).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)8);
@@ -231,7 +235,7 @@ namespace ILRuntime.Runtime.Generated
             return ((SuperScrollView.LoopListView2)o).mOnDragingAction;
         }
 
-        static StackObject* CopyToStack_mOnDragingAction_1(ref object o, ILIntepreter __intp, StackObject* __ret, IList<object> __mStack)
+        static StackObject* CopyToStack_mOnDragingAction_1(ref object o, ILIntepreter __intp, StackObject* __ret, AutoList __mStack)
         {
             var result_of_this_method = ((SuperScrollView.LoopListView2)o).mOnDragingAction;
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
@@ -242,7 +246,7 @@ namespace ILRuntime.Runtime.Generated
             ((SuperScrollView.LoopListView2)o).mOnDragingAction = (System.Action)v;
         }
 
-        static StackObject* AssignFromStack_mOnDragingAction_1(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
+        static StackObject* AssignFromStack_mOnDragingAction_1(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, AutoList __mStack)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             System.Action @mOnDragingAction = (System.Action)typeof(System.Action).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)8);
@@ -255,7 +259,7 @@ namespace ILRuntime.Runtime.Generated
             return ((SuperScrollView.LoopListView2)o).mOnEndDragAction;
         }
 
-        static StackObject* CopyToStack_mOnEndDragAction_2(ref object o, ILIntepreter __intp, StackObject* __ret, IList<object> __mStack)
+        static StackObject* CopyToStack_mOnEndDragAction_2(ref object o, ILIntepreter __intp, StackObject* __ret, AutoList __mStack)
         {
             var result_of_this_method = ((SuperScrollView.LoopListView2)o).mOnEndDragAction;
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
@@ -266,7 +270,7 @@ namespace ILRuntime.Runtime.Generated
             ((SuperScrollView.LoopListView2)o).mOnEndDragAction = (System.Action)v;
         }
 
-        static StackObject* AssignFromStack_mOnEndDragAction_2(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
+        static StackObject* AssignFromStack_mOnEndDragAction_2(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, AutoList __mStack)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             System.Action @mOnEndDragAction = (System.Action)typeof(System.Action).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)8);
@@ -279,7 +283,7 @@ namespace ILRuntime.Runtime.Generated
             return ((SuperScrollView.LoopListView2)o).mOnSnapNearestChanged;
         }
 
-        static StackObject* CopyToStack_mOnSnapNearestChanged_3(ref object o, ILIntepreter __intp, StackObject* __ret, IList<object> __mStack)
+        static StackObject* CopyToStack_mOnSnapNearestChanged_3(ref object o, ILIntepreter __intp, StackObject* __ret, AutoList __mStack)
         {
             var result_of_this_method = ((SuperScrollView.LoopListView2)o).mOnSnapNearestChanged;
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
@@ -290,7 +294,7 @@ namespace ILRuntime.Runtime.Generated
             ((SuperScrollView.LoopListView2)o).mOnSnapNearestChanged = (System.Action<SuperScrollView.LoopListView2, SuperScrollView.LoopListViewItem2>)v;
         }
 
-        static StackObject* AssignFromStack_mOnSnapNearestChanged_3(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
+        static StackObject* AssignFromStack_mOnSnapNearestChanged_3(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, AutoList __mStack)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             System.Action<SuperScrollView.LoopListView2, SuperScrollView.LoopListViewItem2> @mOnSnapNearestChanged = (System.Action<SuperScrollView.LoopListView2, SuperScrollView.LoopListViewItem2>)typeof(System.Action<SuperScrollView.LoopListView2, SuperScrollView.LoopListViewItem2>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)8);

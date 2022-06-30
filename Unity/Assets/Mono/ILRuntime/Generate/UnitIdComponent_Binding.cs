@@ -11,7 +11,11 @@ using ILRuntime.Runtime.Intepreter;
 using ILRuntime.Runtime.Stack;
 using ILRuntime.Reflection;
 using ILRuntime.CLR.Utils;
-
+#if DEBUG && !DISABLE_ILRUNTIME_DEBUG
+using AutoList = System.Collections.Generic.List<object>;
+#else
+using AutoList = ILRuntime.Other.UncheckedList<object>;
+#endif
 namespace ILRuntime.Runtime.Generated
 {
     unsafe class UnitIdComponent_Binding
@@ -38,7 +42,7 @@ namespace ILRuntime.Runtime.Generated
             return ((global::UnitIdComponent)o).UnitId;
         }
 
-        static StackObject* CopyToStack_UnitId_0(ref object o, ILIntepreter __intp, StackObject* __ret, IList<object> __mStack)
+        static StackObject* CopyToStack_UnitId_0(ref object o, ILIntepreter __intp, StackObject* __ret, AutoList __mStack)
         {
             var result_of_this_method = ((global::UnitIdComponent)o).UnitId;
             __ret->ObjectType = ObjectTypes.Long;
@@ -51,7 +55,7 @@ namespace ILRuntime.Runtime.Generated
             ((global::UnitIdComponent)o).UnitId = (System.Int64)v;
         }
 
-        static StackObject* AssignFromStack_UnitId_0(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
+        static StackObject* AssignFromStack_UnitId_0(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, AutoList __mStack)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             System.Int64 @UnitId = *(long*)&ptr_of_this_method->Value;

@@ -1,7 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-
+#if DEBUG && !DISABLE_ILRUNTIME_DEBUG
+using AutoList = System.Collections.Generic.List<object>;
+#else
+using AutoList = ILRuntime.Other.UncheckedList<object>;
+#endif
 namespace ILRuntime.Runtime.Generated
 {
     class CLRBindings
@@ -118,6 +122,7 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_Dictionary_2_Byte_Boolean_Binding.Register(app);
             System_Collections_Generic_HashSet_1_ILTypeInstance_Binding.Register(app);
             ET_ListComponent_1_String_Binding.Register(app);
+            ET_ListComponent_1_Byte_Binding.Register(app);
             System_Action_2_ILTypeInstance_Int32_Binding.Register(app);
             UnityEngine_Mathf_Binding.Register(app);
             System_Collections_Generic_HashSet_1_ILTypeInstance_Binding_Enumerator_Binding.Register(app);
@@ -357,6 +362,7 @@ namespace ILRuntime.Runtime.Generated
             UnityEngine_ColorUtility_Binding.Register(app);
             BgAutoFit_Binding.Register(app);
             UnityEngine_UI_InputField_Binding.Register(app);
+            UnityEngine_Events_UnityEvent_1_String_Binding.Register(app);
             TMPro_TMP_InputField_Binding.Register(app);
             SuperScrollView_LoopGridView_Binding.Register(app);
             PointerClick_Binding.Register(app);
