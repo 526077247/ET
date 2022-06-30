@@ -11,7 +11,11 @@ using ILRuntime.Runtime.Intepreter;
 using ILRuntime.Runtime.Stack;
 using ILRuntime.Reflection;
 using ILRuntime.CLR.Utils;
-
+#if DEBUG && !DISABLE_ILRUNTIME_DEBUG
+using AutoList = System.Collections.Generic.List<object>;
+#else
+using AutoList = ILRuntime.Other.UncheckedList<object>;
+#endif
 namespace ILRuntime.Runtime.Generated
 {
     unsafe class ET_UpdateConfig_Binding
@@ -42,7 +46,7 @@ namespace ILRuntime.Runtime.Generated
             return ((ET.UpdateConfig)o).app_list;
         }
 
-        static StackObject* CopyToStack_app_list_0(ref object o, ILIntepreter __intp, StackObject* __ret, IList<object> __mStack)
+        static StackObject* CopyToStack_app_list_0(ref object o, ILIntepreter __intp, StackObject* __ret, AutoList __mStack)
         {
             var result_of_this_method = ((ET.UpdateConfig)o).app_list;
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
@@ -53,7 +57,7 @@ namespace ILRuntime.Runtime.Generated
             ((ET.UpdateConfig)o).app_list = (System.Collections.Generic.Dictionary<System.String, ET.AppConfig>)v;
         }
 
-        static StackObject* AssignFromStack_app_list_0(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
+        static StackObject* AssignFromStack_app_list_0(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, AutoList __mStack)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             System.Collections.Generic.Dictionary<System.String, ET.AppConfig> @app_list = (System.Collections.Generic.Dictionary<System.String, ET.AppConfig>)typeof(System.Collections.Generic.Dictionary<System.String, ET.AppConfig>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
@@ -66,7 +70,7 @@ namespace ILRuntime.Runtime.Generated
             return ((ET.UpdateConfig)o).res_list;
         }
 
-        static StackObject* CopyToStack_res_list_1(ref object o, ILIntepreter __intp, StackObject* __ret, IList<object> __mStack)
+        static StackObject* CopyToStack_res_list_1(ref object o, ILIntepreter __intp, StackObject* __ret, AutoList __mStack)
         {
             var result_of_this_method = ((ET.UpdateConfig)o).res_list;
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
@@ -77,7 +81,7 @@ namespace ILRuntime.Runtime.Generated
             ((ET.UpdateConfig)o).res_list = (System.Collections.Generic.Dictionary<System.String, System.Collections.Generic.Dictionary<System.String, ET.Resver>>)v;
         }
 
-        static StackObject* AssignFromStack_res_list_1(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
+        static StackObject* AssignFromStack_res_list_1(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, AutoList __mStack)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             System.Collections.Generic.Dictionary<System.String, System.Collections.Generic.Dictionary<System.String, ET.Resver>> @res_list = (System.Collections.Generic.Dictionary<System.String, System.Collections.Generic.Dictionary<System.String, ET.Resver>>)typeof(System.Collections.Generic.Dictionary<System.String, System.Collections.Generic.Dictionary<System.String, ET.Resver>>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);

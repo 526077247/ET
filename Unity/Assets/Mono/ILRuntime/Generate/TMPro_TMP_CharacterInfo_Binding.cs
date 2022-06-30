@@ -11,7 +11,11 @@ using ILRuntime.Runtime.Intepreter;
 using ILRuntime.Runtime.Stack;
 using ILRuntime.Reflection;
 using ILRuntime.CLR.Utils;
-
+#if DEBUG && !DISABLE_ILRUNTIME_DEBUG
+using AutoList = System.Collections.Generic.List<object>;
+#else
+using AutoList = ILRuntime.Other.UncheckedList<object>;
+#endif
 namespace ILRuntime.Runtime.Generated
 {
     unsafe class TMPro_TMP_CharacterInfo_Binding
@@ -33,7 +37,7 @@ namespace ILRuntime.Runtime.Generated
 
         }
 
-        static void WriteBackInstance(ILRuntime.Runtime.Enviorment.AppDomain __domain, StackObject* ptr_of_this_method, IList<object> __mStack, ref TMPro.TMP_CharacterInfo instance_of_this_method)
+        static void WriteBackInstance(ILRuntime.Runtime.Enviorment.AppDomain __domain, StackObject* ptr_of_this_method, AutoList __mStack, ref TMPro.TMP_CharacterInfo instance_of_this_method)
         {
             ptr_of_this_method = ILIntepreter.GetObjectAndResolveReference(ptr_of_this_method);
             switch(ptr_of_this_method->ObjectType)
@@ -85,7 +89,7 @@ namespace ILRuntime.Runtime.Generated
             return ((TMPro.TMP_CharacterInfo)o).vertex_BR;
         }
 
-        static StackObject* CopyToStack_vertex_BR_0(ref object o, ILIntepreter __intp, StackObject* __ret, IList<object> __mStack)
+        static StackObject* CopyToStack_vertex_BR_0(ref object o, ILIntepreter __intp, StackObject* __ret, AutoList __mStack)
         {
             var result_of_this_method = ((TMPro.TMP_CharacterInfo)o).vertex_BR;
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
@@ -98,7 +102,7 @@ namespace ILRuntime.Runtime.Generated
             o = ins;
         }
 
-        static StackObject* AssignFromStack_vertex_BR_0(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
+        static StackObject* AssignFromStack_vertex_BR_0(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, AutoList __mStack)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             TMPro.TMP_Vertex @vertex_BR = (TMPro.TMP_Vertex)typeof(TMPro.TMP_Vertex).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)16);

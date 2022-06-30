@@ -11,7 +11,11 @@ using ILRuntime.Runtime.Intepreter;
 using ILRuntime.Runtime.Stack;
 using ILRuntime.Reflection;
 using ILRuntime.CLR.Utils;
-
+#if DEBUG && !DISABLE_ILRUNTIME_DEBUG
+using AutoList = System.Collections.Generic.List<object>;
+#else
+using AutoList = ILRuntime.Other.UncheckedList<object>;
+#endif
 namespace ILRuntime.Runtime.Generated
 {
     unsafe class ET_SoundManager_Binding
@@ -48,7 +52,7 @@ namespace ILRuntime.Runtime.Generated
         }
 
 
-        static StackObject* CreateClipSource_0(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* CreateClipSource_0(ILIntepreter __intp, StackObject* __esp, AutoList __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
@@ -69,7 +73,7 @@ namespace ILRuntime.Runtime.Generated
             return ET.SoundManager.Instance;
         }
 
-        static StackObject* CopyToStack_Instance_0(ref object o, ILIntepreter __intp, StackObject* __ret, IList<object> __mStack)
+        static StackObject* CopyToStack_Instance_0(ref object o, ILIntepreter __intp, StackObject* __ret, AutoList __mStack)
         {
             var result_of_this_method = ET.SoundManager.Instance;
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
@@ -80,7 +84,7 @@ namespace ILRuntime.Runtime.Generated
             ET.SoundManager.Instance = (ET.SoundManager)v;
         }
 
-        static StackObject* AssignFromStack_Instance_0(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
+        static StackObject* AssignFromStack_Instance_0(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, AutoList __mStack)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             ET.SoundManager @Instance = (ET.SoundManager)typeof(ET.SoundManager).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
@@ -93,7 +97,7 @@ namespace ILRuntime.Runtime.Generated
             return ((ET.SoundManager)o).Sound;
         }
 
-        static StackObject* CopyToStack_Sound_1(ref object o, ILIntepreter __intp, StackObject* __ret, IList<object> __mStack)
+        static StackObject* CopyToStack_Sound_1(ref object o, ILIntepreter __intp, StackObject* __ret, AutoList __mStack)
         {
             var result_of_this_method = ((ET.SoundManager)o).Sound;
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
@@ -104,7 +108,7 @@ namespace ILRuntime.Runtime.Generated
             ((ET.SoundManager)o).Sound = (UnityEngine.Audio.AudioMixer)v;
         }
 
-        static StackObject* AssignFromStack_Sound_1(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
+        static StackObject* AssignFromStack_Sound_1(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, AutoList __mStack)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             UnityEngine.Audio.AudioMixer @Sound = (UnityEngine.Audio.AudioMixer)typeof(UnityEngine.Audio.AudioMixer).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
@@ -117,7 +121,7 @@ namespace ILRuntime.Runtime.Generated
             return ((ET.SoundManager)o).BGM;
         }
 
-        static StackObject* CopyToStack_BGM_2(ref object o, ILIntepreter __intp, StackObject* __ret, IList<object> __mStack)
+        static StackObject* CopyToStack_BGM_2(ref object o, ILIntepreter __intp, StackObject* __ret, AutoList __mStack)
         {
             var result_of_this_method = ((ET.SoundManager)o).BGM;
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
@@ -128,7 +132,7 @@ namespace ILRuntime.Runtime.Generated
             ((ET.SoundManager)o).BGM = (UnityEngine.Audio.AudioMixer)v;
         }
 
-        static StackObject* AssignFromStack_BGM_2(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
+        static StackObject* AssignFromStack_BGM_2(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, AutoList __mStack)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             UnityEngine.Audio.AudioMixer @BGM = (UnityEngine.Audio.AudioMixer)typeof(UnityEngine.Audio.AudioMixer).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
@@ -141,7 +145,7 @@ namespace ILRuntime.Runtime.Generated
             return ((ET.SoundManager)o).m_bgm;
         }
 
-        static StackObject* CopyToStack_m_bgm_3(ref object o, ILIntepreter __intp, StackObject* __ret, IList<object> __mStack)
+        static StackObject* CopyToStack_m_bgm_3(ref object o, ILIntepreter __intp, StackObject* __ret, AutoList __mStack)
         {
             var result_of_this_method = ((ET.SoundManager)o).m_bgm;
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
@@ -152,7 +156,7 @@ namespace ILRuntime.Runtime.Generated
             ((ET.SoundManager)o).m_bgm = (UnityEngine.AudioSource)v;
         }
 
-        static StackObject* AssignFromStack_m_bgm_3(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
+        static StackObject* AssignFromStack_m_bgm_3(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, AutoList __mStack)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             UnityEngine.AudioSource @m_bgm = (UnityEngine.AudioSource)typeof(UnityEngine.AudioSource).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);

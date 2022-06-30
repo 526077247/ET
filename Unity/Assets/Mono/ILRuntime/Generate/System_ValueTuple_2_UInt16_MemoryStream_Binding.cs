@@ -11,7 +11,11 @@ using ILRuntime.Runtime.Intepreter;
 using ILRuntime.Runtime.Stack;
 using ILRuntime.Reflection;
 using ILRuntime.CLR.Utils;
-
+#if DEBUG && !DISABLE_ILRUNTIME_DEBUG
+using AutoList = System.Collections.Generic.List<object>;
+#else
+using AutoList = ILRuntime.Other.UncheckedList<object>;
+#endif
 namespace ILRuntime.Runtime.Generated
 {
     unsafe class System_ValueTuple_2_UInt16_MemoryStream_Binding
@@ -41,7 +45,7 @@ namespace ILRuntime.Runtime.Generated
 
         }
 
-        static void WriteBackInstance(ILRuntime.Runtime.Enviorment.AppDomain __domain, StackObject* ptr_of_this_method, IList<object> __mStack, ref System.ValueTuple<System.UInt16, System.IO.MemoryStream> instance_of_this_method)
+        static void WriteBackInstance(ILRuntime.Runtime.Enviorment.AppDomain __domain, StackObject* ptr_of_this_method, AutoList __mStack, ref System.ValueTuple<System.UInt16, System.IO.MemoryStream> instance_of_this_method)
         {
             ptr_of_this_method = ILIntepreter.GetObjectAndResolveReference(ptr_of_this_method);
             switch(ptr_of_this_method->ObjectType)
@@ -93,7 +97,7 @@ namespace ILRuntime.Runtime.Generated
             return ((System.ValueTuple<System.UInt16, System.IO.MemoryStream>)o).Item1;
         }
 
-        static StackObject* CopyToStack_Item1_0(ref object o, ILIntepreter __intp, StackObject* __ret, IList<object> __mStack)
+        static StackObject* CopyToStack_Item1_0(ref object o, ILIntepreter __intp, StackObject* __ret, AutoList __mStack)
         {
             var result_of_this_method = ((System.ValueTuple<System.UInt16, System.IO.MemoryStream>)o).Item1;
             __ret->ObjectType = ObjectTypes.Integer;
@@ -108,7 +112,7 @@ namespace ILRuntime.Runtime.Generated
             o = ins;
         }
 
-        static StackObject* AssignFromStack_Item1_0(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
+        static StackObject* AssignFromStack_Item1_0(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, AutoList __mStack)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             System.UInt16 @Item1 = (ushort)ptr_of_this_method->Value;
@@ -123,7 +127,7 @@ namespace ILRuntime.Runtime.Generated
             return ((System.ValueTuple<System.UInt16, System.IO.MemoryStream>)o).Item2;
         }
 
-        static StackObject* CopyToStack_Item2_1(ref object o, ILIntepreter __intp, StackObject* __ret, IList<object> __mStack)
+        static StackObject* CopyToStack_Item2_1(ref object o, ILIntepreter __intp, StackObject* __ret, AutoList __mStack)
         {
             var result_of_this_method = ((System.ValueTuple<System.UInt16, System.IO.MemoryStream>)o).Item2;
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
@@ -136,7 +140,7 @@ namespace ILRuntime.Runtime.Generated
             o = ins;
         }
 
-        static StackObject* AssignFromStack_Item2_1(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
+        static StackObject* AssignFromStack_Item2_1(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, AutoList __mStack)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             System.IO.MemoryStream @Item2 = (System.IO.MemoryStream)typeof(System.IO.MemoryStream).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
@@ -147,7 +151,7 @@ namespace ILRuntime.Runtime.Generated
         }
 
 
-        static StackObject* Ctor_0(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* Ctor_0(ILIntepreter __intp, StackObject* __esp, AutoList __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
