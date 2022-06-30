@@ -12,7 +12,11 @@ using ILRuntime.Runtime.Intepreter.OpCodes;
 using ILRuntime.Runtime.Debugger;
 using ILRuntime.CLR.Utils;
 using ILRuntime.Other;
-
+#if DEBUG && !DISABLE_ILRUNTIME_DEBUG
+using AutoList = System.Collections.Generic.List<object>;
+#else
+using AutoList = ILRuntime.Other.UncheckedList<object>;
+#endif
 namespace ILRuntime.Runtime.Intepreter
 {
     public unsafe partial class ILIntepreter
@@ -80,7 +84,7 @@ namespace ILRuntime.Runtime.Intepreter
         }
         public object Run(ILMethod method, object instance, object[] p)
         {
-            IList<object> mStack = stack.ManagedStack;
+            AutoList mStack = stack.ManagedStack;
             int mStackBase = mStack.Count;
             StackObject* esp = stack.StackBase;
             stack.ResetValueTypePointer();
@@ -101,11 +105,7 @@ namespace ILRuntime.Runtime.Intepreter
                 esp = Execute(method, esp, out unhandledException);
             object result = method.ReturnType != domain.VoidType ? method.ReturnType.TypeForCLR.CheckCLRTypes(StackObject.ToObject((esp - 1), domain, mStack)) : null;
             //ClearStack
-#if DEBUG && !DISABLE_ILRUNTIME_DEBUG
-            ((List<object>)mStack).RemoveRange(mStackBase, mStack.Count - mStackBase);
-#else
-            ((UncheckedList<object>)mStack).RemoveRange(mStackBase, mStack.Count - mStackBase);
-#endif
+            mStack.RemoveRange(mStackBase, mStack.Count - mStackBase);
             return result;
         }
         internal StackObject* Execute(ILMethod method, StackObject* esp, out bool unhandledException)
@@ -138,7 +138,7 @@ namespace ILRuntime.Runtime.Intepreter
 
             esp = frame.BasePointer;
             var arg = Minus(frame.LocalVarPointer, method.ParameterCount);
-            IList<object> mStack = stack.ManagedStack;
+            AutoList mStack = stack.ManagedStack;
             int paramCnt = method.ParameterCount;
             if (method.HasThis)//this parameter is always object reference
             {
@@ -1948,6 +1948,13 @@ namespace ILRuntime.Runtime.Intepreter
                                     }
                                     else
                                     {
+                                        intVal = (int)(ip - ptr);
+                                        var eh = FindExceptionHandlerByBranchTarget(intVal, finallyEndAddress, ehs);
+                                        if (eh != null)
+                                        {
+                                            ip = ptr + eh.HandlerStart;
+                                            continue;
+                                        }
                                         ip = ptr + finallyEndAddress;
                                         finallyEndAddress = 0;
                                         continue;
@@ -2702,7 +2709,7 @@ namespace ILRuntime.Runtime.Intepreter
                                             obj = null;
                                             bool isValueType = type.IsValueType;                                            
                                             ILIntepreter tmpIntp;
-                                            IList<object> tmStack;
+                                            AutoList tmStack;
                                             if (isValueType && intVal > 0)
                                             {
                                                 tmpIntp = domain.RequestILIntepreter();
@@ -3539,6 +3546,11 @@ namespace ILRuntime.Runtime.Intepreter
                                                 else
                                                     PushNull(objRef);
                                             }
+                                            else
+                                            {
+                                                if (objRef->ObjectType >= ObjectTypes.Object)
+                                                    mStack[objRef->Value] = ((CLRType)type).CreateDefaultInstance();
+                                            }
                                         }
                                     }
 
@@ -3853,7 +3865,8 @@ namespace ILRuntime.Runtime.Intepreter
                                     var idx = esp - 1;
                                     arrRef = esp - 1 - 1;
                                     Array arr = mStack[arrRef->Value] as Array;
-                                    obj = arr.GetValue(idx->Value);
+                                    ILTypeInstance[] arr2 = arr as ILTypeInstance[];
+                                    obj = arr2 != null ? arr2[idx->Value] : arr.GetValue(idx->Value); 
                                     if (obj is CrossBindingAdaptorType)
                                         obj = ((CrossBindingAdaptorType)obj).ILInstance;
                                     Free(esp - 1);
@@ -4648,13 +4661,13 @@ namespace ILRuntime.Runtime.Intepreter
                 var e = ehs[i];
                 if (addr >= e.TryStart && addr <= e.TryEnd && (branchTarget < e.TryStart || branchTarget > e.TryEnd) && e.HandlerType == ExceptionHandlerType.Finally)
                 {
-                    eh = e;
-                    break;
+                    if (eh == null || e.TryStart > eh.TryStart)
+                        eh = e;
                 }
             }
             return eh;
         }
-        void PrepareRegisterCallStack(StackObject* esp, IList<object> mStack, ILMethod method)
+        void PrepareRegisterCallStack(StackObject* esp, AutoList mStack, ILMethod method)
         {
             var pCnt = method.HasThis ? method.ParameterCount + 1 : method.ParameterCount;
             StackObject* basePointer = esp - pCnt;
@@ -4699,7 +4712,7 @@ namespace ILRuntime.Runtime.Intepreter
             AppDomain.DebugService.DumpStack(esp, stack);
         }
 
-        void CloneStackValueType(StackObject* src, StackObject* dst, IList<object> mStack)
+        void CloneStackValueType(StackObject* src, StackObject* dst, AutoList mStack)
         {
             StackObject* descriptor = ILIntepreter.ResolveReference(src);
             stack.AllocValueType(dst, AppDomain.GetTypeByIndex(descriptor->Value));
@@ -4732,9 +4745,9 @@ namespace ILRuntime.Runtime.Intepreter
                 return false;
         }
 #if DEBUG
-        public void CopyStackValueType(StackObject* src, StackObject* dst, IList<object> mStack, bool noCheck = false)
+        public void CopyStackValueType(StackObject* src, StackObject* dst, AutoList mStack, bool noCheck = false)
 #else
-        public void CopyStackValueType(StackObject* src, StackObject* dst, IList<object> mStack)
+        public void CopyStackValueType(StackObject* src, StackObject* dst, AutoList mStack)
 #endif
         {
 #if DEBUG
@@ -4744,9 +4757,9 @@ namespace ILRuntime.Runtime.Intepreter
 #endif
         }
 #if DEBUG
-        public void CopyStackValueType(StackObject* src, StackObject* dst, IList<object> mStack, IList<object> dstmStack, bool noCheck = false)
+        public void CopyStackValueType(StackObject* src, StackObject* dst, AutoList mStack, AutoList dstmStack, bool noCheck = false)
 #else
-        public void CopyStackValueType(StackObject* src, StackObject* dst, IList<object> mStack, IList<object> dstmStack)
+        public void CopyStackValueType(StackObject* src, StackObject* dst, AutoList mStack, AutoList dstmStack)
 #endif
         {
             StackObject* descriptor = ILIntepreter.ResolveReference(src);
@@ -4781,7 +4794,7 @@ namespace ILRuntime.Runtime.Intepreter
             }
         }
 
-        void CopyValueTypeToStack(StackObject* dst, object ins, IList<object> mStack)
+        void CopyValueTypeToStack(StackObject* dst, object ins, AutoList mStack)
         {
             if (ins is ILTypeInstance)
             {
@@ -4801,7 +4814,7 @@ namespace ILRuntime.Runtime.Intepreter
             }
         }
 
-        void CopyToValueTypeField(StackObject* obj, int idx, StackObject* val, IList<object> mStack)
+        void CopyToValueTypeField(StackObject* obj, int idx, StackObject* val, AutoList mStack)
         {
             StackObject* dst = Minus(obj, idx + 1);
             switch (val->ObjectType)
@@ -4844,7 +4857,7 @@ namespace ILRuntime.Runtime.Intepreter
             }
         }
 
-        void StLocSub(StackObject* esp, StackObject* v, int idx, IList<object> mStack)
+        void StLocSub(StackObject* esp, StackObject* v, int idx, AutoList mStack)
         {
             switch (esp->ObjectType)
             {
@@ -4896,7 +4909,7 @@ namespace ILRuntime.Runtime.Intepreter
             }
         }
 
-        public object RetriveObject(StackObject* esp, IList<object> mStack)
+        public object RetriveObject(StackObject* esp, AutoList mStack)
         {
             StackObject* objRef = GetObjectAndResolveReference(esp);
             if (objRef->ObjectType == ObjectTypes.Null)
@@ -4952,7 +4965,7 @@ namespace ILRuntime.Runtime.Intepreter
             return obj;
         }
 
-        public int RetriveInt32(StackObject* esp, IList<object> mStack)
+        public int RetriveInt32(StackObject* esp, AutoList mStack)
         {
             StackObject* objRef = GetObjectAndResolveReference(esp);
             if (objRef->ObjectType == ObjectTypes.Null)
@@ -5028,7 +5041,7 @@ namespace ILRuntime.Runtime.Intepreter
             return res;
         }
 
-        public long RetriveInt64(StackObject* esp, IList<object> mStack)
+        public long RetriveInt64(StackObject* esp, AutoList mStack)
         {
             StackObject* objRef = GetObjectAndResolveReference(esp);
             if (objRef->ObjectType == ObjectTypes.Null)
@@ -5106,7 +5119,7 @@ namespace ILRuntime.Runtime.Intepreter
             return res;
         }
 
-        public float RetriveFloat(StackObject* esp, IList<object> mStack)
+        public float RetriveFloat(StackObject* esp, AutoList mStack)
         {
             StackObject* objRef = GetObjectAndResolveReference(esp);
             if (objRef->ObjectType == ObjectTypes.Null)
@@ -5184,7 +5197,7 @@ namespace ILRuntime.Runtime.Intepreter
             return res;
         }
 
-        public double RetriveDouble(StackObject* esp, IList<object> mStack)
+        public double RetriveDouble(StackObject* esp, AutoList mStack)
         {
             StackObject* objRef = GetObjectAndResolveReference(esp);
             if (objRef->ObjectType == ObjectTypes.Null)
@@ -5367,7 +5380,7 @@ namespace ILRuntime.Runtime.Intepreter
             return res;
         }
 
-        void LoadFromFieldReference(object obj, int idx, StackObject* dst, IList<object> mStack)
+        void LoadFromFieldReference(object obj, int idx, StackObject* dst, AutoList mStack)
         {
             if (obj is ILTypeInstance)
             {
@@ -5381,7 +5394,7 @@ namespace ILRuntime.Runtime.Intepreter
             }
         }
 
-        void StoreValueToFieldReference(ref object obj, int idx, StackObject* val, IList<object> mStack)
+        void StoreValueToFieldReference(ref object obj, int idx, StackObject* val, AutoList mStack)
         {
             if (obj is ILTypeInstance)
             {
@@ -5399,13 +5412,13 @@ namespace ILRuntime.Runtime.Intepreter
             }
         }
 
-        void LoadFromArrayReference(object obj, int idx, StackObject* objRef, IType t, IList<object> mStack, int managedIdx = -1)
+        void LoadFromArrayReference(object obj, int idx, StackObject* objRef, IType t, AutoList mStack, int managedIdx = -1)
         {
             var nT = t.TypeForCLR;
             LoadFromArrayReference(obj, idx, objRef, nT, mStack, managedIdx);
         }
 
-        void LoadFromArrayReference(object obj, int idx, StackObject* objRef, Type nT, IList<object> mStack, int managedIdx = -1)
+        void LoadFromArrayReference(object obj, int idx, StackObject* objRef, Type nT, AutoList mStack, int managedIdx = -1)
         {
             if (nT.IsPrimitive)
             {
@@ -5497,13 +5510,13 @@ namespace ILRuntime.Runtime.Intepreter
             }
         }
 
-        void StoreValueToArrayReference(StackObject* objRef, StackObject* val, IType t, IList<object> mStack)
+        void StoreValueToArrayReference(StackObject* objRef, StackObject* val, IType t, AutoList mStack)
         {
             var nT = t.TypeForCLR;
             StoreValueToArrayReference(objRef, val, nT, mStack);
         }
 
-        void StoreValueToArrayReference(StackObject* objRef, StackObject* val, Type nT, IList<object> mStack)
+        void StoreValueToArrayReference(StackObject* objRef, StackObject* val, Type nT, AutoList mStack)
         {
             if (nT.IsPrimitive)
             {
@@ -5600,7 +5613,7 @@ namespace ILRuntime.Runtime.Intepreter
 
         StackObject* PushParameters(IMethod method, StackObject* esp, object[] p, bool useRegister)
         {
-            IList<object> mStack = stack.ManagedStack;
+            AutoList mStack = stack.ManagedStack;
             var plist = method.Parameters;
             int pCnt = plist != null ? plist.Count : 0;
             int pCnt2 = p != null ? p.Length : 0;
@@ -5624,12 +5637,12 @@ namespace ILRuntime.Runtime.Intepreter
             }
             return esp;
         }
-        public void CopyToStack(StackObject* dst, StackObject* src, IList<object> mStack)
+        public void CopyToStack(StackObject* dst, StackObject* src, AutoList mStack)
         {
             CopyToStack(dst, src, mStack, mStack);
         }
 
-        void CopyToStack(StackObject* dst, StackObject* src, IList<object> mStack, IList<object> dstmStack)
+        void CopyToStack(StackObject* dst, StackObject* src, AutoList mStack, AutoList dstmStack)
         {
             if (src->ObjectType == ObjectTypes.ValueTypeObjectReference)
             {
@@ -5710,7 +5723,7 @@ namespace ILRuntime.Runtime.Intepreter
             return esp + 1;
         }
 
-        public static void UnboxObject(StackObject* esp, object obj, IList<object> mStack = null, Enviorment.AppDomain domain = null)
+        public static void UnboxObject(StackObject* esp, object obj, AutoList mStack = null, Enviorment.AppDomain domain = null)
         {
             if (esp->ObjectType == ObjectTypes.ValueTypeObjectReference && domain != null)
             {
@@ -5807,7 +5820,7 @@ namespace ILRuntime.Runtime.Intepreter
                 throw new NotImplementedException();
         }
 
-        public static StackObject* PushObject(StackObject* esp, IList<object> mStack, object obj, bool isBox = false)
+        public static StackObject* PushObject(StackObject* esp, AutoList mStack, object obj, bool isBox = false)
         {
             if (obj != null)
             {

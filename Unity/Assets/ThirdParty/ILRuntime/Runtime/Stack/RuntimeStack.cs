@@ -6,6 +6,12 @@ using ILRuntime.CLR.Method;
 using ILRuntime.CLR.TypeSystem;
 using ILRuntime.Other;
 using ILRuntime.Runtime.Intepreter;
+
+#if DEBUG && !DISABLE_ILRUNTIME_DEBUG
+using AutoList = System.Collections.Generic.List<object>;
+#else
+using AutoList = ILRuntime.Other.UncheckedList<object>;
+#endif
 namespace ILRuntime.Runtime.Stack
 {
     unsafe class RuntimeStack : IDisposable
@@ -17,11 +23,7 @@ namespace ILRuntime.Runtime.Stack
         StackObjectAllocator allocator;
         IntPtr nativePointer;
 
-#if DEBUG && !DISABLE_ILRUNTIME_DEBUG
-        IList<object> managedStack = new List<object>(32);
-#else
-        IList<object> managedStack = new UncheckedList<object>(32);
-#endif
+        AutoList managedStack = new AutoList(32);
         UncheckedStack<StackFrame> frames = new UncheckedStack<StackFrame>();
         public const int MAXIMAL_STACK_OBJECTS = 1024 * 16;
 
@@ -71,7 +73,7 @@ namespace ILRuntime.Runtime.Stack
             }
         }
 
-        public IList<object> ManagedStack { get { return managedStack; } }
+        public AutoList ManagedStack { get { return managedStack; } }
 
         public void ResetValueTypePointer()
         {
@@ -187,8 +189,49 @@ namespace ILRuntime.Runtime.Stack
             StackObject* descriptor = ILIntepreter.ResolveReference(src);
             if (descriptor > dst)
                 throw new StackOverflowException();
-            *dst = *descriptor;
-            int cnt = descriptor->ValueLow;
+            IType type = intepreter.AppDomain.GetTypeByIndex(descriptor->Value);
+            int cnt, mCnt;
+            type.GetValueTypeSize(out cnt, out mCnt);
+            StackObject* startAddr = descriptor;
+            StackObject* endAddr = descriptor - cnt;
+            StackObject* tarStartAddr = dst ;
+            StackObject* tarEndAddr = dst - cnt;
+            for(int i = 0; i < cnt; i++)
+            {
+                StackObject* addr = startAddr - i;
+                StackObject* tarVal = tarStartAddr - i;
+
+                *tarVal = *addr;
+                switch(addr->ObjectType)
+                {
+                    case ObjectTypes.Object:
+                    case ObjectTypes.ArrayReference:
+                    case ObjectTypes.FieldReference:
+                        if (tarVal->Value >= mStackBase)
+                        {
+                            int oldIdx = addr->Value;
+                            tarVal->Value = mStackBase;
+                            managedStack[mStackBase] = managedStack[oldIdx];
+                            mStackBase++;
+                        }
+                        break;
+                    case ObjectTypes.ValueTypeObjectReference:
+                        {
+                            StackObject* curVal = *(StackObject**)&tarVal->Value;
+                            if (curVal <= startAddr && curVal > endAddr)
+                            {
+                                long diff = startAddr - curVal;
+                                StackObject* newAddr = tarStartAddr - diff;
+                                *(StackObject**)&tarVal->Value = newAddr;
+                            }
+                            else
+                                throw new StackOverflowException();
+                        }
+                        break;
+                }
+            }
+            dst = tarEndAddr;
+            /*int cnt = descriptor->ValueLow;
             StackObject* endAddr = ILIntepreter.Minus(dst, cnt + 1);
             for(int i = 0; i < cnt; i++)
             {
@@ -215,7 +258,7 @@ namespace ILRuntime.Runtime.Stack
                         break;
                 }
             }
-            dst = endAddr;
+            dst = endAddr;*/
         }
 
         int CountValueTypeManaged(IType type)
