@@ -51,7 +51,7 @@ namespace ET
                 string fileName = Path.GetFileName(excelPath);
                 if (!fileName.EndsWith(".xlsx") || fileName.StartsWith("~$") || fileName.Contains("#"))
                 {
-                    return;
+                    continue;
                 }
 
                 string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(fileName);
