@@ -23,7 +23,7 @@ namespace ET
             try
             {
                 coroutineLock = await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Resources, address.GetHashCode());
-                if (self.m_cacheMaterial.TryGetValue(address, out res))
+                if (!self.m_cacheMaterial.TryGetValue(address, out res))
                 {
                     res = await ResourcesComponent.Instance.LoadAsync<Material>(address);
                     if (res != null)
