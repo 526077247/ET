@@ -291,9 +291,14 @@ namespace Nino.Serialization
 						}
 						//list & dict
 						else if (type.IsGenericType &&
-							type.GetGenericTypeDefinition() == ConstMgr.ListDefType || type.GetGenericTypeDefinition() == ConstMgr.DictDefType)
+							(type.GetGenericTypeDefinition() == ConstMgr.ListDefType || type.GetGenericTypeDefinition() == ConstMgr.DictDefType))
 						{
 							//empty list or dict
+							writer.CompressAndWrite(0);
+							continue;
+						}
+						else if (type.IsClass)
+						{
 							writer.CompressAndWrite(0);
 							continue;
 						}
