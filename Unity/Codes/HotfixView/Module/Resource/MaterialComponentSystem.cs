@@ -37,5 +37,16 @@ namespace ET
             }
             return res;
         }
+        
+        public static ETTask LoadMaterialTask(this MaterialComponent self,string address, Action<Material> callback = null)
+        {
+            ETTask task = ETTask.Create();
+            self.LoadMaterialAsync(address, (data) =>
+            {
+                callback?.Invoke(data);
+                task.SetResult();
+            }).Coroutine();
+            return task;
+        }
     }
 }

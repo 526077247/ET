@@ -16,6 +16,7 @@ namespace ET
         {
             public GameObject Obj;
             public bool IsLoading;
+            public string Type;
         }
         public Dictionary<string, DynamicScene> DynamicSceneMap;
         
@@ -40,5 +41,8 @@ namespace ET
         public Dictionary<AssetsObject, DynamicSceneViewObj> DynamicSceneObjectMapObj;
         public int? LastGridX = null;
         public int? LastGridY = null;
+        
+        //是否忙
+        public bool Busing = false;
     }
 }

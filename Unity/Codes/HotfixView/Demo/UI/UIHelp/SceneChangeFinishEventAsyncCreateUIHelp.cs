@@ -6,6 +6,7 @@
         {
             await UIManagerComponent.Instance.OpenWindow<UIHelpWin>(UIHelpWin.PrefabPath);
             await UIManagerComponent.Instance.DestroyWindow<UILoadingView>();
+            args.CurrentScene.AddComponent<OperaComponent>();
         }
     }
 }

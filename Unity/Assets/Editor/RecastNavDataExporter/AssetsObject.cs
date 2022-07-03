@@ -12,7 +12,7 @@ namespace ET
 
         #region Type-Terrain
         
-        public string TerrainPath;
+        public AssetsTerrain Terrain;
         
         #endregion
 

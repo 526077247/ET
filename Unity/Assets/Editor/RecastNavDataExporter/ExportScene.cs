@@ -43,7 +43,7 @@ namespace ET
                                 
                                 break;
                             case "Terrain":
-                                addressPath = "Assets/AssetsPackage/" + objInfo.TerrainPath;
+                                addressPath = "Assets/AssetsPackage/" + objInfo.Terrain.TerrainPath;
                                 var terrainData =  AssetDatabase.LoadAssetAtPath(addressPath, typeof(TerrainData)) as TerrainData;
                                 if(terrainData==null) continue;
                                 obj = new GameObject(objInfo.Name);
@@ -100,7 +100,7 @@ namespace ET
                     EditorApplication.OpenScene(scenePath);
                     AssetsScene sceneRoot = new AssetsScene();
                     root.Scenes.Add(sceneRoot);
-                    sceneRoot.Name = sceneName;
+                    sceneRoot.Name = sceneName.Split('_')[0];
                     sceneRoot.Objects = new List<AssetsObject>();
                     var scene = sceneRoot.Objects;
                     foreach (GameObject sceneObject in Object.FindObjectsOfType(typeof (GameObject)))
@@ -130,8 +130,14 @@ namespace ET
                 scene.Add(obj);
                 obj.Name = sceneObject.name;
                 obj.Type = "Terrain";
+                var t = sceneObject.GetComponent<Terrain>();
                 string prefabObject = EditorUtility.GetAssetPath(terrain.terrainData);
-                obj.TerrainPath = prefabObject.Replace("Assets/AssetsPackage/", "");
+                string materialObject = EditorUtility.GetAssetPath(t.materialTemplate);
+                obj.Terrain = new AssetsTerrain()
+                {
+                    TerrainPath = prefabObject.Replace("Assets/AssetsPackage/", ""),
+                    MaterialPath = materialObject.Replace("Assets/AssetsPackage/", ""),
+                };
                 obj.Size = terrain.bounds.size;
                 AddTransformInfo(obj, sceneObject);
             }

@@ -45,7 +45,17 @@ namespace ET
             return asset;
 
         }
-
+        //预加载材质
+        public static ETTask LoadTask<T>(this ResourcesComponent self,string path,Action<T> callback)where T:UnityEngine.Object
+        {
+            ETTask task = ETTask.Create();
+            self.LoadAsync<T>(path, (data) =>
+            {
+                callback?.Invoke(data);
+                task.SetResult();
+            }).Coroutine();
+            return task;
+        }
 
         public static async ETTask LoadSceneAsync(this ResourcesComponent self,string path, bool isAdditive)
         {
