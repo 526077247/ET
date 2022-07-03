@@ -74,7 +74,17 @@ namespace ET
                 value.ref_count = 0;
             });
         }
-
+        //异步加载图片 会自动识别图集：回调方式（image 和button已经封装 外部使用时候 谨慎使用）
+        public static ETTask LoadImageTask(this ImageLoaderComponent self, string image_path, Action<Sprite> callback = null)
+        {
+            ETTask task = ETTask.Create();
+            self.LoadImageAsync(image_path, (data) =>
+            {
+                callback?.Invoke(data);
+                task.SetResult();
+            }).Coroutine();
+            return task;
+        }
         //异步加载图片 会自动识别图集：回调方式（image 和button已经封装 外部使用时候 谨慎使用）
         public static async ETTask<Sprite> LoadImageAsync(this ImageLoaderComponent self,string image_path, Action<Sprite> callback = null)
         {

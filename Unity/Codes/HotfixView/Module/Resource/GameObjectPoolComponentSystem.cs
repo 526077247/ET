@@ -148,7 +148,17 @@ namespace ET
 				coroutineLock?.Dispose();
 			}
 		}
-
+		//异步获取：必要时加载
+		public static ETTask GetGameObjectTask(this GameObjectPoolComponent self, string path, Action<GameObject> callback = null)
+		{
+			ETTask task = ETTask.Create();
+			self.GetGameObjectAsync(path, (data) =>
+			{
+				callback?.Invoke(data);
+				task.SetResult();
+			}).Coroutine();
+			return task;
+		}
 
 		//异步获取：必要时加载
 		public static async ETTask<GameObject> GetGameObjectAsync(this GameObjectPoolComponent self,string path,Action<GameObject> callback = null)

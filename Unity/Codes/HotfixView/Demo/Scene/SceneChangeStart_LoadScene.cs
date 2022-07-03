@@ -1,14 +1,13 @@
 namespace ET
 {
     [FriendClass(typeof(SceneLoadComponent))]
-    public class SceneChangeStart_AddComponent: AEventAsync<EventType.SceneChangeStart>
+    public class SceneChangeStart_LoadScene: AEventAsync<EventType.SceneChangeStart>
     {
         protected override async ETTask Run(EventType.SceneChangeStart args)
         {
             Scene currentScene = args.ZoneScene.CurrentScene();
             SceneLoadComponent slc = EnterMap(currentScene);
             await AOISceneViewComponent.Instance.ChangeToScene(args.Name,slc);
-            currentScene.AddComponent<OperaComponent>();
             slc.Dispose();
         }
 

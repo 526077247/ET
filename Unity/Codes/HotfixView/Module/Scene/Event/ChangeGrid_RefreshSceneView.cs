@@ -9,7 +9,7 @@
             {
                 var nc =args.Unit.Parent.GetComponent<NumericComponent>();
                 if(args.NewCell==null) return;
-                AOISceneViewComponent.Instance.ChangeGrid(args.NewCell.posx,args.NewCell.posy,nc.GetAsInt(NumericType.AOI)).Coroutine();
+                AOISceneViewComponent.Instance.ChangeGrid(args.Unit.ZoneScene(), args.NewCell.posx,args.NewCell.posy,nc.GetAsInt(NumericType.AOI)).Coroutine();
             }
         }
     }

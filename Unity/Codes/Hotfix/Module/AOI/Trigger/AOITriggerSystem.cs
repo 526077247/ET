@@ -56,11 +56,20 @@ namespace ET
                 else
                     self.GetParent<AOIUnitComponent>().RemoverCollider(self);
             }
-            self.Selecter.Dispose();
-            self.Selecter = null;
+
+            if (self.Selecter != null)
+            {
+                self.Selecter.Dispose();
+                self.Selecter = null;
+            }
+
             self.Handler=null;
-            self.FollowCell.Dispose();
-            self.FollowCell = null;
+            if (self.FollowCell != null)
+            {
+                self.FollowCell.Dispose();
+                self.FollowCell = null;
+            }
+
             if (Define.Debug)
             {
                 bool hasErr = false;
