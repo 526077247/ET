@@ -66,15 +66,11 @@ namespace ET
                         item.AddListener(unit);
                         using (var list = item.GetAllUnit())
                         {
-                            for (int j = 0; j < list.Count; j++)
+                            Game.EventSystem.Publish(new AOIRegisterUnit()
                             {
-                                var t = list[j];
-                                Game.EventSystem.Publish(new AOIRegisterUnit()
-                                {
-                                    Receive = unit,
-                                    Unit = t
-                                });
-                            }
+                                Receive = unit,
+                                Units = list
+                            });
                         }
 
                     }
@@ -103,15 +99,11 @@ namespace ET
                         {
                             using (var list = item.GetAllUnit())
                             {
-                                for (int j = 0; j < list.Count; j++)
+                                Game.EventSystem.Publish(new AOIRemoveUnit()
                                 {
-                                    var t = list[j];
-                                    Game.EventSystem.Publish(new AOIRemoveUnit()
-                                    {
-                                        Receive = unit,
-                                        Unit = t
-                                    });
-                                }
+                                    Receive = unit,
+                                    Units = list
+                                });
                             }
                         }
                     }

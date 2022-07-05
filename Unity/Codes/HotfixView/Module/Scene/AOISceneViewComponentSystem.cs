@@ -1,18 +1,18 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Threading;
 
 namespace ET
 {
     [ObjectSystem]
-    public class AOISceneViewComponentAwakeSystem: AwakeSystem<AOISceneViewComponent,int>
+    public class AOISceneViewComponentAwakeSystem: AwakeSystem<AOISceneViewComponent>
     {
-        public override void Awake(AOISceneViewComponent self, int len)
+        public override void Awake(AOISceneViewComponent self)
         {
             AOISceneViewComponent.Instance = self;
-            self.GridLen = len;
-            self.DynamicSceneObjectMapCount = new Dictionary<AssetsObject, int>();
-            self.DynamicSceneObjectMapObj = new Dictionary<AssetsObject, AOISceneViewComponent.DynamicSceneViewObj>();
+            self.DynamicSceneObjectMapCount = new Dictionary<int, int>();
+            self.DynamicSceneObjectMapObj = new Dictionary<int, AOISceneViewComponent.DynamicSceneViewObj>();
             self.Init().Coroutine();
         }
         
@@ -22,85 +22,31 @@ namespace ET
     [FriendClass(typeof(SceneManagerComponent))]
     public static class AOISceneViewComponentSystem
     {
-        public static async ETTask Init(this AOISceneViewComponent self)
+        public static ETTask Init(this AOISceneViewComponent self)
         {
+            //todo:针对大世界解析慢的问题，可以换成proto或者Nino格式更快
+            ETTask res = ETTask.Create();
             #region 从Json初始化场景物体信息
-            self.DynamicSceneMap = new Dictionary<string, AOISceneViewComponent.DynamicScene>();
-            string xmlPath = "GameAssets/Config/Map.json";
-            var content = await ResourcesComponent.Instance.LoadAsync<TextAsset>(xmlPath);
-            AssetsRoot root = null;
-            try
+            string jsonPath = "GameAssets/Config/Map.json";
+            ResourcesComponent.Instance.LoadAsync<TextAsset>(jsonPath, (file) =>
             {
-                root= JsonHelper.FromJson<AssetsRoot>(content.text);
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex);
-            }
-            
-            if (root == null) return;
-            foreach(var scene in root.Scenes)
-            {
-                AOISceneViewComponent.DynamicScene item = new AOISceneViewComponent.DynamicScene();
-                item.sceneName = scene.Name;
-                item.Objects = scene.Objects;
-                self.DynamicSceneMap.Add(item.sceneName,item);
-                item.GridMapObjects = new Dictionary<long, List<AssetsObject>>();
-                for (int index = 0; index < item.Objects.Count; index++)
+                var text = file.text;
+                ThreadPool.QueueUserWorkItem((_) =>
                 {
-                    var sceneObject = item.Objects[index];
-                    int x = (int)Math.Floor( sceneObject.Transform.Position.x / self.GridLen);
-                    int y = (int)Math.Floor( sceneObject.Transform.Position.z / self.GridLen);
-                    if (sceneObject.Type == "Prefab")
+                    self.Root = null;
+                    try
                     {
-                        float radius = Mathf.Sqrt(sceneObject.Size.x * sceneObject.Size.x +
-                                                  sceneObject.Size.z * sceneObject.Size.z) / 2;
-                        int count = (int) Math.Ceiling(radius / self.GridLen); //环境多加一格
-                        for (int i = x - count; i <= x + count; i++)
-                        {
-                            var xMin = i * self.GridLen;
-                            for (int j = y - count; j <= y + count; j++)
-                            {
-                                var yMin = j * self.GridLen;
-                                var res = AOIHelper.GetGridRelationshipWithOBB(sceneObject.Transform.Position,
-                                    sceneObject.Transform.Rotation,
-                                    sceneObject.Size, self.GridLen, xMin, yMin, radius, radius * radius);
-                                if (res >= 0)
-                                {
-                                    var id = AOIHelper.CreateCellId(i, j);
-                                    // Log.Info("i"+i+"j"+j+" "+sceneObject.Name);
-                                    if (!item.GridMapObjects.ContainsKey(id))
-                                    {
-                                        item.GridMapObjects.Add(id, new List<AssetsObject>());
-                                    }
-
-                                    item.GridMapObjects[id].Add(sceneObject);
-                                }
-                            }
-                        }
+                        self.Root= JsonHelper.FromJson<AssetsRoot>(text);
                     }
-                    else if (sceneObject.Type == "Terrain")
+                    catch (Exception ex)
                     {
-                        for (int i = x ; i <= x + sceneObject.Size.x/ self.GridLen; i++)
-                        {
-                            for (int j = y ; j <= y + sceneObject.Size.z/ self.GridLen; j++)
-                            {
-                                var id = AOIHelper.CreateCellId(i, j);
-                                // Log.Info("i"+i+"j"+j+" "+sceneObject.Name);
-                                if (!item.GridMapObjects.ContainsKey(id))
-                                {
-                                    item.GridMapObjects.Add(id, new List<AssetsObject>());
-                                }
-
-                                item.GridMapObjects[id].Add(sceneObject);
-                            }
-                        }
+                        Log.Error(ex);
                     }
-                }
-                
-            }
+                    res.SetResult();
+                });
+            }).Coroutine();
             #endregion
-            
+            return res;
         }
         /// <summary>
         /// 切换到某个场景
@@ -108,23 +54,51 @@ namespace ET
         /// <param name="name"></param>
         public static async ETTask ChangeToScene(this AOISceneViewComponent self,string name=null,SceneLoadComponent slc = null)
         {
-            if (string.IsNullOrEmpty(name) && string.IsNullOrEmpty(self.CurMap)) return;
+            if (string.IsNullOrEmpty(name)) return;
             if (SceneManagerComponent.Instance.Busing) return;
+            //打开loading界面
+            await Game.EventSystem.PublishAsync(new UIEventType.LoadingBegin());
+            float slid_value = 0;
+            Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value });
+            for (int i = 0; i < 10&&self.Root==null; i++)
+            {
+                await TimerComponent.Instance.WaitAsync(100);
+            }
+
+            if (self.Root == null)
+            {
+                Log.Error("self.Root == null");
+                return;
+            }
+            AssetsScene scene=null;
+            for (int i = 0; i < self.Root.Scenes.Count; i++)
+            {
+                if (self.Root.Scenes[i].Name == name)
+                {
+                    scene = self.Root.Scenes[i];
+                    break;
+                }
+            }
+
+            if (scene == null)
+            {
+                Log.Error(name+" == null");
+                return;
+            }
             SceneManagerComponent.Instance.Busing = true;
             self.LastGridX = null;
             self.LastGridY = null;
             Log.Info("InnerSwitchScene start open uiloading");
-            //打开loading界面
-            await Game.EventSystem.PublishAsync(new UIEventType.LoadingBegin());
-            float slid_value = 0;
-            if (name != self.CurMap)//需要重新加载场景物体
+            slid_value = 0.1f;
+            Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value });
+            if (self.CurMap==null||name != self.CurMap.Name)//需要重新加载场景物体
             {
                 Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value });
                 if (SceneManagerComponent.Instance.CurrentScene != SceneNames.Map)
                 {
                     CameraManagerComponent.Instance.SetCameraStackAtLoadingStart();
                 }
-                slid_value = 0.1f;
+                slid_value = 0.15f;
                 Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value });
                 //等待资源管理器加载任务结束，否则很多Unity版本在切场景时会有异常，甚至在真机上crash
                 Log.Info("InnerSwitchScene ProsessRunning Done ");
@@ -222,7 +196,8 @@ namespace ET
             }
 
             Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = 1 });
-            self.CurMap = name;
+            
+            self.CurMap = scene;
             SceneManagerComponent.Instance.Busing = false;
         }
 
@@ -233,12 +208,10 @@ namespace ET
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <param name="viewLen"></param>
-        public static async ETTask ChangeGrid(this AOISceneViewComponent self,Scene zoneScene,int x,int y,int viewLen)
+        public static async ETTask ChangePosition(this AOISceneViewComponent self,Scene zoneScene,Vector3 pos,int viewLen)
         {
-            if (!self.DynamicSceneMap.TryGetValue(self.CurMap, out var scene))
-            {
-                return;
-            }
+            int x = (int)(pos.x / self.CellLen);
+            int y = (int)(pos.z / self.CellLen);
             CoroutineLock coroutineLock = null;
             try
             {
@@ -284,7 +257,7 @@ namespace ET
 
                     }
                 }
-                var objs = scene.GridMapObjects;
+                var objs = self.CurMap.CellMapObjects;
                 using (ListComponent<ETTask> tasks = ListComponent<ETTask>.Create())
                 {
                     foreach (var item in temp)
@@ -294,26 +267,26 @@ namespace ET
                         if (!objs.ContainsKey(item.Key)) continue;
                         for (int i = 0; i < objs[item.Key].Count; i++)
                         {
-                            var obj = objs[item.Key][i];
+                            var index = objs[item.Key][i];
                             if (item.Value > 0) //新增
                             {
-                                if (self.DynamicSceneObjectMapCount.ContainsKey(obj))
+                                if (self.DynamicSceneObjectMapCount.ContainsKey(index))
                                 {
-                                    self.DynamicSceneObjectMapCount[obj]++;
+                                    self.DynamicSceneObjectMapCount[index]++;
                                 }
                                 else
                                 {
-                                    self.DynamicSceneObjectMapCount[obj] = 1;
+                                    self.DynamicSceneObjectMapCount[index] = 1;
                                 }
 
                                 //需要显示
-                                if (self.DynamicSceneObjectMapCount[obj] > 0)
+                                if (self.DynamicSceneObjectMapCount[index] > 0)
                                 {
                                     AOISceneViewComponent.DynamicSceneViewObj viewObj;
                                     //已经有
-                                    if (self.DynamicSceneObjectMapObj.ContainsKey(obj))
+                                    if (self.DynamicSceneObjectMapObj.ContainsKey(index))
                                     {
-                                        viewObj = self.DynamicSceneObjectMapObj[obj];
+                                        viewObj = self.DynamicSceneObjectMapObj[index];
                                         if (viewObj.Obj == null) //之前有单没加载出来，IsLoading改为true，防止之前已经被改成false了
                                         {
                                             viewObj.IsLoading = true;
@@ -322,10 +295,11 @@ namespace ET
                                         continue;
                                     }
 
+                                    var obj = self.CurMap.Objects[index];
                                     Log.Info("AOISceneView Load " + obj.PrefabPath);
                                     //没有
-                                    self.DynamicSceneObjectMapObj[obj] = new AOISceneViewComponent.DynamicSceneViewObj();
-                                    viewObj = self.DynamicSceneObjectMapObj[obj];
+                                    self.DynamicSceneObjectMapObj[index] = new AOISceneViewComponent.DynamicSceneViewObj();
+                                    viewObj = self.DynamicSceneObjectMapObj[index];
                                     viewObj.IsLoading = true;
                                     viewObj.Type = obj.Type;
                                     if (viewObj.Type == "Prefab")
@@ -335,7 +309,7 @@ namespace ET
                                             if (!viewObj.IsLoading) //加载出来后已经不需要的
                                             {
                                                 GameObjectPoolComponent.Instance.RecycleGameObject(view);
-                                                self.DynamicSceneObjectMapObj.Remove(obj);
+                                                self.DynamicSceneObjectMapObj.Remove(index);
                                             }
 
                                             viewObj.Obj = view;
@@ -373,20 +347,20 @@ namespace ET
                             }
                             else //移除
                             {
-                                if (self.DynamicSceneObjectMapCount.ContainsKey(obj))
+                                if (self.DynamicSceneObjectMapCount.ContainsKey(index))
                                 {
-                                    self.DynamicSceneObjectMapCount[obj]--;
+                                    self.DynamicSceneObjectMapCount[index]--;
                                 }
                                 else
                                 {
-                                    self.DynamicSceneObjectMapCount[obj] = -1;
+                                    self.DynamicSceneObjectMapCount[index] = -1;
                                 }
 
                                 //不需要显示但有
-                                if (self.DynamicSceneObjectMapCount[obj] <= 0 && self.DynamicSceneObjectMapObj.ContainsKey(obj))
+                                if (self.DynamicSceneObjectMapCount[index] <= 0 && self.DynamicSceneObjectMapObj.ContainsKey(index))
                                 {
-                                    Log.Info("AOISceneView Remove " + obj.PrefabPath);
-                                    var viewObj = self.DynamicSceneObjectMapObj[obj];
+                                    // Log.Info("AOISceneView Remove " + index);
+                                    var viewObj = self.DynamicSceneObjectMapObj[index];
                                     if (viewObj.Obj == null) //还在加载
                                     {
                                         viewObj.IsLoading = false;
@@ -403,7 +377,7 @@ namespace ET
                                             GameObject.Destroy(viewObj.Obj);
                                         }
 
-                                        self.DynamicSceneObjectMapObj.Remove(obj);
+                                        self.DynamicSceneObjectMapObj.Remove(index);
                                     }
 
                                 }

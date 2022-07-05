@@ -162,6 +162,8 @@ namespace ET
                 Log.Error("self.idUnits[unit.Type].Contains(unit)");
             }
             self.typeUnits[unit.Type].Add(unit);
+            ListComponent<AOIUnitComponent> list = ListComponent<AOIUnitComponent>.Create();
+            list.Add(unit);
             for (int i = 0; i < self.ListenerUnits.Count; i++)
             {
                 var item = self.ListenerUnits[i];
@@ -170,10 +172,11 @@ namespace ET
                     Game.EventSystem.Publish(new EventType.AOIRegisterUnit()
                     {
                         Receive = item,
-                        Unit = unit
+                        Units = list
                     });
                 }
             }
+            list.Dispose();
         }
 
         /// <summary>
@@ -184,6 +187,8 @@ namespace ET
         public static void Remove(this AOICell self, AOIUnitComponent unit)
         {
             if (self == null || self.IsDisposed) return;
+            ListComponent<AOIUnitComponent> list = ListComponent<AOIUnitComponent>.Create();
+            list.Add(unit);
             if (self.typeUnits.ContainsKey(unit.Type))
             {
                 for (int i = 0; i < self.ListenerUnits.Count; i++)
@@ -194,13 +199,14 @@ namespace ET
                         Game.EventSystem.Publish(new EventType.AOIRemoveUnit()
                         {
                             Receive = item,
-                            Unit = unit
+                            Units = list
                         });
                     }
                 }
                 self.typeUnits[unit.Type].Remove(unit);
                 unit.Cell = null;
             }
+            list.Dispose();
         }
         
 

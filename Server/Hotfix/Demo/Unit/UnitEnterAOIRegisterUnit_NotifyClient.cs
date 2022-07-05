@@ -8,17 +8,14 @@
         {
             
             AOIUnitComponent a = args.Receive;
-            AOIUnitComponent b = args.Unit;
-            if (a == b) return;
+            if (args.Units==null||args.Units.Count==0) return;
             Unit ua = a.GetParent<Unit>();
             if (ua.Type != UnitType.Player)
             {
                 return;
             }
 
-            Unit ub = b.GetParent<Unit>();
-
-            UnitHelper.NoticeUnitAdd(ua, ub);
+            UnitHelper.NoticeUnitsAdd(ua, args.Units);
         }
     }
 }
