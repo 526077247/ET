@@ -168,6 +168,8 @@ namespace ILRuntime.Runtime.Generated
             ET_ETAsyncTaskMethodBuilder_1_Texture_Binding.Register(app);
             ET_ETAsyncTaskMethodBuilder_1_Material_Binding.Register(app);
             ET_ETAsyncTaskMethodBuilder_1_TextAsset_Binding.Register(app);
+            ET_ETAsyncTaskMethodBuilder_1_TerrainData_Binding.Register(app);
+            ET_ETTask_1_TerrainData_Binding.Register(app);
             System_Action_1_GameObject_Binding.Register(app);
             ET_ETTask_1_GameObject_Binding.Register(app);
             UnityEngine_Object_Binding.Register(app);
@@ -181,6 +183,7 @@ namespace ILRuntime.Runtime.Generated
             ET_ETTask_1_Material_Binding.Register(app);
             System_Action_1_TextAsset_Binding.Register(app);
             ET_ETTask_1_TextAsset_Binding.Register(app);
+            System_Action_1_TerrainData_Binding.Register(app);
             System_Net_IPAddress_Binding.Register(app);
             System_Net_IPEndPoint_Binding.Register(app);
             System_Net_Sockets_Socket_Binding.Register(app);
@@ -345,11 +348,15 @@ namespace ILRuntime.Runtime.Generated
             System_GC_Binding.Register(app);
             UnityEngine_Resources_Binding.Register(app);
             UnityEngine_AsyncOperation_Binding.Register(app);
+            UnityEngine_TerrainCollider_Binding.Register(app);
+            UnityEngine_Terrain_Binding.Register(app);
             ET_DictionaryComponent_2_Int64_Int32_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Int64_Int32_Binding_Enumerator_Binding.Register(app);
             System_Collections_Generic_KeyValuePair_2_Int64_Int32_Binding.Register(app);
             ET_DictionaryComponent_2_String_Int32_Binding.Register(app);
-            System_Action_1_Single_Binding.Register(app);
+            ET_DictionaryComponent_2_String_Func_1_ETTask_Binding.Register(app);
+            System_Collections_Generic_Dictionary_2_String_Func_1_ETTask_Binding.Register(app);
+            System_Func_1_ETTask_Binding.Register(app);
             UnityEngine_UI_Button_Binding.Register(app);
             UnityEngine_Events_UnityEvent_Binding.Register(app);
             UnityEngine_Events_UnityAction_Binding.Register(app);

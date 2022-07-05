@@ -38,15 +38,15 @@ namespace ILRuntime.Runtime.Generated
             args = new Type[]{};
             method = type.GetMethod("Coroutine", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, Coroutine_3);
-            args = new Type[]{};
-            method = type.GetMethod("get_CompletedTask", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, get_CompletedTask_4);
             args = new Type[]{typeof(System.Boolean)};
             method = type.GetMethod("Create", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, Create_5);
+            app.RegisterCLRMethodRedirection(method, Create_4);
             args = new Type[]{};
             method = type.GetMethod("SetResult", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, SetResult_6);
+            app.RegisterCLRMethodRedirection(method, SetResult_5);
+            args = new Type[]{};
+            method = type.GetMethod("get_CompletedTask", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, get_CompletedTask_6);
 
 
         }
@@ -114,18 +114,7 @@ namespace ILRuntime.Runtime.Generated
             return __ret;
         }
 
-        static StackObject* get_CompletedTask_4(ILIntepreter __intp, StackObject* __esp, AutoList __mStack, CLRMethod __method, bool isNewObj)
-        {
-            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            StackObject* __ret = ILIntepreter.Minus(__esp, 0);
-
-
-            var result_of_this_method = ET.ETTask.CompletedTask;
-
-            return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
-        }
-
-        static StackObject* Create_5(ILIntepreter __intp, StackObject* __esp, AutoList __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* Create_4(ILIntepreter __intp, StackObject* __esp, AutoList __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
@@ -140,7 +129,7 @@ namespace ILRuntime.Runtime.Generated
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 
-        static StackObject* SetResult_6(ILIntepreter __intp, StackObject* __esp, AutoList __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* SetResult_5(ILIntepreter __intp, StackObject* __esp, AutoList __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
@@ -153,6 +142,17 @@ namespace ILRuntime.Runtime.Generated
             instance_of_this_method.SetResult();
 
             return __ret;
+        }
+
+        static StackObject* get_CompletedTask_6(ILIntepreter __intp, StackObject* __esp, AutoList __mStack, CLRMethod __method, bool isNewObj)
+        {
+            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
+            StackObject* __ret = ILIntepreter.Minus(__esp, 0);
+
+
+            var result_of_this_method = ET.ETTask.CompletedTask;
+
+            return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 
 
