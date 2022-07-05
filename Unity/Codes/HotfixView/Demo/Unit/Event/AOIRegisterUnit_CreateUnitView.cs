@@ -11,22 +11,25 @@ namespace ET
     {
         protected override void Run(EventType.AOIRegisterUnit args)
         {
-            var myunitId = args.Unit.GetMyUnitIdFromZoneScene();
+            var myunitId = args.Receive.GetMyUnitIdFromZoneScene();
             if (args.Receive.Id != myunitId)
             {
                 // Log.Info("args.Receive.Id != myunitId  "+args.Unit.Id+"   " +args.Receive.Id +"  "+ myunitId);
                 return;
             }
-            RunAsync(args).Coroutine();
+            for (int i = 0; i < args.Units.Count; i++)
+            {
+                var unit = args.Units[i].GetParent<Unit>();
+                RunAsync(unit).Coroutine();
+            }
         }
-        
-        async ETTask RunAsync(EventType.AOIRegisterUnit args)
+
+        public async ETTask RunAsync(Unit unit)
         {
             GameObjectComponent showObj;
-            var unit = args.Unit.GetParent<Unit>();
             if (unit.Type==UnitType.Player||unit.Type==UnitType.Monster)//人物怪物类
             {
-                Log.Info("AOIRegisterUnit"+args.Unit.Id);
+                Log.Info("AOIRegisterUnit"+unit.Id);
                 // Unit View层
                 // 这里可以改成异步加载，demo就不搞了
                 var go = await GameObjectPoolComponent.Instance.GetGameObjectAsync(unit.Config.Perfab);
@@ -40,7 +43,7 @@ namespace ET
                 var idc = go.GetComponent<UnitIdComponent>();
                 if (idc == null)
                     idc = go.AddComponent<UnitIdComponent>();
-                idc.UnitId = args.Unit.Id;
+                idc.UnitId = unit.Id;
                 showObj = unit.AddComponent<GameObjectComponent,GameObject,Action>(go, () =>
                 {
                     GameObject.Destroy(idc);

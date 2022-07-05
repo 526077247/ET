@@ -112,5 +112,28 @@ namespace ET
             removeUnits.Units.Add(sendUnit.Id);
             MessageHelper.SendToClient(unit, removeUnits);
         }
+        
+        public static void NoticeUnitsAdd(Unit unit, List<AOIUnitComponent> sendUnit)
+        {
+            M2C_CreateUnits createUnits = new M2C_CreateUnits();
+            for (int i = 0; i < sendUnit.Count; i++)
+            {
+                if (unit.Id == sendUnit[i].Id) continue;
+                createUnits.Units.Add(CreateUnitInfo(sendUnit[i].GetParent<Unit>()));
+            }
+
+            if (createUnits.Units.Count > 0)
+            {
+                MessageHelper.SendToClient(unit, createUnits);
+            }
+            
+        }
+        
+        public static void NoticeUnitsRemove(Unit unit, List<long> sendUnit)
+        {
+            M2C_RemoveUnits removeUnits = new M2C_RemoveUnits();
+            removeUnits.Units = sendUnit;
+            MessageHelper.SendToClient(unit, removeUnits);
+        }
     }
 }

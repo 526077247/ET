@@ -131,11 +131,7 @@ namespace ET
             {
                 // 把周围的人通知给自己
                 var units = self.GetNearbyUnit(self.Range);
-                for (int i = 0; i < units.Count; i++)
-                {
-                    var item = units[i];
-                    Game.EventSystem.Publish(new AOIRegisterUnit(){Receive = self,Unit = item});
-                }
+                Game.EventSystem.Publish(new AOIRegisterUnit(){Receive = self,Units = units});
                 units.Dispose();
             }
         }
@@ -191,21 +187,29 @@ namespace ET
                     }
                 }
 
+                var list = ListComponent<AOIUnitComponent>.Create();
+                list.Add(self);
                 foreach (var item in dic)
                 {
                     if (item.Value > 0)
+                    {
                         Game.EventSystem.Publish(new EventType.AOIRegisterUnit()
                         {
                             Receive = item.Key,
-                            Unit = self,
+                            Units = list,
                         });
+                    }
                     else if (item.Value < 0)
+                    {
                         Game.EventSystem.Publish(new EventType.AOIRemoveUnit()
                         {
                             Receive = item.Key,
-                            Unit = self
+                            Units = list
                         });
+                        
+                    }
                 }
+                list.Dispose();
             }
             #endregion
             #region 广播给自己 && 刷新监听
@@ -245,29 +249,18 @@ namespace ET
                     }
                 }
 
-                for (int i = 0; i < adder.Count; i++)
+                adder.Remove(self);
+                Game.EventSystem.Publish(new EventType.AOIRegisterUnit
                 {
-                    var item = adder[i];
-                    if (item == self) continue;
-                    Log.Info("AOIRegisterUnit" + item.Id);
-                    Game.EventSystem.Publish(new EventType.AOIRegisterUnit
-                    {
-                        Receive = self,
-                        Unit = item
-                    });
-                }
-
-                for (int i = 0; i < remover.Count; i++)
+                    Receive = self,
+                    Units = adder
+                });
+                remover.Remove(self);
+                Game.EventSystem.Publish(new EventType.AOIRemoveUnit()
                 {
-                    var item = remover[i];
-                    if (item == self) continue;
-                    Log.Info("AOIRemoveUnit" + item.Id);
-                    Game.EventSystem.Publish(new EventType.AOIRemoveUnit()
-                    {
-                        Receive = self,
-                        Unit = item
-                    });
-                }
+                    Receive = self,
+                    Units = remover
+                });
 
                 temp.Dispose();
                 newer.Dispose();

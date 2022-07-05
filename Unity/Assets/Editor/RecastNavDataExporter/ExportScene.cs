@@ -1,13 +1,16 @@
+using System;
 using UnityEngine;
 using UnityEditor;
 
 using System.Collections.Generic;
 using System.IO;
+using Object = UnityEngine.Object;
 
 namespace ET
 {
     internal class MapExport2Nav: Editor
     {
+        private static readonly int CellLen = 10;
         [MenuItem("Tools/NavMesh/导入场景mesh")]
         static void ImportSceneMesh()
         {
@@ -88,7 +91,7 @@ namespace ET
                 if (File.Exists(path)) File.Delete(path);
                 AssetsRoot root = new AssetsRoot();
                 root.Scenes = new List<AssetsScene>();
-                
+                root.CellLen = CellLen;
                 //遍历所有的游戏对象
                 foreach (Object selectObject in selectedAssetList)
                 {
@@ -102,13 +105,14 @@ namespace ET
                     root.Scenes.Add(sceneRoot);
                     sceneRoot.Name = sceneName.Split('_')[0];
                     sceneRoot.Objects = new List<AssetsObject>();
+                    sceneRoot.CellMapObjects = new Dictionary<long, List<int>>();
                     var scene = sceneRoot.Objects;
                     foreach (GameObject sceneObject in Object.FindObjectsOfType(typeof (GameObject)))
                     {
                         // 如果对象是激活状态
                         if (sceneObject.transform.parent == null && sceneObject.activeSelf)
                         {
-                            ChangeObj2Data(sceneObject, scene);
+                            ChangeObj2Data(sceneObject, sceneRoot);
                         }
                     }
                 }
@@ -120,9 +124,12 @@ namespace ET
             }
         }
 
-        public static void ChangeObj2Data(GameObject sceneObject,List<AssetsObject> scene)
+        public static void ChangeObj2Data(GameObject sceneObject,AssetsScene root)
         {
+            List<AssetsObject> scene = root.Objects;
             var terrain = sceneObject.GetComponent<TerrainCollider>();
+            int x = (int)Math.Floor( sceneObject.transform.position.x / CellLen);
+            int y = (int)Math.Floor( sceneObject.transform.position.z / CellLen);
             if (terrain != null)
             {
                 if(terrain.terrainData==null) return;
@@ -140,6 +147,20 @@ namespace ET
                 };
                 obj.Size = terrain.bounds.size;
                 AddTransformInfo(obj, sceneObject);
+                for (int i = x ; i <= x + obj.Size.x/ CellLen; i++)
+                {
+                    for (int j = y ; j <= y + obj.Size.z/ CellLen; j++)
+                    {
+                        var id = AOIHelper.CreateCellId(i, j);
+                        // Log.Info("i"+i+"j"+j+" "+sceneObject.Name);
+                        if (!root.CellMapObjects.ContainsKey(id))
+                        {
+                            root.CellMapObjects.Add(id, new List<int>());
+                        }
+
+                        root.CellMapObjects[id].Add(scene.Count-1);
+                    }
+                }
             }
             // 判断是否是预设
             else if (PrefabUtility.GetPrefabType(sceneObject) == PrefabType.PrefabInstance)
@@ -160,13 +181,38 @@ namespace ET
                     else
                         obj.Size = terrain.transform.localScale;
                     AddTransformInfo(obj, sceneObject);
+                    float radius = Mathf.Sqrt(obj.Size.x * obj.Size.x +
+                        obj.Size.z * obj.Size.z) / 2;
+                    int count = (int) Math.Ceiling(radius / CellLen); //环境多加一格
+                    for (int i = x - count; i <= x + count; i++)
+                    {
+                        var xMin = i * CellLen;
+                        for (int j = y - count; j <= y + count; j++)
+                        {
+                            var yMin = j * CellLen;
+                            var res = AOIHelper.GetGridRelationshipWithOBB(sceneObject.transform.position,
+                                sceneObject.transform.rotation,
+                                obj.Size, CellLen, xMin, yMin, radius, radius * radius);
+                            if (res >= 0)
+                            {
+                                var id = AOIHelper.CreateCellId(i, j);
+                                // Log.Info("i"+i+"j"+j+" "+sceneObject.Name);
+                                if (!root.CellMapObjects.ContainsKey(id))
+                                {
+                                    root.CellMapObjects.Add(id, new List<int>());
+                                }
+
+                                root.CellMapObjects[id].Add(scene.Count-1);
+                            }
+                        }
+                    }
                 }
             }
             else
             {
                 for (int i = 0; i < sceneObject.transform.childCount; i++)
                 {
-                    ChangeObj2Data(sceneObject.transform.GetChild(i).gameObject, scene);
+                    ChangeObj2Data(sceneObject.transform.GetChild(i).gameObject, root);
                 }
             }
         }

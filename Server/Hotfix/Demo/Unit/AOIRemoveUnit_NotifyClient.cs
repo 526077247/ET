@@ -7,13 +7,17 @@
         protected override void Run(EventType.AOIRemoveUnit args)
         {
             AOIUnitComponent a = args.Receive;
-            AOIUnitComponent b = args.Unit;
-            if (a.GetParent<Unit>().Type != UnitType.Player)
+            if (a.GetParent<Unit>().Type != UnitType.Player||args.Units==null||args.Units.Count==0)
             {
                 return;
             }
-
-            UnitHelper.NoticeUnitRemove(a.GetParent<Unit>(), b.GetParent<Unit>());
+            ListComponent<long> temp = ListComponent<long>.Create();
+            for (int i = 0; i < args.Units.Count; i++)
+            {
+                temp.Add(args.Units[i].Id);
+            }
+            UnitHelper.NoticeUnitsRemove(a.GetParent<Unit>(),temp);
+            temp.Dispose();
         }
     }
 }

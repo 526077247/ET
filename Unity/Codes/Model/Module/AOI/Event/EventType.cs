@@ -1,4 +1,5 @@
-﻿namespace ET
+﻿using System.Collections.Generic;
+namespace ET
 {
     namespace EventType
     {
@@ -7,13 +8,13 @@
         public struct AOIRemoveUnit
         {
             public AOIUnitComponent Receive;
-            public AOIUnitComponent Unit;
+            public List<AOIUnitComponent> Units;
         }
 
         public struct AOIRegisterUnit
         {
             public AOIUnitComponent Receive;
-            public AOIUnitComponent Unit;
+            public List<AOIUnitComponent> Units;
         }
 
         public struct ChangeGrid

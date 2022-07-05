@@ -138,7 +138,13 @@ namespace ET
                     return ((Func<UnityEngine.Color>)act)();
                 });
             });
-
+            appdomain.DelegateManager.RegisterDelegateConvertor<System.Threading.WaitCallback>((act) =>
+            {
+                return new System.Threading.WaitCallback((state) =>
+                {
+                    ((Action<System.Object>)act)(state);
+                });
+            });
 
             // 注册适配器
             RegisterAdaptor(appdomain);

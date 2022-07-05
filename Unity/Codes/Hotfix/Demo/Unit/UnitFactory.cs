@@ -10,8 +10,8 @@ namespace ET
 	        UnitComponent unitComponent = currentScene.GetComponent<UnitComponent>();
 	        Unit unit = unitComponent.AddChildWithId<Unit, int>(unitInfo.UnitId, unitInfo.ConfigId);
 	        unitComponent.Add(unit);
+	        var pos = new Vector3(unitInfo.X, unitInfo.Y, unitInfo.Z);
 	        
-	        unit.Position = new Vector3(unitInfo.X, unitInfo.Y, unitInfo.Z);
 	        unit.Forward = new Vector3(unitInfo.ForwardX, unitInfo.ForwardY, unitInfo.ForwardZ);
 	        switch (unit.Type)
 	        {
@@ -32,7 +32,7 @@ namespace ET
 				        {
 					        using (ListComponent<Vector3> list = ListComponent<Vector3>.Create())
 					        {
-						        list.Add(unit.Position);
+						        list.Add(pos);
 						        for (int i = 0; i < unitInfo.MoveInfo.X.Count; ++i)
 						        {
 							        list.Add(new Vector3(unitInfo.MoveInfo.X[i], unitInfo.MoveInfo.Y[i], unitInfo.MoveInfo.Z[i]));
@@ -42,7 +42,7 @@ namespace ET
 					        }
 				        }
 			        }
-			        unit.AddComponent<AOIUnitComponent,Vector3,Quaternion, UnitType>(unit.Position,unit.Rotation,unit.Type);
+			        unit.AddComponent<AOIUnitComponent,Vector3,Quaternion, UnitType>(pos,unit.Rotation,unit.Type);
 			        CombatUnitComponent combatU;
 			        if (unitInfo.SkillIds != null)
 			        {
@@ -82,7 +82,7 @@ namespace ET
 			        {
 				        using (ListComponent<Vector3> list = ListComponent<Vector3>.Create())
 				        {
-					        list.Add(unit.Position);
+					        list.Add(pos);
 					        for (int i = 0; i < unitInfo.MoveInfo.X.Count; ++i)
 					        {
 						        list.Add(new Vector3(unitInfo.MoveInfo.X[i], unitInfo.MoveInfo.Y[i], unitInfo.MoveInfo.Z[i]));
@@ -91,7 +91,7 @@ namespace ET
 					        unit.MoveToAsync(list).Coroutine();
 				        }
 			        }
-			        unit.AddComponent<AOIUnitComponent,Vector3,Quaternion, UnitType>(unit.Position,unit.Rotation,unit.Type);
+			        unit.AddComponent<AOIUnitComponent,Vector3,Quaternion, UnitType>(pos,unit.Rotation,unit.Type);
 			        unit.AddComponent<ObjectWait>();
 			        break;
 		        }
@@ -101,6 +101,8 @@ namespace ET
 			        break;
 		        }
 	        }
+
+	        unit.Position = pos;
 	        Game.EventSystem.PublishAsync(new EventType.AfterUnitCreate() {Unit = unit}).Coroutine();
             return unit;
         }

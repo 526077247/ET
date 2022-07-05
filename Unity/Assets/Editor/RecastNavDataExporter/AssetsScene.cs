@@ -6,5 +6,6 @@ namespace ET
     {
         public string Name;
         public List<AssetsObject> Objects;
+        public Dictionary<long, List<int>> CellMapObjects;
     }
 }
