@@ -7,7 +7,11 @@ using ILRuntime.Runtime.Intepreter;
 using ILRuntime.CLR.Method;
 using ILRuntime.CLR.TypeSystem;
 using ILRuntime.Runtime.Stack;
-
+#if DEBUG && !DISABLE_ILRUNTIME_DEBUG
+using AutoList = System.Collections.Generic.List<object>;
+#else
+using AutoList = ILRuntime.Other.UncheckedList<object>;
+#endif
 public unsafe class Vector2Binder : ValueTypeBinder<Vector2>
 {
     Vector3Binder vector3Binder;
@@ -122,7 +126,7 @@ public unsafe class Vector2Binder : ValueTypeBinder<Vector2>
         appdomain.RegisterCLRMethodRedirection(method, Get_Zero);
     }
 
-    StackObject* Vector2_Add(ILIntepreter intp, StackObject* esp, List<object> mStack, CLRMethod method, bool isNewObj)
+    StackObject* Vector2_Add(ILIntepreter intp, StackObject* esp, AutoList mStack, CLRMethod method, bool isNewObj)
     {
         var ret = ILIntepreter.Minus(esp, 2);
         var ptr = ILIntepreter.Minus(esp, 1);
@@ -139,7 +143,7 @@ public unsafe class Vector2Binder : ValueTypeBinder<Vector2>
         return ret + 1;
     }
 
-    StackObject* Vector2_Subtraction(ILIntepreter intp, StackObject* esp, List<object> mStack, CLRMethod method, bool isNewObj)
+    StackObject* Vector2_Subtraction(ILIntepreter intp, StackObject* esp, AutoList mStack, CLRMethod method, bool isNewObj)
     {
         var ret = ILIntepreter.Minus(esp, 2);
         var ptr = ILIntepreter.Minus(esp, 1);
@@ -156,7 +160,7 @@ public unsafe class Vector2Binder : ValueTypeBinder<Vector2>
         return ret + 1;
     }
 
-    StackObject* Vector2_Multiply(ILIntepreter intp, StackObject* esp, List<object> mStack, CLRMethod method, bool isNewObj)
+    StackObject* Vector2_Multiply(ILIntepreter intp, StackObject* esp, AutoList mStack, CLRMethod method, bool isNewObj)
     {
         var ret = ILIntepreter.Minus(esp, 2);
 
@@ -176,7 +180,7 @@ public unsafe class Vector2Binder : ValueTypeBinder<Vector2>
         return ret + 1;
     }
 
-    StackObject* Vector2_Multiply2(ILIntepreter intp, StackObject* esp, List<object> mStack, CLRMethod method, bool isNewObj)
+    StackObject* Vector2_Multiply2(ILIntepreter intp, StackObject* esp, AutoList mStack, CLRMethod method, bool isNewObj)
     {
         var ret = ILIntepreter.Minus(esp, 2);
         Vector2 vec;
@@ -195,7 +199,7 @@ public unsafe class Vector2Binder : ValueTypeBinder<Vector2>
         return ret + 1;
     }
 
-    StackObject* Vector2_Division(ILIntepreter intp, StackObject* esp, List<object> mStack, CLRMethod method, bool isNewObj)
+    StackObject* Vector2_Division(ILIntepreter intp, StackObject* esp, AutoList mStack, CLRMethod method, bool isNewObj)
     {
         var ret = ILIntepreter.Minus(esp, 2);
 
@@ -215,7 +219,7 @@ public unsafe class Vector2Binder : ValueTypeBinder<Vector2>
         return ret + 1;
     }
 
-    StackObject* Vector2_Negate(ILIntepreter intp, StackObject* esp, List<object> mStack, CLRMethod method, bool isNewObj)
+    StackObject* Vector2_Negate(ILIntepreter intp, StackObject* esp, AutoList mStack, CLRMethod method, bool isNewObj)
     {
         var ret = ILIntepreter.Minus(esp, 1);
 
@@ -231,7 +235,7 @@ public unsafe class Vector2Binder : ValueTypeBinder<Vector2>
         return ret + 1;
     }
 
-    StackObject* Vector2_Implicit(ILIntepreter intp, StackObject* esp, List<object> mStack, CLRMethod method, bool isNewObj)
+    StackObject* Vector2_Implicit(ILIntepreter intp, StackObject* esp, AutoList mStack, CLRMethod method, bool isNewObj)
     {
         var ret = ILIntepreter.Minus(esp, 1);
 
@@ -247,7 +251,7 @@ public unsafe class Vector2Binder : ValueTypeBinder<Vector2>
         return ret + 1;
     }
 
-    StackObject* Vector2_Implicit2(ILIntepreter intp, StackObject* esp, List<object> mStack, CLRMethod method, bool isNewObj)
+    StackObject* Vector2_Implicit2(ILIntepreter intp, StackObject* esp, AutoList mStack, CLRMethod method, bool isNewObj)
     {
         var ret = ILIntepreter.Minus(esp, 1);
 
@@ -263,7 +267,7 @@ public unsafe class Vector2Binder : ValueTypeBinder<Vector2>
         return ret + 1;
     }
 
-    StackObject* Vector2_Equality(ILIntepreter intp, StackObject* esp, List<object> mStack, CLRMethod method, bool isNewObj)
+    StackObject* Vector2_Equality(ILIntepreter intp, StackObject* esp, AutoList mStack, CLRMethod method, bool isNewObj)
     {
         var ret = ILIntepreter.Minus(esp, 2);
         var ptr = ILIntepreter.Minus(esp, 1);
@@ -281,7 +285,7 @@ public unsafe class Vector2Binder : ValueTypeBinder<Vector2>
         return ret + 1;
     }
 
-    StackObject* Vector2_Inequality(ILIntepreter intp, StackObject* esp, List<object> mStack, CLRMethod method, bool isNewObj)
+    StackObject* Vector2_Inequality(ILIntepreter intp, StackObject* esp, AutoList mStack, CLRMethod method, bool isNewObj)
     {
         var ret = ILIntepreter.Minus(esp, 2);
         var ptr = ILIntepreter.Minus(esp, 1);
@@ -299,7 +303,7 @@ public unsafe class Vector2Binder : ValueTypeBinder<Vector2>
         return ret + 1;
     }
 
-    StackObject* Vector2_Dot(ILIntepreter intp, StackObject* esp, List<object> mStack, CLRMethod method, bool isNewObj)
+    StackObject* Vector2_Dot(ILIntepreter intp, StackObject* esp, AutoList mStack, CLRMethod method, bool isNewObj)
     {
         var ret = ILIntepreter.Minus(esp, 2);
         var ptr = ILIntepreter.Minus(esp, 1);
@@ -317,7 +321,7 @@ public unsafe class Vector2Binder : ValueTypeBinder<Vector2>
         return ret + 1;
     }
 
-    StackObject* Vector2_Distance(ILIntepreter intp, StackObject* esp, List<object> mStack, CLRMethod method, bool isNewObj)
+    StackObject* Vector2_Distance(ILIntepreter intp, StackObject* esp, AutoList mStack, CLRMethod method, bool isNewObj)
     {
         var ret = ILIntepreter.Minus(esp, 2);
         var ptr = ILIntepreter.Minus(esp, 1);
@@ -335,7 +339,7 @@ public unsafe class Vector2Binder : ValueTypeBinder<Vector2>
         return ret + 1;
     }        
 
-    StackObject* NewVector2(ILIntepreter intp, StackObject* esp, List<object> mStack, CLRMethod method, bool isNewObj)
+    StackObject* NewVector2(ILIntepreter intp, StackObject* esp, AutoList mStack, CLRMethod method, bool isNewObj)
     {
         StackObject* ret;
         if (isNewObj)
@@ -365,7 +369,7 @@ public unsafe class Vector2Binder : ValueTypeBinder<Vector2>
         return ret;
     }
 
-    StackObject* Get_Magnitude(ILIntepreter intp, StackObject* esp, List<object> mStack, CLRMethod method, bool isNewObj)
+    StackObject* Get_Magnitude(ILIntepreter intp, StackObject* esp, AutoList mStack, CLRMethod method, bool isNewObj)
     {
         var ret = ILIntepreter.Minus(esp, 1);
 
@@ -380,7 +384,7 @@ public unsafe class Vector2Binder : ValueTypeBinder<Vector2>
         return ret + 1;
     }
 
-    StackObject* Get_SqrMagnitude(ILIntepreter intp, StackObject* esp, List<object> mStack, CLRMethod method, bool isNewObj)
+    StackObject* Get_SqrMagnitude(ILIntepreter intp, StackObject* esp, AutoList mStack, CLRMethod method, bool isNewObj)
     {
         var ret = ILIntepreter.Minus(esp, 1);
 
@@ -395,7 +399,7 @@ public unsafe class Vector2Binder : ValueTypeBinder<Vector2>
         return ret + 1;
     }
 
-    StackObject* Get_Normalized(ILIntepreter intp, StackObject* esp, List<object> mStack, CLRMethod method, bool isNewObj)
+    StackObject* Get_Normalized(ILIntepreter intp, StackObject* esp, AutoList mStack, CLRMethod method, bool isNewObj)
     {
         var ret = ILIntepreter.Minus(esp, 1);
         var ptr = ILIntepreter.Minus(esp, 1);
@@ -408,7 +412,7 @@ public unsafe class Vector2Binder : ValueTypeBinder<Vector2>
         return ret + 1;
     }
 
-    StackObject* Get_One(ILIntepreter intp, StackObject* esp, List<object> mStack, CLRMethod method, bool isNewObj)
+    StackObject* Get_One(ILIntepreter intp, StackObject* esp, AutoList mStack, CLRMethod method, bool isNewObj)
     {
         var ret = esp;
         var res = Vector2.one;
@@ -416,7 +420,7 @@ public unsafe class Vector2Binder : ValueTypeBinder<Vector2>
         return ret + 1;
     }
 
-    StackObject* Get_Zero(ILIntepreter intp, StackObject* esp, List<object> mStack, CLRMethod method, bool isNewObj)
+    StackObject* Get_Zero(ILIntepreter intp, StackObject* esp, AutoList mStack, CLRMethod method, bool isNewObj)
     {
         var ret = esp;
         var res = Vector2.zero;
@@ -424,7 +428,7 @@ public unsafe class Vector2Binder : ValueTypeBinder<Vector2>
         return ret + 1;
     }
 
-    public static void ParseVector2(out Vector2 vec, ILIntepreter intp, StackObject* ptr, List<object> mStack)
+    public static void ParseVector2(out Vector2 vec, ILIntepreter intp, StackObject* ptr, AutoList mStack)
     {
         var a = ILIntepreter.GetObjectAndResolveReference(ptr);
         if (a->ObjectType == ObjectTypes.ValueTypeObjectReference)
@@ -441,14 +445,14 @@ public unsafe class Vector2Binder : ValueTypeBinder<Vector2>
         }
     }
 
-    public void PushVector2(ref Vector2 vec, ILIntepreter intp, StackObject* ptr, List<object> mStack)
+    public void PushVector2(ref Vector2 vec, ILIntepreter intp, StackObject* ptr, AutoList mStack)
     {
         intp.AllocValueType(ptr, CLRType);
         var dst = *((StackObject**)&ptr->Value);
         CopyValueTypeToStack(ref vec, dst, mStack);
     }
 
-    void PushVector3(ref Vector3 vec, ILIntepreter intp, StackObject* ptr, List<object> mStack)
+    void PushVector3(ref Vector3 vec, ILIntepreter intp, StackObject* ptr, AutoList mStack)
     {
         var binder = Vector3Binder;
         if (binder != null)
