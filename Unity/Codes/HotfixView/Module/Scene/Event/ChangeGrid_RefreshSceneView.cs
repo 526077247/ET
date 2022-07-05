@@ -5,11 +5,16 @@
     {
         protected override void Run(EventType.ChangeGrid args)
         {
+            RunAsync(args).Coroutine();
+        }
+
+        public async ETTask RunAsync(EventType.ChangeGrid args)
+        {
             if (args.Unit.Id == args.Unit.GetMyUnitIdFromZoneScene())
             {
                 var nc =args.Unit.Parent.GetComponent<NumericComponent>();
                 if(args.NewCell==null) return;
-                AOISceneViewComponent.Instance.ChangeGrid(args.Unit.ZoneScene(), args.NewCell.posx,args.NewCell.posy,nc.GetAsInt(NumericType.AOI)).Coroutine();
+                await AOISceneViewComponent.Instance.ChangeGrid(args.Unit.ZoneScene(), args.NewCell.posx,args.NewCell.posy,nc.GetAsInt(NumericType.AOI));
             }
         }
     }
