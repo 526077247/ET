@@ -110,14 +110,7 @@ namespace ET
                 //清理旧场景
                 foreach (var item in self.DynamicSceneObjectMapObj)
                 {
-                    if (item.Value.IsLoading)
-                    {
-                        item.Value.IsLoading = false;
-                    }
-                    else
-                    {
-                        GameObjectPoolComponent.Instance.RecycleGameObject(item.Value.Obj);
-                    }
+                    self.RecycleObj(item.Key,false);
                 }
                 self.DynamicSceneObjectMapObj.Clear();
                 self.DynamicSceneObjectMapCount.Clear();
@@ -216,7 +209,7 @@ namespace ET
             try
             {
                 coroutineLock = await CoroutineLockComponent.Instance.Wait(CoroutineLockType.AOIView, self.GetHashCode());
-                while (AOISceneViewComponent.Instance.Busing)
+                while (self.Busing)
                 {
                     await TimerComponent.Instance.WaitAsync(1);
                 }
@@ -360,26 +353,7 @@ namespace ET
                                 if (self.DynamicSceneObjectMapCount[index] <= 0 && self.DynamicSceneObjectMapObj.ContainsKey(index))
                                 {
                                     // Log.Info("AOISceneView Remove " + index);
-                                    var viewObj = self.DynamicSceneObjectMapObj[index];
-                                    if (viewObj.Obj == null) //还在加载
-                                    {
-                                        viewObj.IsLoading = false;
-                                    }
-                                    else
-                                    {
-                                        viewObj.Obj.SetActive(false);
-                                        if (viewObj.Type == "Prefab")
-                                            GameObjectPoolComponent.Instance.RecycleGameObject(viewObj.Obj);
-                                        else if (viewObj.Type == "Terrain")
-                                        {
-                                            var collider = viewObj.Obj.AddComponent<TerrainCollider>();
-                                            ResourcesComponent.Instance.ReleaseAsset(collider.terrainData);
-                                            GameObject.Destroy(viewObj.Obj);
-                                        }
-
-                                        self.DynamicSceneObjectMapObj.Remove(index);
-                                    }
-
+                                    self.RecycleObj(index);
                                 }
                             }
                         }
@@ -394,12 +368,39 @@ namespace ET
                 //加载完成，关闭loading界面
                 await Game.EventSystem.PublishAsync(new UIEventType.LoadingFinish());
                 zoneScene.GetComponent<ObjectWait>().Notify(new WaitType.Wait_LoadAOISceneFinish());
-                AOISceneViewComponent.Instance.Busing = false;
+                self.Busing = false;
             }
             finally
             {
                 coroutineLock?.Dispose();
             }
+        }
+
+        public static void RecycleObj(this AOISceneViewComponent self,int index,bool remove=true)
+        {
+            var viewObj = self.DynamicSceneObjectMapObj[index];
+            if (viewObj.Obj == null) //还在加载
+            {
+                viewObj.IsLoading = false;
+            }
+            else
+            {
+                viewObj.Obj.SetActive(false);
+                if (viewObj.Type == "Prefab")
+                    GameObjectPoolComponent.Instance.RecycleGameObject(viewObj.Obj);
+                else if (viewObj.Type == "Terrain")
+                {
+                    var collider = viewObj.Obj.GetComponent<TerrainCollider>();
+                    ResourcesComponent.Instance.ReleaseAsset(collider.terrainData);
+                    GameObject.Destroy(viewObj.Obj);
+                }
+
+                if (remove)
+                {
+                    self.DynamicSceneObjectMapObj.Remove(index);
+                }
+            }
+
         }
     }
 }
