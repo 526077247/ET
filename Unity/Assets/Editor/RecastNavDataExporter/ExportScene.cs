@@ -79,51 +79,87 @@ namespace ET
                 }
             }
         }
-        
+
+        [MenuItem("Assets/导出场景到Proto数据")]
+        static void ExportProto()
+        {
+            string path = EditorUtility.SaveFilePanel("Save Resource", "", "Map", "bytes");
+            if (path.Length != 0)
+            {
+                if (File.Exists(path)) File.Delete(path);
+                AssetsRoot root = GetData();
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    ProtoBuf.Serializer.Serialize(stream, root);
+                    var bytes = stream.ToArray();
+                    // 保存场景数据
+                    File.WriteAllBytes(path,bytes);
+                }
+                // 刷新Project视图
+                AssetDatabase.Refresh();
+                Debug.Log("导出场景到Proto数据成功");
+            }
+        }
+
         [MenuItem("Assets/导出场景到Josn数据")]
         static void ExportJson()
         {
             string path = EditorUtility.SaveFilePanel("Save Resource", "", "Map", "json");
             if (path.Length != 0)
             {
-                Object[] selectedAssetList = Selection.GetFiltered(typeof (Object), SelectionMode.DeepAssets);
-                // 如果存在场景文件，删除
                 if (File.Exists(path)) File.Delete(path);
-                AssetsRoot root = new AssetsRoot();
-                root.Scenes = new List<AssetsScene>();
-                root.CellLen = CellLen;
-                //遍历所有的游戏对象
-                foreach (Object selectObject in selectedAssetList)
-                {
-                    // 场景名称
-                    string sceneName = selectObject.name;
-                    // 场景路径
-                    string scenePath = AssetDatabase.GetAssetPath(selectObject);
-                    // 打开这个关卡
-                    EditorApplication.OpenScene(scenePath);
-                    AssetsScene sceneRoot = new AssetsScene();
-                    root.Scenes.Add(sceneRoot);
-                    sceneRoot.Name = sceneName.Split('_')[0];
-                    sceneRoot.Objects = new List<AssetsObject>();
-                    sceneRoot.CellMapObjects = new Dictionary<long, List<int>>();
-                    var scene = sceneRoot.Objects;
-                    foreach (GameObject sceneObject in Object.FindObjectsOfType(typeof (GameObject)))
-                    {
-                        // 如果对象是激活状态
-                        if (sceneObject.transform.parent == null && sceneObject.activeSelf)
-                        {
-                            ChangeObj2Data(sceneObject, sceneRoot);
-                        }
-                    }
-                }
-
+                AssetsRoot root = GetData();
                 // 保存场景数据
                 File.WriteAllText(path, LitJson.JsonMapper.ToJson(root));
                 // 刷新Project视图
                 AssetDatabase.Refresh();
+                Debug.Log("导出场景到Josn数据成功");
             }
         }
 
+        static AssetsRoot GetData()
+        {
+            Object[] selectedAssetList = Selection.GetFiltered(typeof (Object), SelectionMode.DeepAssets);
+            // 如果存在场景文件，删除
+            
+            AssetsRoot root = new AssetsRoot();
+            root.Scenes = new List<AssetsScene>();
+                
+            //遍历所有的游戏对象
+            foreach (Object selectObject in selectedAssetList)
+            {
+                // 场景名称
+                string sceneName = selectObject.name;
+                // 场景路径
+                string scenePath = AssetDatabase.GetAssetPath(selectObject);
+                // 打开这个关卡
+                EditorApplication.OpenScene(scenePath);
+                AssetsScene sceneRoot = new AssetsScene();
+                root.Scenes.Add(sceneRoot);
+                sceneRoot.Name = sceneName.Split('_')[0];
+                sceneRoot.Objects = new List<AssetsObject>();
+                sceneRoot.cellMapObjects = new Dictionary<long, List<int>>();
+                sceneRoot.CellIds = new List<long>();
+                sceneRoot.MapObjects = new List<AssetsScene.IntList>();
+                sceneRoot.CellLen = CellLen;
+                foreach (GameObject sceneObject in Object.FindObjectsOfType(typeof (GameObject)))
+                {
+                    // 如果对象是激活状态
+                    if (sceneObject.transform.parent == null && sceneObject.activeSelf)
+                    {
+                        ChangeObj2Data(sceneObject, sceneRoot);
+                    }
+                }
+
+                foreach (var item in sceneRoot.cellMapObjects)
+                {
+                    sceneRoot.CellIds.Add(item.Key);
+                    sceneRoot.MapObjects.Add(new AssetsScene.IntList(){Value = item.Value});
+                }
+            }
+
+            return root;
+        }
         public static void ChangeObj2Data(GameObject sceneObject,AssetsScene root)
         {
             List<AssetsObject> scene = root.Objects;

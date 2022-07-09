@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Collections.Concurrent;
 using System.Threading;
 
 namespace ET
@@ -13,7 +14,8 @@ namespace ET
             AOISceneViewComponent.Instance = self;
             self.DynamicSceneObjectMapCount = new Dictionary<int, int>();
             self.DynamicSceneObjectMapObj = new Dictionary<int, AOISceneViewComponent.DynamicSceneViewObj>();
-            self.Init().Coroutine();
+            self.NameMapScene = new ConcurrentDictionary<string, AssetsScene>();
+            self.Init();
         }
         
         
@@ -22,31 +24,51 @@ namespace ET
     [FriendClass(typeof(SceneManagerComponent))]
     public static class AOISceneViewComponentSystem
     {
-        public static ETTask Init(this AOISceneViewComponent self)
+        public static void Init(this AOISceneViewComponent self)
         {
+            object o = new object();
             //todo:针对大世界解析慢的问题，可以换成proto或者Nino格式更快
-            ETTask res = ETTask.Create();
             #region 从Json初始化场景物体信息
-            string jsonPath = "GameAssets/Config/Map.json";
-            ResourcesComponent.Instance.LoadAsync<TextAsset>(jsonPath, (file) =>
+            string[] jsonPaths = {"GameAssets/Config/Map.bytes"};
+            for (int i = 0; i < jsonPaths.Length; i++)
             {
-                var text = file.text;
-                ThreadPool.QueueUserWorkItem((_) =>
+                var jsonPath = jsonPaths[i];
+                ResourcesComponent.Instance.LoadAsync<TextAsset>(jsonPath, (file) =>
                 {
-                    self.Root = null;
-                    try
+                    var bytes = file.bytes;
+                    ThreadPool.QueueUserWorkItem((_) =>
                     {
-                        self.Root= JsonHelper.FromJson<AssetsRoot>(text);
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.Error(ex);
-                    }
-                    res.SetResult();
-                });
-            }).Coroutine();
+                        AssetsRoot root;
+                        try
+                        {
+                            root= ProtobufHelper.FromBytes(typeof(AssetsRoot),bytes,0,bytes.Length) as AssetsRoot;
+                        }
+                        catch (Exception ex)
+                        {
+                            Log.Error(ex);
+                            return;
+                        }
+                        lock (o)
+                        {
+                            if (self.Root == null)
+                            {
+                                self.Root = root;
+                            }
+                            else
+                            {
+                                self.Root.Scenes.AddRange(root.Scenes);
+                            }
+                        }
+
+                        for (int j = 0; j < root.Scenes.Count; j++)
+                        {
+                            self.NameMapScene.TryAdd(root.Scenes[j].Name, root.Scenes[j]);
+                        }
+                    });
+                }).Coroutine();
+            }
+            
             #endregion
-            return res;
         }
         /// <summary>
         /// 切换到某个场景
@@ -60,29 +82,20 @@ namespace ET
             await Game.EventSystem.PublishAsync(new UIEventType.LoadingBegin());
             float slid_value = 0;
             Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = slid_value });
-            for (int i = 0; i < 10&&self.Root==null; i++)
+            int flag = 1;
+            AssetsScene scene=null;
+            while(!self.NameMapScene.TryGetValue(name,out scene)&&flag<300)//30s还没加载出来数据大小就有问题了
             {
                 await TimerComponent.Instance.WaitAsync(100);
-            }
-
-            if (self.Root == null)
-            {
-                Log.Error("self.Root == null");
-                return;
-            }
-            AssetsScene scene=null;
-            for (int i = 0; i < self.Root.Scenes.Count; i++)
-            {
-                if (self.Root.Scenes[i].Name == name)
-                {
-                    scene = self.Root.Scenes[i];
-                    break;
-                }
+                flag++;
+                var pro = Mathf.Lerp(0, 0.1f, flag / 200f);
+                Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = pro });
             }
 
             if (scene == null)
             {
                 Log.Error(name+" == null");
+                SceneManagerComponent.Instance.Busing = false;
                 return;
             }
             SceneManagerComponent.Instance.Busing = true;

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
 using UnityEngine;
 namespace ET
 {
@@ -8,7 +9,16 @@ namespace ET
         public static AOISceneViewComponent Instance;
         public AssetsRoot Root;
         public AssetsScene CurMap;
-        public int CellLen => this.Root.CellLen;
+        public ConcurrentDictionary<string, AssetsScene> NameMapScene;
+        public int CellLen
+        {
+            get
+            {
+                if (this.CurMap == null) return 1;
+                return this.CurMap.CellLen;
+            }
+        }
+
         public class DynamicSceneViewObj
         {
             public GameObject Obj;

@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
-
+using ProtoBuf;
 namespace ET
 {
+    [ProtoContract]
     internal class AssetsRoot
     {
-        public int CellLen;
+        [ProtoMember(1)]
         public List<AssetsScene> Scenes;
     }
 }
