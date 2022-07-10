@@ -1,5 +1,4 @@
-﻿using System.Collections.Concurrent;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 namespace ET
 {
@@ -8,7 +7,7 @@ namespace ET
     {
         public static AOISceneViewComponent Instance;
         public AssetsScene CurMap;
-        public ConcurrentDictionary<string, AssetsScene> NameMapScene;
+        public Dictionary<string, AssetsScene> NameMapScene;
         public int CellLen
         {
             get

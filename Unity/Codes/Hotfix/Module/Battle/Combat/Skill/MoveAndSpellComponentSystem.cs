@@ -66,12 +66,11 @@ namespace ET
         public static void SpellWithTarget(this MoveAndSpellComponent self, SkillAbility spellSkill, CombatUnitComponent targetEntity)
         {
             if(!spellSkill.CanUse())return;
-            if (self.Skill != null && self.Skill!=spellSkill)//换新技能释放了
+            if (self.Skill != null && (self.Skill!=spellSkill||targetEntity!=self.Target))//换新技能释放了
             {
                 self.Skill = null;
                 self.Target = null;
                 TimerComponent.Instance.Remove(ref self.TimerId);
-                return;
             }
             
             var unit = self.GetParent<CombatUnitComponent>().unit;
@@ -113,12 +112,11 @@ namespace ET
         public static void SpellWithPoint(this MoveAndSpellComponent self,SkillAbility spellSkill, Vector3 point)
         {
             if(!spellSkill.CanUse())return;
-            if (self.Skill != null && self.Skill!=spellSkill)//换新技能释放了
+            if (self.Skill != null)//换新技能释放了
             {
                 self.Skill = null;
                 self.Target = null;
                 TimerComponent.Instance.Remove(ref self.TimerId);
-                return;
             }
 
             var unit = self.GetParent<CombatUnitComponent>().unit;
@@ -156,12 +154,11 @@ namespace ET
         public static void SpellWithDirect(this MoveAndSpellComponent self,SkillAbility spellSkill, Vector3 point)
         {
             if(!spellSkill.CanUse())return;
-            if (self.Skill != null && self.Skill!=spellSkill)//换新技能释放了
+            if (self.Skill != null)//换新技能释放了
             {
                 self.Skill = null;
                 self.Target = null;
                 TimerComponent.Instance.Remove(ref self.TimerId);
-                return;
             }
 
             var unit = self.GetParent<CombatUnitComponent>().unit;
@@ -203,6 +200,13 @@ namespace ET
                 unit.FindPathMoveToAsync(point).Coroutine();
 #endif
             }
+        }
+
+        public static void Cancel(this MoveAndSpellComponent self)
+        {
+            self.Skill = null;
+            self.Target = null;
+            TimerComponent.Instance.Remove(ref self.TimerId);
         }
     }
 }

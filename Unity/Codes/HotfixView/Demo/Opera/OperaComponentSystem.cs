@@ -44,6 +44,7 @@ namespace ET
                     self.frameClickMap.Y = self.ClickPoint.y;
                     self.frameClickMap.Z = self.ClickPoint.z;
                     self.ZoneScene().GetComponent<SessionComponent>().Session.Send(self.frameClickMap);
+                    unit.GetComponent<CombatUnitComponent>().GetComponent<MoveAndSpellComponent>().Cancel();//取消施法
                 }
             }
 

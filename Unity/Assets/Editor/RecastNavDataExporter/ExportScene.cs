@@ -138,8 +138,8 @@ namespace ET
                 root.Scenes.Add(sceneRoot);
                 sceneRoot.Name = sceneName.Split('_')[0];
                 sceneRoot.Objects = new List<AssetsObject>();
-                sceneRoot.cellMapObjects = new Dictionary<long, List<int>>();
-                sceneRoot.CellIds = new List<long>();
+                sceneRoot.CellMapObjects = new Dictionary<long, List<int>>();
+
                 sceneRoot.MapObjects = new List<AssetsScene.IntList>();
                 sceneRoot.CellLen = CellLen;
                 foreach (GameObject sceneObject in Object.FindObjectsOfType(typeof (GameObject)))
@@ -150,15 +150,44 @@ namespace ET
                         ChangeObj2Data(sceneObject, sceneRoot);
                     }
                 }
-
-                foreach (var item in sceneRoot.cellMapObjects)
+                sceneRoot.CellIds= new List<long>(sceneRoot.CellMapObjects.Count);
+                sceneRoot.MapObjects = new List<AssetsScene.IntList>(sceneRoot.CellMapObjects.Count);
+                foreach (var item in sceneRoot.CellMapObjects)
                 {
                     sceneRoot.CellIds.Add(item.Key);
                     sceneRoot.MapObjects.Add(new AssetsScene.IntList(){Value = item.Value});
                 }
+                // Debug.Log(sceneRoot.CellIds.Count);
+                ShellSort(sceneRoot.CellIds, sceneRoot.MapObjects);
             }
 
             return root;
+        }
+        public static void ShellSort(List<long> a,List<AssetsScene.IntList> b)
+        {
+            int n = a.Count;
+            int h = 1;
+            while (h < n / 3)
+                h = h * 3 + 1;
+            long temp;
+            AssetsScene.IntList temp2;
+            while (h >= 1)
+            {
+                for (int i = h; i < n; i++)
+                {
+                    for (int j = i; j >= h && a[j]- a[j - h]<0; j -= h)
+                    {
+                        temp = a[j];
+                        temp2 = b[j];
+                        a[j] = a[j - h];
+                        b[j] = b[j - h];
+                        a[j - h] = temp;
+                        b[j - h] = temp2;
+                    }
+                }
+                h = h / 3;
+            }
+
         }
         public static void ChangeObj2Data(GameObject sceneObject,AssetsScene root)
         {

@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace ET
 {
-    internal static class AOIHelper
+    public static class AOIHelper
     {
         public static long CreateCellId(int x, int y)
         {
@@ -12,9 +13,9 @@ namespace ET
 
         public static long CreateCellId(Vector3 pos,int gridLen)
         {
-            int x = (int)Math.Floor(pos.x / gridLen);
-            int y = (int)Math.Floor(pos.z / gridLen);
-            return (long) ((ulong) x << 32) | (uint) y;
+            int x = (int)pos.x / gridLen;
+            int y = (int)pos.z / gridLen;
+            return CreateCellId(x,y);
         }
 
         /// <summary>
@@ -251,7 +252,7 @@ namespace ET
             return -xMax <= temp.x && temp.x <= xMax && -yMax <= temp.y && temp.y <= yMax && -zMax <= temp.z &&
                     temp.z <= zMax;
         }
-        public static void KSsort<T>(this ListComponent<T> a, Func<T, T, int> compare, int start = -1, int end = -1)
+        public static void KSsort<T>(this List<T> a, Func<T, T, int> compare, int start = -1, int end = -1)
         {
             if (start < 0) start = 0;
             if (end < 0) end = a.Count - 1;

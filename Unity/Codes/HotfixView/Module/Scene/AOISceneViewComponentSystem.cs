@@ -14,7 +14,7 @@ namespace ET
             AOISceneViewComponent.Instance = self;
             self.DynamicSceneObjectMapCount = new Dictionary<int, int>();
             self.DynamicSceneObjectMapObj = new Dictionary<int, AOISceneViewComponent.DynamicSceneViewObj>();
-            self.NameMapScene = new ConcurrentDictionary<string, AssetsScene>();
+            self.NameMapScene = new Dictionary<string, AssetsScene>();
             self.Init();
         }
         
@@ -26,34 +26,32 @@ namespace ET
     {
         public static void Init(this AOISceneViewComponent self)
         {
-            object o = new object();
-            //todo:针对大世界解析慢的问题，可以换成proto或者Nino格式更快
-            #region 从Json初始化场景物体信息
-            string[] jsonPaths = {"GameAssets/Config/Map.bytes"};
-            for (int i = 0; i < jsonPaths.Length; i++)
+            #region 从Proto初始化场景物体信息
+            string[] protoPaths = {"GameAssets/Config/Map.bytes"};
+            for (int i = 0; i < protoPaths.Length; i++)
             {
-                var jsonPath = jsonPaths[i];
+                var jsonPath = protoPaths[i];
                 ResourcesComponent.Instance.LoadAsync<TextAsset>(jsonPath, (file) =>
                 {
                     var bytes = file.bytes;
-                    //ThreadPool.QueueUserWorkItem((_) =>
-                    //{
-                        AssetsRoot root;
+                    AssetsRoot root;
+                    for (int k = 0; k < 3; k++)//有时候Protobuf解析大量数据失败，多试几次
+                    {
                         try
                         {
                             root= ProtobufHelper.FromBytes(typeof(AssetsRoot),bytes,0,bytes.Length) as AssetsRoot;
+                            for (int j = 0; j < root.Scenes.Count; j++)
+                            {
+                                self.NameMapScene.Add(root.Scenes[j].Name, root.Scenes[j]);
+                                root.Scenes[j].CellMapObjects = new Dictionary<long, List<int>>(root.Scenes[j].CellIds.Count);
+                            }
+                            return;
                         }
                         catch (Exception ex)
                         {
                             Log.Error(ex);
-                            return;
                         }
-
-                        for (int j = 0; j < root.Scenes.Count; j++)
-                        {
-                            self.NameMapScene.TryAdd(root.Scenes[j].Name, root.Scenes[j]);
-                        }
-                    //});
+                    }
                 }).Coroutine();
             }
             
@@ -191,7 +189,7 @@ namespace ET
             }
 
             Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = 1 });
-            await TimerComponent.Instance.WaitAsync(1);//等1帧
+            await TimerComponent.Instance.WaitAsync(1000);//等1帧
             self.CurMap = scene;
             SceneManagerComponent.Instance.Busing = false;
         }
@@ -205,8 +203,6 @@ namespace ET
         /// <param name="viewLen"></param>
         public static async ETTask ChangePosition(this AOISceneViewComponent self,Scene zoneScene,Vector3 pos,int viewLen)
         {
-            int x = (int)(pos.x / self.CellLen);
-            int y = (int)(pos.z / self.CellLen);
             CoroutineLock coroutineLock = null;
             try
             {
@@ -215,6 +211,8 @@ namespace ET
                 {
                     await TimerComponent.Instance.WaitAsync(1);
                 }
+                int x = (int)(pos.x / self.CellLen);
+                int y = (int)(pos.z / self.CellLen);
                 if (self.LastGridX != null)
                 {
                     int count = 0;
@@ -252,17 +250,17 @@ namespace ET
 
                     }
                 }
-                var objs = self.CurMap.CellMapObjects;
+
                 using (ListComponent<ETTask> tasks = ListComponent<ETTask>.Create())
                 {
                     foreach (var item in temp)
                     {
                         if (item.Value == 0) continue;
-                        
-                        if (!objs.ContainsKey(item.Key)) continue;
-                        for (int i = 0; i < objs[item.Key].Count; i++)
+                        var list = self.GetCellMapObjects(item.Key);
+                        if (list==null) continue;
+                        for (int i = 0; i < list.Count; i++)
                         {
-                            var index = objs[item.Key][i];
+                            var index = list[i];
                             if (item.Value > 0) //新增
                             {
                                 if (self.DynamicSceneObjectMapCount.ContainsKey(index))
@@ -291,7 +289,7 @@ namespace ET
                                     }
 
                                     var obj = self.CurMap.Objects[index];
-                                    Log.Info("AOISceneView Load " + obj.PrefabPath);
+                                    // Log.Info("AOISceneView Load " + obj.PrefabPath);
                                     //没有
                                     self.DynamicSceneObjectMapObj[index] = new AOISceneViewComponent.DynamicSceneViewObj();
                                     viewObj = self.DynamicSceneObjectMapObj[index];
@@ -368,7 +366,7 @@ namespace ET
                 self.LastGridX = x;
                 self.LastGridY = y;
                 //加载完成，关闭loading界面
-                await Game.EventSystem.PublishAsync(new UIEventType.LoadingFinish());
+                // await Game.EventSystem.PublishAsync(new UIEventType.LoadingFinish());
                 zoneScene.GetComponent<ObjectWait>().Notify(new WaitType.Wait_LoadAOISceneFinish());
                 self.Busing = false;
             }
@@ -403,6 +401,37 @@ namespace ET
                 }
             }
 
+        }
+
+        public static List<int> GetCellMapObjects(this AOISceneViewComponent self, long id)
+        {
+            if (!self.CurMap.CellMapObjects.TryGetValue(id, out var res))
+            {
+                var arr = self.CurMap.CellIds;
+                int left = 0;
+                int right = arr.Count - 1;
+
+                while (left<=right)
+                {
+                    int mid = left + (right - left) / 2;
+                    if (id < arr[mid])
+                    {
+                        right = mid - 1;
+                    }
+                    else if (id > arr[mid])
+                    {
+                        left = mid + 1;
+                    }
+                    else
+                    {
+                        self.CurMap.CellMapObjects[id] = self.CurMap.MapObjects[mid].Value;
+                        //找到了直接返回
+                        res = self.CurMap.CellMapObjects[id];
+                        break;
+                    }
+                }
+            }
+            return res;
         }
     }
 }

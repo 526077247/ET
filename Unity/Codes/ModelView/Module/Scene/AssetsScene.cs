@@ -25,23 +25,7 @@ namespace ET
         public List<IntList> MapObjects;
 
         [ProtoIgnore]
-        public Dictionary<long, List<int>> cellMapObjects;
-        [ProtoIgnore]
-        public Dictionary<long, List<int>> CellMapObjects
-        {
-            get
-            {
-                if (cellMapObjects == null)
-                {
-                    cellMapObjects = new Dictionary<long, List<int>>();
-                    for (int i = 0; i < CellIds.Count; i++)
-                    {
-                        cellMapObjects.Add(CellIds[i],MapObjects[i].Value);
-                    }
-                }
-                return cellMapObjects;
-            }
-        }
-
+        public Dictionary<long, List<int>> CellMapObjects;
+        
     }
 }
