@@ -46,7 +46,6 @@ namespace ET
                 idc.UnitId = unit.Id;
                 showObj = unit.AddComponent<GameObjectComponent,GameObject,Action>(go, () =>
                 {
-                    GameObject.Destroy(idc);
                     GameObjectPoolComponent.Instance?.RecycleGameObject(go);
                 });
                 unit.AddComponent<AnimatorComponent>();

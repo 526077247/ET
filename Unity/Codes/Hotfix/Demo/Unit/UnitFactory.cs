@@ -64,10 +64,12 @@ namespace ET
 			        unit.AddComponent<ObjectWait>();
 
 			        unit.AddComponent<XunLuoPathComponent>();
+			        unit.Position = pos;
 			        break;
 		        }
 		        case UnitType.Skill:
 		        {
+			        unit.Position = pos;
 			        NumericComponent numericComponent = unit.AddComponent<NumericComponent>();
 			        if (unitInfo.Ks != null && unitInfo.Ks.Count > 0)
 			        {
@@ -102,7 +104,7 @@ namespace ET
 		        }
 	        }
 
-	        unit.Position = pos;
+	       
 	        Game.EventSystem.PublishAsync(new EventType.AfterUnitCreate() {Unit = unit}).Coroutine();
             return unit;
         }

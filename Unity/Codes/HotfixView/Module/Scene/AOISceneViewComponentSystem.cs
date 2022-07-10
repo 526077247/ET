@@ -36,8 +36,8 @@ namespace ET
                 ResourcesComponent.Instance.LoadAsync<TextAsset>(jsonPath, (file) =>
                 {
                     var bytes = file.bytes;
-                    ThreadPool.QueueUserWorkItem((_) =>
-                    {
+                    //ThreadPool.QueueUserWorkItem((_) =>
+                    //{
                         AssetsRoot root;
                         try
                         {
@@ -48,23 +48,12 @@ namespace ET
                             Log.Error(ex);
                             return;
                         }
-                        lock (o)
-                        {
-                            if (self.Root == null)
-                            {
-                                self.Root = root;
-                            }
-                            else
-                            {
-                                self.Root.Scenes.AddRange(root.Scenes);
-                            }
-                        }
 
                         for (int j = 0; j < root.Scenes.Count; j++)
                         {
                             self.NameMapScene.TryAdd(root.Scenes[j].Name, root.Scenes[j]);
                         }
-                    });
+                    //});
                 }).Coroutine();
             }
             
@@ -202,7 +191,7 @@ namespace ET
             }
 
             Game.EventSystem.Publish(new UIEventType.LoadingProgress { Progress = 1 });
-            
+            await TimerComponent.Instance.WaitAsync(1);//等1帧
             self.CurMap = scene;
             SceneManagerComponent.Instance.Busing = false;
         }

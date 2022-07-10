@@ -7,7 +7,6 @@ namespace ET
     public class AOISceneViewComponent:Entity,IAwake
     {
         public static AOISceneViewComponent Instance;
-        public AssetsRoot Root;
         public AssetsScene CurMap;
         public ConcurrentDictionary<string, AssetsScene> NameMapScene;
         public int CellLen
