@@ -1,19 +1,14 @@
-﻿using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.Rendering.Universal;
-
-namespace LBLibraryUnityFog
+﻿namespace UnityEngine.Rendering.Universal
 {
     public class FogPass : ScriptableRenderPass
     {
-        private Color _fogColor;
-        private float _fogDensity;
-        private float _fogStart;
-        private float _fogEnd;
-        private float _fogDeepStart;
-        private float _fogDeepEnd;
+        // 属性参数组件
+        DepthFog m_DepthFog;
 
-        private bool _enableFarFog, _enableDeepFog;
+        // 颜色渲染标识符
+        RenderTargetIdentifier m_ColorAttachment;
+        // 临时的渲染目标
+        RenderTargetHandle m_TemporaryColorTexture01;
 
         private static int _fogColorID = Shader.PropertyToID("_FogColor");
         private static int _fogDensityID = Shader.PropertyToID("_FogDensity");
@@ -26,10 +21,6 @@ namespace LBLibraryUnityFog
         private static int _NearPlane = Shader.PropertyToID("_NearPlane");
 
         private static int _CameraWorldPos = Shader.PropertyToID("_CameraWorldPos");
-        
-        public FogPass()
-        {
-        }
 
 
         const string m_ProfilerTag = "FogPass";
@@ -39,63 +30,26 @@ namespace LBLibraryUnityFog
         private const string FAR_KEY = "_ENALBE_FAR_FOG";
         // private const string ORTHO_CAM = "_ORTHO_CAM";
 
-        void CreateMaterial()
-        {
-            if (!m_BlitMaterial)
-            {
-                m_BlitMaterial = new Material(Shader.Find("PostProcess/Fog"));
-            }
-
-            m_BlitMaterial.SetColor(_fogColorID, _fogColor);
-            m_BlitMaterial.SetFloat(_fogDensityID, _fogDensity);
-            m_BlitMaterial.SetFloat(_fogStartID, _fogStart);
-            m_BlitMaterial.SetFloat(_fogEndID, _fogEnd);
-            m_BlitMaterial.SetFloat(_fogDeepStartID, _fogDeepStart);
-            m_BlitMaterial.SetFloat(_fogDeepEndID, _fogDeepEnd);
-
-            if (_enableDeepFog)
-            {
-                m_BlitMaterial.EnableKeyword(DEEP_KEY);
-            }
-            else
-            {
-                m_BlitMaterial.DisableKeyword(DEEP_KEY);
-            }
-
-            if (_enableFarFog)
-            {
-                m_BlitMaterial.EnableKeyword(FAR_KEY);
-            }
-            else
-            {
-                m_BlitMaterial.DisableKeyword(FAR_KEY);
-            }
-        }
-
         /// <summary>
         /// Configure the pass
         /// </summary>
-        /// <param name="baseDescriptor"></param>
-        /// <param name="colorHandle"></param>
-        public void Setup(Color fogColor, float fogDensity, float fogStart, float fogEnd, bool enableFarFog,
-            bool enableDeepFog, float fogDeepStart, float fogDeepEnd)
+        /// <param name="material"></param>
+        public void Setup(Material material)
         {
-            _fogColor = fogColor;
-            _fogDensity = fogDensity;
-            _fogStart = fogStart;
-            _fogEnd = fogEnd;
-            _fogDeepStart = fogDeepStart;
-            _fogDeepEnd = fogDeepEnd;
-            _enableDeepFog = enableDeepFog;
-            _enableFarFog = enableFarFog;
-
+            m_BlitMaterial = material;
             renderPassEvent = RenderPassEvent.AfterRenderingSkybox;
-            CreateMaterial();
         }
 
         /// <inheritdoc/>
         public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
         {
+            // 从Volume框架中获取所有堆栈
+            var stack = VolumeManager.instance.stack;
+            // 从堆栈中查找对应的属性参数组件
+            this.m_DepthFog = stack.GetComponent<DepthFog>();
+
+            var res = Render(ref renderingData);
+            if(!res) return;
             // Note: We need to get the cameraData.targetTexture as this will get the targetTexture of the camera stack.
             // Overlay cameras need to output to the target described in the base camera while doing camera stack.
             ref CameraData cameraData = ref renderingData.cameraData;
@@ -140,6 +94,42 @@ namespace LBLibraryUnityFog
             cmd.Clear();
             context.ExecuteCommandBuffer(cmd);
             CommandBufferPool.Release(cmd);
+        }
+        
+        // 渲染
+        bool Render(ref RenderingData renderingData)
+        {
+            // VolumeComponent是否开启，且非Scene视图摄像机
+            if (this.m_DepthFog.active&&this.m_DepthFog.IsActive() && !renderingData.cameraData.isSceneViewCamera)
+            {
+                // 写入参数
+                m_BlitMaterial.SetColor(_fogColorID, this.m_DepthFog.FogColor.value);
+                m_BlitMaterial.SetFloat(_fogDensityID, this.m_DepthFog.FogDensity.value);
+                m_BlitMaterial.SetFloat(_fogStartID, this.m_DepthFog.FogStart.value);
+                m_BlitMaterial.SetFloat(_fogEndID, this.m_DepthFog.FogEnd.value);
+                m_BlitMaterial.SetFloat(_fogDeepStartID, this.m_DepthFog.FogDeepStart.value);
+                m_BlitMaterial.SetFloat(_fogDeepEndID, this.m_DepthFog.FogDeepEnd.value);
+                if (this.m_DepthFog.EnableDeepFog.value)
+                {
+                    m_BlitMaterial.EnableKeyword(DEEP_KEY);
+                }
+                else
+                {
+                    m_BlitMaterial.DisableKeyword(DEEP_KEY);
+                }
+                if (this.m_DepthFog.EnableFarFog.value)
+                {
+                    m_BlitMaterial.EnableKeyword(FAR_KEY);
+                }
+                else
+                {
+                    m_BlitMaterial.DisableKeyword(FAR_KEY);
+                }
+                Debug.Log("123321"+this.m_DepthFog.IsActive() );
+                return true;
+            }
+
+            return false;
         }
     }
 }

@@ -1,40 +1,35 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using LBLibraryUnityFog;
-using UnityEngine;
-using UnityEngine.Rendering.Universal;
-
-public class DepthFogRenderFeature : ScriptableRendererFeature
+﻿namespace UnityEngine.Rendering.Universal
 {
-    public Color fogColor = Color.white;
-   [Range(0,1f)] public float fogDensity = 0.5f;
-
-
-    [Header("Far Fog")] public bool enableFarFog = true;
-    [Range(0, 1f)] public float fogStart = 0;
-    [Range(0, 1f)] public float fogEnd = 1;
-    [Header("Deep Fog")] public bool enableDeepFog = true;
-    public float fogDeepStart = 0;
-    public float fogDeepEnd = 1;
-
-    private FogPass _fogPass;
-
-    public override void Create()
+    public class DepthFogRenderFeature: ScriptableRendererFeature
     {
-        if (_fogPass == null)
+        // 用于后处理的Shader 
+        public Shader shader;
+
+        // 后处理Pass
+        FogPass _fogPass;
+
+        // 根据Shader生成的材质
+        Material _Material = null;
+
+        public override void Create()
         {
-            _fogPass = new FogPass();
+            if (_fogPass == null)
+            {
+                _fogPass = new FogPass();
+            }
         }
-    }
-
-
-    public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
-    {
-        if (_fogPass != null)
+        
+        public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
         {
-            _fogPass.Setup(fogColor, fogDensity, fogStart, fogEnd, enableFarFog, enableDeepFog, fogDeepStart,
-                fogDeepEnd);
-
+            // 检测Shader是否存在
+            if (shader == null)
+                return;
+            // 创建材质
+            if (_Material == null)
+                _Material = CoreUtils.CreateEngineMaterial(shader);
+            // 设置调用后处理Pass
+            this._fogPass.Setup(_Material);
+            // 添加该Pass到渲染管线中
             renderer.EnqueuePass(_fogPass);
         }
     }

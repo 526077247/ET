@@ -64,6 +64,7 @@ namespace UnityEngine.Rendering.Universal
             // VolumeComponent是否开启，且非Scene视图摄像机
             if (m_BrightnessSaturationContrast.IsActive() && !renderingData.cameraData.isSceneViewCamera)
             {
+                Debug.Log(m_BrightnessSaturationContrast.IsActive());
                 // 写入参数
                 m_Material.SetFloat("_Brightness", m_BrightnessSaturationContrast.brightness.value);
                 m_Material.SetFloat("_Saturation", m_BrightnessSaturationContrast.saturation.value);

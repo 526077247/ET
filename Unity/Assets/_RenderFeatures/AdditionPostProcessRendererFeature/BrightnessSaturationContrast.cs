@@ -8,6 +8,7 @@ namespace UnityEngine.Rendering.Universal
     // 继承VolumeComponent组件和IPostProcessComponent接口，用以继承Volume框架
     public class BrightnessSaturationContrast : VolumeComponent, IPostProcessComponent
     {
+        public BoolParameter Enable = new BoolParameter(false);
         // 在框架下的属性与Unity常规属性不一样，例如 Int 由 ClampedIntParameter 取代。
         public ClampedFloatParameter brightness = new ClampedFloatParameter(0f, 0, 3);
         public ClampedFloatParameter saturation = new ClampedFloatParameter(0f, 0, 3);
@@ -15,7 +16,7 @@ namespace UnityEngine.Rendering.Universal
         // 实现接口
         public bool IsActive()
         {
-            return active;
+            return Enable.value;
         }
 
         public bool IsTileCompatible()
