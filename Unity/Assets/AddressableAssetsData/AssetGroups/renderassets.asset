@@ -17,13 +17,6 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 437dc2935e746ea43bc283c1a96abe08
   m_SerializeEntries:
-  - m_GUID: c3179d02f14ad314484e1be0b76f32d1
-    m_Address: RenderAssets/Brightness Saturation And Contrast.shader
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - default
-    m_MainAsset: {fileID: 0}
-    m_TargetAsset: {fileID: 0}
   - m_GUID: c68f346f6d8214f40ba06db2493153de
     m_Address: RenderAssets/ForwardRenderer_Default.asset
     m_ReadOnly: 0

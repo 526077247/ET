@@ -88,3 +88,5 @@ Unity/Unity.Model.csproj
 Unity/Unity.ModelView.csproj
 Unity/Assembly-CSharp.csproj
 /SRDebugger
+Unity/AdditionPostProcessRendererFeature.csproj
+Unity/FogRenderFeature.csproj
