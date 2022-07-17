@@ -10,6 +10,10 @@
 7. 替换AOI框架，支持OBB、球形触发器和射线检测，并且双端使用AOI
 8. 提供一个简单可扩展的战斗框架，并且双端可单独使用
 
+# UI框架使用教程
+1. 基于ET6组件式UI框架的使用 https://www.bilibili.com/video/BV1Ra411q7Ct
+2. ScrollView无限滑动列表 https://www.bilibili.com/video/BV1YR4y1g7tN
+
 # __讨论QQ群 : 474643097__  
 
 # [ET论坛](https://et-framework.cn)  

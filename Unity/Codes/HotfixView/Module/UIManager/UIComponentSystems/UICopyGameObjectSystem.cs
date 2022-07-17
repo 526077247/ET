@@ -32,7 +32,22 @@ namespace ET
             self.ActivatingComponent();
             self.unity_comp.InitListView(total_count, ongetitemcallback, start_sibling_index);
         }
-
+        
+        //item是Unity侧的item对象，在这里创建相应的UI对象
+        public static T AddItemViewComponent<T>(this UICopyGameObject self, GameObject item) where T : Entity,IAwake,IOnCreate,IOnEnable
+        {
+            //保证名字不能相同 不然没法cache
+            T t = self.AddUIComponentNotCreate<T>(item.gameObject.name);
+            t.AddUIComponent<UITransform,Transform>("",item.transform);
+            UIEventSystem.Instance.OnCreate(t);
+            return t;
+        }
+        //根据Unity侧item获取UI侧的item
+        public static T GetUIItemView<T>(this UICopyGameObject self, GameObject item) where T : Entity
+        {
+            return self.GetUIComponent<T>(item.name);
+        }
+        
         public static void SetListItemCount(this UICopyGameObject self, int total_count, int? start_sibling_index = null)
         {
             self.unity_comp.SetListItemCount(total_count, start_sibling_index);
