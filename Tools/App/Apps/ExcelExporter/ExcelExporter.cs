@@ -493,7 +493,7 @@ namespace ET
                 {
                     sb.Append("\t\t[BsonRepresentation(MongoDB.Bson.BsonType.Double, AllowTruncation = true)]\n");
                 }
-                sb.Append($"\t\t/// <summary>{headInfo.FieldDesc}</summary>\n");
+                sb.Append($"\t\t/// <summary>{headInfo.FieldDesc.Replace("\n","</summary>\n\t\t/// <summary> ")}</summary>\n");
                 sb.Append($"\t\t[ProtoMember({headInfo.FieldIndex})]\n");
                 string fieldType = headInfo.FieldType;
                 if (fieldType == "int[][]")

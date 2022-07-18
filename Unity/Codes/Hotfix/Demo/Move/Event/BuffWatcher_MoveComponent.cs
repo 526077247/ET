@@ -1,9 +1,9 @@
 ﻿namespace ET
 {
-    [BuffWatcher(ActionControlType.Move,true)]
-    public class BuffWatcher_MoveComponent_AddMoveBand:IBuffWatcher
+    [ActionControlActiveWatcher(ActionControlType.BanMove,true)]
+    public class ActionControlActiveWatcherMoveComponent_AddMoveBand:IActionControlActiveWatcher
     {
-        public void Run(Unit unit)
+        public void SetActionControlActive(Unit unit)
         {
             var mc = unit.GetComponent<MoveComponent>();
             if (mc!=null)
@@ -15,10 +15,10 @@
     }
     
     
-    [BuffWatcher(ActionControlType.Move,false)]
-    public class BuffWatcher_MoveComponent_RemoveMoveBand:IBuffWatcher
+    [ActionControlActiveWatcher(ActionControlType.BanMove,false)]
+    public class ActionControlActiveWatcherMoveComponent_RemoveMoveBand:IActionControlActiveWatcher
     {
-        public void Run(Unit unit)
+        public void SetActionControlActive(Unit unit)
         {
             var mc = unit.GetComponent<MoveComponent>();
             if (mc!=null)

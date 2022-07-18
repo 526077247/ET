@@ -74,11 +74,12 @@ namespace ET
                 var buffC = cuc.GetComponent<BuffComponent>();
                 if (buffC != null)
                 {
-                    foreach (var item in buffC.Groups)
+                    for (int i = 0; i < buffC.AllBuff.Count; i++)
                     {
-                        var buff = item.Value;
+                        var buff = buffC.GetChild<Buff>(buffC.AllBuff[i]);
                         unitInfo.BuffIds.Add(buff.ConfigId);
                         unitInfo.BuffTimestamp.Add(buff.Timestamp);
+                        unitInfo.BuffSourceIds.Add(buff.FromUnitId);
                     }
                 }
             }

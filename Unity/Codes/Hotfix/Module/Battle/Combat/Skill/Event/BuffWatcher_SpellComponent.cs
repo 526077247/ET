@@ -1,9 +1,9 @@
 ﻿namespace ET
 {
-    [BuffWatcher(ActionControlType.Spell,true)]
-    public class BuffWatcher_SpellComponent_AddBeAttackBand:IBuffWatcher
+    [ActionControlActiveWatcher(ActionControlType.BanSpell,true)]
+    public class ActionControlActiveWatcherSpellComponent_AddAttackBanned:IActionControlActiveWatcher
     {
-        public void Run(Unit unit)
+        public void SetActionControlActive(Unit unit)
         {
             var cc = unit.GetComponent<CombatUnitComponent>();
             if (cc!=null)
@@ -14,10 +14,10 @@
     }
     
     
-    [BuffWatcher(ActionControlType.Spell,false)]
-    public class BuffWatcher_SpellComponent_RemoveBeAttackBand:IBuffWatcher
+    [ActionControlActiveWatcher(ActionControlType.BanSpell,false)]
+    public class ActionControlActiveWatcherSpellComponent_RemoveAttackBanned:IActionControlActiveWatcher
     {
-        public void Run(Unit unit)
+        public void SetActionControlActive(Unit unit)
         {
             var cc = unit.GetComponent<CombatUnitComponent>();
             if (cc!=null)

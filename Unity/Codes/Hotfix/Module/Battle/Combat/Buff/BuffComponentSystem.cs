@@ -9,8 +9,9 @@ namespace ET
     {
         public override void Awake(BuffComponent self)
         {
-            self.Groups = DictionaryComponent<int, Buff>.Create();
-            self.ActionControls = DictionaryComponent<int, int>.Create();
+            self.AllBuff = new List<long>();
+            self.Groups =new Dictionary<int, long>();
+            self.ActionControls =new Dictionary<int, int>();
         }
     }
     
@@ -19,8 +20,9 @@ namespace ET
     {
         public override void Destroy(BuffComponent self)
         {
-            self.Groups.Dispose();
-            self.ActionControls.Dispose();
+            self.AllBuff.Clear();
+            self.Groups.Clear();
+            self.ActionControls.Clear();
         }
     }
 	[FriendClass(typeof(BuffComponent))]
@@ -34,28 +36,33 @@ namespace ET
         /// <param name="self"></param>
         /// <param name="buffIds"></param>
         /// <param name="buffTimestamps"></param>
-        public static void Init(this BuffComponent self,List<int> buffIds,List<long> buffTimestamps)
+        /// <param name="sourceIds"></param>
+        public static void Init(this BuffComponent self,List<int> buffIds,List<long> buffTimestamps,List<long> sourceIds)
         {
-            self.Groups = DictionaryComponent<int, Buff>.Create();
-            self.ActionControls = DictionaryComponent<int, int>.Create();
+            self.AllBuff.Clear();
+            self.Groups.Clear();
+            self.ActionControls.Clear();
             for (int i = 0; i < buffIds.Count; i++)
             {
                 var id = buffIds[i];
                 var timestamp = buffTimestamps[i];
+                var sourceId = sourceIds[i];
                 BuffConfig conf = BuffConfigCategory.Instance.Get(id);
                 if (self.Groups.ContainsKey(conf.Group))
                 {
-                    var old = self.Groups[conf.Group];
+                    var oldId = self.Groups[conf.Group];
+                    var old = self.GetChild<Buff>(oldId);
                     if (old.Config.Priority > conf.Priority) {
                         Log.Info("添加BUFF失败，优先级"+old.Config.Id+" > "+conf.Id);
                         continue; //优先级低
                     }
                     Log.Info("优先级高或相同，替换旧的");
-                    self.Remove(self.Groups[conf.Group].Id);
+                    self.Remove(self.Groups[conf.Group]);
                 }
             
-                Buff buff = self.AddChild<Buff,int,long,bool>(id,timestamp,true);//走这里不叠加属性
-                self.Groups[conf.Group] = buff;
+                Buff buff = self.AddChild<Buff,int,long,bool,long>(id,timestamp,true,sourceId);//走这里不叠加属性
+                self.Groups[conf.Group] = buff.Id;
+                self.AllBuff.Add(buff.Id);
                 EventSystem.Instance.Publish(new EventType.AfterAddBuff(){Buff = buff});
             }
         }
@@ -66,23 +73,26 @@ namespace ET
         /// <param name="self"></param>
         /// <param name="id"></param>
         /// <param name="timestamp"></param>
+        /// <param name="sourceId"></param>
         /// <returns></returns>
-        public static Buff AddBuff(this BuffComponent self, int id,long timestamp)
+        public static Buff AddBuff(this BuffComponent self, int id,long timestamp,long sourceId)
         {
             BuffConfig conf = BuffConfigCategory.Instance.Get(id);
             if (self.Groups.ContainsKey(conf.Group))
             {
-                var old = self.Groups[conf.Group];
+                var oldId = self.Groups[conf.Group];
+                var old = self.GetChild<Buff>(oldId);
                 if (old.Config.Priority > conf.Priority) {
                     Log.Info("添加BUFF失败，优先级"+old.Config.Id+" > "+conf.Id);
                     return null; //优先级低
                 }
                 Log.Info("优先级高或相同，替换旧的");
-                self.Remove(self.Groups[conf.Group].Id);
+                self.Remove(self.Groups[conf.Group]);
             }
             
-            Buff buff = self.AddChild<Buff,int,long>(id,timestamp,true);
-            self.Groups[conf.Group] = buff;
+            Buff buff = self.AddChild<Buff,int,long,long>(id,timestamp,sourceId,true);
+            self.Groups[conf.Group] = buff.Id;
+            self.AllBuff.Add(buff.Id);
             EventSystem.Instance.Publish(new EventType.AfterAddBuff(){Buff = buff});
             return buff;
         }
@@ -108,7 +118,7 @@ namespace ET
             BuffConfig config = BuffConfigCategory.Instance.Get(id);
             if (self.Groups.ContainsKey(config.Group))
             {
-                Buff buff = self.GetChild<Buff>(self.Groups[config.Group].Id);
+                Buff buff = self.GetChild<Buff>(self.Groups[config.Group]);
                 if (buff.ConfigId == id)
                 {
                     return buff;
@@ -128,6 +138,7 @@ namespace ET
             if(buff==null) return;
             EventSystem.Instance.Publish(new EventType.AfterRemoveBuff(){Buff = buff});
             self.Groups.Remove(buff.Config.Group);
+            self.AllBuff.Remove(id);
             buff.Dispose();
         }
         /// <summary>
@@ -140,12 +151,44 @@ namespace ET
             BuffConfig config = BuffConfigCategory.Instance.Get(id);
             if (self.Groups.ContainsKey(config.Group))
             {
-                Buff buff = self.GetChild<Buff>(self.Groups[config.Group].Id);
+                Buff buff = self.GetChild<Buff>(self.Groups[config.Group]);
                 if (buff.ConfigId == id)
                 {
                     self.Groups.Remove(buff.Config.Group);
                     buff?.Dispose();
                 }
+            }
+        }
+        
+        /// <summary>
+        /// 造成伤害前
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="attacker"></param>
+        /// <param name="target"></param>
+        /// <param name="damage"></param>
+        public static void BeforeDamage(this BuffComponent self, Unit attacker,Unit target,DamageInfo damage)
+        {
+            for (int i = 0; i < self.AllBuff.Count; i++)
+            {
+                var buff = self.GetChild<Buff>(self.AllBuff[i]);
+                BuffWatcherComponent.Instance.BeforeDamage(buff.Config.Type,attacker,target,buff,damage);
+            }
+        }
+        
+        /// <summary>
+        /// 造成伤害后
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="attacker"></param>
+        /// <param name="target"></param>
+        /// <param name="damage"></param>
+        public static void AfterDamage(this BuffComponent self, Unit attacker,Unit target,DamageInfo damage)
+        {
+            for (int i = 0; i < self.AllBuff.Count; i++)
+            {
+                var buff = self.GetChild<Buff>(self.AllBuff[i]);
+                BuffWatcherComponent.Instance.AfterDamage(buff.Config.Type,attacker,target,buff,damage);
             }
         }
 #if !SERVER
@@ -157,7 +200,7 @@ namespace ET
         {
             foreach (var item in self.Groups)
             {
-                EventSystem.Instance.Publish(new EventType.AfterAddBuff(){Buff = item.Value});
+                EventSystem.Instance.Publish(new EventType.AfterAddBuff(){Buff = self.GetChild<Buff>(item.Value)});
             }
         }
         
@@ -169,7 +212,7 @@ namespace ET
         {
             foreach (var item in self.Groups)
             {
-                EventSystem.Instance.Publish(new EventType.AfterRemoveBuff(){Buff = item.Value});
+                EventSystem.Instance.Publish(new EventType.AfterRemoveBuff(){Buff = self.GetChild<Buff>(item.Value)});
             }
         }
 #endif

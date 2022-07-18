@@ -17,7 +17,7 @@
                 }
 
                 var buffC = combatU.GetComponent<BuffComponent>();
-                buffC.AddBuff(message.ConfigId, message.Timestamp);
+                buffC.AddBuff(message.ConfigId, message.Timestamp,message.SourceId);
             }
         }
 

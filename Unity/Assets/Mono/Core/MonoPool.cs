@@ -18,11 +18,23 @@ namespace ET
             Queue<object> queue = null;
             if (!pool.TryGetValue(type, out queue))
             {
+#if !NOT_UNITY
+                if(type is ILRuntime.Reflection.ILRuntimeType)
+                {
+                    return CodeLoader.Instance.CreateInstance(type);
+                }
+#endif
                 return Activator.CreateInstance(type);
             }
 
             if (queue.Count == 0)
             {
+#if !NOT_UNITY
+                if(type is ILRuntime.Reflection.ILRuntimeType)
+                {
+                    return CodeLoader.Instance.CreateInstance(type);
+                }
+#endif
                 return Activator.CreateInstance(type);
             }
             return queue.Dequeue();

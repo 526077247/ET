@@ -8,14 +8,14 @@
         /// <summary>
         /// 施法
         /// </summary>
-        public const int Spell = 1;
+        public const int BanSpell = 1;
         /// <summary>
         /// 攻击
         /// </summary>
-        public const int Attack = 2;
+        public const int BanAttack = 2;
         /// <summary>
         /// 移动
         /// </summary>
-        public const int Move = 3;
+        public const int BanMove = 3;
     }
 }

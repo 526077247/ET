@@ -75,6 +75,7 @@ message UnitInfo
 	repeated int32 SkillIds = 13;
 	repeated int32 BuffIds = 14;
 	repeated int64 BuffTimestamp = 15;
+	repeated int64 BuffSourceIds = 16;
 }
 
 message M2C_CreateUnits // IActorMessage
@@ -271,6 +272,7 @@ message M2C_AddBuff // IActorMessage
 	int32 ConfigId = 2;
 	int64 Timestamp = 3;
 	int64 UnitId = 4;
+	int64 SourceId = 5;
 }
 
 message M2C_Damage // IActorMessage

@@ -9,8 +9,9 @@ namespace ET
     {
         [BsonIgnore]
         public Unit unit => this.GetParent<CombatUnitComponent>().unit;
-        
-        public DictionaryComponent<int, Buff> Groups;
-        public DictionaryComponent<int, int> ActionControls;
+
+        public List<long> AllBuff;
+        public Dictionary<int, long> Groups;
+        public Dictionary<int, int> ActionControls;
     }
 }

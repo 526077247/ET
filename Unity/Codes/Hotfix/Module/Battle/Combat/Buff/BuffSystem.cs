@@ -19,67 +19,40 @@
 
     [FriendClass(typeof(BuffComponent))]
     [ObjectSystem]
-    public class BuffAwakeSystem : AwakeSystem<Buff,int,long>
+    public class BuffAwakeSystem : AwakeSystem<Buff,int,long,long>
     {
-        public override void Awake(Buff self,int id,long timestamp)
+        public override void Awake(Buff self,int id,long timestamp,long sourceId)
         {
             Log.Info("添加BUFF id="+id);
             self.ConfigId = id;
             self.Timestamp = timestamp;
+            self.FromUnitId = sourceId;
             var buffComp = self.GetParent<BuffComponent>();
             var unit = buffComp.unit;
-            self.AddBuffAttrValue(unit);
-            if (self.Config.ActionControl != null)
-            {
-                for (int i = 0; i < self.Config.ActionControl.Length; i++)
-                {
-                    var type = self.Config.ActionControl[i];
-                    if (!buffComp.ActionControls.ContainsKey(type)||buffComp.ActionControls[type]==0)
-                    {
-                        buffComp.ActionControls[type] = 1;
-                        // Log.Info("BuffWatcherComponent");
-                        BuffWatcherComponent.Instance.Run(type,true,unit);
-                    }
-                    else
-                    {
-                        buffComp.ActionControls[type]++;
-                    }
-                }
-            }
+            if ((self.Config.Type&BuffSubType.Attribute)!=0 )
+                self.AddBuffAttrValue(unit);
+            if ((self.Config.Type&BuffSubType.ActionControl)!=0 )
+               self.AddBuffActionControl(unit);
             if(timestamp>=0)
                 self.TimerId = TimerComponent.Instance.NewOnceTimer(timestamp, TimerType.RemoveBuff, self);
         }
     }
     [FriendClass(typeof(BuffComponent))]
     [ObjectSystem]
-    public class BuffAwakeSystem1 : AwakeSystem<Buff,int,long,bool>
+    public class BuffAwakeSystem1 : AwakeSystem<Buff,int,long,bool,long>
     {
-        public override void Awake(Buff self,int id,long timestamp,bool ignoreAddAttr)
+        public override void Awake(Buff self,int id,long timestamp,bool ignoreAddAttr,long sourceId)
         {
             Log.Info("添加BUFF id="+id);
             self.ConfigId = id;
             self.Timestamp = timestamp;
+            self.FromUnitId = sourceId;
             var buffComp = self.GetParent<BuffComponent>();
             var unit = buffComp.unit;
-            if(!ignoreAddAttr)
+            if(!ignoreAddAttr && (self.Config.Type&BuffSubType.Attribute)!=0 )
                 self.AddBuffAttrValue(unit);
-            if (self.Config.ActionControl != null)
-            {
-                for (int i = 0; i < self.Config.ActionControl.Length; i++)
-                {
-                    var type = self.Config.ActionControl[i];
-                    if (!buffComp.ActionControls.ContainsKey(type)||buffComp.ActionControls[type]==0)
-                    {
-                        buffComp.ActionControls[type] = 1;
-                        // Log.Info("BuffWatcherComponent");
-                        BuffWatcherComponent.Instance.Run(type,true,unit);
-                    }
-                    else
-                    {
-                        buffComp.ActionControls[type]++;
-                    }
-                }
-            }
+            if ((self.Config.Type&BuffSubType.ActionControl)!=0 )
+                self.AddBuffActionControl(unit);
             if(timestamp>=0)
                 self.TimerId = TimerComponent.Instance.NewOnceTimer(timestamp, TimerType.RemoveBuff, self);
         }
@@ -94,31 +67,16 @@
             Log.Info("移除BUFF id="+self.ConfigId);
             var buffComp = self.GetParent<BuffComponent>();
             var unit = buffComp.unit;
-            if (self.Config.IsRemove == 0) //结束后是否移除加成（0:是）
-            {
+            if ((self.Config.Type&BuffSubType.Attribute)!=0 && self.AttrConfig.IsRemove == 0) //结束后是否移除加成（0:是）
                 self.RemoveBuffAttrValue(unit);
-            }
+            if ((self.Config.Type & BuffSubType.ActionControl) != 0)
+                self.RemoveBuffActionControl(unit);
 
-            if (self.Config.ActionControl != null)
-            {
-                for (int i = 0; i < self.Config.ActionControl.Length; i++)
-                {
-                    var type = self.Config.ActionControl[i];
-                    if (buffComp.ActionControls.ContainsKey(type)&&buffComp.ActionControls[type]>0)
-                    {
-                        buffComp.ActionControls[type]--;
-                        if (buffComp.ActionControls[type] == 0)
-                        {
-                            // Log.Info("BuffWatcherComponent");
-                            BuffWatcherComponent.Instance.Run(type,false,unit);
-                        }
-                    }
-                }
-            }
         }
     }
 
     [FriendClass(typeof(Buff))]
+    [FriendClass(typeof(BuffComponent))]
     public static class BuffSystem
     {
         /// <summary>
@@ -128,29 +86,29 @@
         /// <param name="unit"></param>
         public static void AddBuffAttrValue(this Buff self, Unit unit)
         {
-            if (self.Config.AttributeType != null)
+            if (self.AttrConfig.AttributeType != null)
             {
                 var numc = unit.GetComponent<NumericComponent>();
                 if (numc != null)
                 {
-                    for (int i = 0; i < self.Config.AttributeType.Length; i++)
+                    for (int i = 0; i < self.AttrConfig.AttributeType.Length; i++)
                     {
-                        if (NumericType.Map.TryGetValue(self.Config.AttributeType[i], out var attr))
+                        if (NumericType.Map.TryGetValue(self.AttrConfig.AttributeType[i], out var attr))
                         {
-                            if (self.Config.AttributeAdd != null && self.Config.AttributeAdd.Length > i)
-                                numc.Set(attr * 10 + 2, numc.GetAsInt(attr * 10 + 2) + self.Config.AttributeAdd[i]);
-                            if (self.Config.AttributePct != null && self.Config.AttributePct.Length > i)
-                                numc.Set(attr * 10 + 3, numc.GetAsInt(attr * 10 + 3) + self.Config.AttributePct[i]);
-                            if (self.Config.AttributeFinalAdd != null && self.Config.AttributeFinalAdd.Length > i)
+                            if (self.AttrConfig.AttributeAdd != null && self.AttrConfig.AttributeAdd.Length > i)
+                                numc.Set(attr * 10 + 2, numc.GetAsInt(attr * 10 + 2) + self.AttrConfig.AttributeAdd[i]);
+                            if (self.AttrConfig.AttributePct != null && self.AttrConfig.AttributePct.Length > i)
+                                numc.Set(attr * 10 + 3, numc.GetAsInt(attr * 10 + 3) + self.AttrConfig.AttributePct[i]);
+                            if (self.AttrConfig.AttributeFinalAdd != null && self.AttrConfig.AttributeFinalAdd.Length > i)
                                 numc.Set(attr * 10 + 4,
-                                    numc.GetAsInt(attr * 10 + 4) + self.Config.AttributeFinalAdd[i]);
-                            if (self.Config.AttributeFinalPct != null && self.Config.AttributeFinalPct.Length > i)
+                                    numc.GetAsInt(attr * 10 + 4) + self.AttrConfig.AttributeFinalAdd[i]);
+                            if (self.AttrConfig.AttributeFinalPct != null && self.AttrConfig.AttributeFinalPct.Length > i)
                                 numc.Set(attr * 10 + 5,
-                                    numc.GetAsInt(attr * 10 + 5) + self.Config.AttributeFinalPct[i]);
+                                    numc.GetAsInt(attr * 10 + 5) + self.AttrConfig.AttributeFinalPct[i]);
                         }
                         else
                         {
-                            Log.Info("BuffConfig属性没找到 【" + self.Config.AttributeType[i]+"】");
+                            Log.Info("BuffConfig属性没找到 【" + self.AttrConfig.AttributeType[i]+"】");
                         }
                     }
                 }
@@ -167,29 +125,29 @@
         /// <param name="unit"></param>
         public static void RemoveBuffAttrValue(this Buff self,Unit unit)
         {
-            if (self.Config.AttributeType != null)
+            if (self.AttrConfig.AttributeType != null)
             {
                 var numc = unit.GetComponent<NumericComponent>();
                 if (numc != null)
                 {
-                    for (int i = 0; i < self.Config.AttributeType.Length; i++)
+                    for (int i = 0; i < self.AttrConfig.AttributeType.Length; i++)
                     {
-                        if (NumericType.Map.TryGetValue(self.Config.AttributeType[i], out var attr))
+                        if (NumericType.Map.TryGetValue(self.AttrConfig.AttributeType[i], out var attr))
                         {
-                            if (self.Config.AttributeAdd != null && self.Config.AttributeAdd.Length > i)
-                                numc.Set(attr * 10 + 2, numc.GetAsInt(attr * 10 + 2) - self.Config.AttributeAdd[i]);
-                            if (self.Config.AttributePct != null && self.Config.AttributePct.Length > i)
-                                numc.Set(attr * 10 + 3, numc.GetAsInt(attr * 10 + 3) - self.Config.AttributePct[i]);
-                            if (self.Config.AttributeFinalAdd != null && self.Config.AttributeFinalAdd.Length > i)
+                            if (self.AttrConfig.AttributeAdd != null && self.AttrConfig.AttributeAdd.Length > i)
+                                numc.Set(attr * 10 + 2, numc.GetAsInt(attr * 10 + 2) - self.AttrConfig.AttributeAdd[i]);
+                            if (self.AttrConfig.AttributePct != null && self.AttrConfig.AttributePct.Length > i)
+                                numc.Set(attr * 10 + 3, numc.GetAsInt(attr * 10 + 3) - self.AttrConfig.AttributePct[i]);
+                            if (self.AttrConfig.AttributeFinalAdd != null && self.AttrConfig.AttributeFinalAdd.Length > i)
                                 numc.Set(attr * 10 + 4,
-                                    numc.GetAsInt(attr * 10 + 4) - self.Config.AttributeFinalAdd[i]);
-                            if (self.Config.AttributeFinalPct != null && self.Config.AttributeFinalPct.Length > i)
+                                    numc.GetAsInt(attr * 10 + 4) - self.AttrConfig.AttributeFinalAdd[i]);
+                            if (self.AttrConfig.AttributeFinalPct != null && self.AttrConfig.AttributeFinalPct.Length > i)
                                 numc.Set(attr * 10 + 5,
-                                    numc.GetAsInt(attr * 10 + 5) - self.Config.AttributeFinalPct[i]);
+                                    numc.GetAsInt(attr * 10 + 5) - self.AttrConfig.AttributeFinalPct[i]);
                         }
                         else
                         {
-                            Log.Info("BuffConfig属性没找到 【" + self.Config.AttributeType[i]+"】");
+                            Log.Info("BuffConfig属性没找到 【" + self.AttrConfig.AttributeType[i]+"】");
                         }
                     }
                 }
@@ -198,6 +156,60 @@
                     Log.Error("移除BUFF id= " + self.ConfigId + " 时没找到 NumericComponent 组件");
                 }
                 
+            }
+        }
+
+
+        /// <summary>
+        /// 添加行为禁制
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="unit"></param>
+        public static void AddBuffActionControl(this Buff self, Unit unit)
+        {
+            var buffComp = self.GetParent<BuffComponent>();
+            if (self.ActionControlConfig.ActionControl != null)
+            {
+                for (int i = 0; i < self.ActionControlConfig.ActionControl.Length; i++)
+                {
+                    var type = self.ActionControlConfig.ActionControl[i];
+                    if (!buffComp.ActionControls.ContainsKey(type)||buffComp.ActionControls[type]==0)
+                    {
+                        buffComp.ActionControls[type] = 1;
+                        // Log.Info("BuffWatcherComponent");
+                        BuffWatcherComponent.Instance.SetActionControlActive(type,true,unit);
+                    }
+                    else
+                    {
+                        buffComp.ActionControls[type]++;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 移除行为禁制
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="unit"></param>
+        public static void RemoveBuffActionControl(this Buff self, Unit unit)
+        {
+            var buffComp = self.GetParent<BuffComponent>();
+            if (self.ActionControlConfig.ActionControl != null)
+            {
+                for (int i = 0; i < self.ActionControlConfig.ActionControl.Length; i++)
+                {
+                    var type = self.ActionControlConfig.ActionControl[i];
+                    if (buffComp.ActionControls.ContainsKey(type)&&buffComp.ActionControls[type]>0)
+                    {
+                        buffComp.ActionControls[type]--;
+                        if (buffComp.ActionControls[type] == 0)
+                        {
+                            // Log.Info("BuffWatcherComponent");
+                            BuffWatcherComponent.Instance.SetActionControlActive(type,false,unit);
+                        }
+                    }
+                }
             }
         }
     }

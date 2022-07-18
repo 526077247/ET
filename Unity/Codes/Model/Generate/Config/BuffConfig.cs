@@ -100,36 +100,15 @@ namespace ET
 		/// <summary>表现位置(1:Head)</summary>
 		[ProtoMember(7)]
 		public int ObjRoot { get; set; }
-		/// <summary>结束后是否移除加成（0:是）</summary>
+		/// <summary>类型（1属性变化2行为禁制4持续掉血）</summary>
 		[ProtoMember(8)]
-		public int IsRemove { get; set; }
-		/// <summary>随时间变化方程（不填表示不随时间变化）</summary>
-		[ProtoMember(9)]
-		public string Equation { get; set; }
+		public int Type { get; set; }
 		/// <summary>叠加判别组(同组只取最高优先级)</summary>
-		[ProtoMember(10)]
+		[ProtoMember(9)]
 		public int Group { get; set; }
 		/// <summary>优先级（数字越小越优先，相同则Id最小优先）</summary>
-		[ProtoMember(11)]
+		[ProtoMember(10)]
 		public int Priority { get; set; }
-		/// <summary>属性修饰</summary>
-		[ProtoMember(12)]
-		public string[] AttributeType { get; set; }
-		/// <summary>修饰参数</summary>
-		[ProtoMember(13)]
-		public int[] AttributePct { get; set; }
-		/// <summary>修饰参数</summary>
-		[ProtoMember(14)]
-		public int[] AttributeAdd { get; set; }
-		/// <summary>修饰参数</summary>
-		[ProtoMember(15)]
-		public int[] AttributeFinalAdd { get; set; }
-		/// <summary>修饰参数</summary>
-		[ProtoMember(16)]
-		public int[] AttributeFinalPct { get; set; }
-		/// <summary>行为禁制(1禁止施法，2禁止攻击，3禁止移动)</summary>
-		[ProtoMember(17)]
-		public int[] ActionControl { get; set; }
 
 	}
 }

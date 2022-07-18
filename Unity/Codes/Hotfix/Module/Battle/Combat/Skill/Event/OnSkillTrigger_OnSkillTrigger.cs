@@ -28,9 +28,11 @@ namespace ET
         public void OnColliderIn(AOIUnitComponent from, AOIUnitComponent to, SkillStepPara stepPara, List<int> costId,
             List<int> cost,SkillConfig config)
         {
-            if(from==null) return;//伤害源死了
-            var combatU = to.Parent.GetComponent<CombatUnitComponent>();
-
+            if(from==null||to==null) return;//伤害计算参与者无了
+            Unit fromU = from.GetParent<Unit>();
+            Unit toU = to.GetParent<Unit>();
+            var combatToU = toU.GetComponent<CombatUnitComponent>();
+            var combatFromU = fromU.GetComponent<CombatUnitComponent>();
             // Log.Info("触发"+type.ToString()+to.Id+"  "+from.Id);
             // Log.Info("触发"+type.ToString()+to.Position+" Dis: "+Vector3.Distance(to.Position,from.Position));
             int formulaId = 0;//公式
@@ -77,12 +79,12 @@ namespace ET
             
             if(buffInfo!=null&&buffInfo.Count>0)
             {
-                var buffC = combatU.GetComponent<BuffComponent>();
+                var buffC = combatToU.GetComponent<BuffComponent>();
                 
                 for (int i = 0; i < buffInfo.Count; i++)
                 {
                     
-                    buffC.AddBuff(buffInfo[i][0],TimeHelper.ClientNow() + buffInfo[i][1]);
+                    buffC.AddBuff(buffInfo[i][0],TimeHelper.ClientNow() + buffInfo[i][1],fromU.Id);
                 }
             }
 
@@ -90,32 +92,10 @@ namespace ET
             if (formula!=null)
             {
                 FormulaStringFx fx = FormulaStringFx.GetInstance(formula.Formula);
-                NumericComponent f = from.GetParent<Unit>().GetComponent<NumericComponent>();
-                NumericComponent t = to?.GetParent<Unit>().GetComponent<NumericComponent>();
+                NumericComponent f = fromU.GetComponent<NumericComponent>();
+                NumericComponent t = toU.GetComponent<NumericComponent>();
                 float value = fx.GetData(f, t);
-                
-                int realValue = (int)value;
-
-                if (realValue != 0)
-                {
-                    float now = t.GetAsFloat(NumericType.HpBase);
-                    Log.Info(now);
-                    if (now <= realValue)
-                    {
-                        t.Set(NumericType.HpBase, 0);
-                    }
-                    else
-                    {
-                        t.Set(NumericType.HpBase, now - realValue);
-                    }
-
-                    EventSystem.Instance.Publish(new EventType.AfterCombatUnitGetDamage()
-                    {
-                        From = from.Parent.GetComponent<CombatUnitComponent>(),
-                        Unit = combatU,
-                        Value = realValue
-                    });
-                }
+                BattleHelper.Damage(combatFromU,combatToU,value);
             }
         }
         /// <summary>

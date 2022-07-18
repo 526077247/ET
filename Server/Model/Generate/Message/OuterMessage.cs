@@ -170,6 +170,9 @@ namespace ET
 		[ProtoMember(15)]
 		public List<long> BuffTimestamp = new List<long>();
 
+		[ProtoMember(16)]
+		public List<long> BuffSourceIds = new List<long>();
+
 	}
 
 	[Message(OuterOpcode.M2C_CreateUnits)]
@@ -568,6 +571,9 @@ namespace ET
 
 		[ProtoMember(4)]
 		public long UnitId { get; set; }
+
+		[ProtoMember(5)]
+		public long SourceId { get; set; }
 
 	}
 

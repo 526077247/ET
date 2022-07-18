@@ -6,6 +6,7 @@ using System.IO;
 using System.Reflection;
 using UnityEngine;
 using System.Linq;
+using ILRuntime.Runtime.Intepreter;
 
 namespace ET
 {
@@ -185,6 +186,11 @@ namespace ET
 		public Dictionary<string, Type> GetHotfixTypes()
 		{
 			return this.hotfixTypes;
+		}
+
+		public object CreateInstance(Type type)
+		{
+			return this.appDomain.Instantiate(type.FullName);
 		}
 
 		public bool isReStart = false;
