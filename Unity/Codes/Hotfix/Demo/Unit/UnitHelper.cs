@@ -2,6 +2,12 @@
 {
     public static class UnitHelper
     {
+        public static UnitComponent GetUnitComponentFromZoneScene(this Entity entity)
+        {
+            var zoneScene = entity.ZoneScene();
+            Scene currentScene = zoneScene.GetComponent<CurrentScenesComponent>().Scene;
+            return currentScene.GetComponent<UnitComponent>();
+        }
         public static Unit GetMyUnitFromZoneScene(this Entity entity)
         {
             var zoneScene = entity.ZoneScene();

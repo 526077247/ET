@@ -172,7 +172,10 @@ namespace ET
             for (int i = 0; i < self.AllBuff.Count; i++)
             {
                 var buff = self.GetChild<Buff>(self.AllBuff[i]);
-                BuffWatcherComponent.Instance.BeforeDamage(buff.Config.Type,attacker,target,buff,damage);
+                for (int j = 0; j < buff.Config.Type.Length; j++)
+                {
+                    BuffWatcherComponent.Instance.BeforeDamage(buff.Config.Type[j],attacker,target,buff,damage);
+                }
             }
         }
         
@@ -188,7 +191,10 @@ namespace ET
             for (int i = 0; i < self.AllBuff.Count; i++)
             {
                 var buff = self.GetChild<Buff>(self.AllBuff[i]);
-                BuffWatcherComponent.Instance.AfterDamage(buff.Config.Type,attacker,target,buff,damage);
+                for (int j = 0; j < buff.Config.Type.Length; j++)
+                {
+                    BuffWatcherComponent.Instance.AfterDamage(buff.Config.Type[j], attacker, target, buff, damage);
+                }
             }
         }
 #if !SERVER

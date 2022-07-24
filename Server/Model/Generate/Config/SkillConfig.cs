@@ -112,9 +112,6 @@ namespace ET
 		/// <summary>技能预览释放范围（0半径；1半径，小圈半径；2，长度，宽度）</summary>
 		[ProtoMember(11)]
 		public int[] PreviewRange { get; set; }
-		/// <summary>技能配置</summary>
-		[ProtoMember(12)]
-		public string JsonFile { get; set; }
 
 	}
 }

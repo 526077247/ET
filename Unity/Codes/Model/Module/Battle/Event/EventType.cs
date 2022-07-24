@@ -16,7 +16,6 @@ namespace ET.EventType
         public CombatUnitComponent Unit;
         public long DamageValue;//计算伤害值
         public long RealValue;//生命变化值.正数少血，负数加血
-        public int SkillId;
     }
     
     /// <summary>

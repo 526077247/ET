@@ -100,9 +100,9 @@ namespace ET
 		/// <summary>表现位置(1:Head)</summary>
 		[ProtoMember(7)]
 		public int ObjRoot { get; set; }
-		/// <summary>类型（1属性变化2行为禁制4持续掉血）</summary>
+		/// <summary>类型（1属性变化2行为禁制3持续掉血）</summary>
 		[ProtoMember(8)]
-		public int Type { get; set; }
+		public int[] Type { get; set; }
 		/// <summary>叠加判别组(同组只取最高优先级)</summary>
 		[ProtoMember(9)]
 		public int Group { get; set; }

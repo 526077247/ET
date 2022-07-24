@@ -591,9 +591,6 @@ namespace ET
 		public long ToId { get; set; }
 
 		[ProtoMember(4)]
-		public int ConfigId { get; set; }
-
-		[ProtoMember(5)]
 		public long Damage { get; set; }
 
 	}

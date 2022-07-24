@@ -23,38 +23,16 @@
     {
         public override void Awake(Buff self,int id,long timestamp,long sourceId)
         {
-            Log.Info("添加BUFF id="+id);
-            self.ConfigId = id;
-            self.Timestamp = timestamp;
-            self.FromUnitId = sourceId;
-            var buffComp = self.GetParent<BuffComponent>();
-            var unit = buffComp.unit;
-            if ((self.Config.Type&BuffSubType.Attribute)!=0 )
-                self.AddBuffAttrValue(unit);
-            if ((self.Config.Type&BuffSubType.ActionControl)!=0 )
-               self.AddBuffActionControl(unit);
-            if(timestamp>=0)
-                self.TimerId = TimerComponent.Instance.NewOnceTimer(timestamp, TimerType.RemoveBuff, self);
+            self.HandleAddLogic(id, timestamp, sourceId);
         }
     }
     [FriendClass(typeof(BuffComponent))]
     [ObjectSystem]
     public class BuffAwakeSystem1 : AwakeSystem<Buff,int,long,bool,long>
     {
-        public override void Awake(Buff self,int id,long timestamp,bool ignoreAddAttr,long sourceId)
+        public override void Awake(Buff self,int id,long timestamp,bool ignoreLogic,long sourceId)
         {
-            Log.Info("添加BUFF id="+id);
-            self.ConfigId = id;
-            self.Timestamp = timestamp;
-            self.FromUnitId = sourceId;
-            var buffComp = self.GetParent<BuffComponent>();
-            var unit = buffComp.unit;
-            if(!ignoreAddAttr && (self.Config.Type&BuffSubType.Attribute)!=0 )
-                self.AddBuffAttrValue(unit);
-            if ((self.Config.Type&BuffSubType.ActionControl)!=0 )
-                self.AddBuffActionControl(unit);
-            if(timestamp>=0)
-                self.TimerId = TimerComponent.Instance.NewOnceTimer(timestamp, TimerType.RemoveBuff, self);
+            self.HandleAddLogic(id, timestamp, sourceId, ignoreLogic);
         }
     }
     [FriendClass(typeof(BuffComponent))]
@@ -67,11 +45,22 @@
             Log.Info("移除BUFF id="+self.ConfigId);
             var buffComp = self.GetParent<BuffComponent>();
             var unit = buffComp.unit;
-            if ((self.Config.Type&BuffSubType.Attribute)!=0 && self.AttrConfig.IsRemove == 0) //结束后是否移除加成（0:是）
-                self.RemoveBuffAttrValue(unit);
-            if ((self.Config.Type & BuffSubType.ActionControl) != 0)
-                self.RemoveBuffActionControl(unit);
-
+            for (int i = 0; i < self.Config.Type.Length; i++)
+            {
+                if (self.Config.Type[i] == BuffSubType.Attribute) //结束后是否移除加成（0:是）
+                {
+                    if(self.AttrConfig.IsRemove == 0)
+                        self.RemoveBuffAttrValue(unit);
+                }
+                else if (self.Config.Type[i] == BuffSubType.ActionControl)
+                {
+                    self.RemoveBuffActionControl(unit);
+                }
+                else if (self.Config.Type[i] == BuffSubType.Bleed)
+                {
+                    self.RemoveComponent<BuffBleedComponent>();
+                }
+            }
         }
     }
 
@@ -79,6 +68,46 @@
     [FriendClass(typeof(BuffComponent))]
     public static class BuffSystem
     {
+
+        /// <summary>
+        /// 处理添加buff
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="id"></param>
+        /// <param name="timestamp"></param>
+        /// <param name="sourceId"></param>
+        /// <param name="ignoreLogic"></param>
+        public static void HandleAddLogic(this Buff self,int id,long timestamp,long sourceId,bool ignoreLogic=false)
+        {
+            Log.Info("添加BUFF id="+id);
+            self.ConfigId = id;
+            self.Timestamp = timestamp;
+            self.FromUnitId = sourceId;
+            var buffComp = self.GetParent<BuffComponent>();
+            var unit = buffComp.unit;
+            if (!ignoreLogic)//忽略逻辑处理
+            {
+                for (int i = 0; i < self.Config.Type.Length; i++)
+                {
+                    if (self.Config.Type[i] == BuffSubType.Attribute)
+                    {
+                        self.AddBuffAttrValue(unit);
+                    }
+                    else if (self.Config.Type[i] == BuffSubType.ActionControl)
+                    {
+                        self.AddBuffActionControl(unit);
+                    }
+                    else if (self.Config.Type[i] == BuffSubType.Bleed)
+                    {
+                        self.AddComponent<BuffBleedComponent,int>(self.ConfigId);
+                    }
+                }
+            }
+
+            if(timestamp>=0)
+                self.TimerId = TimerComponent.Instance.NewOnceTimer(timestamp, TimerType.RemoveBuff, self);
+        }
+        
         /// <summary>
         /// 添加BUFF属性加成
         /// </summary>

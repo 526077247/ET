@@ -6,7 +6,7 @@
         protected override void Run(Session session, M2C_Damage message)
         {
             UnitComponent uc = session.DomainScene().CurrentScene().GetComponent<UnitComponent>();
-            Log.Info(message.FromId+"使用"+message.ConfigId+"对"+ message.ToId+"造成"+message.Damage+"点伤害");
+            Log.Info(message.FromId+"对"+ message.ToId+"造成"+message.Damage+"点伤害");
             var unit = uc.Get(message.ToId);
             if (unit != null)
             {

@@ -69,7 +69,7 @@ namespace ET
                         int[] temp = new int[data.Length];
                         for (int j = 0; j < data.Length; j++)
                         {
-                            temp[j] = int.Parse(data[i]);
+                            temp[j] = int.Parse(data[j]);
                         }
                         buffInfo.Add(temp);
                     }
@@ -84,7 +84,7 @@ namespace ET
                 for (int i = 0; i < buffInfo.Count; i++)
                 {
                     
-                    buffC.AddBuff(buffInfo[i][0],TimeHelper.ClientNow() + buffInfo[i][1],fromU.Id);
+                    buffC.AddBuff(buffInfo[i][0],TimeHelper.ServerNow() + buffInfo[i][1],fromU.Id);
                 }
             }
 
