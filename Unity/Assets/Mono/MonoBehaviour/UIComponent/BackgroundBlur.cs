@@ -18,8 +18,6 @@ namespace ET
         
         private void OnEnable()
         {
-            if (rImage == null)
-                rImage = this.GetComponent<RawImage>();
             StartCoroutine(Snapshoot());
         }
 
@@ -27,7 +25,7 @@ namespace ET
         {
             if (rImage == null)
             {
-                Debug.LogWarning("Background Blur is warring !!!");
+                Log.Warning("Background Blur is warring !!!");
                 yield return null;
             }
             else
