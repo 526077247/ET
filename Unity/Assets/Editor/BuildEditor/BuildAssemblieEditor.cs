@@ -12,7 +12,7 @@ namespace ET
     public static class BuildAssemblieEditor
     {
         private const string CodeDir = "Assets/AssetsPackage/Code/";
-
+        private static bool IsBuildCodeAuto;
         [MenuItem("Tools/Build/EnableAutoBuildCodeDebug _F1")]
         public static void SetAutoBuildCode()
         {
@@ -27,6 +27,20 @@ namespace ET
             ShowNotification("AutoBuildCode Disabled");
         }
 
+        public static void BuildCodeAuto()
+        {
+            string jstr = File.ReadAllText("Assets/AssetsPackage/config.bytes");
+            var config = LitJson.JsonMapper.ToObject<Dictionary<string, string>>(jstr);
+            string assemblyName = "Code" + config["ResVer"];
+            BuildAssemblieEditor.BuildMuteAssembly(assemblyName, new []
+            {
+                "Codes/Model/",
+                "Codes/ModelView/",
+                "Codes/Hotfix/",
+                "Codes/HotfixView/"
+            }, Array.Empty<string>(), CodeOptimization.Debug,true);
+            
+        }
         [MenuItem("Tools/Build/BuildCodeDebug _F5")]
         public static void BuildCodeDebug()
         {
@@ -93,7 +107,7 @@ namespace ET
             }, new[]{Path.Combine(Define.BuildOutputDir, "Data.dll")}, CodeOptimization.Debug);
         }
 
-        private static void BuildMuteAssembly(string assemblyName, string[] CodeDirectorys, string[] additionalReferences, CodeOptimization codeOptimization)
+        private static void BuildMuteAssembly(string assemblyName, string[] CodeDirectorys, string[] additionalReferences, CodeOptimization codeOptimization,bool isAuto = false)
         {
             List<string> scripts = new List<string>();
             for (int i = 0; i < CodeDirectorys.Length; i++)
@@ -140,6 +154,7 @@ namespace ET
 
             assemblyBuilder.buildFinished += delegate(string assemblyPath, CompilerMessage[] compilerMessages)
             {
+                IsBuildCodeAuto = false;
                 int errorCount = compilerMessages.Count(m => m.type == CompilerMessageType.Error);
                 int warningCount = compilerMessages.Count(m => m.type == CompilerMessageType.Warning);
 
@@ -152,8 +167,6 @@ namespace ET
 
                 if (errorCount > 0||warningCount > 0)
                 {
-					if (PlayerPrefs.GetInt("AutoBuild") == 1)//如果开启了自动编译要Cancel掉，否则会死循环
-						CancelAutoBuildCode();
                     for (int i = 0; i < compilerMessages.Length; i++)
                     {
                         if (compilerMessages[i].type == CompilerMessageType.Error||compilerMessages[i].type == CompilerMessageType.Warning)
@@ -163,7 +176,18 @@ namespace ET
                     }
                 }
             };
-            
+            if (isAuto)
+            {
+                IsBuildCodeAuto = true;
+                EditorApplication.CallbackFunction Update = null;
+                Update = () =>
+                {
+                    if(IsBuildCodeAuto||EditorApplication.isCompiling) return;
+                    EditorApplication.update -= Update;
+                    AfterBuild(assemblyName);
+                };
+                EditorApplication.update += Update;
+            }
             //开始构建
             if (!assemblyBuilder.Build())
             {
@@ -181,7 +205,13 @@ namespace ET
                 Thread.Sleep(1000);
                 Debug.Log("Compiling wait2");
             }
-            
+            AfterBuild(assemblyName);
+            //反射获取当前Game视图，提示编译完成
+            ShowNotification("Build Code Success");
+        }
+        
+        public static void AfterBuild(string assemblyName)
+        {
             Debug.Log("Compiling finish");
 
             Directory.CreateDirectory(CodeDir);
@@ -191,8 +221,6 @@ namespace ET
             AssetDatabase.Refresh();
 
             Debug.Log("build success!");
-            //反射获取当前Game视图，提示编译完成
-            ShowNotification("Build Code Success");
         }
 
         public static void ShowNotification(string tips)
