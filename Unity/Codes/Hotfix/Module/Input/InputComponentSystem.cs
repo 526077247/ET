@@ -31,7 +31,7 @@ namespace ET
                     {
                         InputWatcherComponent.Instance.Run(key,InputType.KeyUp);
                     }
-                    if (InputHelper.GetKeyUp(key))
+                    if (InputHelper.GetKey(key))
                     {
                         InputWatcherComponent.Instance.Run(key,InputType.Key);
                     }
