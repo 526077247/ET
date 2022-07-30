@@ -18,6 +18,7 @@ namespace ET
                 self.waiter = null;
             }).Coroutine();
             self.HeroObj = UnitHelper.GetMyUnitFromZoneScene(self.ZoneScene()).GetComponent<GameObjectComponent>().GameObject;
+            InputWatcherComponent.Instance.RegisterInputEntity(self);
         }
     }
     [ObjectSystem]
@@ -30,11 +31,6 @@ namespace ET
             if (RaycastHelper.CastMapPoint(out var hitPoint))
             {
                 self.DirectObj.transform.forward = new Vector3(hitPoint.x, hitPoint.y, hitPoint.z) -  self.DirectObj.transform.position;
-                if (Input.GetMouseButtonDown((int)UnityEngine.UIElements.MouseButton.LeftMouse))
-                {
-                    SelectEventSystem.Instance.Hide(self);
-                    self.OnSelectedCallback?.Invoke(hitPoint);
-                }
             }
         }
     }
@@ -44,9 +40,25 @@ namespace ET
         public override void Destroy(DirectRectSelectComponent self)
         {
             GameObjectPoolComponent.Instance?.RecycleGameObject(self.gameObject);
+            InputWatcherComponent.Instance?.RemoveInputEntity(self);
         }
     }
-
+        
+    [InputSystem((int)KeyCode.Mouse0,InputType.KeyDown,100)]
+    public class DirectRectSelectComponentInputSystem_Load : InputSystem<DirectRectSelectComponent>
+    {
+        public override void Run(DirectRectSelectComponent self, int key, int type, ref bool stop)
+        {
+            if (self.DirectObj == null||!self.IsShow) return;
+            if (RaycastHelper.CastMapPoint(out var hitPoint))
+            {
+                SelectWatcherComponent.Instance.Hide(self);
+                self.OnSelectedCallback?.Invoke(hitPoint);
+                stop = true;
+            }
+           
+        }
+    }
     [SelectSystem]
     [FriendClass(typeof(DirectRectSelectComponent))]
     public class DirectRectSelectComponentShowSelectSystem : ShowSelectSystem<DirectRectSelectComponent,Action<Vector3>, int[]>

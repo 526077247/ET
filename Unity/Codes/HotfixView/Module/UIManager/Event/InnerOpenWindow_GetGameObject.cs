@@ -15,7 +15,7 @@ namespace ET
 	        var target = args.window;
 	        var view = target.GetComponent(target.ViewType);
 	        
-	        await UIEventSystem.Instance.OnViewInitializationSystem(view);
+	        await UIWatcherComponent.Instance.OnViewInitializationSystem(view);
             
 			var go = await GameObjectPoolComponent.Instance.GetGameObjectAsync(args.path);
 			if (go == null)
@@ -28,7 +28,7 @@ namespace ET
 			trans.name = target.Name;
 			
 			view.AddUIComponent<UITransform,Transform>("", trans);
-            UIEventSystem.Instance.OnCreate(view);
+            UIWatcherComponent.Instance.OnCreate(view);
 			target.LoadingState = UIWindowLoadingState.LoadOver;
 		}
     }

@@ -19,6 +19,7 @@ namespace ET
             Game.Scene.AddComponent<ImageOnlineComponent>();
             Game.Scene.AddComponent<GameObjectPoolComponent>();
             Game.Scene.AddComponent<UIManagerComponent>();
+            Game.Scene.AddComponent<UIWatcherComponent>();
             Game.Scene.AddComponent<CameraManagerComponent>();
             Game.Scene.AddComponent<SceneManagerComponent>();
             Game.Scene.AddComponent<AOISceneViewComponent>();
@@ -41,15 +42,24 @@ namespace ET
             Game.Scene.AddComponent<ZoneSceneManagerComponent>();
             
             Game.Scene.AddComponent<GlobalComponent>();
-            Game.Scene.AddComponent<GalGameEngineComponent>();
+            Game.Scene.AddComponent<FSMWatcherComponent>();
             
             // gal命令订阅组件
+            Game.Scene.AddComponent<GalGameEngineComponent>();
             Game.Scene.AddComponent<CommandWatcherComponent>();
+            
             // 技能订阅组件
             Game.Scene.AddComponent<SkillWatcherComponent>();
             Game.Scene.AddComponent<BuffWatcherComponent>();
+            
             Game.Scene.AddComponent<AIDispatcherComponent>();
             Game.Scene.AddComponent<NumericWatcherComponent>();
+            
+            //输入订阅组件
+            Game.Scene.AddComponent<InputComponent>();
+            Game.Scene.AddComponent<InputWatcherComponent>();
+
+            Game.Scene.AddComponent<SelectWatcherComponent>();
             await UIManagerComponent.Instance.OpenWindow<UILoadingView>(UILoadingView.PrefabPath);
             if(Define.Networked||Define.ForceUpdate) 
                     //下方代码会初始化Addressables,手机关闭网络等情况访问不到cdn的时候,会卡10s左右。todo:游戏启动时在mono层检查网络

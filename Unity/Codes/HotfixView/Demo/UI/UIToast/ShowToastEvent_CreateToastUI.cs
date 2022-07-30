@@ -23,11 +23,11 @@ namespace ET
             transform.localPosition = Vector3.zero;
             transform.localRotation = Quaternion.identity;
             transform.localScale = new Vector3(1, 1, 1);
-            UIEventSystem.Instance.OnCreate(ui);
-            UIEventSystem.Instance.OnEnable(ui,Content);
+            UIWatcherComponent.Instance.OnCreate(ui);
+            UIWatcherComponent.Instance.OnEnable(ui,Content);
             await TimerComponent.Instance.WaitAsync(seconds*1000);
             ui.BeforeOnDestroy();
-            UIEventSystem.Instance.OnDestroy(ui);
+            UIWatcherComponent.Instance.OnDestroy(ui);
             GameObjectPoolComponent.Instance.RecycleGameObject(gameObject);
         }
 

@@ -7,7 +7,7 @@ namespace ET
     {
         protected override void Run(UIEventType.OnWidthPaddingChange args)
         {
-            var res = UIEventSystem.Instance.OnWidthPaddingChange(args.entity as IOnWidthPaddingChange);
+            var res = UIWatcherComponent.Instance.OnWidthPaddingChange(args.entity as IOnWidthPaddingChange);
             if (!res)
             {
                 OnWidthPaddingChange(args.entity);

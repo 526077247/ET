@@ -15,8 +15,6 @@ namespace ET
             self.windows = new Dictionary<string, UIWindow>();
             self.window_stack = new Dictionary<UILayerNames, LinkedList<string>>();
             Game.EventSystem.Publish(new UIEventType.AfterUIManagerCreate());
-            UIEventSystem.Instance = new UIEventSystem();
-            UIEventSystem.Instance.Awake();
         }
     }
 
@@ -30,8 +28,6 @@ namespace ET
             self.windows = null;
             self.window_stack.Clear();
             self.window_stack = null;
-            UIEventSystem.Instance = null;
-            UIManagerComponent.Instance = null;
             Log.Info("UIManagerComponent Dispose");
         }
 
@@ -42,7 +38,6 @@ namespace ET
         public override void Load(UIManagerComponent self)
         {
             self.DestroyUnShowWindow().Coroutine();
-            UIEventSystem.Instance.Awake();
         }
     }
     /// <summary>

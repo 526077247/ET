@@ -39,7 +39,7 @@ namespace ET
             //保证名字不能相同 不然没法cache
             T t = self.AddUIComponentNotCreate<T>(item.gameObject.name);
             t.AddUIComponent<UITransform,Transform>("",item.transform);
-            UIEventSystem.Instance.OnCreate(t);
+            UIWatcherComponent.Instance.OnCreate(t);
             return t;
         }
         //根据Unity侧item获取UI侧的item

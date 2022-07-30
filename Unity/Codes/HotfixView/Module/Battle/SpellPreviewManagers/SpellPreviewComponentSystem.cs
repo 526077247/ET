@@ -3,18 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace ET
 {
-
-    [ObjectSystem]
-    [FriendClass(typeof(KeyCodeComponent))]
-    public class SpellPreviewComponentAwakeSystem1: AwakeSystem<SpellPreviewComponent>
-    {
-        public override void Awake(SpellPreviewComponent self)
-        {
-            self.Enable = true;
-            self.BindSkillKeyDefault();
-        }
-    }
-
     [ObjectSystem]
     [FriendClass(typeof(KeyCodeComponent))]
     public class SpellPreviewComponentAwakeSystem : AwakeSystem<SpellPreviewComponent,Dictionary<int,int>>
@@ -40,6 +28,60 @@ namespace ET
             }
         }
     }
+    [ObjectSystem]
+    [FriendClass(typeof(KeyCodeComponent))]
+    public class SpellPreviewComponentAwakeSystem1: AwakeSystem<SpellPreviewComponent>
+    {
+        public override void Awake(SpellPreviewComponent self)
+        {
+            self.Enable = true;
+            self.BindSkillKeyDefault();
+            InputWatcherComponent.Instance.RegisterInputEntity(self);
+        }
+    }
+    [ObjectSystem]
+    [FriendClass(typeof(KeyCodeComponent))]
+    public class SpellPreviewComponentDestroySystem1: DestroySystem<SpellPreviewComponent>
+    {
+        public override void Destroy(SpellPreviewComponent self)
+        {
+            InputWatcherComponent.Instance.RemoveInputEntity(self);
+        }
+    }
+    [InputSystem((int)KeyCode.Alpha0,InputType.KeyDown)]
+    [InputSystem((int)KeyCode.Alpha1,InputType.KeyDown)]
+    [InputSystem((int)KeyCode.Alpha2,InputType.KeyDown)]
+    [InputSystem((int)KeyCode.Alpha3,InputType.KeyDown)]
+    [InputSystem((int)KeyCode.Alpha4,InputType.KeyDown)]
+    [InputSystem((int)KeyCode.Alpha5,InputType.KeyDown)]
+    public class SpellPreviewComponentInputSystem_Spell : InputSystem<SpellPreviewComponent>
+    {
+        public override void Run(SpellPreviewComponent self, int key, int type, ref bool stop)
+        {
+            KeyCodeComponent keyCode = KeyCodeComponent.Instance;
+            if (keyCode != null)
+            {
+                var CurCombat = self.GetParent<CombatUnitComponent>();
+                var spellPreviewComponent = CurCombat?.GetComponent<SpellPreviewComponent>();
+                if (spellPreviewComponent == null)
+                {
+                    return;
+                }
+                for (int i = 0; i < keyCode.Skills.Length; i++)
+                {
+                    if (key == keyCode.Skills[i] && spellPreviewComponent.InputSkills.ContainsKey(keyCode.Skills[i]))
+                    {
+                        var spellSkill = spellPreviewComponent.InputSkills[keyCode.Skills[i]];
+                        if (spellSkill == null || !spellSkill.CanUse()) return;
+                        spellPreviewComponent.PreviewingSkill = spellSkill;
+                        spellPreviewComponent.EnterPreview();
+                    }
+                }
+            }
+        }
+    }
+    
+    
     [FriendClass(typeof(SpellPreviewComponent))]
     [FriendClass(typeof(CombatUnitComponent))]
     public static class SpellPreviewComponentSystem
@@ -117,7 +159,7 @@ namespace ET
                 }
                 comp.TargetLimitType = affectTargetType;
                 comp.Mode = self.PreviewingSkill.SkillConfig.Mode;
-                SelectEventSystem.Instance.Show<Action<Unit>,int[]>(comp,(a)=> { self.OnSelectedTarget(a); },
+                SelectWatcherComponent.Instance.Show<Action<Unit>,int[]>(comp,(a)=> { self.OnSelectedTarget(a); },
                     self.PreviewingSkill.SkillConfig.PreviewRange).Coroutine();
                 self.CurSelect = comp;
             }
@@ -130,7 +172,7 @@ namespace ET
                     comp = self.AddComponent<PointSelectComponent>();
                 }
                 comp.Mode = self.PreviewingSkill.SkillConfig.Mode;
-                SelectEventSystem.Instance.Show<Action<Vector3>,int[]>(comp,(a)=> { self.OnInputPoint(a); },
+                SelectWatcherComponent.Instance.Show<Action<Vector3>,int[]>(comp,(a)=> { self.OnInputPoint(a); },
                     self.PreviewingSkill.SkillConfig.PreviewRange).Coroutine();
                 self.CurSelect = comp;
             }
@@ -143,7 +185,7 @@ namespace ET
                     comp = self.AddComponent<DirectRectSelectComponent>();
                 }
                 comp.Mode = self.PreviewingSkill.SkillConfig.Mode;
-                SelectEventSystem.Instance.Show<Action<Vector3>,int[]>(comp,(a)=> { self.OnInputDirect(a); },
+                SelectWatcherComponent.Instance.Show<Action<Vector3>,int[]>(comp,(a)=> { self.OnInputDirect(a); },
                     self.PreviewingSkill.SkillConfig.PreviewRange).Coroutine();
                 self.CurSelect = comp;
             }
@@ -160,7 +202,7 @@ namespace ET
         {
             self.Previewing = false;
             if(self.CurSelect!=null)
-                SelectEventSystem.Instance.Hide(self.CurSelect);
+                SelectWatcherComponent.Instance.Hide(self.CurSelect);
         }
         
         private static void OnSelectedTarget(this SpellPreviewComponent self,Unit unit)

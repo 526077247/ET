@@ -18,6 +18,7 @@ namespace ET
                 self.waiter = null;
             }).Coroutine();
             self.HeroObj = UnitHelper.GetMyUnitFromZoneScene(self.ZoneScene()).GetComponent<GameObjectComponent>().GameObject;
+            InputWatcherComponent.Instance.RegisterInputEntity(self);
         }
     }
     [ObjectSystem]
@@ -37,12 +38,29 @@ namespace ET
                     hitPoint = nowpos + dir * self.distance;
                 }
                 self.SkillPointObj.transform.position = new Vector3(hitPoint.x, hitPoint.y, hitPoint.z);
-                if (Input.GetMouseButtonDown((int) UnityEngine.UIElements.MouseButton.LeftMouse))
-                {
-                    SelectEventSystem.Instance.Hide(self);
-                    self.OnSelectPointCallback?.Invoke(hitPoint);
-                }
             }
+        }
+    }
+    [InputSystem((int)KeyCode.Mouse0,InputType.KeyDown,100)]
+    public class PointSelectComponentInputSystem_Load : InputSystem<PointSelectComponent>
+    {
+        public override void Run(PointSelectComponent self, int key, int type, ref bool stop)
+        {
+            if (self.RangeCircleObj == null||!self.IsShow) return;
+            if (RaycastHelper.CastMapPoint(out var hitPoint))
+            {
+                var nowpos = self.HeroObj.transform.position;
+                if (Vector2.Distance(new Vector2(nowpos.x, nowpos.z), new Vector2(hitPoint.x, hitPoint.z)) >
+                    self.distance)
+                {
+                    var dir =new Vector3(hitPoint.x - nowpos.x,0, hitPoint.z - nowpos.z).normalized;
+                    hitPoint = nowpos + dir * self.distance;
+                }
+                SelectWatcherComponent.Instance.Hide(self);
+                self.OnSelectPointCallback?.Invoke(hitPoint);
+                stop = true;
+            }
+           
         }
     }
     [ObjectSystem]
@@ -51,6 +69,7 @@ namespace ET
         public override void Destroy(PointSelectComponent self)
         {
             GameObjectPoolComponent.Instance?.RecycleGameObject(self.gameObject);
+            InputWatcherComponent.Instance?.RemoveInputEntity(self);
         }
     }
     

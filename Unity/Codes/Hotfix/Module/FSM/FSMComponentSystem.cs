@@ -7,22 +7,11 @@ using System.Threading.Tasks;
 namespace ET
 {
     [ObjectSystem]
-    public class FSMComponentAwakeSystem : AwakeSystem<FSMComponent>
-    {
-        public override void Awake(FSMComponent self)
-        {
-            FSMEventSystem.Instance = new FSMEventSystem();
-            FSMEventSystem.Instance.Awake();
-        }
-    }
-    [ObjectSystem]
     public class FSMComponentDestroySystem : DestroySystem<FSMComponent>
     {
         public override void Destroy(FSMComponent self)
         {
             self.RemoveAllState().Coroutine();
-            UIEventSystem.Instance = new UIEventSystem();
-            UIEventSystem.Instance.Awake();
         }
     }
     [FriendClass(typeof(FSMComponent))]
@@ -153,10 +142,10 @@ namespace ET
                 }
                 if (self.CurrentState != null) //当前状态不为空
                 {
-                    await FSMEventSystem.Instance.FSMOnExit(self.CurrentState);
+                    await FSMWatcherComponent.Instance.FSMOnExit(self.CurrentState);
                 }
                 self.CurrentState = _tmpState; //缓存为当前状态
-                await FSMEventSystem.Instance.FSMOnEnter(self.CurrentState);//触发当前状态的OnEnter
+                await FSMWatcherComponent.Instance.FSMOnEnter(self.CurrentState);//触发当前状态的OnEnter
             }
             finally
             {
@@ -181,10 +170,10 @@ namespace ET
                 }
                 if (self.CurrentState != null) //当前状态不为空
                 {
-                    await FSMEventSystem.Instance.FSMOnExit(self.CurrentState);
+                    await FSMWatcherComponent.Instance.FSMOnExit(self.CurrentState);
                 }
                 self.CurrentState = _tmpState; //缓存为当前状态
-                await FSMEventSystem.Instance.FSMOnEnter(self.CurrentState, t);//触发当前状态的OnEnter
+                await FSMWatcherComponent.Instance.FSMOnEnter(self.CurrentState, t);//触发当前状态的OnEnter
             }
             finally
             {
@@ -209,10 +198,10 @@ namespace ET
                 }
                 if (self.CurrentState != null) //当前状态不为空
                 {
-                    await FSMEventSystem.Instance.FSMOnExit(self.CurrentState);
+                    await FSMWatcherComponent.Instance.FSMOnExit(self.CurrentState);
                 }
                 self.CurrentState = _tmpState; //缓存为当前状态
-                await FSMEventSystem.Instance.FSMOnEnter(self.CurrentState, t, u);//触发当前状态的OnEnter
+                await FSMWatcherComponent.Instance.FSMOnEnter(self.CurrentState, t, u);//触发当前状态的OnEnter
             }
             finally
             {
@@ -237,10 +226,10 @@ namespace ET
                 }
                 if (self.CurrentState != null) //当前状态不为空
                 {
-                    await FSMEventSystem.Instance.FSMOnExit(self.CurrentState);
+                    await FSMWatcherComponent.Instance.FSMOnExit(self.CurrentState);
                 }
                 self.CurrentState = _tmpState; //缓存为当前状态
-                await FSMEventSystem.Instance.FSMOnEnter(self.CurrentState, t, u, v);//触发当前状态的OnEnter
+                await FSMWatcherComponent.Instance.FSMOnEnter(self.CurrentState, t, u, v);//触发当前状态的OnEnter
             }
             finally
             {
@@ -251,7 +240,7 @@ namespace ET
         {
             if (self.CurrentState != null)
             {
-                await FSMEventSystem.Instance.FSMOnExit(self.CurrentState);
+                await FSMWatcherComponent.Instance.FSMOnExit(self.CurrentState);
                 self.CurrentState = null;
             }
             self.m_dic.Clear();

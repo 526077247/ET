@@ -162,7 +162,7 @@ namespace ET
 
             if (uiRedDotComponent != null)
             {
-                UIEventSystem.Instance.OnChangeRedDotActive(uiRedDotComponent, self.RetainViewCount[target]);
+                UIWatcherComponent.Instance.OnChangeRedDotActive(uiRedDotComponent, self.RetainViewCount[target]);
             }
             
             bool isParentExist = self.ToParentDict.TryGetValue(target, out string parent);
@@ -180,7 +180,7 @@ namespace ET
                 
                 if (self.RedDotMonoViewDict.TryGetValue(parent, out uiRedDotComponent))
                 {
-                    UIEventSystem.Instance.OnChangeRedDotActive(uiRedDotComponent, viewCount);
+                    UIWatcherComponent.Instance.OnChangeRedDotActive(uiRedDotComponent, viewCount);
                 }
 
                 isParentExist = self.ToParentDict.TryGetValue(parent, out parent);

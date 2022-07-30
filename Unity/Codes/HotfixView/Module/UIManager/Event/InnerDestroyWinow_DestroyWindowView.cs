@@ -25,7 +25,7 @@ namespace ET
 						GameObjectPoolComponent.Instance.RecycleGameObject(obj);
 				}
 				view.BeforeOnDestroy();
-				UIEventSystem.Instance.OnDestroy(view);
+				UIWatcherComponent.Instance.OnDestroy(view);
 			}
 		}
 	}

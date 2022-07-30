@@ -16,6 +16,7 @@ namespace ET
             self.Init().Coroutine();
              
             self.HeroObj = UnitHelper.GetMyUnitFromZoneScene(self.ZoneScene()).GetComponent<GameObjectComponent>().GameObject;
+            InputWatcherComponent.Instance.RegisterInputEntity(self);
         }
     }
     [ObjectSystem]
@@ -45,21 +46,37 @@ namespace ET
                         {
                             self.CursorImage.color = Color.green;
                         }
-                        if (Input.GetMouseButtonDown((int)UnityEngine.UIElements.MouseButton.LeftMouse))
-                        {
-                            SelectEventSystem.Instance.Hide(self);
-                            self.OnSelectTargetCallback?.Invoke(unit);
-                        }
                         return;
                     }
                 }
             }
-            if (Input.GetMouseButtonDown((int)UnityEngine.UIElements.MouseButton.LeftMouse))
-            {
-                SelectEventSystem.Instance.Hide(self);
-            }
             self.CursorImage.color = self.CursorColor;
             
+        }
+    }
+    [InputSystem((int)KeyCode.Mouse0,InputType.KeyDown,100)]
+    public class TargetSelectComponentInputSystem_Load : InputSystem<TargetSelectComponent>
+    {
+        public override void Run(TargetSelectComponent self, int key, int type, ref bool stop)
+        {
+            if (self.RangeCircleObj == null||!self.IsShow) return;
+            if (RaycastHelper.CastUnitObj(out var obj))
+            {
+                var uidC = obj.GetComponentInParent<UnitIdComponent>();
+                if (uidC != null)
+                {
+                    var unit = self.ZoneScene().CurrentScene().GetComponent<UnitComponent>()?.GetChild<Unit>(uidC.UnitId);
+                    var canUse = self.CanSkillToUnit(unit);
+                    if (canUse)
+                    {
+                        SelectWatcherComponent.Instance.Hide(self);
+                        self.OnSelectTargetCallback?.Invoke(unit);
+                        stop = true;
+                        return;
+                    }
+                }
+            }
+            SelectWatcherComponent.Instance.Hide(self);
         }
     }
     [ObjectSystem]
@@ -69,6 +86,7 @@ namespace ET
         {
             GameObjectPoolComponent.Instance?.RecycleGameObject(self.gameObject);
             GameObjectPoolComponent.Instance?.RecycleGameObject(self.CursorImage.gameObject);
+            InputWatcherComponent.Instance?.RemoveInputEntity(self);
         }
     }
     [SelectSystem]

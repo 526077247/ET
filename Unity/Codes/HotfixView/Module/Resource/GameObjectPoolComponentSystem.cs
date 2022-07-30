@@ -62,7 +62,7 @@ namespace ET
             if (obj == null) return null;
             T res = self.AddChild<T>();
             res.AddUIComponent<UITransform,Transform>("", obj.transform);
-            UIEventSystem.Instance.OnCreate(res);
+            UIWatcherComponent.Instance.OnCreate(res);
             return res;
         }
 
@@ -71,7 +71,7 @@ namespace ET
             var uiTrans = obj.GetUIComponent<UITransform>();
             self.RecycleGameObject(uiTrans.transform.gameObject, isClear);
             obj.BeforeOnDestroy();
-            UIEventSystem.Instance.OnDestroy(obj);
+            UIWatcherComponent.Instance.OnDestroy(obj);
         }
 
 

@@ -123,7 +123,7 @@ namespace ET
             var values = self.I18NEntity.Values;
             foreach (var entity in values)
             {
-                UIEventSystem.Instance.OnLanguageChange(entity);
+                UIWatcherComponent.Instance.OnLanguageChange(entity);
             }
             I18NBridge.Instance.OnLanguageChange();
         }
