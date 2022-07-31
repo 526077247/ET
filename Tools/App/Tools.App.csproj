@@ -53,7 +53,7 @@
             <Link>Apps\ChapterExporter\Chapter.cs</Link>
         </Compile>
 
-        <Compile Include="..\..\Server\Model\Module\AOI\Ghost\AreaConfig.cs">
+        <Compile Include="..\..\Server\Model\Module\AOI\Ghost\Config\AreaConfig.cs">
             <Link>Apps\AreaExporter\AreaConfig.cs</Link>
         </Compile>
     </ItemGroup>
