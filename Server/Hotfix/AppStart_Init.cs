@@ -40,7 +40,7 @@ namespace ET
             Game.Scene.AddComponent<NetThreadComponent>();
             
             Game.Scene.AddComponent<NavmeshComponent, Func<string, byte[]>>(RecastFileReader.Read);
-
+            Game.Scene.AddComponent<AreaConfigComponent>();
             switch (Game.Options.AppType)
             {
                 case AppType.IDE:

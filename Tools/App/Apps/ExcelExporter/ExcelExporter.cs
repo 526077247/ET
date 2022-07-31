@@ -129,9 +129,9 @@ namespace ET
         {
             IsCheck = isCheck;
             if(isCheck)
-                Console.WriteLine("校验");
+                Console.WriteLine("ExcelExporter 校验");
             else
-                Console.WriteLine("导表");
+                Console.WriteLine("ExcelExporter 开始");
             try
             {
                 template = File.ReadAllText("Template.txt");
@@ -152,7 +152,7 @@ namespace ET
                     Directory.Delete(clientProtoDir, true);
                 }
                 
-                foreach (string path in FindFile(excelDir))
+                foreach (string path in  ExportHelper.FindFile(excelDir))
                 {
                     string fileName = Path.GetFileName(path);
                     if (!fileName.EndsWith(".xlsx") || fileName.StartsWith("~$") || fileName.Contains("#"))
@@ -221,7 +221,7 @@ namespace ET
                         ExportClass(kv.Key, kv.Value.HeadInfos, ConfigType.c);
                     }
                 }
-                foreach (string path in FindFile(excelDir))
+                foreach (string path in  ExportHelper.FindFile(excelDir))
                 {
                     ExportExcel(path);
                 }
@@ -235,7 +235,7 @@ namespace ET
                 //}
                 //Task.WaitAll(tasks.ToArray());
 
-                Log.Console("Export Excel Sucess!");
+                Console.WriteLine("ExcelExporter 成功");
             }
             catch (Exception e)
             {

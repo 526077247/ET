@@ -17,35 +17,12 @@ namespace ET
 {
     public static partial class ExcelExporter
     {
-
-        public static List<string> FindFile(string dirPath) //参数dirPath为指定的目录
-        {
-            List<string> res = new List<string>();
-            //在指定目录及子目录下查找文件,在listBox1中列出子目录及文件
-            DirectoryInfo Dir = new DirectoryInfo(dirPath);
-            try
-            {
-                foreach (DirectoryInfo d in Dir.GetDirectories()) //查找子目录
-                {
-                    res.AddRange(FindFile(dirPath + "\\"+d.Name));
-                }
-                foreach (var f in Directory.GetFiles(dirPath)) //查找文件
-                {
-                    res.Add(f); 
-                }
-            }
-
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
-
-            return res;
-        }
+        
         public static void ExportChapter()
         {
+            Console.WriteLine("ChapterExporter 开始");
             Table table = null;
-            foreach (string excelPath in FindFile(excelDir))
+            foreach (string excelPath in ExportHelper.FindFile(excelDir))
             {
                 string dir = Path.GetDirectoryName(excelPath);
                 string relativePath = Path.GetRelativePath(excelDir, dir);
@@ -81,6 +58,7 @@ namespace ET
 
                 
             }
+            Console.WriteLine("ChapterExporter 成功");
         }
         
         static void ExportExcelChapter(ExcelPackage p, string name,Table table, ConfigType configType, string relativeDir)

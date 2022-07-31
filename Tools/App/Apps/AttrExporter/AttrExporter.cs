@@ -18,33 +18,11 @@ namespace ET
             public string Remarks;
             public string Affected;
         }
-        public static List<string> FindFile(string dirPath) //参数dirPath为指定的目录
-        {
-            List<string> res = new List<string>();
-            //在指定目录及子目录下查找文件,在listBox1中列出子目录及文件
-            DirectoryInfo Dir = new DirectoryInfo(dirPath);
-            try
-            {
-                foreach (DirectoryInfo d in Dir.GetDirectories()) //查找子目录
-                {
-                    res.AddRange(FindFile(dirPath + "\\"+d.Name));
-                }
-                foreach (var f in Directory.GetFiles(dirPath)) //查找文件
-                {
-                    res.Add(f); 
-                }
-            }
-
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
-
-            return res;
-        }
+        
         public static void Export()
         {
-            foreach (string excelPath in FindFile(excelDir))
+            Console.WriteLine("AttrExporter 开始");
+            foreach (string excelPath in ExportHelper.FindFile(excelDir))
             {
                 if (!excelPath.EndsWith(".xlsx") || excelPath.StartsWith("~$") || excelPath.Contains("#"))
                 {
@@ -109,10 +87,10 @@ namespace ET
                 str.AppendLine("}");
 
                 File.WriteAllText(ClassDir, str.ToString());
-                Console.WriteLine("成功");
+                Console.WriteLine("AttrExporter 成功");
                 return;
             }
-            Console.WriteLine("文件未找到");
+            Console.WriteLine("AttrExporter 文件未找到");
         }
         
         static void ExportExcelEnum(ExcelPackage p,List<Info> list)

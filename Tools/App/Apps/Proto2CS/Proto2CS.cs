@@ -15,9 +15,9 @@ namespace ET
     {
         public static void Export()
         {
-            // InnerMessage.proto生成cs代码
+            Console.WriteLine("Proto2CS 开始");
             InnerProto2CS.Proto2CS();
-            Log.Console("proto2cs succeed!");
+            Console.WriteLine("Proto2CS 成功");
         }
     }
 

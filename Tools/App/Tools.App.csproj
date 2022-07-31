@@ -48,6 +48,14 @@
         <Compile Include="..\..\Unity\Codes\Model\Module\Message\OpcodeRangeDefine.cs">
             <Link>Module\Message\OpcodeRangeDefine.cs</Link>
         </Compile>
+
+        <Compile Include="..\..\Unity\Codes\ModelView\Demo\GalGame\Chapter.cs">
+            <Link>Apps\ChapterExporter\Chapter.cs</Link>
+        </Compile>
+
+        <Compile Include="..\..\Server\Model\Module\AOI\Ghost\AreaConfig.cs">
+            <Link>Apps\AreaExporter\AreaConfig.cs</Link>
+        </Compile>
     </ItemGroup>
     
     <ItemGroup>

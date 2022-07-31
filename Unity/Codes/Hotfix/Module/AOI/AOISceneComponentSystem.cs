@@ -15,6 +15,13 @@ namespace ET
             self.gridLen = gridLen;
             self.halfDiagonal = self.gridLen*0.7072f;
             Log.Info("AOIScene StandBy! ");
+#if SERVER
+            var id = (int)self.Id;
+            if (MapAreaConfigCategory.Instance.GetAll().TryGetValue(id, out var config))
+            {
+                self.AddComponent<AreaComponent, string>(config.Area);
+            }
+#endif
         }
     }
 

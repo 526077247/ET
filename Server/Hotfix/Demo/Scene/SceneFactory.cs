@@ -31,7 +31,7 @@ namespace ET
                     break;
                 case SceneType.Map:
                     scene.AddComponent<UnitComponent>();
-                    scene.AddComponent<AOISceneComponent,int>(9);
+                    scene.AddComponent<AOISceneComponent,int>(9);//测试值，实际可以设置大一点
                     break;
                 case SceneType.Location:
                     scene.AddComponent<LocationComponent>();
