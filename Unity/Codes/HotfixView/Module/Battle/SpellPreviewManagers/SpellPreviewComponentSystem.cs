@@ -26,6 +26,7 @@ namespace ET
             {
                 self.BindSkillKeyDefault();
             }
+            InputWatcherComponent.Instance.RegisterInputEntity(self);
         }
     }
     [ObjectSystem]
