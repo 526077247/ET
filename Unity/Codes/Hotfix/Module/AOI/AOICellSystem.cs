@@ -362,5 +362,61 @@ namespace ET
             }
             return ListComponent<AOIUnitComponent>.Create();
         }
+        
+        #region Ghost
+#if SERVER
+        
+        /// <summary>
+        /// 获取当前格子所属场景
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="sceneId"></param>
+        /// <returns></returns>
+        public static bool TryGetCellMap(this AOICell self,out int sceneId)
+        {
+            var areaComp = self.GetParent<AOISceneComponent>().GetComponent<AreaComponent>();
+            if (areaComp == null)
+            {
+                throw new Exception("areaComp == null");
+            }
+            return areaComp.TryGetCellMap(self.Id, out sceneId);
+        }
+
+        /// <summary>
+        /// 是否是当前场景的格子
+        /// </summary>
+        /// <param name="self"></param>
+        /// <returns></returns>
+        public static bool IsCurScene(this AOICell self)
+        {
+            var areaComp = self.GetParent<AOISceneComponent>().GetComponent<AreaComponent>();
+            if (areaComp == null)
+            {
+                throw new Exception("areaComp == null");
+            }
+            if (areaComp.TryGetCellMap(self.Id, out int sceneId))
+            {
+                return sceneId == self.Parent.Id;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// 是否是未开放地区
+        /// </summary>
+        /// <param name="self"></param>
+        /// <returns></returns>
+        public static bool IsCloseCell(this AOICell self)
+        {
+            var areaComp = self.GetParent<AOISceneComponent>().GetComponent<AreaComponent>();
+            if (areaComp == null)
+            {
+                throw new Exception("areaComp == null");
+            }
+            return areaComp.TryGetCellMap(self.Id, out int _);
+        }
+#endif
+        #endregion
     }
 }

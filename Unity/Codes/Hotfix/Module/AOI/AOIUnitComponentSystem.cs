@@ -144,7 +144,7 @@ namespace ET
         public static void ChangeTo(this AOIUnitComponent self,AOICell newgrid)
         {
             AOICell oldgrid = self.Cell;
-            Log.Info(self.Id+"From: "+"  grid x:"+ oldgrid.posx+",y:"+ oldgrid.posy+ "  ChangeTo:grid x:"+ newgrid.posx+",y:"+ newgrid.posy);
+            // Log.Info(self.Id+"From: "+"  grid x:"+ oldgrid.posx+",y:"+ oldgrid.posy+ "  ChangeTo:grid x:"+ newgrid.posx+",y:"+ newgrid.posy);
             #region 广播给别人
             using (DictionaryComponent<AOIUnitComponent, int> dic = DictionaryComponent<AOIUnitComponent, int>.Create())
             {

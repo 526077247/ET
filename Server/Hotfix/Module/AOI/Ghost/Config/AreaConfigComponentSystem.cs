@@ -22,9 +22,9 @@ namespace ET
             }
 
             byte[] buffer = self.Loader.GetOneConfigBytes(name);
-            if (buffer.Length == 0)
+            if (buffer==null||buffer.Length == 0)
             {
-                throw new Exception($"no nav data: {name}");
+                throw new Exception($"no AreaConfig data: {name}");
             }
 
             ptr = ProtobufHelper.FromBytes(typeof(AreaConfigCategory),buffer, 0, buffer.Length) as AreaConfigCategory;
