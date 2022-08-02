@@ -8,7 +8,7 @@ namespace ET
 {
     [ChildType(typeof(UIWindow))]
     [ComponentOf(typeof(Scene))]
-    public class UIManagerComponent : Entity,IAwake,IDestroy,ILoad,IUpdate
+    public class UIManagerComponent : Entity,IAwake,IDestroy,ILoad,IUpdate,IInput
     {
         public static UIManagerComponent Instance;
         public Dictionary<string, UIWindow> windows;//所有存活的窗体  {ui_name:window}

@@ -11,31 +11,30 @@ namespace ET
             {
                 InputComponent.Instance = self;
                 self.KeysForListen = new List<int>();
+                self.IsKeyDown = new Dictionary<int,bool>();
+                self.IsKeyUp = new Dictionary<int,bool>();
+                self.IsKey = new Dictionary<int,bool>();
             }
-            
-             
         }
         
         public class InputComponentUpdateSystem:UpdateSystem<InputComponent>
         {
             public override void Update(InputComponent self)
             {
+                self.IsKeyDown.Clear();
+                self.IsKeyUp.Clear();
+                self.IsKey.Clear();
                 for (int i= 0; i< self.KeysForListen.Count; ++i)
                 {
                     int key = self.KeysForListen[i];
-                    if (InputHelper.GetKeyDown(key))
-                    {
-                        InputWatcherComponent.Instance.Run(key,InputType.KeyDown);
-                    }
+                    if(InputHelper.GetKeyDown(key))
+                        self.IsKeyDown[key]=true;
                     if (InputHelper.GetKeyUp(key))
-                    {
-                        InputWatcherComponent.Instance.Run(key,InputType.KeyUp);
-                    }
-                    if (InputHelper.GetKey(key))
-                    {
-                        InputWatcherComponent.Instance.Run(key,InputType.Key);
-                    }
+                        self.IsKeyUp[key] = true;
+                    if(InputHelper.GetKey(key))
+                        self.IsKey[key]=true;
                 }
+                InputWatcherComponent.Instance.RunCheck();
             }
 
         }
@@ -46,6 +45,44 @@ namespace ET
             {
                 self.KeysForListen.Add(key);
             }
+        }
+
+        public static bool GetKeyDown(this InputComponent self, int key)
+        {
+            if (self.IsKeyDown.TryGetValue(key, out var res))
+            {
+                return res;
+            }
+            return false;
+        }
+        public static void StopKeyDown(this InputComponent self, int key)
+        {
+            self.IsKeyDown.Remove(key);
+        }
+        public static bool GetKeyUp(this InputComponent self, int key)
+        {
+            if (self.IsKeyUp.TryGetValue(key, out var res))
+            {
+                return res;
+            }
+            return false;
+        }
+        public static void StopKeyUp(this InputComponent self, int key)
+        {
+            self.IsKeyUp.Remove(key);
+        }
+        public static bool GetKey(this InputComponent self, int key)
+        {
+            if (self.IsKey.TryGetValue(key, out var res))
+            {
+                return res;
+            }
+            return false;
+        }
+        
+        public static void StopKey(this InputComponent self, int key)
+        {
+            self.IsKey.Remove(key);
         }
     }
 }

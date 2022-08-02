@@ -12,12 +12,12 @@ namespace ET
     {
         public static InputWatcherComponent Instance { get; set; }
         public TypeSystems typeSystems;
-        public UnOrderMultiMap<IInputSystem, InputSystemAttribute> typeMapAttr;
+        public UnOrderMultiMap<object, InputSystemAttribute> typeMapAttr;
 
         public List<Entity> InputEntitys;
         
         public MultiDictionary<int,int, List<object>> allSystem;
 
-        public MultiDictionary<int,int,LinkedList<Tuple<IInputSystem,Entity,int>>> sortList;
+        public LinkedList<Tuple<object,Entity,int,int[],int[]>> sortList;
     }
 }

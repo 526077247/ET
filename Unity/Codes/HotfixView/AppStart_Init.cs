@@ -14,6 +14,11 @@ namespace ET
             Game.Scene.AddComponent<TimerComponent>();
             Game.Scene.AddComponent<CoroutineLockComponent>();
             Game.Scene.AddComponent<ResourcesComponent>();
+                                    
+            //输入订阅组件
+            Game.Scene.AddComponent<InputComponent>();
+            Game.Scene.AddComponent<InputWatcherComponent>();
+            
             Game.Scene.AddComponent<MaterialComponent>();
             Game.Scene.AddComponent<ImageLoaderComponent>();
             Game.Scene.AddComponent<ImageOnlineComponent>();
@@ -54,10 +59,7 @@ namespace ET
             
             Game.Scene.AddComponent<AIDispatcherComponent>();
             Game.Scene.AddComponent<NumericWatcherComponent>();
-            
-            //输入订阅组件
-            Game.Scene.AddComponent<InputComponent>();
-            Game.Scene.AddComponent<InputWatcherComponent>();
+
 
             Game.Scene.AddComponent<SelectWatcherComponent>();
             await UIManagerComponent.Instance.OpenWindow<UILoadingView>(UILoadingView.PrefabPath);

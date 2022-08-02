@@ -30,49 +30,170 @@ namespace ET
         private static void Init(this InputWatcherComponent self)
         {
             self.typeSystems = new TypeSystems();
-            self.typeMapAttr = new UnOrderMultiMap<IInputSystem, InputSystemAttribute>();
-            self.sortList = new MultiDictionary<int, int, LinkedList<Tuple<IInputSystem, Entity,int>>>();
+            self.typeMapAttr = new UnOrderMultiMap<object, InputSystemAttribute>();
+            self.sortList = new LinkedList<Tuple<object,Entity,int,int[],int[]>>();
             List<Type> types = Game.EventSystem.GetTypes(typeof(InputSystemAttribute));
             foreach (Type type in types)
             {
                 object[] attrs = type.GetCustomAttributes(typeof(InputSystemAttribute), false);
                 if(attrs.Length<=0) return;
-                IInputSystem obj = Activator.CreateInstance(type) as IInputSystem;
-                for (int i = 0; i < attrs.Length; i++)
+                var obj = Activator.CreateInstance(type);
+                if (obj is ISystemType iSystemType)
                 {
-                    var attr = attrs[i] as InputSystemAttribute;
-                    if (!Define.Debug && attr.Priority <= -10000)
+                    bool has = false;
+                    for (int i = 0; i < attrs.Length; i++)
                     {
-                        continue;
+                        var attr = attrs[i] as InputSystemAttribute;
+                        if (!Define.Debug && attr.Priority <= -10000)
+                        {
+                            continue;
+                        }
+                        self.typeMapAttr.Add(obj, attr);
+                        for (int j = 0; j < attr.KeyCode.Length; j++)
+                        {
+                            InputComponent.Instance.AddListenter(attr.KeyCode[j]);
+                        }
+
+                        has = true;
                     }
-                    if (obj is ISystemType iSystemType)
+
+                    if (has)
                     {
                         OneTypeSystems oneTypeSystems = self.typeSystems.GetOrCreateOneTypeSystems(iSystemType.Type());
                         oneTypeSystems.Add(iSystemType.SystemType(), obj);
-                        self.typeMapAttr.Add(obj, attr);
-                        InputComponent.Instance.AddListenter(attr.KeyCode);
                     }
                 }
+                
             }
         }
 
-        public static void Run(this InputWatcherComponent self, int code,int type)
+        public static void RunCheck(this InputWatcherComponent self)
         {
-            LinkedList<Tuple<IInputSystem,Entity,int>> typeSystems;
-            if (!self.sortList.TryGetValue(code,type, out typeSystems))
-            {
-                return;
-            }
-
-            bool stop = false;
             //优先级高的在后面
-            for (var node = typeSystems.Last; node!=null&&!stop; node=node.Previous)
+            for (var node = self.sortList.Last; node!=null&& InputComponent.Instance.HasKey; node=node.Previous)
             {
                 var component = node.Value.Item2;
                 var system = node.Value.Item1;
+                var codes = node.Value.Item4;
+                var types = node.Value.Item5;
                 try
                 {
-                    system.Run(component,code,type,ref stop);
+                    if(system is IInputSystem inputSystem)
+                    {
+                        for (int i = 0; i < codes.Length; i++)
+                        {
+                            var type = types[i];
+                            var code = codes[i];
+                            if (type == InputType.Key)
+                            {
+                                if (InputComponent.Instance.GetKey(code))
+                                {
+                                    bool stop = false;
+                                    inputSystem.Run(component, code, type, ref stop);
+                                    if (stop)
+                                    {
+                                        InputComponent.Instance.StopKey(code);
+                                    }
+                                }
+                            }
+
+                            if (type == InputType.KeyDown)
+                            {
+                                if (InputComponent.Instance.GetKeyDown(code))
+                                {
+                                    bool stop = false;
+                                    inputSystem.Run(component, code, type, ref stop);
+                                    if (stop)
+                                    {
+                                        InputComponent.Instance.StopKeyDown(code);
+                                    }
+                                }
+                            }
+
+                            if (type == InputType.KeyUp)
+                            {
+                                if (InputComponent.Instance.GetKeyUp(code))
+                                {
+                                    bool stop = false;
+                                    inputSystem.Run(component, code, type, ref stop);
+                                    if (stop)
+                                    {
+                                        InputComponent.Instance.StopKeyUp(code);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else if (system is IInputGroupSystem mulInputSystem)
+                    {
+                        using (ListComponent<int> _code = ListComponent<int>.Create())
+                        {
+                            using (ListComponent<int> _type = ListComponent<int>.Create())
+                            {
+                                for (int i = 0; i < codes.Length; i++)
+                                {
+                                    var type = types[i];
+                                    var code = codes[i];
+                                   
+                                    if (type == InputType.Key)
+                                    {
+                                        if (InputComponent.Instance.GetKey(code))
+                                        {
+                                            _code.Add(code);
+                                            _type.Add(type);
+                                        }
+                                    }
+
+                                    if (type == InputType.KeyDown)
+                                    {
+                                        if (InputComponent.Instance.GetKeyDown(code))
+                                        {
+                                            _code.Add(code);
+                                            _type.Add(type);
+                                        }
+                                    }
+
+                                    if (type == InputType.KeyUp)
+                                    {
+                                        if (InputComponent.Instance.GetKeyUp(code))
+                                        {
+                                            _code.Add(code);
+                                            _type.Add(type);
+                                        }
+                                    }
+                                }
+                                bool stop = false;
+                                mulInputSystem.Run(component, _code, _type, ref stop);
+                                if (stop)
+                                {
+                                    for (int i = 0; i < _code.Count; i++)
+                                    {
+                                        var type = _type[i];
+                                        var code = _code[i];
+                                        if (type == InputType.Key)
+                                        {
+                                            InputComponent.Instance.StopKey(code);
+                                        }
+
+                                        if (type == InputType.KeyDown)
+                                        {
+                                            InputComponent.Instance.StopKeyDown(code);
+                                        }
+
+                                        if (type == InputType.KeyUp)
+                                        {
+                                            InputComponent.Instance.StopKeyUp(code);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        
+                    }
+                    else
+                    {
+                        Log.Error("未处理此类型"+nameof(system));
+                    }
                 }
                 catch (Exception e)
                 {
@@ -107,29 +228,22 @@ namespace ET
                             var code = attr.KeyCode;
                             var type = attr.InputType;
                             var priority = attr.Priority;
-                            if (!self.sortList.TryGetValue(code, type,out var list))
+                            
+                            bool isAdd = false;
+                            for (var node = self.sortList.Last; node!=null; node=node.Previous)
                             {
-                                list = new LinkedList<Tuple<IInputSystem, Entity, int>>();
-                                self.sortList.Add(code, type,list);
-                                list.AddLast(new Tuple<IInputSystem, Entity, int>(inputSystem, entity, priority));
-                            }
-                            else
-                            {
-                                bool isAdd = false;
-                                for (var node = list.Last; node!=null; node=node.Previous)
+                                if (node.Value.Item3 <= priority)
                                 {
-                                    if (node.Value.Item3 <= priority)
-                                    {
-                                        list.AddAfter(node,new Tuple<IInputSystem, Entity, int>(inputSystem, entity, priority));
-                                        isAdd = true;
-                                        break;
-                                    }
-                                }
-                                if (!isAdd)
-                                {
-                                    list.AddFirst(new Tuple<IInputSystem, Entity, int>(inputSystem, entity, priority));
+                                    self.sortList.AddAfter(node,new Tuple<object, Entity, int,int[],int[]>(inputSystem, entity, priority,code,type));
+                                    isAdd = true;
+                                    break;
                                 }
                             }
+                            if (!isAdd)
+                            {
+                                self.sortList.AddFirst(new Tuple<object, Entity, int,int[],int[]>(inputSystem, entity, priority,code,type));
+                            }
+                            
                         }
                     }
                     else
@@ -164,15 +278,12 @@ namespace ET
                         var attr = attrs[j];
                         var code = attr.KeyCode;
                         var type = attr.InputType;
-                        if (self.sortList.TryGetValue(code, type,out var list))
+                        for (var node = self.sortList.Last; node!=null;node = node.Previous)
                         {
-                            for (var node = list.Last; node!=null;node = node.Previous)
+                            if (node.Value.Item1 == inputSystem&&node.Value.Item4 == code&&node.Value.Item5 == type)
                             {
-                                if (node.Value.Item1 == inputSystem)
-                                {
-                                    list.Remove(node);
-                                    break;
-                                }
+                                self.sortList.Remove(node);
+                                break;
                             }
                         }
                     }

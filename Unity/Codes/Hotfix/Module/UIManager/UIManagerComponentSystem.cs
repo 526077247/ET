@@ -15,6 +15,7 @@ namespace ET
             self.windows = new Dictionary<string, UIWindow>();
             self.window_stack = new Dictionary<UILayerNames, LinkedList<string>>();
             Game.EventSystem.Publish(new UIEventType.AfterUIManagerCreate());
+            InputWatcherComponent.Instance.RegisterInputEntity(self);
         }
     }
 
@@ -28,6 +29,7 @@ namespace ET
             self.windows = null;
             self.window_stack.Clear();
             self.window_stack = null;
+            InputWatcherComponent.Instance?.RemoveInputEntity(self);
             Log.Info("UIManagerComponent Dispose");
         }
 
