@@ -94,20 +94,17 @@ namespace ET
 		/// <summary>显示在状态栏</summary>
 		[ProtoMember(5)]
 		public int StatusSlot { get; set; }
-		/// <summary>游戏特效表现</summary>
+		/// <summary>游戏特效表现（0表示无）</summary>
 		[ProtoMember(6)]
-		public string BuffObj { get; set; }
-		/// <summary>表现位置(1:Head)</summary>
-		[ProtoMember(7)]
-		public int ObjRoot { get; set; }
+		public int EffectId { get; set; }
 		/// <summary>类型（1属性变化2行为禁制3持续掉血）</summary>
-		[ProtoMember(8)]
+		[ProtoMember(7)]
 		public int[] Type { get; set; }
 		/// <summary>叠加判别组(同组只取最高优先级)</summary>
-		[ProtoMember(9)]
+		[ProtoMember(8)]
 		public int Group { get; set; }
 		/// <summary>优先级（数字越小越优先，相同则Id最小优先）</summary>
-		[ProtoMember(10)]
+		[ProtoMember(9)]
 		public int Priority { get; set; }
 
 	}

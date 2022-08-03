@@ -13,9 +13,9 @@ namespace ET
     {
         public void Run(SkillPara para)
         {
+#if SERVER
             int curIndex = para.CurIndex;
             var stepPara = para.StepPara[curIndex];
-#if SERVER
             Log.Info("SkillWatcher_GenerateCollider");
             if(int.TryParse(stepPara.Paras[0].ToString(),out var colliderId))
             {

@@ -1,7 +1,8 @@
-﻿namespace ET
+﻿#if !NOT_UNITY
+namespace ET
 {
     /// <summary>
-    /// 播动画
+    /// 播动画(aoi创建Unit之前放的技能没播的就算了)
     /// </summary>
     [SkillWatcher(SkillStepType.Anim)]
     [FriendClass(typeof(CombatUnitComponent))]
@@ -14,3 +15,4 @@
         
     }
 }
+#endif

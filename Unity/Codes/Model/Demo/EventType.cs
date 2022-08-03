@@ -113,5 +113,12 @@ namespace ET
         {
             public string Path;
         }
+        
+        public struct AddEffect
+        {
+            public int EffectId;
+            public Unit Unit;
+            public Entity Parent;
+        }
     }
 }

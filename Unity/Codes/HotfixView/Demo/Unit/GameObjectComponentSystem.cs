@@ -3,7 +3,22 @@ using UnityEngine;
 
 namespace ET
 {
-
+    
+    [Timer(TimerType.DestroyGameObject)]
+    public class DestroyGameObject: ATimer<GameObjectComponent>
+    {
+        public override void Run(GameObjectComponent self)
+        {
+            try
+            {
+                self.Dispose();
+            }
+            catch (Exception e)
+            {
+                Log.Error($"move timer error: {self.Id}\n{e}");
+            }
+        }
+    }
     [ObjectSystem]
     public class GameObjectComponentAwakeSystem: AwakeSystem<GameObjectComponent,GameObject>
     {

@@ -30,5 +30,9 @@
         /// 生成碰撞器
         /// </summary>
         public const int GenerateCollider = 6;
+        /// <summary>
+        /// 添加特效
+        /// </summary>
+        public const int AddEffect = 7;
     }
 }

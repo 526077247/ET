@@ -8,35 +8,16 @@ namespace ET
     {
         protected override void Run(EventType.AfterAddBuff args)
         {
-            RunAsync(args).Coroutine();
-        }
-        async ETTask RunAsync(EventType.AfterAddBuff args)
-        {
-            if (args.Buff.Config.ObjRoot != 0)
+            if (args.Buff.Config.EffectId != 0)
             {
-                var unit = args.Buff.GetParent<BuffComponent>().unit;
-                if (unit != null)
+                EventSystem.Instance.Publish(new EventType.AddEffect
                 {
-                    var showObj = unit.GetComponent<GameObjectComponent>();
-                    if (showObj == null) return;
-                    Transform root = null;
-                    if (args.Buff.Config.ObjRoot == 1)//ObjRoot=1对应挂点Head
-                    {
-                        root = showObj.GameObject.transform.Find("Head");
-                    }
-                    if(root==null) return;
-                    var obj = await GameObjectPoolComponent.Instance.GetGameObjectAsync(args.Buff.Config.BuffObj);
-                    obj.transform.SetParent(root);
-                    obj.transform.localPosition = Vector3.zero;
-                    obj.transform.localScale = Vector3.one;
-                    args.Buff.AddComponent<GameObjectComponent, GameObject, Action>(obj, () =>
-                    {
-                        GameObjectPoolComponent.Instance?.RecycleGameObject(obj);
-                    });
-                }
+                    EffectId = args.Buff.Config.EffectId,
+                    Parent = args.Buff,
+                    Unit = args.Buff.GetParent<BuffComponent>().unit
+                });
             }
-            await ETTask.CompletedTask;
         }
-        
+
     }
 }
