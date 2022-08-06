@@ -208,90 +208,114 @@ namespace ET
             {
                 self.InputEntitys.Add(entity);
                 List<object> iInputSystems = self.typeSystems.GetSystems(entity.GetType(), typeof(IInputSystem));
-                if (iInputSystems == null)
+                if (iInputSystems != null)
                 {
-                    return;
+                    for (int i = 0; i < iInputSystems.Count; i++)
+                    {
+                        self.AddInputSystem(entity,iInputSystems[i]);
+                    }
                 }
-                for (int i = 0; i < iInputSystems.Count; i++)
+                iInputSystems = self.typeSystems.GetSystems(entity.GetType(), typeof(IInputGroupSystem));
+                if (iInputSystems != null)
                 {
-                    IInputSystem inputSystem = (IInputSystem)iInputSystems[i];
-                    if (inputSystem == null)
+                    for (int i = 0; i < iInputSystems.Count; i++)
                     {
-                        continue;
-                    }
-
-                    if (self.typeMapAttr.TryGetValue(inputSystem, out var attrs))
-                    {
-                        for (int j = 0; j < attrs.Count; j++)
-                        {
-                            var attr = attrs[j];
-                            var code = attr.KeyCode;
-                            var type = attr.InputType;
-                            var priority = attr.Priority;
-                            
-                            bool isAdd = false;
-                            for (var node = self.sortList.Last; node!=null; node=node.Previous)
-                            {
-                                if (node.Value.Item3 <= priority)
-                                {
-                                    self.sortList.AddAfter(node,new Tuple<object, Entity, int,int[],int[]>(inputSystem, entity, priority,code,type));
-                                    isAdd = true;
-                                    break;
-                                }
-                            }
-                            if (!isAdd)
-                            {
-                                self.sortList.AddFirst(new Tuple<object, Entity, int,int[],int[]>(inputSystem, entity, priority,code,type));
-                            }
-                            
-                        }
-                    }
-                    else
-                    {
-                        Log.Error("RegisterInputEntity attr miss! type="+inputSystem.GetType().Name);
+                        self.AddInputSystem(entity,iInputSystems[i]);
                     }
                 }
             }
 
+        }
+
+        public static void AddInputSystem(this InputWatcherComponent self,Entity entity,object inputSystem)
+        {
+            if (!(inputSystem is IInputSystem || inputSystem is IInputGroupSystem))
+            {
+                return;
+            }
+
+            if (self.typeMapAttr.TryGetValue(inputSystem, out var attrs))
+            {
+                for (int j = 0; j < attrs.Count; j++)
+                {
+                    var attr = attrs[j];
+                    var code = attr.KeyCode;
+                    var type = attr.InputType;
+                    var priority = attr.Priority;
+                            
+                    bool isAdd = false;
+                    for (var node = self.sortList.Last; node!=null; node=node.Previous)
+                    {
+                        if (node.Value.Item3 <= priority)
+                        {
+                            self.sortList.AddAfter(node,new Tuple<object, Entity, int,int[],int[]>(inputSystem, entity, priority,code,type));
+                            isAdd = true;
+                            break;
+                        }
+                    }
+                    if (!isAdd)
+                    {
+                        self.sortList.AddFirst(new Tuple<object, Entity, int,int[],int[]>(inputSystem, entity, priority,code,type));
+                    }
+                            
+                }
+            }
+            else
+            {
+                Log.Error("RegisterInputEntity attr miss! type="+inputSystem.GetType().Name);
+            }
         }
         
         public static void RemoveInputEntity(this InputWatcherComponent self,Entity entity)
         {
             self.InputEntitys.Remove(entity);
             List<object> iInputSystems = self.typeSystems.GetSystems(entity.GetType(), typeof(IInputSystem));
-            if (iInputSystems == null)
+            if (iInputSystems != null)
+            {
+                for (int i = 0; i < iInputSystems.Count; i++)
+                {
+                    self.RemoveInputSystem(iInputSystems[i]);
+
+                }
+            }
+            iInputSystems = self.typeSystems.GetSystems(entity.GetType(), typeof(IInputGroupSystem));
+            if (iInputSystems != null)
+            {
+                for (int i = 0; i < iInputSystems.Count; i++)
+                {
+                    self.RemoveInputSystem(iInputSystems[i]);
+
+                }
+            }
+        }
+
+        public static void RemoveInputSystem(this InputWatcherComponent self, object inputSystem)
+        {
+            if (!(inputSystem is IInputSystem || inputSystem is IInputGroupSystem))
             {
                 return;
             }
-            for (int i = 0; i < iInputSystems.Count; i++)
-            {
-                IInputSystem inputSystem = (IInputSystem)iInputSystems[i];
-                if (inputSystem == null)
-                {
-                    continue;
-                }
 
-                if (self.typeMapAttr.TryGetValue(inputSystem, out var attrs))
+            if (self.typeMapAttr.TryGetValue(inputSystem, out var attrs))
+            {
+                for (int j = 0; j < attrs.Count; j++)
                 {
-                    for (int j = 0; j < attrs.Count; j++)
+                    var attr = attrs[j];
+                    var code = attr.KeyCode;
+                    var type = attr.InputType;
+                    for (var node = self.sortList.Last; node!=null;node = node.Previous)
                     {
-                        var attr = attrs[j];
-                        var code = attr.KeyCode;
-                        var type = attr.InputType;
-                        for (var node = self.sortList.Last; node!=null;node = node.Previous)
+                        if (node.Value.Item1 == inputSystem&&node.Value.Item4 == code&&node.Value.Item5 == type)
                         {
-                            if (node.Value.Item1 == inputSystem&&node.Value.Item4 == code&&node.Value.Item5 == type)
-                            {
-                                self.sortList.Remove(node);
-                                break;
-                            }
+                            self.sortList.Remove(node);
+                            break;
                         }
                     }
                 }
-                else
-                {
-                    Log.Error("RemoveInputEntity attr miss! type="+inputSystem.GetType().Name);
-                }
+            }
+            else
+            {
+                Log.Error("RemoveInputEntity attr miss! type="+inputSystem.GetType().Name);
             }
         }
     }

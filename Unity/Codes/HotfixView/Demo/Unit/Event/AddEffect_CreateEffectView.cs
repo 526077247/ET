@@ -20,7 +20,7 @@ namespace ET
                 var effectConfig = EffectConfigCategory.Instance.Get(args.EffectId);
                 if (effectConfig!=null)
                 {
-                    root = showObj.GameObject.transform.Find(effectConfig.MountPoint);
+                    root = showObj.GetCollectorObj<GameObject>(effectConfig.MountPoint)?.transform;
                 }
                 if(root==null) return;
                 var obj = await GameObjectPoolComponent.Instance.GetGameObjectAsync(effectConfig.Prefab);
