@@ -11,7 +11,6 @@ namespace ET
         {
 #if !NOT_UNITY
             var jstr = PlayerPrefs.GetString(CacheKeys.KeyCodeSetting);
-            Log.Info(jstr);
             if (!string.IsNullOrEmpty(jstr))
             {
                 try
