@@ -13,9 +13,9 @@ namespace ET
             if (info != null)
             {
                 var combatU = self.GetParent<CombatUnitComponent>();
-                for (int i = 0; i < KeyCodeComponent.Instance.Skills.Length; i++)
+                foreach (var item in KeyCodeComponent.Instance.KeyMap)
                 {
-                    var keyCode = KeyCodeComponent.Instance.Skills[i];
+                    var keyCode = item.Key;
                     if (info.ContainsKey(keyCode) && combatU.TryGetSkillAbility(info[keyCode],out var skill))
                     {
                         self.BindSkillKeyCode(keyCode, skill);
@@ -49,12 +49,12 @@ namespace ET
             InputWatcherComponent.Instance.RemoveInputEntity(self);
         }
     }
-    [InputSystem((int)KeyCode.Alpha0,InputType.KeyDown)]
-    [InputSystem((int)KeyCode.Alpha1,InputType.KeyDown)]
-    [InputSystem((int)KeyCode.Alpha2,InputType.KeyDown)]
-    [InputSystem((int)KeyCode.Alpha3,InputType.KeyDown)]
-    [InputSystem((int)KeyCode.Alpha4,InputType.KeyDown)]
-    [InputSystem((int)KeyCode.Alpha5,InputType.KeyDown)]
+    [InputSystem(KeyCodeType.Skill1,InputType.KeyDown)]
+    [InputSystem(KeyCodeType.Skill2,InputType.KeyDown)]
+    [InputSystem(KeyCodeType.Skill3,InputType.KeyDown)]
+    [InputSystem(KeyCodeType.Skill4,InputType.KeyDown)]
+    [InputSystem(KeyCodeType.Skill5,InputType.KeyDown)]
+    [InputSystem(KeyCodeType.Skill6,InputType.KeyDown)]
     public class SpellPreviewComponentInputSystem_Spell : InputSystem<SpellPreviewComponent>
     {
         public override void Run(SpellPreviewComponent self, int key, int type, ref bool stop)
@@ -68,15 +68,12 @@ namespace ET
                 {
                     return;
                 }
-                for (int i = 0; i < keyCode.Skills.Length; i++)
+                if (spellPreviewComponent.InputSkills.ContainsKey(key))
                 {
-                    if (key == keyCode.Skills[i] && spellPreviewComponent.InputSkills.ContainsKey(keyCode.Skills[i]))
-                    {
-                        var spellSkill = spellPreviewComponent.InputSkills[keyCode.Skills[i]];
-                        if (spellSkill == null || !spellSkill.CanUse()) return;
-                        spellPreviewComponent.PreviewingSkill = spellSkill;
-                        spellPreviewComponent.EnterPreview();
-                    }
+                    var spellSkill = spellPreviewComponent.InputSkills[key];
+                    if (spellSkill == null || !spellSkill.CanUse()) return;
+                    spellPreviewComponent.PreviewingSkill = spellSkill;
+                    spellPreviewComponent.EnterPreview();
                 }
             }
         }
@@ -112,9 +109,9 @@ namespace ET
             int i = 0;
             foreach (var item in combatU.IdSkillMap)
             {
-                if (i < KeyCodeComponent.Instance.Skills.Length)
+                if (i < ConstValue.SkillKeys.Length)
                 {
-                    var keyCode = KeyCodeComponent.Instance.Skills[i];
+                    var keyCode = ConstValue.SkillKeys[i];
                     self.BindSkillKeyCode(keyCode, combatU.GetChild<SkillAbility>(item.Value));
                 }
                 else

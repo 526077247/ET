@@ -27,12 +27,16 @@ namespace ET
                 for (int i= 0; i< self.KeysForListen.Count; ++i)
                 {
                     int key = self.KeysForListen[i];
-                    if(InputHelper.GetKeyDown(key))
-                        self.IsKeyDown[key]=true;
-                    if (InputHelper.GetKeyUp(key))
-                        self.IsKeyUp[key] = true;
-                    if(InputHelper.GetKey(key))
-                        self.IsKey[key]=true;
+                    key = self.ReplaceKey(key);
+                    if (key >= 0)
+                    {
+                        if (InputHelper.GetKeyDown(key))
+                            self.IsKeyDown[key] = true;
+                        if (InputHelper.GetKeyUp(key))
+                            self.IsKeyUp[key] = true;
+                        if (InputHelper.GetKey(key))
+                            self.IsKey[key] = true;
+                    }
                 }
                 InputWatcherComponent.Instance.RunCheck();
             }
@@ -49,6 +53,7 @@ namespace ET
 
         public static bool GetKeyDown(this InputComponent self, int key)
         {
+            key = self.ReplaceKey(key);
             if (self.IsKeyDown.TryGetValue(key, out var res))
             {
                 return res;
@@ -57,10 +62,12 @@ namespace ET
         }
         public static void StopKeyDown(this InputComponent self, int key)
         {
+            key = self.ReplaceKey(key);
             self.IsKeyDown.Remove(key);
         }
         public static bool GetKeyUp(this InputComponent self, int key)
         {
+            key = self.ReplaceKey(key);
             if (self.IsKeyUp.TryGetValue(key, out var res))
             {
                 return res;
@@ -69,10 +76,12 @@ namespace ET
         }
         public static void StopKeyUp(this InputComponent self, int key)
         {
+            key = self.ReplaceKey(key);
             self.IsKeyUp.Remove(key);
         }
         public static bool GetKey(this InputComponent self, int key)
         {
+            key = self.ReplaceKey(key);
             if (self.IsKey.TryGetValue(key, out var res))
             {
                 return res;
@@ -82,7 +91,21 @@ namespace ET
         
         public static void StopKey(this InputComponent self, int key)
         {
+            key = self.ReplaceKey(key);
             self.IsKey.Remove(key);
+        }
+
+        public static int ReplaceKey(this InputComponent self,int key)
+        {
+            if (key < 0&&KeyCodeComponent.Instance!=null)
+            {
+                if(KeyCodeComponent.Instance.KeyMap.TryGetValue(key,out var res))
+                {
+                    return res;
+                }
+            }
+
+            return key;
         }
     }
 }

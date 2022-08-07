@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace ET
@@ -10,23 +11,20 @@ namespace ET
         {
 #if !NOT_UNITY
             var jstr = PlayerPrefs.GetString(CacheKeys.KeyCodeSetting);
-            if (string.IsNullOrEmpty(jstr))
+            Log.Info(jstr);
+            if (!string.IsNullOrEmpty(jstr))
             {
-#endif
-                self.Skills = new int[6];
-                self.Skills[0] = 49;//KeyCode.Alpha1;
-                self.Skills[1] = 50;//KeyCode.Alpha2;
-                self.Skills[2] = 51;//KeyCode.Alpha3;
-                self.Skills[3] = 52;//KeyCode.Alpha4;
-                self.Skills[4] = 53;//KeyCode.Alpha5;
-                self.Skills[5] = 54;//KeyCode.Alpha6;
-#if !NOT_UNITY
-            }
-            else
-            {
-                self.JsonText = jstr;
+                try
+                {
+                    self.KeyMap = JsonHelper.FromJson<Dictionary<int, int>>(jstr);
+                }
+                catch (Exception e)
+                {
+                    Log.Error(e);
+                }
             }
 #endif
+            self.Reset(self.KeyMap);
             KeyCodeComponent.Instance = self;
         }
     }
@@ -38,14 +36,31 @@ namespace ET
             KeyCodeComponent.Instance = null;
         }
     }
-
+    [FriendClass(typeof(KeyCodeComponent))]
     public static class KeyCodeComponentSystem 
     {
         public static void Save(this KeyCodeComponent self)
         {
 #if !NOT_UNITY
-            PlayerPrefs.SetString(CacheKeys.KeyCodeSetting, self.JsonText);
+            PlayerPrefs.SetString(CacheKeys.KeyCodeSetting, JsonHelper.ToJson(self.KeyMap));
 #endif
+        }
+        
+        public static void Reset(this KeyCodeComponent self,Dictionary<int, int> old = null)
+        {
+            self.KeyMap = new Dictionary<int, int>();
+            foreach (var item in self.DefaultKeyCodeMap)
+            {
+                var key = item.Key;
+                if (old != null && old.TryGetValue(key, out var val))
+                {
+                    self.KeyMap[key] = val;
+                }
+                else
+                {
+                    self.KeyMap[key] = item.Value;
+                }
+            }
         }
     }
 }
