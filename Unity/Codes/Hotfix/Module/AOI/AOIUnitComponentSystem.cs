@@ -15,6 +15,9 @@ namespace ET
             self.Rotation = rota;
             self.Type = type;
             self.Range = range;
+#if SERVER
+            self.AddComponent<GhostComponent>();
+#endif
             self.DomainScene().GetComponent<AOISceneComponent>().RegisterUnit(self);
         }
     }
@@ -27,9 +30,40 @@ namespace ET
             self.Rotation = rota;
             self.Type = type;
             self.Range = 1;
+#if SERVER
+            self.AddComponent<GhostComponent>();
+#endif
             self.DomainScene().GetComponent<AOISceneComponent>().RegisterUnit(self);
         }
     }
+#if SERVER
+    [ObjectSystem]
+    public class AOIUnitComponentAwakeSystem3 : AwakeSystem<AOIUnitComponent,Vector3,Quaternion, UnitType,int,bool>
+    {
+        public override void Awake(AOIUnitComponent self,Vector3 pos,Quaternion rota, UnitType type,int range,bool isGhost)
+        {
+            self.Position = pos;
+            self.Rotation = rota;
+            self.Type = type;
+            self.Range = range;
+            self.AddComponent<GhostComponent>().IsGoast = isGhost;
+            self.DomainScene().GetComponent<AOISceneComponent>().RegisterUnit(self);
+        }
+    }
+    [ObjectSystem]
+    public class AOIUnitComponentAwakeSystem4 : AwakeSystem<AOIUnitComponent,Vector3,Quaternion, UnitType,bool>
+    {
+        public override void Awake(AOIUnitComponent self,Vector3 pos,Quaternion rota, UnitType type,bool isGhost)
+        {
+            self.Position = pos;
+            self.Rotation = rota;
+            self.Type = type;
+            self.Range = 1;
+            self.AddComponent<GhostComponent>().IsGoast = isGhost;
+            self.DomainScene().GetComponent<AOISceneComponent>().RegisterUnit(self);
+        }
+    }
+#endif
     [ObjectSystem]
     public class AOIUnitComponentDestroySystem : DestroySystem<AOIUnitComponent>
     {
@@ -78,7 +112,7 @@ namespace ET
         /// </summary>
         /// <param name="self"></param>
         /// <param name="position"></param>
-        public static void Move(this AOIUnitComponent self,Vector3 position)
+        public static async ETTask Move(this AOIUnitComponent self,Vector3 position)
         {
             var oldpos = self.Position;
             self.Position = position;
@@ -87,6 +121,22 @@ namespace ET
             var changeCell = cell != oldCell;
             if (changeCell)//跨格子了：AOI刷新
             {
+#if SERVER
+                if (oldCell.TryGetCellMap(out var oldSceneId))
+                {
+                    if (!cell.TryGetCellMap(out var newSceneId)) //进入未开放区域
+                    {
+                        if (oldSceneId != newSceneId)
+                                //todo:倒计时拉回复活点
+                            self.ChangeTo(cell);
+                    }
+                    else if (oldSceneId != newSceneId && newSceneId != self.Scene.Id) //跨区域了
+                    {
+                        if (!self.GetComponent<GhostComponent>().IsGoast)
+                            await TransferHelper.AreaTransfer(self.GetParent<Unit>(), StartSceneConfigCategory.Instance.Get(newSceneId).InstanceId);
+                    }
+                }
+#endif
                 self.ChangeTo(cell);
             }
             //“碰撞器”刷新 自己进入或离开别人的
@@ -102,6 +152,8 @@ namespace ET
                 if (item.IsCollider ||!item.Enable|| item.Selecter == null || item.Selecter.Count == 0) continue;
                 item.AfterTriggerChangeBroadcastToMe(item.GetRealPos(oldpos),changeCell);
             }
+
+            await ETTask.CompletedTask;
         }
         /// <summary>
         /// 旋转一个 AOI 对象, 设置新的 (2D / 3D) 方向

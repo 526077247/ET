@@ -12,7 +12,8 @@ namespace ET
     /// </summary>
     [ChildType(typeof(AOITrigger))]
     [ComponentOf(typeof(Unit))]
-    public class AOIUnitComponent:Entity,IAwake<Vector3,Quaternion,UnitType,int>,IAwake<Vector3,Quaternion,UnitType>,IDestroy
+    public class AOIUnitComponent:Entity,IAwake<Vector3,Quaternion,UnitType,int>,IAwake<Vector3,Quaternion,UnitType>,
+            IAwake<Vector3,Quaternion,UnitType,int,bool>,IAwake<Vector3,Quaternion,UnitType,bool>,IDestroy
     {
         public Vector3 Position;
         public Quaternion Rotation;

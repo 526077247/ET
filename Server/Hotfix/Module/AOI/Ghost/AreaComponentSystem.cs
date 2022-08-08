@@ -15,7 +15,7 @@
         {
             if (self.AreaConfigCategory.GetAll() != null && self.AreaConfigCategory.GetAll().TryGetValue(cellId, out var conf))
             {
-                var scene = StartSceneConfigCategory.Instance.GetBySceneName(self.DomainZone(), conf.Area);
+                var scene = StartSceneConfigCategory.Instance.Get(conf.SceneId);
                 sceneId = scene.Id;
                 return true;
             }

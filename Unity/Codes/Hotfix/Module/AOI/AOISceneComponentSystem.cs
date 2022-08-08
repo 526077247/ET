@@ -17,7 +17,7 @@ namespace ET
             Log.Info("AOIScene StandBy! ");
 #if SERVER
             var id = (int)self.Id;
-            if (MapAreaConfigCategory.Instance.GetAll().TryGetValue(id, out var config))
+            if (MapSceneConfigCategory.Instance.GetAll().TryGetValue(id, out var config))
             {
                 self.AddComponent<AreaComponent, string>(config.Area);
             }
@@ -71,6 +71,9 @@ namespace ET
                     {
                         var item = ListenerGrids[i];
                         item.AddListener(unit);
+#if SERVER
+                        if(!item.IsCurScene()) continue;
+#endif
                         using (var list = item.GetAllUnit())
                         {
                             Game.EventSystem.Publish(new AOIRegisterUnit()
@@ -98,12 +101,15 @@ namespace ET
             {
                 using (var ListenerGrids = unit.Cell.GetNearbyGrid(unit.Range))
                 {
-                    for (int i = 0; i < ListenerGrids.Count; i++)
+                    if (unit.Type == UnitType.Player)
                     {
-                        var item = ListenerGrids[i];
-                        item.RemoveListener(unit);
-                        if (unit.Type == UnitType.Player)
+                        for (int i = 0; i < ListenerGrids.Count; i++)
                         {
+                            var item = ListenerGrids[i];
+                            item.RemoveListener(unit);
+#if SERVER
+                            if(!item.IsCurScene()) continue;
+#endif
                             using (var list = item.GetAllUnit())
                             {
                                 Game.EventSystem.Publish(new AOIRemoveUnit()

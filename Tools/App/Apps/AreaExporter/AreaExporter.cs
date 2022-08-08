@@ -97,19 +97,20 @@ namespace ET
                         continue;
                     }
 
+                    var sceneId = int.Parse(area);
                     int x = Col[col - 1];
                     int y = Row[row - 1];
                     var id = CreateCellId(x, y);
                     if (sb.TryGetValue(id, out var val))
                     {
-                        if (val.Area != area)
+                        if (val.SceneId != sceneId)
                         {
-                            Log.Error("相同id area不同 "+val.Area+"  "+area);
+                            Log.Error("相同id sceneId不同 "+sceneId+"  "+val.SceneId);
                         }
                     }
                     else
                     {
-                        sb.Add(id,new AreaConfig(){Id = id,Area = area});
+                        sb.Add(id,new AreaConfig(){Id = id,SceneId = sceneId});
                     }
                 }
             }

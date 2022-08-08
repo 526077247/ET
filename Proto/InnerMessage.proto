@@ -150,7 +150,51 @@ message M2M_UnitTransferResponse // IActorResponse
 	int64 NewInstanceId = 4;
 }
 
+message M2M_UnitAreaTransferResponse //  IActorResponse
+{
+	int32 RpcId = 1;
+	int32 Error = 2;
+	string Message = 3;
+	int64 NewInstanceId = 4;
+}
+
+message M2M_UnitAreaRemove // IActorLocationMessage
+{
+	int32 RpcId = 1;
+	int64 UnitId = 2;
+}
+
 message G2M_SessionDisconnect // IActorLocationMessage
 {
 	int32 RpcId = 90;
+}
+
+message M2M_PathfindingResult // IActorLocationMessage
+{
+	int32 RpcId = 90;
+	int64 Id = 1;
+
+	float X = 2;
+	float Y = 3;
+	float Z = 4;
+
+	repeated float Xs = 5;
+	repeated float Ys = 6;
+	repeated float Zs = 7;
+}
+
+message M2M_Stop // IActorLocationMessage
+{
+	int32 RpcId = 90;
+	int32 Error = 1;
+
+	int64 Id = 2;
+	float X = 3;
+	float Y = 4;
+	float Z = 5;
+
+	float A = 6;
+	float B = 7;
+	float C = 8;
+	float W = 9;
 }

@@ -32,7 +32,8 @@ namespace ET
 					parent.AddChild(entity);
 			}
 			unit.AddComponent<MoveComponent>();
-			unit.AddComponent<PathfindingComponent, string>(scene.Name);
+			var conf = MapSceneConfigCategory.Instance.Get((int)scene.Id);
+			unit.AddComponent<PathfindingComponent, string>(conf.Name);
 			unit.Position = new Vector3(-10, 0, -10);
 			
 			unit.AddComponent<MailBoxComponent>();

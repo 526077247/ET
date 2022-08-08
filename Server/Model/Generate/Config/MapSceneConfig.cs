@@ -7,26 +7,26 @@ namespace ET
 {
     [ProtoContract]
     [Config]
-    public partial class MapAreaConfigCategory : ProtoObject, IMerge
+    public partial class MapSceneConfigCategory : ProtoObject, IMerge
     {
-        public static MapAreaConfigCategory Instance;
+        public static MapSceneConfigCategory Instance;
 		
         [ProtoIgnore]
         [BsonIgnore]
-        private Dictionary<int, MapAreaConfig> dict = new Dictionary<int, MapAreaConfig>();
+        private Dictionary<int, MapSceneConfig> dict = new Dictionary<int, MapSceneConfig>();
 		
         [BsonElement]
         [ProtoMember(1)]
-        private List<MapAreaConfig> list = new List<MapAreaConfig>();
+        private List<MapSceneConfig> list = new List<MapSceneConfig>();
 		
-        public MapAreaConfigCategory()
+        public MapSceneConfigCategory()
         {
             Instance = this;
         }
         
         public void Merge(object o)
         {
-            MapAreaConfigCategory s = o as MapAreaConfigCategory;
+            MapSceneConfigCategory s = o as MapSceneConfigCategory;
             this.list.AddRange(s.list);
         }
 		
@@ -34,20 +34,20 @@ namespace ET
         {
             for(int i =0 ;i<list.Count;i++)
             {
-                MapAreaConfig config = list[i];
+                MapSceneConfig config = list[i];
                 config.EndInit();
                 this.dict.Add(config.Id, config);
             }            
             this.AfterEndInit();
         }
 		
-        public MapAreaConfig Get(int id)
+        public MapSceneConfig Get(int id)
         {
-            this.dict.TryGetValue(id, out MapAreaConfig item);
+            this.dict.TryGetValue(id, out MapSceneConfig item);
 
             if (item == null)
             {
-                throw new Exception($"配置找不到，配置表名: {nameof (MapAreaConfig)}，配置id: {id}");
+                throw new Exception($"配置找不到，配置表名: {nameof (MapSceneConfig)}，配置id: {id}");
             }
 
             return item;
@@ -58,15 +58,15 @@ namespace ET
             return this.dict.ContainsKey(id);
         }
 
-        public Dictionary<int, MapAreaConfig> GetAll()
+        public Dictionary<int, MapSceneConfig> GetAll()
         {
             return this.dict;
         }
-        public List<MapAreaConfig> GetAllList()
+        public List<MapSceneConfig> GetAllList()
         {
             return this.list;
         }
-        public MapAreaConfig GetOne()
+        public MapSceneConfig GetOne()
         {
             if (this.dict == null || this.dict.Count <= 0)
             {
@@ -77,14 +77,20 @@ namespace ET
     }
 
     [ProtoContract]
-	public partial class MapAreaConfig: ProtoObject, IConfig
+	public partial class MapSceneConfig: ProtoObject, IConfig
 	{
 		/// <summary>Id</summary>
 		[ProtoMember(1)]
 		public int Id { get; set; }
-		/// <summary>加载的Area数据表名</summary>
+		/// <summary>UnityScene名字</summary>
 		[ProtoMember(2)]
+		public string Name { get; set; }
+		/// <summary>加载的Area数据表名</summary>
+		[ProtoMember(3)]
 		public string Area { get; set; }
+		/// <summary>寻路文件名</summary>
+		[ProtoMember(4)]
+		public string Recast { get; set; }
 
 	}
 }

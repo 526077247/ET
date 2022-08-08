@@ -136,6 +136,13 @@ namespace ET
         {
             // Log.Info("AddListener"+unit.Id+" "+self.posx+","+self.posy);
             self.ListenerUnits.Add(unit);
+#if SERVER
+            var ghost = unit.GetComponent<GhostComponent>();
+            if (self.TryGetCellMap(out int sceneId))
+            {
+                ghost.AddListenerAreaIds(sceneId).Coroutine();
+            }
+#endif
         }
         /// <summary>
         /// 移除监视
@@ -147,6 +154,13 @@ namespace ET
         {
             // Log.Info("RemoveListener"+unit.Id+" "+self.posx+","+self.posy);
             self.ListenerUnits.Remove(unit);
+#if SERVER
+            var ghost = unit.GetComponent<GhostComponent>();
+            if (ghost!=null&&self.TryGetCellMap(out int sceneId))
+            {
+                ghost.RemoveListenerAreaIds(sceneId).Coroutine();
+            }
+#endif
         }
         
         /// <summary>

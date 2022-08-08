@@ -9,6 +9,7 @@ namespace ET
     {
         public static void Broadcast(Unit unit, IActorMessage message)
         {
+            unit.GetComponent<AOIUnitComponent>()?.GetComponent<GhostComponent>()?.HandleMsg(message);
             foreach (var u in unit.GetBeSeeUnits())
             {
                 SendToClient(u.GetParent<Unit>(), message);

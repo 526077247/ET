@@ -35,7 +35,7 @@ namespace ET
             this.AfterEndInit();
         }
         
-        public AreaConfig Get(int id)
+        public AreaConfig Get(long id)
         {
             this.dict.TryGetValue(id, out AreaConfig item);
 
@@ -46,11 +46,11 @@ namespace ET
 
             return item;
         }
-        public bool TryGet(int id, out AreaConfig item)
+        public bool TryGet(long id, out AreaConfig item)
         {
             return this.dict.TryGetValue(id, out item);
         }
-        public bool Contain(int id)
+        public bool Contain(long id)
         {
             return this.dict.ContainsKey(id);
         }
@@ -79,7 +79,7 @@ namespace ET
         [ProtoMember(1)]
         public long Id { get; set; }
         [ProtoMember(2)]
-        public string Area { get; set; }
+        public int SceneId { get; set; }
 
     }
 }

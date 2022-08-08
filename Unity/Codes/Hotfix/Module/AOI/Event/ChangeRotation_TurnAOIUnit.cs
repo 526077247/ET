@@ -6,9 +6,10 @@ namespace ET
     {
         protected override void Run(object changeRotation)
         {
-            EventType.ChangePosition args = changeRotation as EventType.ChangePosition;;
+            EventType.ChangePosition args = changeRotation as EventType.ChangePosition;
             AOIUnitComponent aoiUnitComponent = args?.Unit?.GetComponent<AOIUnitComponent>();
-            aoiUnitComponent?.Turn(args.Unit.Rotation);
+            if (aoiUnitComponent == null || aoiUnitComponent.IsDisposed) return;
+            aoiUnitComponent.Turn(args.Unit.Rotation);
         }
     }
 }

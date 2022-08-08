@@ -316,12 +316,108 @@ namespace ET
 
 	}
 
+	[Message(InnerOpcode.M2M_UnitAreaTransferResponse)]
+	[ProtoContract]
+	public partial class M2M_UnitAreaTransferResponse: Object, IActorResponse
+	{
+		[ProtoMember(1)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(2)]
+		public int Error { get; set; }
+
+		[ProtoMember(3)]
+		public string Message { get; set; }
+
+		[ProtoMember(4)]
+		public long NewInstanceId { get; set; }
+
+	}
+
+	[Message(InnerOpcode.M2M_UnitAreaRemove)]
+	[ProtoContract]
+	public partial class M2M_UnitAreaRemove: Object, IActorLocationMessage
+	{
+		[ProtoMember(1)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(2)]
+		public long UnitId { get; set; }
+
+	}
+
 	[Message(InnerOpcode.G2M_SessionDisconnect)]
 	[ProtoContract]
 	public partial class G2M_SessionDisconnect: Object, IActorLocationMessage
 	{
 		[ProtoMember(90)]
 		public int RpcId { get; set; }
+
+	}
+
+	[Message(InnerOpcode.M2M_PathfindingResult)]
+	[ProtoContract]
+	public partial class M2M_PathfindingResult: Object, IActorLocationMessage
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(1)]
+		public long Id { get; set; }
+
+		[ProtoMember(2)]
+		public float X { get; set; }
+
+		[ProtoMember(3)]
+		public float Y { get; set; }
+
+		[ProtoMember(4)]
+		public float Z { get; set; }
+
+		[ProtoMember(5)]
+		public List<float> Xs = new List<float>();
+
+		[ProtoMember(6)]
+		public List<float> Ys = new List<float>();
+
+		[ProtoMember(7)]
+		public List<float> Zs = new List<float>();
+
+	}
+
+	[Message(InnerOpcode.M2M_Stop)]
+	[ProtoContract]
+	public partial class M2M_Stop: Object, IActorLocationMessage
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(1)]
+		public int Error { get; set; }
+
+		[ProtoMember(2)]
+		public long Id { get; set; }
+
+		[ProtoMember(3)]
+		public float X { get; set; }
+
+		[ProtoMember(4)]
+		public float Y { get; set; }
+
+		[ProtoMember(5)]
+		public float Z { get; set; }
+
+		[ProtoMember(6)]
+		public float A { get; set; }
+
+		[ProtoMember(7)]
+		public float B { get; set; }
+
+		[ProtoMember(8)]
+		public float C { get; set; }
+
+		[ProtoMember(9)]
+		public float W { get; set; }
 
 	}
 
