@@ -103,6 +103,13 @@ namespace ET
                 self.Colliders.Add(trigger);
             else
                 self.Triggers.Add(trigger);
+#if SERVER
+            var ghost = trigger.Parent.GetComponent<GhostComponent>();
+            if (self.TryGetCellMap(out int sceneId))
+            {
+                ghost.AddListenerAreaIds(sceneId);
+            }
+#endif
         }
         /// <summary>
         /// 移除触发器监视
@@ -125,6 +132,13 @@ namespace ET
                 self.Colliders.Remove(trigger);
             else
                 self.Triggers.Remove(trigger);
+#if SERVER
+            var ghost = self.Parent.GetComponent<GhostComponent>();
+            if (ghost!=null&&self.TryGetCellMap(out int sceneId))
+            {
+                ghost.RemoveListenerAreaIds(sceneId);
+            }
+#endif
         }
         /// <summary>
         /// 添加监视

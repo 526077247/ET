@@ -18,7 +18,7 @@ namespace ET
 #if SERVER
             self.AddComponent<GhostComponent>();
 #endif
-            self.DomainScene().GetComponent<AOISceneComponent>().RegisterUnit(self);
+            self.DomainScene().GetComponent<AOISceneComponent>().RegisterUnit(self).Coroutine();
         }
     }
     [ObjectSystem]
@@ -33,7 +33,7 @@ namespace ET
 #if SERVER
             self.AddComponent<GhostComponent>();
 #endif
-            self.DomainScene().GetComponent<AOISceneComponent>().RegisterUnit(self);
+            self.DomainScene().GetComponent<AOISceneComponent>().RegisterUnit(self).Coroutine();
         }
     }
 #if SERVER
@@ -47,7 +47,7 @@ namespace ET
             self.Type = type;
             self.Range = range;
             self.AddComponent<GhostComponent>().IsGoast = isGhost;
-            self.DomainScene().GetComponent<AOISceneComponent>().RegisterUnit(self);
+            self.DomainScene().GetComponent<AOISceneComponent>().RegisterUnit(self).Coroutine();
         }
     }
     [ObjectSystem]
@@ -60,7 +60,7 @@ namespace ET
             self.Type = type;
             self.Range = 1;
             self.AddComponent<GhostComponent>().IsGoast = isGhost;
-            self.DomainScene().GetComponent<AOISceneComponent>().RegisterUnit(self);
+            self.DomainScene().GetComponent<AOISceneComponent>().RegisterUnit(self).Coroutine();
         }
     }
 #endif
@@ -98,7 +98,6 @@ namespace ET
         /// </summary>
         /// <param name="self"></param>
         /// <param name="turnNum"></param>
-        /// <param name="type"></param>
         /// <returns></returns>
         public static ListComponent<AOICell> GetNearbyGrid(this AOIUnitComponent self,int turnNum= 1)
         {
@@ -133,7 +132,7 @@ namespace ET
                     else if (oldSceneId != newSceneId && newSceneId != self.Scene.Id) //跨区域了
                     {
                         if (!self.IsGhost())
-                            await TransferHelper.AreaTransfer(self.GetParent<Unit>(), StartSceneConfigCategory.Instance.Get(newSceneId).InstanceId);
+                            await TransferHelper.AreaTransfer(self, StartSceneConfigCategory.Instance.Get(newSceneId).InstanceId);
                     }
                 }
 #endif

@@ -57,15 +57,14 @@ namespace ET
         /// </summary>
         /// <param name="self"></param>
         /// <param name="unit"></param>
-        public static void RegisterUnit(this AOISceneComponent self, AOIUnitComponent unit)
+        public static async ETTask RegisterUnit(this AOISceneComponent self, AOIUnitComponent unit)
         {
             unit.Scene = self;
             AOICell cell = self.GetAOICell(unit.Position);
 #if SERVER
-            var ghost = unit.GetComponent<GhostComponent>();
-            if (!ghost.IsGoast&&cell.TryGetCellMap(out var sceneId) && !cell.IsCurScene())
+            if (!unit.IsGhost()&&cell.TryGetCellMap(out var sceneId) && !cell.IsCurScene())
             {
-                ghost.IsGoast = true;
+                await TransferHelper.AreaTransfer(unit, StartSceneConfigCategory.Instance.Get(sceneId).InstanceId);
             }
 #endif
             cell.Add(unit);
@@ -93,6 +92,7 @@ namespace ET
                     }
                 }
             }
+            await ETTask.CompletedTask;
         }
 
         /// <summary>

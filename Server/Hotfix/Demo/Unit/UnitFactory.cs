@@ -7,6 +7,77 @@ namespace ET
 {
     public static class UnitFactory
     {
+
+        public static void AfterCreateUnitFromMsg(Unit unit,bool isTransfer)
+        {
+            var scene = unit.Parent.GetParent<Scene>();
+            UnitType unitType = unit.Type;
+            switch (unitType)
+            {
+                case UnitType.Player:
+                {
+                    if (isTransfer)
+                    {
+                        unit.AddComponent<MailBoxComponent>();
+                    }
+                    if (unit.GetComponent<AOIUnitComponent>()==null)
+                    {
+                        unit.AddComponent<MoveComponent>();
+                        MapSceneConfig conf = MapSceneConfigCategory.Instance.Get((int) scene.Id);
+                        unit.AddComponent<PathfindingComponent, string>(conf.Recast);
+                        var numericComponent = unit.GetComponent<NumericComponent>();
+
+                        // 加入aoi
+                        var aoiu = unit.AddComponent<AOIUnitComponent, Vector3, Quaternion, UnitType, int,bool>(unit.Position, unit.Rotation, unit.Type,
+                            numericComponent.GetAsInt(NumericType.AOI),!isTransfer);
+                        aoiu.AddSphereCollider(0.5f);
+                    }
+                    else
+                    {
+                        var aoiu = unit.GetComponent<AOIUnitComponent>();
+                        aoiu.GetComponent<GhostComponent>().IsGoast = !isTransfer;
+                    }
+                    break;
+                }
+                case UnitType.Skill:
+                {
+                    if (unit.GetComponent<AOIUnitComponent>()==null)
+                    {
+                        var skillInfo = unit.GetComponent<SkillColliderComponent>();
+                        var pos = unit.Position;
+                        var collider = skillInfo.Config;
+                        if (collider.ColliderType == SkillJudgeType.Target)//朝指定位置方向飞行碰撞体
+                        {
+                            var moveComp = unit.AddComponent<MoveComponent>();
+                            List<Vector3> target = new List<Vector3>();
+                            target.Add(pos);
+                            target.Add(pos + (skillInfo.Position - pos).normalized * collider.Speed * collider.Time / 1000f);
+                            moveComp.MoveToAsync(target, collider.Speed).Coroutine();
+                        }
+                        else if (collider.ColliderType == SkillJudgeType.Aim) //锁定目标飞行
+                        {
+                            var toUnit = unit.Parent.GetChild<Unit>(skillInfo.ToId);
+                            unit.AddComponent<ZhuiZhuAimComponent, Unit, Action>(toUnit, () =>
+                            {
+                                unit.Dispose();
+                            });
+                            unit.AddComponent<AIComponent,int,int>(2,50);
+                        }
+                        unit.AddComponent<AOIUnitComponent,Vector3,Quaternion, UnitType>(pos,unit.Rotation,unit.Type);
+                        skillInfo.OnCreate();
+                    }
+                    else
+                    {
+                        var aoiu = unit.GetComponent<AOIUnitComponent>();
+                        aoiu.GetComponent<GhostComponent>().IsGoast = !isTransfer;
+                    }
+                    break;
+                }
+
+            }
+            
+        }
+
         public static Unit Create(Scene scene, long id, UnitType unitType)
         {
             UnitComponent unitComponent = scene.GetComponent<UnitComponent>();
@@ -51,14 +122,13 @@ namespace ET
             if (collider.ColliderType == SkillJudgeType.Target)//朝指定位置方向飞行碰撞体
             {
                 var numc = unit.AddComponent<NumericComponent>();
-
                 numc.Set(NumericType.SpeedBase, collider.Speed);
                 var moveComp = unit.AddComponent<MoveComponent>();
-                Log.Info(pos + " " + pos + (para.Position - pos).normalized * collider.Speed * collider.Time / 1000f);
                 List<Vector3> target = new List<Vector3>();
                 target.Add(pos);
                 target.Add(pos + (para.Position - pos).normalized * collider.Speed * collider.Time / 1000f);
                 moveComp.MoveToAsync(target, collider.Speed).Coroutine();
+                unit.AddComponent<SkillColliderComponent,SkillPara,Vector3>(para,para.Position);
             }
             else if (collider.ColliderType == SkillJudgeType.Aim) //锁定目标飞行
             {
@@ -70,8 +140,12 @@ namespace ET
                     unit.Dispose();
                 });
                 unit.AddComponent<AIComponent,int,int>(2,50);
+                unit.AddComponent<SkillColliderComponent,SkillPara,long>(para,para.To.Id);
             }
-            unit.AddComponent<SkillColliderComponent,SkillPara>(para);
+            else
+            {
+                unit.AddComponent<SkillColliderComponent, SkillPara>(para);
+            }
             unit.AddComponent<AOIUnitComponent,Vector3,Quaternion, UnitType>(pos,rota,unit.Type);
             return unit;
         }

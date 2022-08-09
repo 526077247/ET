@@ -33,16 +33,13 @@ namespace ET
                     else
                         parent.AddChild(entity);
                 }
-
-                unit.AddComponent<MoveComponent>();
-                MapSceneConfig conf = MapSceneConfigCategory.Instance.Get((int) scene.Id);
-                unit.AddComponent<PathfindingComponent, string>(conf.Recast);
             }
             else
             {
                 unit = oldUnit;
             }
-
+            
+            UnitFactory.AfterCreateUnitFromMsg(unit,false);
             if (request.MoveInfo != null)
             {
                 if (request.MoveInfo.X.Count > 0)
@@ -58,20 +55,6 @@ namespace ET
                         unit.MoveToAsync(list).Coroutine();
                     }
                 }
-            }
-            if (oldUnit==null)
-            {
-                var numericComponent = unit.GetComponent<NumericComponent>();
-
-                // 加入aoi
-                var aoiu = unit.AddComponent<AOIUnitComponent, Vector3, Quaternion, UnitType, int,bool>(unit.Position, unit.Rotation, unit.Type,
-                    numericComponent.GetAsInt(NumericType.AOI),true);
-                aoiu.AddSphereCollider(0.5f);
-            }
-            else
-            {
-                var aoiu = unit.GetComponent<AOIUnitComponent>();
-                aoiu.GetComponent<GhostComponent>().IsGoast = true;
             }
         }
     }

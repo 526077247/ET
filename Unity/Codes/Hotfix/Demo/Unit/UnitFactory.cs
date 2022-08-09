@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections.Generic;
 
 namespace ET
@@ -118,15 +119,41 @@ namespace ET
         /// <param name="rota"></param>
         /// <param name="para"></param>
         /// <returns></returns>
-        public static Unit CreateSkillCollider(Scene currentScene,int configId, Vector3 pos,Quaternion rota,SkillPara para)
+        public static Unit CreateSkillCollider(Scene currentScene, int configId, Vector3 pos,Quaternion rota,SkillPara para)
         {
 	        UnitComponent unitComponent = currentScene.GetComponent<UnitComponent>();
 	        Unit unit = unitComponent.AddChild<Unit,int>(configId);
         
 	        unit.Position = pos;
 	        unit.Rotation = rota;
-	        unit.AddComponent<SkillColliderComponent, SkillPara>(para);
-	        unit.AddComponent<AOIUnitComponent,Vector3,Quaternion, UnitType>(pos,rota,UnitType.Skill);
+	        var collider = SkillJudgeConfigCategory.Instance.Get(configId);
+	        if (collider.ColliderType == SkillJudgeType.Target)//朝指定位置方向飞行碰撞体
+	        {
+		        var numc = unit.AddComponent<NumericComponent>();
+
+		        numc.Set(NumericType.SpeedBase, collider.Speed);
+		        var moveComp = unit.AddComponent<MoveComponent>();
+		        Log.Info(pos + " " + pos + (para.Position - pos).normalized * collider.Speed * collider.Time / 1000f);
+		        List<Vector3> target = new List<Vector3>();
+		        target.Add(pos);
+		        target.Add(pos + (para.Position - pos).normalized * collider.Speed * collider.Time / 1000f);
+		        moveComp.MoveToAsync(target, collider.Speed).Coroutine();
+		        unit.AddComponent<SkillColliderComponent,SkillPara,Vector3>(para,para.Position);
+	        }
+	        else if (collider.ColliderType == SkillJudgeType.Aim) //锁定目标飞行
+	        {
+		        var numc = unit.AddComponent<NumericComponent>();
+		        numc.Set(NumericType.SpeedBase,collider.Speed);
+		        unit.AddComponent<MoveComponent>();
+		        unit.AddComponent<ZhuiZhuAimComponent, Unit, Action>(para.To.unit, () =>
+		        {
+			        unit.Dispose();
+		        });
+		        unit.AddComponent<AIComponent,int,int>(2,50);
+		        unit.AddComponent<SkillColliderComponent,SkillPara,long>(para,para.To.Id);
+	        }
+           
+	        unit.AddComponent<AOIUnitComponent,Vector3,Quaternion, UnitType>(pos,rota,unit.Type);
 	        return unit;
         }
 

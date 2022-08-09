@@ -89,11 +89,12 @@ namespace ET
         /// <summary>
         /// 大地图切换区域
         /// </summary>
-        /// <param name="unit"></param>
+        /// <param name="aoiU"></param>
         /// <param name="sceneInstanceId"></param>
-        public static async ETTask AreaTransfer(Unit unit, long sceneInstanceId)
+        public static async ETTask AreaTransfer(AOIUnitComponent aoiU, long sceneInstanceId)
         {
-            unit.GetComponent<AOIUnitComponent>().GetComponent<GhostComponent>().IsGoast = true;
+            var unit = aoiU.GetParent<Unit>();
+            aoiU.GetComponent<GhostComponent>().IsGoast = true;
             //由于是一步步移动过去的，所以不涉及客户端加载场景，服务端自己内部处理好数据转移就好
             M2M_UnitAreaTransferRequest request = new M2M_UnitAreaTransferRequest();
             ListComponent<int> Stack = ListComponent<int>.Create();

@@ -32,10 +32,33 @@ namespace ET
             }
         }
     }
-    
-    public class SkillColliderAwakeSystem : AwakeSystem<SkillColliderComponent, SkillPara>
+    public class SkillColliderAwakeSystem1 : AwakeSystem<SkillColliderComponent, SkillPara>
     {
-        public override void Awake(SkillColliderComponent self, SkillPara para)
+        public override void Awake(SkillColliderComponent self, SkillPara a)
+        {
+            self.Awake(a);
+        }
+    }
+    public class SkillColliderAwakeSystem2 : AwakeSystem<SkillColliderComponent, SkillPara,long>
+    {
+        public override void Awake(SkillColliderComponent self, SkillPara a, long b)
+        {
+            self.ToId = b;
+            self.Awake(a);
+        }
+    }
+    public class SkillColliderAwakeSystem3 : AwakeSystem<SkillColliderComponent, SkillPara,Vector3>
+    {
+        public override void Awake(SkillColliderComponent self, SkillPara a, Vector3 b)
+        {
+            self.Position = b;
+            self.Awake(a);
+        }
+    }
+    [FriendClass(typeof(SkillColliderComponent))]
+    public static class SkillColliderComponentSystem
+    {
+        public static void Awake(this SkillColliderComponent self, SkillPara para)
         {
             int curIndex = para.CurIndex;
             var stepPara = para.StepPara[curIndex];
@@ -67,10 +90,6 @@ namespace ET
                 Log.Error("stepPara.Paras[0] Error! "+stepPara.Paras[0]);
             }
         }
-    }
-    [FriendClass(typeof(SkillColliderComponent))]
-    public static class SkillColliderComponentSystem
-    {
         public static void OnCreate(this SkillColliderComponent self)
         {
             #region 添加触发器
