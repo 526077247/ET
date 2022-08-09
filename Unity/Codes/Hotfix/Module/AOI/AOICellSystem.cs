@@ -140,7 +140,7 @@ namespace ET
             var ghost = unit.GetComponent<GhostComponent>();
             if (self.TryGetCellMap(out int sceneId))
             {
-                ghost.AddListenerAreaIds(sceneId).Coroutine();
+                ghost.AddListenerAreaIds(sceneId);
             }
 #endif
         }
@@ -158,7 +158,7 @@ namespace ET
             var ghost = unit.GetComponent<GhostComponent>();
             if (ghost!=null&&self.TryGetCellMap(out int sceneId))
             {
-                ghost.RemoveListenerAreaIds(sceneId).Coroutine();
+                ghost.RemoveListenerAreaIds(sceneId);
             }
 #endif
         }

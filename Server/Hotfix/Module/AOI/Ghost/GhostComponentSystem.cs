@@ -15,7 +15,24 @@ namespace ET
             }
         }
 
-        public static async ETTask AddListenerAreaIds(this GhostComponent self, int sceneId)
+        public class DestroySystem:DestroySystem<GhostComponent>
+        {
+            public override void Destroy(GhostComponent self)
+            {
+                if (!self.IsGoast)
+                {
+                    foreach (var item in self.AreaIds)
+                    {
+                        var scene = StartSceneConfigCategory.Instance.Get(item.Key);
+                        if (scene.InstanceId != self.DomainScene().InstanceId)
+                            ActorMessageSenderComponent.Instance.Send(scene.InstanceId, new M2M_UnitAreaRemove() { UnitId = self.Id });
+                    }
+                }
+                self.AreaIds.Clear();
+                self.AreaIds = null;
+            }
+        }
+        public static void AddListenerAreaIds(this GhostComponent self, int sceneId)
         {
             if(!self.AreaIds.ContainsKey(sceneId))
             {
@@ -31,10 +48,9 @@ namespace ET
             {
                 self.AreaIds[sceneId]++;
             }
-            await ETTask.CompletedTask;
         }
         
-        public static async ETTask RemoveListenerAreaIds(this GhostComponent self, int sceneId)
+        public static void RemoveListenerAreaIds(this GhostComponent self, int sceneId)
         {
             if(!self.AreaIds.ContainsKey(sceneId))
             {
@@ -57,7 +73,6 @@ namespace ET
 
                 self.AreaIds.Remove(sceneId);
             }
-            await ETTask.CompletedTask;
         }
 
         #region 需要同步的协议

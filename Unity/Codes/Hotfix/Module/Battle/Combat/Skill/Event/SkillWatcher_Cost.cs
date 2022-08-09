@@ -11,7 +11,6 @@ namespace ET
 
         public void Run(SkillPara para)
         {
-#if SERVER
             Log.Info("SkillWatcher_Cost");
             if (para.StepPara[para.CurIndex].Paras.Length != 3)
             {
@@ -71,7 +70,6 @@ namespace ET
                 Log.Error(idKey+" 未配置");
             }
             
-#endif
         }
     }
 }

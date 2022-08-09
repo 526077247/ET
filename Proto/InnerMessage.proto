@@ -198,3 +198,25 @@ message M2M_Stop // IActorLocationMessage
 	float C = 8;
 	float W = 9;
 }
+
+message M2M_UseSkill // IActorLocationMessage
+{
+	int32 RpcId = 90;
+	int32 Error = 1;
+	int32 SkillConfigId = 2;
+	int64 Sender = 3;
+	int64 Reciver = 4;
+	float X = 5;
+	float Y = 6;
+	float Z = 7;
+}
+
+message M2M_AddBuff // IActorLocationMessage
+{
+	int32 RpcId = 90;
+	int32 Error = 1;
+	int32 ConfigId = 2;
+	int64 Timestamp = 3;
+	int64 UnitId = 4;
+	int64 SourceId = 5;
+}

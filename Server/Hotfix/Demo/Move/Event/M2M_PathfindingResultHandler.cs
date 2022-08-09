@@ -13,6 +13,7 @@ namespace ET
                 var unit = uc.Get(message.Id);
                 if (unit != null)
                 {
+                    unit.Position = new Vector3(message.X, message.Y, message.Z);
                     float speed = unit.GetComponent<NumericComponent>().GetAsFloat(NumericType.Speed);
 
                     using (ListComponent<Vector3> list = ListComponent<Vector3>.Create())

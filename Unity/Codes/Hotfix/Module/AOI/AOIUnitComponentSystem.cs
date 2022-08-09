@@ -132,7 +132,7 @@ namespace ET
                     }
                     else if (oldSceneId != newSceneId && newSceneId != self.Scene.Id) //跨区域了
                     {
-                        if (!self.GetComponent<GhostComponent>().IsGoast)
+                        if (!self.IsGhost())
                             await TransferHelper.AreaTransfer(self.GetParent<Unit>(), StartSceneConfigCategory.Instance.Get(newSceneId).InstanceId);
                     }
                 }
@@ -334,6 +334,19 @@ namespace ET
         {
             return self.Cell.ListenerUnits;
         }
+
+#if SERVER
+        public static bool IsGhost(this AOIUnitComponent self)
+        {
+            var ghost = self.GetComponent<GhostComponent>();
+            if (ghost != null)
+            {
+                return ghost.IsGoast;
+            }
+
+            return false;
+        }
+#endif
     }
     
 }

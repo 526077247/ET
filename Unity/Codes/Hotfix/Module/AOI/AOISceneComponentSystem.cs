@@ -61,6 +61,13 @@ namespace ET
         {
             unit.Scene = self;
             AOICell cell = self.GetAOICell(unit.Position);
+#if SERVER
+            var ghost = unit.GetComponent<GhostComponent>();
+            if (!ghost.IsGoast&&cell.TryGetCellMap(out var sceneId) && !cell.IsCurScene())
+            {
+                ghost.IsGoast = true;
+            }
+#endif
             cell.Add(unit);
             // Log.Info("RegisterUnit:" + unit.Id + "  Position:" + unit.Position + "  grid x:"+ cell.posx+",y:"+ cell.posy+" type"+unit.Type);
             if (unit.Type == UnitType.Player)

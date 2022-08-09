@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace ET
 {
     [ComponentOf(typeof(AOIUnitComponent))]
-    public class GhostComponent :Entity,IAwake
+    public class GhostComponent :Entity,IAwake,IDestroy
     {
         public Dictionary<int,int> AreaIds { get; set; }
         public bool IsGoast { get; set; }
@@ -16,7 +16,8 @@ namespace ET
         {
             {typeof(M2C_PathfindingResult),typeof(M2M_PathfindingResult)},
             {typeof(M2C_Stop),typeof(M2M_Stop)},
-            
+            {typeof(M2C_UseSkill),typeof(M2M_UseSkill)},
+            {typeof(M2C_AddBuff),typeof(M2M_AddBuff)},
         };
     }
 }

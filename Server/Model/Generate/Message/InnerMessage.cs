@@ -421,4 +421,58 @@ namespace ET
 
 	}
 
+	[Message(InnerOpcode.M2M_UseSkill)]
+	[ProtoContract]
+	public partial class M2M_UseSkill: Object, IActorLocationMessage
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(1)]
+		public int Error { get; set; }
+
+		[ProtoMember(2)]
+		public int SkillConfigId { get; set; }
+
+		[ProtoMember(3)]
+		public long Sender { get; set; }
+
+		[ProtoMember(4)]
+		public long Reciver { get; set; }
+
+		[ProtoMember(5)]
+		public float X { get; set; }
+
+		[ProtoMember(6)]
+		public float Y { get; set; }
+
+		[ProtoMember(7)]
+		public float Z { get; set; }
+
+	}
+
+	[Message(InnerOpcode.M2M_AddBuff)]
+	[ProtoContract]
+	public partial class M2M_AddBuff: Object, IActorLocationMessage
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(1)]
+		public int Error { get; set; }
+
+		[ProtoMember(2)]
+		public int ConfigId { get; set; }
+
+		[ProtoMember(3)]
+		public long Timestamp { get; set; }
+
+		[ProtoMember(4)]
+		public long UnitId { get; set; }
+
+		[ProtoMember(5)]
+		public long SourceId { get; set; }
+
+	}
+
 }

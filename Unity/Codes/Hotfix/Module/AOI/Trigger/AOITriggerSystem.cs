@@ -129,6 +129,9 @@ namespace ET
         }
         public static void OnTrigger(this AOITrigger self, AOITrigger other, AOITriggerType type)
         {
+#if SERVER
+            if(self.GetParent<AOIUnitComponent>().IsGhost()) return;  
+#endif
             // Log.Info("OnTrigger"+type);
             self.Handler?.Invoke(other.GetParent<AOIUnitComponent>(),type);
         }

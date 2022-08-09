@@ -27,5 +27,7 @@ namespace ET
 		 public const ushort G2M_SessionDisconnect = 20024;
 		 public const ushort M2M_PathfindingResult = 20025;
 		 public const ushort M2M_Stop = 20026;
+		 public const ushort M2M_UseSkill = 20027;
+		 public const ushort M2M_AddBuff = 20028;
 	}
 }
