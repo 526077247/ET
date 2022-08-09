@@ -2,17 +2,27 @@
 
 # 和ET的区别
 1. 使用魔改版Addressables实现了资源热更新，包括一键标记等配套工具，多渠道安装包分包配置功能，统一下载入口等
-2. 使用了基于Addressables的资源管理系统替换了原有系统，包括对Unity内置SpriteAtlas图集功能的支持
+2. 使用了基于Addressables的资源管理系统替换了原有系统，包括对动态图集、Unity内置SpriteAtlas图集功能的支持
 3. 使用组件模式的UI框架替换掉了原有部分，包括红点系统、多语言等，易于集成第三方插件
 4. 使用InjectFix实现了ILRuntime不能热更的Mono部分代码热修复，以备不时之需
 5. 接入BestHTTP提供更完善的下载支持，如后台下载
 6. 提供一个简单可扩展的对话框架
 7. 替换AOI框架，支持OBB、球形触发器和射线检测，并且双端使用AOI
 8. 提供一个简单可扩展的战斗框架，并且双端可单独使用
+9. 提供一个简单的Ghost系统（进行中）
+
+# 注意事项
+1. 由于ILRuntime对部分功能支持不完善，可使用ILRuntime生成代码触发huatuo的AOT泛型共享机制，然后使用huatuo的解释器进行热更，待huatuo工具链完成后可完全移除ILRuntime
+2. ILRuntime已知问题：
+  * JIT模式下本项目UI框架会报错，原因未知也不知道怎么提bug，暂时不使用JIT模式即可解决
+  * 由于目前Runtime和JIT都不支持特性标签传入数组参数，导致```[InputSystem(new[]{1,2},new[]{1,2})]``` 多按键同时监听特性标签不能正常工作，已提bug
 
 # UI框架使用教程
 1. 基于ET6组件式UI框架的使用 https://www.bilibili.com/video/BV1Ra411q7Ct
 2. ScrollView无限滑动列表 https://www.bilibili.com/video/BV1YR4y1g7tN
+
+# 演示视频
+1. 触发器演示视频 https://www.bilibili.com/video/BV1iY4y1t7Kj
 
 # __讨论QQ群 : 474643097__  
 
