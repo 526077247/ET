@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace ET
 {
@@ -9,6 +10,8 @@ namespace ET
         public Dictionary<int,int> AreaIds { get; set; }
         public bool IsGoast { get; set; }
 
+        public Vector3? LeavePos;
+        public int RealAreaId=> (int) this.DomainScene().Id;
         /// <summary>
         /// 需要转发到其他Area的协议
         /// </summary>

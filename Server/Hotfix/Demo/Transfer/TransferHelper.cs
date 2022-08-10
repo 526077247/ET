@@ -94,7 +94,6 @@ namespace ET
         public static async ETTask AreaTransfer(AOIUnitComponent aoiU, long sceneInstanceId)
         {
             var unit = aoiU.GetParent<Unit>();
-            aoiU.GetComponent<GhostComponent>().IsGoast = true;
             //由于是一步步移动过去的，所以不涉及客户端加载场景，服务端自己内部处理好数据转移就好
             M2M_UnitAreaTransferRequest request = new M2M_UnitAreaTransferRequest();
             ListComponent<int> Stack = ListComponent<int>.Create();
@@ -155,6 +154,7 @@ namespace ET
                 {
                     response = await ActorMessageSenderComponent.Instance.Call(sceneInstanceId, request) as M2M_UnitAreaTransferResponse;
                     task.SetResult();
+                    aoiU.GetComponent<GhostComponent>().IsGoast = true;
                 };
                 taskAsync().Coroutine();
                 tasks.Add(task);

@@ -120,22 +120,6 @@ namespace ET
             var changeCell = cell != oldCell;
             if (changeCell)//跨格子了：AOI刷新
             {
-#if SERVER
-                if (oldCell.TryGetCellMap(out var oldSceneId))
-                {
-                    if (!cell.TryGetCellMap(out var newSceneId)) //进入未开放区域
-                    {
-                        if (oldSceneId != newSceneId)
-                                //todo:倒计时拉回复活点
-                            self.ChangeTo(cell);
-                    }
-                    else if (oldSceneId != newSceneId && newSceneId != self.Scene.Id) //跨区域了
-                    {
-                        if (!self.IsGhost())
-                            await TransferHelper.AreaTransfer(self, StartSceneConfigCategory.Instance.Get(newSceneId).InstanceId);
-                    }
-                }
-#endif
                 self.ChangeTo(cell);
             }
             //“碰撞器”刷新 自己进入或离开别人的
@@ -151,7 +135,16 @@ namespace ET
                 if (item.IsCollider ||!item.Enable|| item.Selecter == null || item.Selecter.Count == 0) continue;
                 item.AfterTriggerChangeBroadcastToMe(item.GetRealPos(oldpos),changeCell);
             }
-
+#if SERVER
+            if (cell.TryGetCellMap(out var newSceneId))
+            {
+                await self.GetComponent<GhostComponent>().AreaTransfer(newSceneId, position);
+            }
+            else
+            {
+                //todo:倒计时拉回复活点
+            }
+#endif
             await ETTask.CompletedTask;
         }
         /// <summary>

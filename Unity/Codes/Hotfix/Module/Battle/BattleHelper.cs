@@ -36,10 +36,6 @@ namespace ET
             {
                 int realValue = damageValue;
                 int now = t.GetAsInt(NumericType.Hp);
-                if (now <= damageValue)
-                {
-                    realValue = now;
-                }
                 int nowBaseValue = now - realValue;
                 t.Set(NumericType.HpBase, nowBaseValue);
                 EventSystem.Instance.Publish(new EventType.AfterCombatUnitGetDamage()
@@ -74,10 +70,7 @@ namespace ET
             {
                 int realValue = damageValue;
                 int now = t.GetAsInt(NumericType.Hp);
-                if (now <= damageValue)
-                {
-                    realValue = now;
-                }
+                //由于考虑ghost回血加血时序不一定一致，所以允许生命为负值
                 int nowBaseValue = now - realValue;
                 t.Set(NumericType.HpBase, nowBaseValue);
                 Log.Info(to.DomainScene().Name+" "+to.Id+" "+nowBaseValue);

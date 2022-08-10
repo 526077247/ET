@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace ET
 {
@@ -75,6 +76,32 @@ namespace ET
             }
         }
 
+        public static async ETTask AreaTransfer(this GhostComponent self, int newSceneId,Vector3 pos)
+        {
+            if (!self.IsGoast)
+            {
+                if (newSceneId != self.RealAreaId)
+                {
+                    if (self.LeavePos != null)//超过2m才传送，防止在边缘反复横跳
+                    {
+                        if (Vector3.SqrMagnitude((Vector3) self.LeavePos, pos) > 16)
+                        {
+                            await TransferHelper.AreaTransfer(self.GetParent<AOIUnitComponent>(),
+                                StartSceneConfigCategory.Instance.Get(newSceneId).InstanceId);
+                        }
+                    }
+                    else
+                    {
+                        self.LeavePos = pos;
+                    }
+                }
+                else
+                {
+                    self.LeavePos = null;
+                }
+            }
+        }
+
         #region 需要同步的协议
 
         /// <summary>
@@ -85,7 +112,6 @@ namespace ET
         /// <typeparam name="T"></typeparam>
         public static void HandleMsg<T>(this GhostComponent self, T msg) where T: IActorMessage
         {
-            if(self.IsGoast) return;
             var type = msg.GetType();
             if (self.AreaIds.Count>1&&GhostComponent.MsgMap.TryGetValue(type,out var newType))
             {

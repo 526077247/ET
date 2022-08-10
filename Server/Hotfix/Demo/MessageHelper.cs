@@ -13,7 +13,11 @@ namespace ET
             {
                 ghost = unit.GetComponent<AOIUnitComponent>()?.GetComponent<GhostComponent>();
             }
-            ghost?.HandleMsg(message);
+            if (!ghost.IsGoast)
+            {
+                unit.GetComponent<AOIUnitComponent>()?.GetComponent<GhostComponent>()?.HandleMsg(message);
+            }
+            
             foreach (var u in unit.GetBeSeeUnits())
             {
                 SendToClient(u.GetParent<Unit>(), message);
