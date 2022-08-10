@@ -8,11 +8,11 @@ namespace ET
         {
             if (args.Type == AOITriggerType.Enter)
             {
-                OnColliderIn(args.From, args.To, args.Para,args.CostId, args.Cost,args.Config);
+                OnColliderIn(args.From, args.To, args.Para,args.CostId, args.Cost,args.Config,args.Skill);
             }
             else if (args.Type == AOITriggerType.Exit)
             {
-                OnColliderOut(args.From, args.To, args.Para,args.CostId, args.Cost,args.Config);
+                OnColliderOut(args.From, args.To, args.Para,args.CostId, args.Cost,args.Config,args.Skill);
             }
         }  
         
@@ -25,8 +25,9 @@ namespace ET
         /// <param name="costId"></param>
         /// <param name="cost"></param>
         /// <param name="config"></param>
+        /// <param name="skill">技能判断体</param>
         public void OnColliderIn(AOIUnitComponent from, AOIUnitComponent to, SkillStepPara stepPara, List<int> costId,
-            List<int> cost,SkillConfig config)
+            List<int> cost,SkillConfig config,AOIUnitComponent skill = null)
         {
             if(from==null||to==null) return;//伤害计算参与者无了
             Unit fromU = from.GetParent<Unit>();
@@ -95,7 +96,12 @@ namespace ET
                 NumericComponent f = fromU.GetComponent<NumericComponent>();
                 NumericComponent t = toU.GetComponent<NumericComponent>();
                 float value = fx.GetData(f, t);
+#if SERVER
+                BattleHelper.Damage(combatFromU,combatToU,value,ghost:skill?.GetComponent<GhostComponent>());
+#else
                 BattleHelper.Damage(combatFromU,combatToU,value);
+#endif
+                
             }
         }
         /// <summary>
@@ -107,8 +113,9 @@ namespace ET
         /// <param name="costId"></param>
         /// <param name="cost"></param>
         /// <param name="config"></param>
+        /// <param name="skill">技能判断体</param>
         public void OnColliderOut(AOIUnitComponent from, AOIUnitComponent to, SkillStepPara stepPara, List<int> costId,
-            List<int> cost,SkillConfig config)
+            List<int> cost,SkillConfig config,AOIUnitComponent skill = null)
         {
             // Log.Info("触发"+type.ToString()+to.Id+"  "+from.Id);
             // Log.Info("触发"+type.ToString()+to.Position+" Dis: "+Vector3.Distance(to.Position,from.Position));

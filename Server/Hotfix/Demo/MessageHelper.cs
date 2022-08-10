@@ -7,9 +7,13 @@ namespace ET
     [FriendClass(typeof(UnitGateComponent))]
     public static class MessageHelper
     {
-        public static void Broadcast(Unit unit, IActorMessage message)
+        public static void Broadcast(Unit unit, IActorMessage message,GhostComponent ghost =null)
         {
-            unit.GetComponent<AOIUnitComponent>()?.GetComponent<GhostComponent>()?.HandleMsg(message);
+            if (ghost == null)
+            {
+                ghost = unit.GetComponent<AOIUnitComponent>()?.GetComponent<GhostComponent>();
+            }
+            ghost?.HandleMsg(message);
             foreach (var u in unit.GetBeSeeUnits())
             {
                 SendToClient(u.GetParent<Unit>(), message);

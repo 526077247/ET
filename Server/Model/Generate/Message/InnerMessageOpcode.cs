@@ -29,5 +29,6 @@ namespace ET
 		 public const ushort M2M_Stop = 20026;
 		 public const ushort M2M_UseSkill = 20027;
 		 public const ushort M2M_AddBuff = 20028;
+		 public const ushort M2M_Damage = 20029;
 	}
 }

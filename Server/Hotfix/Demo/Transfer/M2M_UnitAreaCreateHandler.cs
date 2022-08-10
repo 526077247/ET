@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using MongoDB.Bson;
-using UnityEngine;
-
+﻿using UnityEngine;
 namespace ET
 {
     [ActorMessageHandler]
-    public class M2M_UnitAreaAddHandler : AMActorLocationHandler<Scene, M2M_UnitAreaAdd>
+    public class M2M_UnitAreaCreateHandler : AMActorLocationHandler<Scene, M2M_UnitAreaCreate>
     {
-        protected override async ETTask Run(Scene scene, M2M_UnitAreaAdd request)
+        protected override async ETTask Run(Scene scene, M2M_UnitAreaCreate request)
         {
             await ETTask.CompletedTask;
             UnitComponent unitComponent = scene.GetComponent<UnitComponent>();
@@ -39,23 +35,7 @@ namespace ET
                 unit = oldUnit;
             }
             
-            UnitFactory.AfterCreateUnitFromMsg(unit,CreateUnitFromMsgType.Add);
-            if (request.MoveInfo != null)
-            {
-                if (request.MoveInfo.X.Count > 0)
-                {
-                    using (ListComponent<Vector3> list = ListComponent<Vector3>.Create())
-                    {
-                        list.Add(unit.Position);
-                        for (int i = 0; i < request.MoveInfo.X.Count; ++i)
-                        {
-                            list.Add(new Vector3(request.MoveInfo.X[i], request.MoveInfo.Y[i], request.MoveInfo.Z[i]));
-                        }
-
-                        unit.MoveToAsync(list).Coroutine();
-                    }
-                }
-            }
+            UnitFactory.AfterCreateUnitFromMsg(unit,CreateUnitFromMsgType.Create);
         }
     }
 }

@@ -64,7 +64,7 @@ namespace ET
 #if SERVER
             if (!unit.IsGhost()&&cell.TryGetCellMap(out var sceneId) && !cell.IsCurScene())
             {
-                await TransferHelper.AreaTransfer(unit, StartSceneConfigCategory.Instance.Get(sceneId).InstanceId);
+                TransferHelper.AreaCreate(unit, StartSceneConfigCategory.Instance.Get(sceneId).InstanceId);
             }
 #endif
             cell.Add(unit);

@@ -36,7 +36,14 @@ message M2M_UnitAreaAdd // IActorLocationMessage
 	repeated Entity Entitys = 3;
 	repeated RecursiveEntitys Map = 4;
 	MoveInfo MoveInfo = 5;
+}
 
+message M2M_UnitAreaCreate // IActorLocationMessage
+{
+	int32 RpcId = 1;
+	Unit Unit = 2;
+	repeated Entity Entitys = 3;
+	repeated RecursiveEntitys Map = 4;
 }
 
 message RecursiveEntitys

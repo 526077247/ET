@@ -281,4 +281,5 @@ message M2C_Damage // IActorMessage
 	int64 FromId = 2;
 	int64 ToId = 3;
 	int64 Damage = 4;
+	int64 NowBase = 5;
 }

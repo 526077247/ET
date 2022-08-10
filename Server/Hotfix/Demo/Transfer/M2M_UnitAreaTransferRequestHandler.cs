@@ -38,7 +38,7 @@ namespace ET
 			{
 				unit = oldUnit;
 			}
-			UnitFactory.AfterCreateUnitFromMsg(unit,true);
+			UnitFactory.AfterCreateUnitFromMsg(unit,CreateUnitFromMsgType.Transfer);
 			response.NewInstanceId = unit.InstanceId;
 			reply();
 		}

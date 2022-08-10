@@ -8,7 +8,7 @@ namespace ET
     public static class UnitFactory
     {
 
-        public static void AfterCreateUnitFromMsg(Unit unit,bool isTransfer)
+        public static void AfterCreateUnitFromMsg(Unit unit,CreateUnitFromMsgType type)
         {
             var scene = unit.Parent.GetParent<Scene>();
             UnitType unitType = unit.Type;
@@ -16,7 +16,7 @@ namespace ET
             {
                 case UnitType.Player:
                 {
-                    if (isTransfer)
+                    if (type!=CreateUnitFromMsgType.Add)
                     {
                         unit.AddComponent<MailBoxComponent>();
                     }
@@ -29,13 +29,17 @@ namespace ET
 
                         // 加入aoi
                         var aoiu = unit.AddComponent<AOIUnitComponent, Vector3, Quaternion, UnitType, int,bool>(unit.Position, unit.Rotation, unit.Type,
-                            numericComponent.GetAsInt(NumericType.AOI),!isTransfer);
+                            numericComponent.GetAsInt(NumericType.AOI),type!=CreateUnitFromMsgType.Create);
                         aoiu.AddSphereCollider(0.5f);
+                        if (type != CreateUnitFromMsgType.Create)
+                        {
+                            aoiu.GetComponent<GhostComponent>().IsGoast = type == CreateUnitFromMsgType.Add;
+                        }
                     }
                     else
                     {
                         var aoiu = unit.GetComponent<AOIUnitComponent>();
-                        aoiu.GetComponent<GhostComponent>().IsGoast = !isTransfer;
+                        aoiu.GetComponent<GhostComponent>().IsGoast = type == CreateUnitFromMsgType.Add;
                     }
                     break;
                 }
@@ -63,13 +67,17 @@ namespace ET
                             });
                             unit.AddComponent<AIComponent,int,int>(2,50);
                         }
-                        unit.AddComponent<AOIUnitComponent,Vector3,Quaternion, UnitType>(pos,unit.Rotation,unit.Type);
+                        var aoiu =unit.AddComponent<AOIUnitComponent,Vector3,Quaternion, UnitType,bool>(pos,unit.Rotation,unit.Type,type!=CreateUnitFromMsgType.Create);
                         skillInfo.OnCreate();
+                        if (type != CreateUnitFromMsgType.Create)
+                        {
+                            aoiu.GetComponent<GhostComponent>().IsGoast = type == CreateUnitFromMsgType.Add;
+                        }
                     }
                     else
                     {
                         var aoiu = unit.GetComponent<AOIUnitComponent>();
-                        aoiu.GetComponent<GhostComponent>().IsGoast = !isTransfer;
+                        aoiu.GetComponent<GhostComponent>().IsGoast = type == CreateUnitFromMsgType.Add;
                     }
                     break;
                 }

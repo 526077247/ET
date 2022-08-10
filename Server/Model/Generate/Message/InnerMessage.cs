@@ -475,4 +475,28 @@ namespace ET
 
 	}
 
+	[Message(InnerOpcode.M2M_Damage)]
+	[ProtoContract]
+	public partial class M2M_Damage: Object, IActorLocationMessage
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(1)]
+		public int Error { get; set; }
+
+		[ProtoMember(2)]
+		public long FromId { get; set; }
+
+		[ProtoMember(3)]
+		public long ToId { get; set; }
+
+		[ProtoMember(4)]
+		public long Damage { get; set; }
+
+		[ProtoMember(5)]
+		public long NowBase { get; set; }
+
+	}
+
 }

@@ -28,6 +28,9 @@ namespace ET
                 
             // 广播寻路路径
             M2C_PathfindingResult m2CPathfindingResult = new M2C_PathfindingResult();
+            m2CPathfindingResult.X = unit.Position.x;
+            m2CPathfindingResult.Y = unit.Position.y;
+            m2CPathfindingResult.Z = unit.Position.z;
             m2CPathfindingResult.Id = unit.Id;
             for (int i = 0; i < list.Count; ++i)
             {
@@ -55,6 +58,9 @@ namespace ET
             }
             // 广播寻路路径
             M2C_PathfindingResult m2CPathfindingResult = new M2C_PathfindingResult();
+            m2CPathfindingResult.X = unit.Position.x;
+            m2CPathfindingResult.Y = unit.Position.y;
+            m2CPathfindingResult.Z = unit.Position.z;
             m2CPathfindingResult.Id = unit.Id;
             for (int i = 0; i < path.Count; ++i)
             {

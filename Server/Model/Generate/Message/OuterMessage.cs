@@ -593,6 +593,9 @@ namespace ET
 		[ProtoMember(4)]
 		public long Damage { get; set; }
 
+		[ProtoMember(5)]
+		public long NowBase { get; set; }
+
 	}
 
 }

@@ -12,7 +12,7 @@ namespace ET
 	        Unit unit = unitComponent.AddChildWithId<Unit, int>(unitInfo.UnitId, unitInfo.ConfigId);
 	        unitComponent.Add(unit);
 	        var pos = new Vector3(unitInfo.X, unitInfo.Y, unitInfo.Z);
-	        
+	        unit.Position = pos;
 	        unit.Forward = new Vector3(unitInfo.ForwardX, unitInfo.ForwardY, unitInfo.ForwardZ);
 	        switch (unit.Type)
 	        {
@@ -65,12 +65,11 @@ namespace ET
 			        unit.AddComponent<ObjectWait>();
 
 			        unit.AddComponent<XunLuoPathComponent>();
-			        unit.Position = pos;
+			        unit.Position = pos;//触发客户端加载场景预制体
 			        break;
 		        }
 		        case UnitType.Skill:
 		        {
-			        unit.Position = pos;
 			        NumericComponent numericComponent = unit.AddComponent<NumericComponent>();
 			        if (unitInfo.Ks != null && unitInfo.Ks.Count > 0)
 			        {

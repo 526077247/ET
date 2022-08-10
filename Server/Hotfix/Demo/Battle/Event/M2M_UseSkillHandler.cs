@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 namespace ET
 {
-    //todo:技能消耗和造成伤害时再同步一下数值
     [ActorMessageHandler]
     public class M2M_UseSkillHandler : AMActorLocationHandler<Scene, M2M_UseSkill>
     {

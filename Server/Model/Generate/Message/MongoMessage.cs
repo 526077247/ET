@@ -80,6 +80,24 @@ namespace ET
 
 	}
 
+	[Message(MongoOpcode.M2M_UnitAreaCreate)]
+	[ProtoContract]
+	public partial class M2M_UnitAreaCreate: Object, IActorLocationMessage
+	{
+		[ProtoMember(1)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(2)]
+		public Unit Unit { get; set; }
+
+		[ProtoMember(3)]
+		public List<Entity> Entitys = new List<Entity>();
+
+		[ProtoMember(4)]
+		public List<RecursiveEntitys> Map = new List<RecursiveEntitys>();
+
+	}
+
 	[Message(MongoOpcode.RecursiveEntitys)]
 	[ProtoContract]
 	public partial class RecursiveEntitys: Object

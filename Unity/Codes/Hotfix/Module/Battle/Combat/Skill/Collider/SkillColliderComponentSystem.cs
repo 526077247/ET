@@ -140,6 +140,7 @@ namespace ET
                     {
                         EventSystem.Instance.Publish(new EventType.OnSkillTrigger
                         {
+                            Skill = skillAOIUnit,
                             From = aoiUnit,
                             To = o,
                             Para = self.Para,
@@ -157,6 +158,7 @@ namespace ET
                     {
                         EventSystem.Instance.Publish(new EventType.OnSkillTrigger
                         {
+                            Skill = skillAOIUnit,
                             From = aoiUnit,
                             To = o,
                             Para = self.Para,

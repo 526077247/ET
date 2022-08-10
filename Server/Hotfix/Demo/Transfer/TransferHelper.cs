@@ -234,5 +234,65 @@ namespace ET
             }
             ActorMessageSenderComponent.Instance.Send(sceneInstanceId, request);
         }
+        
+        /// <summary>
+        /// 在其他区域创建
+        /// </summary>
+        /// <param name="aoiU"></param>
+        /// <param name="sceneInstanceId"></param>
+        public static void AreaCreate(AOIUnitComponent aoiU, long sceneInstanceId)
+        {
+            var unit = aoiU.GetParent<Unit>();
+            aoiU.GetComponent<GhostComponent>().IsGoast = true;
+            //由于是一步步移动过去的，所以不涉及客户端加载场景，服务端自己内部处理好数据转移就好
+            M2M_UnitAreaCreate request = new M2M_UnitAreaCreate();
+            ListComponent<int> Stack = ListComponent<int>.Create();
+            request.Unit = unit;
+            Entity curEntity = unit;
+            Stack.Add(-1);
+            while (Stack.Count > 0)
+            {
+                var index = Stack[Stack.Count - 1];
+                if (index != -1)
+                {
+                    curEntity = request.Entitys[index];
+                }
+                Stack.RemoveAt(Stack.Count - 1);
+                foreach (Entity entity in curEntity.Components.Values)
+                {
+                    if (entity is ITransfer)
+                    {
+                        var childIndex = request.Entitys.Count;
+                        request.Entitys.Add(entity);
+                        Stack.Add(childIndex);
+                        request.Map.Add(new RecursiveEntitys
+                        {
+                            ChildIndex = childIndex,
+                            ParentIndex = index,
+                            IsChild = 0
+                        });
+                    }
+                }
+                foreach (Entity entity in curEntity.Children.Values)
+                {
+                    if (entity is ITransfer)
+                    {
+                        var childIndex = request.Entitys.Count;
+                        request.Entitys.Add(entity);
+                        Stack.Add(childIndex);
+                        request.Map.Add(new RecursiveEntitys
+                        {
+                            ChildIndex = childIndex,
+                            ParentIndex = index,
+                            IsChild = 1
+                        });
+                    }
+                }
+            }
+            Stack.Dispose();
+
+            ActorMessageSenderComponent.Instance.Send(sceneInstanceId, request);
+            
+        }
     }
 }
