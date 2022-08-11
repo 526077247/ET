@@ -17,7 +17,7 @@ namespace ET
             Log.Info("AOIScene StandBy! ");
 #if SERVER
             var id = (int)self.Id;
-            if (MapSceneConfigCategory.Instance.GetAll().TryGetValue(id, out var config))
+            if (MapSceneConfigCategory.Instance.GetAll().TryGetValue(id, out var config)&&!string.IsNullOrEmpty(config.Area))
             {
                 self.AddComponent<AreaComponent, string>(config.Area);
             }

@@ -15,10 +15,12 @@ namespace ET
             self.Rotation = rota;
             self.Type = type;
             self.Range = range;
+            var aoiScene = self.DomainScene().GetComponent<AOISceneComponent>();
 #if SERVER
-            self.AddComponent<GhostComponent>();
+            if(aoiScene.GetComponent<AreaComponent>()!=null)
+                self.AddComponent<GhostComponent>();
 #endif
-            self.DomainScene().GetComponent<AOISceneComponent>().RegisterUnit(self).Coroutine();
+            aoiScene.RegisterUnit(self).Coroutine();
         }
     }
     [ObjectSystem]
@@ -30,10 +32,12 @@ namespace ET
             self.Rotation = rota;
             self.Type = type;
             self.Range = 1;
+            var aoiScene = self.DomainScene().GetComponent<AOISceneComponent>();
 #if SERVER
-            self.AddComponent<GhostComponent>();
+            if(aoiScene.GetComponent<AreaComponent>()!=null)
+                self.AddComponent<GhostComponent>();
 #endif
-            self.DomainScene().GetComponent<AOISceneComponent>().RegisterUnit(self).Coroutine();
+            aoiScene.RegisterUnit(self).Coroutine();
         }
     }
 #if SERVER
@@ -46,8 +50,10 @@ namespace ET
             self.Rotation = rota;
             self.Type = type;
             self.Range = range;
-            self.AddComponent<GhostComponent>().IsGoast = isGhost;
-            self.DomainScene().GetComponent<AOISceneComponent>().RegisterUnit(self).Coroutine();
+            var aoiScene = self.DomainScene().GetComponent<AOISceneComponent>();
+            if(aoiScene.GetComponent<AreaComponent>()!=null)
+                self.AddComponent<GhostComponent>().IsGoast = isGhost;
+            aoiScene.RegisterUnit(self).Coroutine();
         }
     }
     [ObjectSystem]
@@ -59,8 +65,10 @@ namespace ET
             self.Rotation = rota;
             self.Type = type;
             self.Range = 1;
-            self.AddComponent<GhostComponent>().IsGoast = isGhost;
-            self.DomainScene().GetComponent<AOISceneComponent>().RegisterUnit(self).Coroutine();
+            var aoiScene = self.DomainScene().GetComponent<AOISceneComponent>();
+            if(aoiScene.GetComponent<AreaComponent>()!=null)
+                self.AddComponent<GhostComponent>().IsGoast = isGhost;
+            aoiScene.RegisterUnit(self).Coroutine();
         }
     }
 #endif
@@ -136,13 +144,16 @@ namespace ET
                 item.AfterTriggerChangeBroadcastToMe(item.GetRealPos(oldpos),changeCell);
             }
 #if SERVER
-            if (cell.TryGetCellMap(out var newSceneId))
+            if (self.GetComponent<GhostComponent>() != null)
             {
-                await self.GetComponent<GhostComponent>().AreaTransfer(newSceneId, position);
-            }
-            else
-            {
-                //todo:倒计时拉回复活点
+                if (cell.TryGetCellMap(out var newSceneId))
+                {
+                    await self.GetComponent<GhostComponent>().AreaTransfer(newSceneId, position);
+                }
+                else
+                {
+                    //todo:倒计时拉回复活点
+                }
             }
 #endif
             await ETTask.CompletedTask;

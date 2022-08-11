@@ -24,6 +24,7 @@ namespace ET
                 {
                     foreach (var item in self.AreaIds)
                     {
+                        Log.Info(self.DomainScene().Id+"   "+ item.Key);
                         var scene = StartSceneConfigCategory.Instance.Get(item.Key);
                         if (scene.InstanceId != self.DomainScene().InstanceId)
                             ActorMessageSenderComponent.Instance.Send(scene.InstanceId, new M2M_UnitAreaRemove() { UnitId = self.Id });

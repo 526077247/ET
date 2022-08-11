@@ -105,7 +105,7 @@ namespace ET
                 self.Triggers.Add(trigger);
 #if SERVER
             var ghost = trigger.Parent.GetComponent<GhostComponent>();
-            if (self.TryGetCellMap(out int sceneId))
+            if (ghost!=null&&self.TryGetCellMap(out int sceneId))
             {
                 ghost.AddListenerAreaIds(sceneId);
             }
@@ -152,7 +152,7 @@ namespace ET
             self.ListenerUnits.Add(unit);
 #if SERVER
             var ghost = unit.GetComponent<GhostComponent>();
-            if (self.TryGetCellMap(out int sceneId))
+            if (ghost!=null&&self.TryGetCellMap(out int sceneId))
             {
                 ghost.AddListenerAreaIds(sceneId);
             }
@@ -405,7 +405,8 @@ namespace ET
             var areaComp = self.GetParent<AOISceneComponent>().GetComponent<AreaComponent>();
             if (areaComp == null)
             {
-                throw new Exception("areaComp == null");
+                sceneId = (int)self.DomainScene().Id;
+                return true;
             }
             return areaComp.TryGetCellMap(self.Id, out sceneId);
         }
@@ -420,7 +421,7 @@ namespace ET
             var areaComp = self.GetParent<AOISceneComponent>().GetComponent<AreaComponent>();
             if (areaComp == null)
             {
-                throw new Exception("areaComp == null");
+                return true;
             }
             if (areaComp.TryGetCellMap(self.Id, out int sceneId))
             {
@@ -440,7 +441,7 @@ namespace ET
             var areaComp = self.GetParent<AOISceneComponent>().GetComponent<AreaComponent>();
             if (areaComp == null)
             {
-                throw new Exception("areaComp == null");
+                return false;
             }
             return areaComp.TryGetCellMap(self.Id, out int _);
         }

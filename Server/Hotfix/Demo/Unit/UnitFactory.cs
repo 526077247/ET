@@ -16,10 +16,6 @@ namespace ET
             {
                 case UnitType.Player:
                 {
-                    if (type!=CreateUnitFromMsgType.Add)
-                    {
-                        unit.AddComponent<MailBoxComponent>();
-                    }
                     if (unit.GetComponent<AOIUnitComponent>()==null)
                     {
                         unit.AddComponent<MoveComponent>();
@@ -40,6 +36,17 @@ namespace ET
                     {
                         var aoiu = unit.GetComponent<AOIUnitComponent>();
                         aoiu.GetComponent<GhostComponent>().IsGoast = type == CreateUnitFromMsgType.Add;
+                    }
+                    if (type!=CreateUnitFromMsgType.Add)
+                    {
+                        if (unit.GetComponent<MailBoxComponent>() == null)
+                        {
+                            unit.AddComponent<MailBoxComponent>();
+                        }
+                        else
+                        {
+                            Log.Error("??? unit.GetComponent<MailBoxComponent>() != null");
+                        }
                     }
                     break;
                 }

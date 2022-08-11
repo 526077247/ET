@@ -9,8 +9,6 @@ namespace ET
 		protected override async ETTask Run(Unit unit, C2M_Stop message)
 		{
 			unit.Stop(0);
-			var ghost = unit.GetComponent<AOIUnitComponent>().GetComponent<GhostComponent>();
-
 			await ETTask.CompletedTask;
 		}
 	}

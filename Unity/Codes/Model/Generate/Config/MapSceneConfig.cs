@@ -85,7 +85,7 @@ namespace ET
 		/// <summary>UnityScene名字</summary>
 		[ProtoMember(2)]
 		public string Name { get; set; }
-		/// <summary>加载的Area数据表名</summary>
+		/// <summary>加载的Area数据表名（不需要做无缝则不填）</summary>
 		[ProtoMember(3)]
 		public string Area { get; set; }
 		/// <summary>寻路文件名</summary>

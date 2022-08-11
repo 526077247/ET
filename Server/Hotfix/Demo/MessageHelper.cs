@@ -13,7 +13,7 @@ namespace ET
             {
                 ghost = unit.GetComponent<AOIUnitComponent>()?.GetComponent<GhostComponent>();
             }
-            if (!ghost.IsGoast)
+            if (ghost!=null && !ghost.IsGoast)
             {
                 unit.GetComponent<AOIUnitComponent>()?.GetComponent<GhostComponent>()?.HandleMsg(message);
             }
