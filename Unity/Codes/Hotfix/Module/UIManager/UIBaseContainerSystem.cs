@@ -9,11 +9,11 @@ namespace ET
     [FriendClass(typeof(UIManagerComponent))]
     public static class UIBaseContainerSystem
     {
-        public static Dictionary<string, Dictionary<Type, Entity>> GetCompoennts(this Entity self)
+        public static MultiDictionary<string,Type, Entity> GetCompoennts(this Entity self)
         {
             if (!UIManagerComponent.Instance.componentsMap.TryGetValue(self.Id,out var res))
             {
-                res = new Dictionary<string, Dictionary<Type, Entity>>() ;
+                res = new MultiDictionary<string,Type, Entity>() ;
                 UIManagerComponent.Instance.componentsMap.Add(self.Id, res);
             }
             return res;
@@ -99,19 +99,12 @@ namespace ET
         //记录Component
         static void RecordUIComponent(this Entity self,string name, Type component_class, Entity component)
         {
-            if (self.GetCompoennts().TryGetValue(name, out var obj))
+            if (self.GetCompoennts().TryGetValue(name, component_class,out var obj))
             {
-                if (obj.ContainsKey(component_class))
-                {
-                    Log.Error("Aready exist component_class : " + component_class.Name);
-                    return;
-                }
+                Log.Error("Aready exist component_class : " + component_class.Name);
+                return;
             }
-            else//如果必要，创建新的记录，对应Unity下一个Transform下所有挂载脚本的记录表
-            {
-                self.GetCompoennts()[name] = new Dictionary<Type, Entity>();
-            }
-            self.GetCompoennts()[name][component_class] = component;
+            self.GetCompoennts().Add(name,component_class,component);
         }
 
         /// <summary>
@@ -288,13 +281,10 @@ namespace ET
         /// <returns></returns>
         public static T GetUIComponent<T>(this Entity self, string path = "") where T : Entity
         {
-            if (self.GetCompoennts().TryGetValue(path, out var obj))
+            Type type = typeof(T);
+            if (self.GetCompoennts().TryGetValue(path,type,out var component))
             {
-                Type type = typeof(T);
-                if (obj.TryGetValue(type, out var component))
-                {
-                    return component as T;
-                }
+                return component as T;
             }
             return null;
         }
@@ -311,7 +301,7 @@ namespace ET
             {
                 component.BeforeOnDestroy();
                 UIWatcherComponent.Instance.OnDestroy(component);
-                self.GetCompoennts()[path].Remove(typeof(T));
+                self.GetCompoennts().Remove(path,typeof(T));
                 component.Dispose();
             }
         }
@@ -325,12 +315,8 @@ namespace ET
         {
             if (component != null)
             {
-                self.GetCompoennts()[path].Remove(component.GetType());
+                self.GetCompoennts().Remove(path,component.GetType());
                 self.SetLength(self.GetLength()-1);
-                if (self.GetCompoennts()[path].Count <= 0)
-                {
-                    self.GetCompoennts().Remove(path);
-                }
             }
         }
 

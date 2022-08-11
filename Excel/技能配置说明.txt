@@ -15,4 +15,6 @@ SkillStepType={
     --- 参数5:"buff1,buff1持续时间单位毫秒,buff1离开范围是否移除buff0或1;buff2,buff2持续时间单位毫秒,buff2离开范围是否移除buff0或1")(字符串，逗号和分号分割)
     --- 参数6:触发器延时生成(整数单位ms,默认1)
     GenerateCollider = 6;
+    --- 添加特效(参数1:特效路径，临时特效用这个，常驻还是走buff)
+    AddEffect = 7;
 }

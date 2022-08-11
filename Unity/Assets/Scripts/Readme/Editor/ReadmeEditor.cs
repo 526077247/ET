@@ -71,7 +71,8 @@ namespace ET
 					"5.接入BestHTTP提供更完善的下载支持，如后台下载\n"+
 					"6.提供一个简单可扩展的对话框架\n"+
 					"7.替换AOI框架，支持OBB、球形触发器和射线检测，并且双端使用AOI\n"+
-					"8.提供一个简单可扩展的战斗框架，并且双端可单独使用\n\n"+
+					"8.提供一个简单可扩展的战斗框架，并且双端可单独使用\n"+
+					"9. 提供一个简单的Ghost系统，服务端无缝世界跨逻辑地图战斗\n\n"+
 					">如何快速启动游戏？\n1.打开Client-Server.sln右键全部生成\n" +
 					"2.Tools->ServerTools，依次点击StartFileServer启动文件服务器，StartServer(Wartcher)启动服务器\n" +
 					"3.Shift+B切换到启动场景Init\n\n" +
