@@ -20,10 +20,9 @@ namespace ET
 			// 这里可以从DB中加载Unit
 			Unit unit = UnitFactory.Create(scene, player.Id, UnitType.Player);
 			unit.AddComponent<UnitGateComponent, long>(session.InstanceId);
-			string toMapArea = "Map1AreaConfigCategory";//玩在上次所在区域，需要存db或者有个坐标转区域的方法，新号需要读出生地配置
-			var cellId = AOIHelper.CreateCellId(unit.Position, Define.CellLen);
-			var area = AreaConfigComponent.Instance.Get(toMapArea).Get(cellId);
-			StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.Get(area.SceneId);
+
+			string map = "Map1";//玩在上次所在场景
+			StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.GetBySceneName(session.DomainZone(), map);
 			MapSceneConfig mapSceneConfig = MapSceneConfigCategory.Instance.Get(startSceneConfig.Id);
 			response.MyId = player.Id;
 			reply();
