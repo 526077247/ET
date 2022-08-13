@@ -213,7 +213,7 @@ namespace ET
         public static void AfterBuild(string assemblyName)
         {
             Debug.Log("Compiling finish");
-
+            EditorNotification.hasChange = false;
             Directory.CreateDirectory(CodeDir);
             FileHelper.CleanDirectory(CodeDir);
             File.Copy(Path.Combine(Define.BuildOutputDir, $"{assemblyName}.dll"), Path.Combine(CodeDir, $"{assemblyName}.dll.bytes"), true);

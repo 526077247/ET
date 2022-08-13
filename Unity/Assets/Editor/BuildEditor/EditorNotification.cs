@@ -61,6 +61,19 @@ namespace ET
                 
             }
             EditorApplication.update += Update;
+            EditorApplication.playModeStateChanged += EditorApplication_playModeStateChanged;
+
+        }
+
+        private static void EditorApplication_playModeStateChanged(PlayModeStateChange obj)
+        {
+            switch (obj)
+            {
+                case PlayModeStateChange.EnteredEditMode://停止播放事件监听后被监听
+                    OnEditorFocus(true);
+                    break;
+                
+            }
         }
 
         //定义事件处理程序
@@ -85,7 +98,6 @@ namespace ET
         {
             if (focus&&hasChange)
             {
-                hasChange = false;
                 bool autoBuild = PlayerPrefs.HasKey("AutoBuild");
                 if (!autoBuild)
                     return;
