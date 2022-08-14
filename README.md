@@ -15,6 +15,10 @@
 1.  JIT模式下本项目UI框架会报错，原因未知也不知道怎么提bug，暂时不使用JIT模式即可解决
 2.  由于目前Runtime和JIT都不支持特性标签传入数组参数，导致```[InputSystem(new[]{1,2},new[]{1,2})]``` 多按键同时监听特性标签不能正常工作，已提bug
 
+# HybridCLR注意事项
+1. 目前Addressable打包在生成dll之前，所以暂时没做自动复制AOT的dll到打包目录，需要先打一次包再手动copy，后续会优化
+2. 现在还会用到ILRuntime生成代码防裁剪，后续会优化
+
 # UI框架使用教程
 1. 基于ET6组件式UI框架的使用 https://www.bilibili.com/video/BV1Ra411q7Ct
 2. ScrollView无限滑动列表 https://www.bilibili.com/video/BV1YR4y1g7tN

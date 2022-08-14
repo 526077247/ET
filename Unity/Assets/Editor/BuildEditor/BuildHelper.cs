@@ -1,10 +1,10 @@
 ﻿using IFix.Editor;
 using System.Collections.Generic;
 using System.IO;
-
+using System.Text;
 using UnityEditor;
 using UnityEngine;
-
+using HybridCLR;
 namespace ET
 {
     public static class BuildHelper

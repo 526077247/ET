@@ -10,22 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: code
+  m_Name: code_hotfix
   m_EditorClassIdentifier: 
-  m_GroupName: code
+  m_GroupName: code_hotfix
   m_Data:
     m_SerializedData: []
-  m_GUID: 6f4d749ec012a2b44a3e94bfec019834
+  m_GUID: c8931811a4ac0604991fe370dad6ae6e
   m_SerializeEntries:
   - m_GUID: d517b02a85041bd44bf0c3254daa5ede
-    m_Address: Code/Code1.0.0.dll.bytes
+    m_Address: Code/Hotfix/Code1.0.0.dll.bytes
     m_ReadOnly: 0
     m_SerializedLabels:
     - default
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
   - m_GUID: 77dcaaa6e7204144e957c935fd60c307
-    m_Address: Code/Code1.0.0.pdb.bytes
+    m_Address: Code/Hotfix/Code1.0.0.pdb.bytes
     m_ReadOnly: 0
     m_SerializedLabels:
     - default
@@ -35,5 +35,5 @@ MonoBehaviour:
   m_Settings: {fileID: 11400000, guid: dd1f300d6062fee48bf00a13907517b6, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: c890ed284c8787d49b22f339763590fa, type: 2}
-    - {fileID: 11400000, guid: da98180551547ea43aabd103e41e5051, type: 2}
+    - {fileID: 11400000, guid: 967ae37c7000ce747bbf7ddccc5301b1, type: 2}
+    - {fileID: 11400000, guid: 3a1d77ec0472fac4d8ed34993b67a0a4, type: 2}

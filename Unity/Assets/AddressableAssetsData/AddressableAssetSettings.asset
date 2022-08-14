@@ -39,7 +39,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f15ad3f205c4f6e4ea80a0c070ff2860, type: 2}
   - {fileID: 11400000, guid: 31b1563d52c74624baa091a1ef136669, type: 2}
   - {fileID: 11400000, guid: 5c5acf07918f6a749938d94187df16ff, type: 2}
-  - {fileID: 11400000, guid: 634217bd239ba224f8076439b3768c73, type: 2}
   - {fileID: 11400000, guid: aa3205fca43f28046a06f6b7ff068c47, type: 2}
   - {fileID: 11400000, guid: 429dae55569d7884f949163da1758f3d, type: 2}
   - {fileID: 11400000, guid: bed995d83902f0c44ace65e9a108f66c, type: 2}
@@ -57,6 +56,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5dbffe56be49d244ea4d6cd39896e194, type: 2}
   - {fileID: 11400000, guid: dc4046a6ef9d66f42a742e0551a70d59, type: 2}
   - {fileID: 11400000, guid: 77f575c4bf9860b46acf052d6cc1b0b1, type: 2}
+  - {fileID: 11400000, guid: d796cd5cb92041f4197f8f167a0a10da, type: 2}
+  - {fileID: 11400000, guid: 33aadcd701380a94582be1a6fe41ffe4, type: 2}
   m_BuildSettings:
     m_CompileScriptsInVirtualMode: 0
     m_CleanupStreamingAssetsAfterBuilds: 1
@@ -134,11 +135,11 @@ MonoBehaviour:
         m_SerializedData:
         - m_AssemblyName: mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
           m_ClassName: System.Int32
-          m_Data: 63579
+          m_Data: 59876
           m_Key: HostingServicePort
         - m_AssemblyName: mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
           m_ClassName: System.String
-          m_Data: ServerData/StandaloneWindows64
+          m_Data: ServerData/StandaloneWindows64;Library/com.unity.addressables/aa/Windows/StandaloneWindows64
           m_Key: ContentRoot
         - m_AssemblyName: mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
           m_ClassName: System.Boolean

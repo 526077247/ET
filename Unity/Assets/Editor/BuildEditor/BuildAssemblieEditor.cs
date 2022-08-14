@@ -11,7 +11,6 @@ namespace ET
 {
     public static class BuildAssemblieEditor
     {
-        private const string CodeDir = "Assets/AssetsPackage/Code/";
         private static bool IsBuildCodeAuto;
         [MenuItem("Tools/Build/EnableAutoBuildCodeDebug _F1")]
         public static void SetAutoBuildCode()
@@ -71,7 +70,7 @@ namespace ET
                 "Codes/ModelView/",
                 "Codes/Hotfix/",
                 "Codes/HotfixView/"
-            }, Array.Empty<string>(), CodeOptimization.Release);
+            }, Array.Empty<string>(),HybridCLR.IsWolong? CodeOptimization.Debug:CodeOptimization.Release);
 
             AfterCompiling(assemblyName);
 
@@ -214,10 +213,10 @@ namespace ET
         {
             Debug.Log("Compiling finish");
             EditorNotification.hasChange = false;
-            Directory.CreateDirectory(CodeDir);
-            FileHelper.CleanDirectory(CodeDir);
-            File.Copy(Path.Combine(Define.BuildOutputDir, $"{assemblyName}.dll"), Path.Combine(CodeDir, $"{assemblyName}.dll.bytes"), true);
-            File.Copy(Path.Combine(Define.BuildOutputDir, $"{assemblyName}.pdb"), Path.Combine(CodeDir, $"{assemblyName}.pdb.bytes"), true);
+            Directory.CreateDirectory(Define.HotfixDir);
+            FileHelper.CleanDirectory(Define.HotfixDir);
+            File.Copy(Path.Combine(Define.BuildOutputDir, $"{assemblyName}.dll"), Path.Combine(Define.HotfixDir, $"{assemblyName}.dll.bytes"), true);
+            File.Copy(Path.Combine(Define.BuildOutputDir, $"{assemblyName}.pdb"), Path.Combine(Define.HotfixDir, $"{assemblyName}.pdb.bytes"), true);
             AssetDatabase.Refresh();
 
             Debug.Log("build success!");

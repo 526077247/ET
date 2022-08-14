@@ -33,6 +33,58 @@ namespace ET
 		private readonly Dictionary<string, Type> hotfixTypes = new Dictionary<string, Type>();
 		
 
+		/// <summary>
+		/// 为aot assembly加载原始metadata， 这个代码放aot或者热更新都行。
+		/// 一旦加载后，如果AOT泛型函数对应native实现不存在，则自动替换为解释模式执行
+		/// </summary>
+		public static unsafe void LoadMetadataForAOTAssembly()
+		{
+			// 可以加载任意aot assembly的对应的dll。但要求dll必须与unity build过程中生成的裁剪后的dll一致，而不能直接使用原始dll。
+			// 我们在BuildProcessor_xxx里添加了处理代码，这些裁剪后的dll在打包时自动被复制到 {项目目录}/HybridCLRData/AssembliesPostIl2CppStrip/{Target} 目录。
+
+			/// 注意，补充元数据是给AOT dll补充元数据，而不是给热更新dll补充元数据。
+			/// 热更新dll不缺元数据，不需要补充，如果调用LoadMetadataForAOTAssembly会返回错误
+
+
+			string[] aotDllList =
+			{
+				"Unity.ThirdParty.dll",
+				"Unity.Mono.dll",
+				"mscorlib.dll",
+				"System.dll",
+				"System.Core.dll", // 如果使用了Linq，需要这个
+				// "Newtonsoft.Json.dll",
+				// "protobuf-net.dll",
+				// "Google.Protobuf.dll",
+				// "MongoDB.Bson.dll",
+				// "DOTween.Modules.dll",
+				// "UniTask.dll",
+			};
+#if !UNITY_EDITOR
+			var ab = AddressablesManager.Instance.SyncLoadAssetBundle("code_aot_assets_all.bundle");
+#endif
+			foreach (var aotDllName in aotDllList)
+			{
+#if !UNITY_EDITOR
+				byte[] dllBytes = ((TextAsset)ab.LoadAsset($"{Define.AOTDir}{aotDllName}.bytes", typeof(TextAsset))).bytes;
+#else
+				byte[] dllBytes = (AssetDatabase.LoadAssetAtPath($"{Define.AOTDir}{aotDllName}.bytes", typeof(TextAsset)) as TextAsset).bytes;
+#endif
+				fixed (byte* ptr = dllBytes)
+				{
+					try
+					{
+						// 加载assembly对应的dll，会自动为它hook。一旦aot泛型函数的native函数不存在，用解释器版本代码
+						int err = HybridCLR.RuntimeApi.LoadMetadataForAOTAssembly((IntPtr) ptr, dllBytes.Length);
+						Log.Info($"LoadMetadataForAOTAssembly:{aotDllName}. ret:{err}");
+					}
+					catch (Exception ex)
+					{
+						Log.Error($"LoadMetadataForAOTAssembly:{aotDllName} error");
+					}
+				}
+			}
+		}
 		private CodeLoader()
 		{
 			Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
@@ -67,15 +119,18 @@ namespace ET
 		{
 			switch (this.CodeMode)
 			{
+				case CodeMode.Wolong:
 				case CodeMode.Mono:
 				{
+					if(this.CodeMode==CodeMode.Wolong) LoadMetadataForAOTAssembly();
 #if !UNITY_EDITOR
-                    var ab = AddressablesManager.Instance.SyncLoadAssetBundle("code_assets_all.bundle");
-                    byte[] assBytes = ((TextAsset)ab.LoadAsset($"Assets/AssetsPackage/Code/Code{AssetBundleConfig.Instance.ResVer}.dll.bytes", typeof(TextAsset))).bytes;
-                    byte[] pdbBytes = ((TextAsset)ab.LoadAsset($"Assets/AssetsPackage/Code/Code{AssetBundleConfig.Instance.ResVer}.pdb.bytes", typeof(TextAsset))).bytes;
+                    
+                    var ab = AddressablesManager.Instance.SyncLoadAssetBundle("code_hotfix_assets_all.bundle");
+                    byte[] assBytes = ((TextAsset)ab.LoadAsset($"{Define.HotfixDir}Code{AssetBundleConfig.Instance.ResVer}.dll.bytes", typeof(TextAsset))).bytes;
+                    byte[] pdbBytes = ((TextAsset)ab.LoadAsset($"{Define.HotfixDir}Code{AssetBundleConfig.Instance.ResVer}.pdb.bytes", typeof(TextAsset))).bytes;
 #else
-					byte[] assBytes = (AssetDatabase.LoadAssetAtPath($"Assets/AssetsPackage/Code/Code{AssetBundleConfig.Instance.ResVer}.dll.bytes", typeof(TextAsset)) as TextAsset).bytes;
-					byte[] pdbBytes = (AssetDatabase.LoadAssetAtPath($"Assets/AssetsPackage/Code/Code{AssetBundleConfig.Instance.ResVer}.pdb.bytes", typeof(TextAsset)) as TextAsset).bytes;
+					byte[] assBytes = (AssetDatabase.LoadAssetAtPath($"{Define.HotfixDir}Code{AssetBundleConfig.Instance.ResVer}.dll.bytes", typeof(TextAsset)) as TextAsset).bytes;
+					byte[] pdbBytes = (AssetDatabase.LoadAssetAtPath($"{Define.HotfixDir}Code{AssetBundleConfig.Instance.ResVer}.pdb.bytes", typeof(TextAsset)) as TextAsset).bytes;
 #endif
 
 					assembly = Assembly.Load(assBytes, pdbBytes);
@@ -95,12 +150,12 @@ namespace ET
 				case CodeMode.ILRuntime:
 				{
 #if !UNITY_EDITOR
-                    var ab = AddressablesManager.Instance.SyncLoadAssetBundle("code_assets_all.bundle");
-                    byte[] assBytes = ((TextAsset)ab.LoadAsset($"Assets/AssetsPackage/Code/Code{AssetBundleConfig.Instance.ResVer}.dll.bytes", typeof(TextAsset))).bytes;
-                    byte[] pdbBytes = ((TextAsset)ab.LoadAsset($"Assets/AssetsPackage/Code/Code{AssetBundleConfig.Instance.ResVer}.pdb.bytes", typeof(TextAsset))).bytes;
+                    var ab = AddressablesManager.Instance.SyncLoadAssetBundle("code_hotfix_assets_all.bundle");
+                    byte[] assBytes = ((TextAsset)ab.LoadAsset($"{Define.HotfixDir}Code{AssetBundleConfig.Instance.ResVer}.dll.bytes", typeof(TextAsset))).bytes;
+                    byte[] pdbBytes = ((TextAsset)ab.LoadAsset($"{Define.HotfixDir}Code{AssetBundleConfig.Instance.ResVer}.pdb.bytes", typeof(TextAsset))).bytes;
 #else
-					byte[] assBytes = (AssetDatabase.LoadAssetAtPath($"Assets/AssetsPackage/Code/Code{AssetBundleConfig.Instance.ResVer}.dll.bytes", typeof(TextAsset)) as TextAsset).bytes;
-					byte[] pdbBytes = (AssetDatabase.LoadAssetAtPath($"Assets/AssetsPackage/Code/Code{AssetBundleConfig.Instance.ResVer}.pdb.bytes", typeof(TextAsset)) as TextAsset).bytes;
+					byte[] assBytes = (AssetDatabase.LoadAssetAtPath($"{Define.HotfixDir}Code{AssetBundleConfig.Instance.ResVer}.dll.bytes", typeof(TextAsset)) as TextAsset).bytes;
+					byte[] pdbBytes = (AssetDatabase.LoadAssetAtPath($"{Define.HotfixDir}Code{AssetBundleConfig.Instance.ResVer}.pdb.bytes", typeof(TextAsset)) as TextAsset).bytes;
 #endif
 					if(this.CodeMode==CodeMode.ILRuntimeJIT)
 						appDomain = new ILRuntime.Runtime.Enviorment.AppDomain(ILRuntime.Runtime.ILRuntimeJITFlags.JITOnDemand);

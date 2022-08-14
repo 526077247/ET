@@ -115,6 +115,55 @@ MonoBehaviour:
     - default
     m_MainAsset: {fileID: 0}
     m_TargetAsset: {fileID: 0}
+  - m_GUID: 3408e05d61061fa4a95ec1b02cba43e9
+    m_Address: Config/BuffActionControlConfigCategory.bytes
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: ff0496f163ab8cf47b0f904bfdf0a7ec
+    m_Address: Config/BuffAttrConfigCategory.bytes
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 86a361bac7655374797f3101c6f8951c
+    m_Address: Config/BuffBleedConfigCategory.bytes
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: e6ac13eb196e7c9409f536765e4f4ad8
+    m_Address: Config/BuffStateConfigCategory.bytes
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 8d0c2a5b55846e945b09480dbe029329
+    m_Address: Config/EffectConfigCategory.bytes
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: faff4ac4c18e2cd47a27aba58f3a7100
+    m_Address: Config/MapSceneConfigCategory.bytes
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: f347df4ee40f3d640aad0cd8fa270f71
+    m_Address: Config/SceneNameConfigCategory.bytes
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: dd1f300d6062fee48bf00a13907517b6, type: 2}
   m_SchemaSet:

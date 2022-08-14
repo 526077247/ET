@@ -160,6 +160,8 @@ namespace ET
 							break;
                     }
                 }
+
+				if(!HybridCLR.Setup())return;
 				BuildHelper.Build(this.platformType, this.buildOptions, this.isBuildExe,this.clearFolder, this.isInject);
 			}
 

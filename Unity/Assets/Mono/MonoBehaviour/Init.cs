@@ -14,6 +14,7 @@ namespace ET
 		ILRuntime = 2,
 		Reload = 3,
 		ILRuntimeJIT = 4,
+		Wolong = 5,
 	}
 	
 	public class Init: MonoBehaviour
@@ -63,9 +64,8 @@ namespace ET
 			
 
 #if ENABLE_IL2CPP
-			this.CodeMode = CodeMode.ILRuntime;
-//#elif UNITY_EDITOR
-//			this.CodeMode = CodeMode.Reload;
+			if(this.CodeMode == CodeMode.Mono)
+				this.CodeMode = CodeMode.ILRuntime;
 #endif
 
 			System.AppDomain.CurrentDomain.UnhandledException += (sender, e) =>

@@ -5,6 +5,9 @@ namespace ET
 	public static class Define
 	{
 		public const string BuildOutputDir = "./Temp/Bin/Debug";
+		
+		public const string HotfixDir = "Assets/AssetsPackage/Code/Hotfix/";
+		public const string AOTDir = "Assets/AssetsPackage/Code/AOT/";
 #if UNITY_EDITOR
 		public static readonly bool Debug = true;
 #else

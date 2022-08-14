@@ -15,7 +15,6 @@ namespace ET
         {
             if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
             {
-                Log.Info("IsPointerOverGameObject");
                 stop = true;
             }
         }
