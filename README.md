@@ -11,11 +11,9 @@
 8. 提供一个简单可扩展的战斗框架，并且双端可单独使用
 9. 提供一个简单的Ghost系统，服务端无缝世界跨逻辑地图战斗
 
-# 注意事项
-1. 由于ILRuntime对部分功能支持不完善，可使用ILRuntime生成代码触发huatuo的AOT泛型共享机制，然后使用huatuo的解释器进行热更，待huatuo工具链完成后可完全移除ILRuntime
-2. ILRuntime已知问题：
-  * JIT模式下本项目UI框架会报错，原因未知也不知道怎么提bug，暂时不使用JIT模式即可解决
-  * 由于目前Runtime和JIT都不支持特性标签传入数组参数，导致```[InputSystem(new[]{1,2},new[]{1,2})]``` 多按键同时监听特性标签不能正常工作，已提bug
+# ILRuntime已知问题
+1.  JIT模式下本项目UI框架会报错，原因未知也不知道怎么提bug，暂时不使用JIT模式即可解决
+2.  由于目前Runtime和JIT都不支持特性标签传入数组参数，导致```[InputSystem(new[]{1,2},new[]{1,2})]``` 多按键同时监听特性标签不能正常工作，已提bug
 
 # UI框架使用教程
 1. 基于ET6组件式UI框架的使用 https://www.bilibili.com/video/BV1Ra411q7Ct
