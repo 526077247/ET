@@ -30,11 +30,11 @@ namespace ET
                     key = self.ReplaceKey(key);
                     if (key >= 0)
                     {
-                        if (InputHelper.GetKeyDown(key))
+                        if (Input.GetKeyDown((KeyCode)key))
                             self.IsKeyDown[key] = true;
-                        if (InputHelper.GetKeyUp(key))
+                        if (Input.GetKeyUp((KeyCode)key))
                             self.IsKeyUp[key] = true;
-                        if (InputHelper.GetKey(key))
+                        if (Input.GetKey((KeyCode)key))
                             self.IsKey[key] = true;
                     }
                 }

@@ -11,10 +11,8 @@ namespace ET
 	public enum CodeMode
 	{
 		Mono = 1,
-		ILRuntime = 2,
-		Reload = 3,
-		ILRuntimeJIT = 4,
-		Wolong = 5,
+		Reload = 2,
+		Wolong = 3,
 	}
 	
 	public class Init: MonoBehaviour
@@ -64,8 +62,9 @@ namespace ET
 			
 
 #if ENABLE_IL2CPP
-			if(this.CodeMode == CodeMode.Mono)
-				this.CodeMode = CodeMode.ILRuntime;
+			this.CodeMode = CodeMode.Wolong;
+#else
+			this.CodeMode = CodeMode.Mono;
 #endif
 
 			System.AppDomain.CurrentDomain.UnhandledException += (sender, e) =>

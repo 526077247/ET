@@ -6,7 +6,6 @@ using System.IO;
 using System.Reflection;
 using UnityEngine;
 using System.Linq;
-using ILRuntime.Runtime.Intepreter;
 
 namespace ET
 {
@@ -22,7 +21,6 @@ namespace ET
 		
 		public CodeMode CodeMode { get; set; }
 		
-		private ILRuntime.Runtime.Enviorment.AppDomain appDomain;
 		private MemoryStream assStream ;
 		private MemoryStream pdbStream ;
 		
@@ -115,7 +113,7 @@ namespace ET
 
 		public void Dispose()
 		{
-			this.appDomain?.Dispose();
+
 		}
 		
 		public void Start()
@@ -148,47 +146,6 @@ namespace ET
 					ab.Unload(true);
 #endif
 					break;
-				}
-				case CodeMode.ILRuntimeJIT:
-				case CodeMode.ILRuntime:
-				{
-#if !UNITY_EDITOR
-                    var ab = AddressablesManager.Instance.SyncLoadAssetBundle("code_hotfix_assets_all.bundle");
-                    byte[] assBytes = ((TextAsset)ab.LoadAsset($"{Define.HotfixDir}Code{AssetBundleConfig.Instance.ResVer}.dll.bytes", typeof(TextAsset))).bytes;
-                    byte[] pdbBytes = ((TextAsset)ab.LoadAsset($"{Define.HotfixDir}Code{AssetBundleConfig.Instance.ResVer}.pdb.bytes", typeof(TextAsset))).bytes;
-#else
-					byte[] assBytes = (AssetDatabase.LoadAssetAtPath($"{Define.HotfixDir}Code{AssetBundleConfig.Instance.ResVer}.dll.bytes", typeof(TextAsset)) as TextAsset).bytes;
-					byte[] pdbBytes = (AssetDatabase.LoadAssetAtPath($"{Define.HotfixDir}Code{AssetBundleConfig.Instance.ResVer}.pdb.bytes", typeof(TextAsset)) as TextAsset).bytes;
-#endif
-					if(this.CodeMode==CodeMode.ILRuntimeJIT)
-						appDomain = new ILRuntime.Runtime.Enviorment.AppDomain(ILRuntime.Runtime.ILRuntimeJITFlags.JITOnDemand);
-					else
-						appDomain = new ILRuntime.Runtime.Enviorment.AppDomain();
-					
-#if DEBUG && (UNITY_EDITOR || UNITY_ANDROID || UNITY_IPHONE)
-					this.appDomain.UnityMainThreadID = System.Threading.Thread.CurrentThread.ManagedThreadId;
-#endif					
-					if(assStream!=null) assStream.Dispose();
-					if(pdbStream!=null) pdbStream.Dispose();
-					assStream = new MemoryStream(assBytes);
-					pdbStream = new MemoryStream(pdbBytes);
-					appDomain.LoadAssembly(assStream, pdbStream, new ILRuntime.Mono.Cecil.Pdb.PdbReaderProvider());
-
-					Type[] types = appDomain.LoadedTypes.Values.Select(x => x.ReflectionType).ToArray();
-					foreach (Type type in types)
-					{
-						this.hotfixTypes[type.FullName] = type;
-					}
-					
-					ILHelper.InitILRuntime(appDomain);
-					
-					IStaticMethod start = new ILStaticMethod(appDomain, "ET.Entry", "Start", 0);
-#if !UNITY_EDITOR
-					ab.Unload(true);
-#endif
-					start.Run();
-					break;
-					
 				}
 				case CodeMode.Reload:
 				{
@@ -244,11 +201,6 @@ namespace ET
 		public Dictionary<string, Type> GetHotfixTypes()
 		{
 			return this.hotfixTypes;
-		}
-
-		public object CreateInstance(Type type)
-		{
-			return this.appDomain.Instantiate(type.FullName);
 		}
 
 		public bool isReStart = false;

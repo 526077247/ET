@@ -150,7 +150,7 @@ namespace ET
                 AssetDatabase.Refresh();
                 #endregion
                 
-                MethodBridgeHelper.MethodBridge_All();
+                // MethodBridgeHelper.MethodBridge_All();
                 AssetDatabase.Refresh();
                 string[] levels = {
                     "Assets/AssetsPackage/Scenes/InitScene/Init.unity",
