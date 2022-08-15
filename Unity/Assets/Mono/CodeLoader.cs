@@ -84,6 +84,9 @@ namespace ET
 					}
 				}
 			}
+#if !UNITY_EDITOR
+			ab.Unload(true);
+#endif
 		}
 		private CodeLoader()
 		{

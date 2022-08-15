@@ -145,6 +145,7 @@ namespace ET
 
             if (isBuildExe)
             {
+                MethodBridgeHelper.MethodBridge_All();
                 AssetDatabase.Refresh();
                 string[] levels = {
                     "Assets/AssetsPackage/Scenes/InitScene/Init.unity",
