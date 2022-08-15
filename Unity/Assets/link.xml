@@ -7,13 +7,4 @@
     <assembly fullname="Assembly-CSharp" preserve="all" />
     <assembly fullname="mscorlib" preserve="all" />
     <assembly fullname="System.Core" preserve="all" />
-    <assembly fullname="UnityEngine.TextRenderingModule">
-        <type fullname="UnityEngine.TextMesh" preserve="all" />
-    </assembly>
-    <assembly fullname="UnityEngine.TerrainPhysicsModule">
-        <type fullname="UnityEngine.TerrainCollider" preserve="all" />
-    </assembly>
-    <assembly fullname="UnityEngine.UIModule" preserve="all" />
-    <assembly fullname="UnityEngine.PhysicsModule" preserve="all" />
-    <assembly fullname="DOTween" preserve="all" />
 </linker>

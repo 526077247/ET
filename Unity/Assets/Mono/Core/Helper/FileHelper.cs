@@ -98,7 +98,7 @@ namespace ET
 	
 			for (int i = 0; i < files.Length; i++)
 			{
-				File.Copy(files[i].FullName, Path.Combine(target.FullName, files[i].Name), true);
+				CopyFile(files[i].FullName, Path.Combine(target.FullName, files[i].Name), true);
 			}
 		}
 		public static void ReplaceExtensionName(string srcDir, string extensionName, string newExtensionName)

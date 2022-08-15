@@ -145,6 +145,11 @@ namespace ET
 
             if (isBuildExe)
             {
+                #region 防裁剪
+                FileHelper.CopyDirectory("Codes", "Assets/Codes/Temp");
+                AssetDatabase.Refresh();
+                #endregion
+                
                 MethodBridgeHelper.MethodBridge_All();
                 AssetDatabase.Refresh();
                 string[] levels = {
@@ -153,6 +158,12 @@ namespace ET
                 UnityEngine.Debug.Log("开始EXE打包");
                 BuildPipeline.BuildPlayer(levels, $"{relativeDirPrefix}/{exeName}", buildTarget, buildOptions);
                 UnityEngine.Debug.Log("完成exe打包");
+                
+                #region 防裁剪
+                Directory.Delete("Assets/Codes/Temp",true);
+                File.Delete("Assets/Codes/Temp.meta");
+                AssetDatabase.Refresh();
+                #endregion
             }
             
             string jstr = File.ReadAllText("Assets/AssetsPackage/config.bytes");
