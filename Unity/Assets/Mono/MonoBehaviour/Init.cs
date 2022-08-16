@@ -52,11 +52,11 @@ namespace ET
 			sw.Reset();
 
 			//开始热修复
-			sw.Start();
-			AddressablesManager.Instance.StartInjectFix();
-			sw.Stop();
-			Debug.Log(string.Format("StartInjectFix use {0}ms", sw.ElapsedMilliseconds));
-			sw.Reset();
+			// sw.Start();
+			// AddressablesManager.Instance.StartInjectFix();
+			// sw.Stop();
+			// Debug.Log(string.Format("StartInjectFix use {0}ms", sw.ElapsedMilliseconds));
+			// sw.Reset();
 
 			InitUnitySetting();
 			

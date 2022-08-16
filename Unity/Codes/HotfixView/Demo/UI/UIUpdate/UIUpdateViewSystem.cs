@@ -49,7 +49,7 @@ namespace ET
             AssetBundleConfig.Instance.SyncLoadGlobalAssetBundle();
 
             //热修复
-            AddressablesManager.Instance.StartInjectFix();
+            // AddressablesManager.Instance.StartInjectFix();
             CodeLoader.Instance.ReStart();
         }
 

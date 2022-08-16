@@ -1,5 +1,4 @@
 ﻿using ET;
-using IFix.Core;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -425,25 +424,25 @@ namespace AssetBundles
         }
 
 
-        public void StartInjectFix()
-        {
-#if !UNITY_EDITOR
-            string assetBundleName = "hotfix_assets_all.bundle";
-            if (AssetBundleMgr.GetInstance().IsCached(assetBundleName, "", true))
-            {
-                var path = Path.Combine(AssetBundleMgr.PersistentAssetBundleFolder, assetBundleName);
-                var ab = AssetBundle.LoadFromFile(path, 0, (ulong)computeBundleOffset(assetBundleName));
-                var texts = ab.LoadAllAssets();
-                for (int i = 0; i < texts.Length; i++)
-                {
-                    var bytes = (texts[i] as TextAsset).bytes;
-                    Debug.Log("Start Patch " + texts[i].name);
-                    PatchManager.Load(new MemoryStream(bytes));
-                }
-                ab.Unload(true);
-            }
-#endif
-        }
+//         public void StartInjectFix()
+//         {
+// #if !UNITY_EDITOR
+//             string assetBundleName = "hotfix_assets_all.bundle";
+//             if (AssetBundleMgr.GetInstance().IsCached(assetBundleName, "", true))
+//             {
+//                 var path = Path.Combine(AssetBundleMgr.PersistentAssetBundleFolder, assetBundleName);
+//                 var ab = AssetBundle.LoadFromFile(path, 0, (ulong)computeBundleOffset(assetBundleName));
+//                 var texts = ab.LoadAllAssets();
+//                 for (int i = 0; i < texts.Length; i++)
+//                 {
+//                     var bytes = (texts[i] as TextAsset).bytes;
+//                     Debug.Log("Start Patch " + texts[i].name);
+//                     PatchManager.Load(new MemoryStream(bytes));
+//                 }
+//                 ab.Unload(true);
+//             }
+// #endif
+//         }
 
         public TextAsset LoadTextAsset(string addressPath)
         {

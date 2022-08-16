@@ -1,5 +1,4 @@
-﻿using IFix.Editor;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using UnityEditor;
@@ -36,13 +35,13 @@ namespace ET
             PlayerSettings.keystorePass = "123456";
         }
 
-        public static void Build(PlatformType type, BuildOptions buildOptions, bool isBuildExe,bool clearFolder,bool isInject)
+        public static void Build(PlatformType type, BuildOptions buildOptions, bool isBuildExe,bool clearFolder)
         {
             EditorUserSettings.SetConfigValue(AddressableTools.is_packing, "1");
             if (buildmap[type] == EditorUserBuildSettings.activeBuildTarget)
             {
                 //pack
-                BuildHandle(type, buildOptions, isBuildExe,clearFolder, isInject);
+                BuildHandle(type, buildOptions, isBuildExe,clearFolder);
             }
             else
             {
@@ -51,7 +50,7 @@ namespace ET
                     if (EditorUserBuildSettings.activeBuildTarget == buildmap[type])
                     {
                         //pack
-                        BuildHandle(type, buildOptions, isBuildExe, clearFolder, isInject);
+                        BuildHandle(type, buildOptions, isBuildExe, clearFolder);
                     }
                 };
                 if(buildGroupmap.TryGetValue(type,out var group))
@@ -89,7 +88,7 @@ namespace ET
             AddressableTools.BuildPlayerContent();
 
         }
-        static void BuildHandle(PlatformType type, BuildOptions buildOptions, bool isBuildExe,bool clearFolder,bool isInject)
+        static void BuildHandle(PlatformType type, BuildOptions buildOptions, bool isBuildExe,bool clearFolder)
         {
             
             
@@ -102,34 +101,34 @@ namespace ET
                 case PlatformType.PC:
                     buildTarget = BuildTarget.StandaloneWindows64;
                     exeName += ".exe";
-                    IFixEditor.Patch();
+                    // IFixEditor.Patch();
                     platform = "pc";
                     break;
                 case PlatformType.Android:
                     KeystoreSetting();
                     buildTarget = BuildTarget.Android;
                     exeName += ".apk";
-                    IFixEditor.CompileToAndroid();
+                    // IFixEditor.CompileToAndroid();
                     platform = "android";
                     break;
                 case PlatformType.IOS:
                     buildTarget = BuildTarget.iOS;
-                    IFixEditor.CompileToIOS();
+                    // IFixEditor.CompileToIOS();
                     platform = "ios";
                     break;
                 case PlatformType.MacOS:
                     buildTarget = BuildTarget.StandaloneOSX;
-                    IFixEditor.Patch();
+                    // IFixEditor.Patch();
                     platform = "pc";
                     break;
             }
             //打程序集
             BuildAssemblieEditor.BuildCodeRelease();
-            if (isInject)
-            {
-                //Inject
-                IFixEditor.InjectAssemblys();
-            }
+            // if (isInject)
+            // {
+            //     //Inject
+            //     IFixEditor.InjectAssemblys();
+            // }
             HandleProject();
             //string fold = string.Format(BuildFolder, type);
 
