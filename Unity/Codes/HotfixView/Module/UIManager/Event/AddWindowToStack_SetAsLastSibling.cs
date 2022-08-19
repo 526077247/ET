@@ -17,6 +17,7 @@ namespace ET
 			if (uiTrans!=null)
 			{
 				uiTrans.transform.SetAsLastSibling();
+				GuidanceComponent.Instance.NoticeEvent("Open_"+args.window.Name);
 			}
 		}
 	}

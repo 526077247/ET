@@ -37,7 +37,7 @@ namespace ET
 		/// <summary>
 		/// 窗口类型
 		/// </summary>
-		public Type ViewType;
+		public Type ViewType { get; set; }
 		/// <summary>
 		/// 禁止物理按键
 		/// </summary>

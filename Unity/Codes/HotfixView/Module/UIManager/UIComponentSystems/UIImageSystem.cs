@@ -163,5 +163,11 @@ namespace ET
             self.ActivatingComponent();
             DOTween.To(() => self.unity_uiimage.fillAmount,x=> self.unity_uiimage.fillAmount=x, newValue, duration);
         }
+
+        public static Material GetMaterial(this UIImage self)
+        {
+            self.ActivatingComponent();
+            return self.unity_uiimage.material;
+        }
     }
 }

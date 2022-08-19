@@ -20,6 +20,7 @@ namespace ET
 		public override void OnEnable(UILobbyView self, Scene scene)
 		{
             self.zoneScene = scene;
+            GuidanceComponent.Instance.NoticeEvent("Click_Login");
         }
 	}
     [FriendClass(typeof(UILobbyView))]
@@ -29,6 +30,7 @@ namespace ET
         public static void OnEnterBtnClick(this UILobbyView self)
         {
 	        EnterMapHelper.EnterMapAsync(self.zoneScene).Coroutine();
+	        GuidanceComponent.Instance.NoticeEvent("Click_EnterMap");
         }
     }
 }
