@@ -14,5 +14,6 @@ namespace ET
         public static string KeyCodeSetting {get => "KeyCodeSetting"; }
         public static string MusicVolume { get => "MusicVolume"; }
         public static string SoundVolume{ get => "SoundVolume"; }
+        public static string Guidance{ get => "Guidance"; }
     }
 }

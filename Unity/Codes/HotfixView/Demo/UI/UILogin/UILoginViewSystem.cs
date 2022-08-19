@@ -46,7 +46,6 @@ namespace ET
 		public static void OnLogin(this UILoginView self)
 		{
 			self.loginBtn.SetInteractable(false);
-			GlobalComponent.Instance.Account = self.account.GetText();
 			PlayerPrefs.SetString(CacheKeys.Account, self.account.GetText());
 			PlayerPrefs.SetString(CacheKeys.Password, self.password.GetText());
 			LoginHelper.Login(self.scene, self.ipaddr.GetText(), self.account.GetText(), self.password.GetText(), () =>

@@ -81,5 +81,15 @@ namespace ET
         {
             public Entity entity;
         }
+        
+        /// <summary>
+        /// 引导物体
+        /// </summary>
+        public struct FocuGameObejct
+        {
+            public UIWindow Win;
+            public string Path;
+            public int Type;
+        }
     }
 }

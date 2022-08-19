@@ -62,6 +62,9 @@ namespace ET
 
 
             Game.Scene.AddComponent<SelectWatcherComponent>();
+            
+            Game.Scene.AddComponent<GuidanceComponent>();
+            
             await UIManagerComponent.Instance.OpenWindow<UILoadingView>(UILoadingView.PrefabPath);
             if(Define.Networked||Define.ForceUpdate) 
                     //下方代码会初始化Addressables,手机关闭网络等情况访问不到cdn的时候,会卡10s左右。todo:游戏启动时在mono层检查网络

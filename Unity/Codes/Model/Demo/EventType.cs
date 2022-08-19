@@ -77,6 +77,7 @@ namespace ET
         public struct LoginFinish
         {
             public Scene ZoneScene;
+            public string Account;
         }
 
         public struct LoadingBegin

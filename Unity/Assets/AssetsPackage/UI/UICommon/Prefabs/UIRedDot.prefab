@@ -125,9 +125,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 8897392430570540006}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3aacf0492b2610144b0758b103bae9e5, type: 3}
+  m_Script: {fileID: 11500000, guid: 23d2b5c66c672ce4fbbbe0778b6ab7c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isRedDotActive: 0
-  RedDotScale: {x: 1, y: 1, z: 1}
-  PositionOffset: {x: 0, y: 0}
