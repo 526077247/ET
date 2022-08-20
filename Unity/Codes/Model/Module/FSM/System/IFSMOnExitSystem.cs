@@ -7,7 +7,7 @@ namespace ET
         ETTask Run(object o);
     }
 
-    [UISystem]
+    [FSMSystem]
     public abstract class FSMOnExitSystem<T> : IFSMOnExitSystem where T : Entity
     {
         public Type Type()
