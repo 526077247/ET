@@ -27,7 +27,7 @@ namespace ET
         ETTask Run(object o, A a, B b, C c, D d);
     }
 
-    [UISystem]
+    [FSMSystem]
     public abstract class FSMOnEnterSystem<T> : IFSMOnEnterSystem where T : Entity
     {
         public Type Type()
@@ -48,7 +48,7 @@ namespace ET
         public abstract ETTask FSMOnEnter(T self);
     }
 
-    [UISystem]
+    [FSMSystem]
     public abstract class FSMOnEnterSystem<T, A> : IFSMOnEnterSystem<A> where T : Entity
     {
         public Type Type()
@@ -69,7 +69,7 @@ namespace ET
         public abstract ETTask FSMOnEnter(T self, A a);
     }
 
-    [UISystem]
+    [FSMSystem]
     public abstract class FSMOnEnterSystem<T, A, B> : IFSMOnEnterSystem<A, B> where T : Entity
     {
         public Type Type()
@@ -90,7 +90,7 @@ namespace ET
         public abstract ETTask FSMOnEnter(T self, A a, B b);
     }
 
-    [UISystem]
+    [FSMSystem]
     public abstract class FSMOnEnterSystem<T, A, B, C> : IFSMOnEnterSystem<A, B, C> where T : Entity
     {
         public Type Type()
@@ -111,7 +111,7 @@ namespace ET
         public abstract ETTask FSMOnEnter(T self, A a, B b, C c);
     }
 
-    [UISystem]
+    [FSMSystem]
     public abstract class FSMOnEnterSystem<T, A, B, C, D> : IFSMOnEnterSystem<A, B, C, D> where T : Entity
     {
         public Type Type()
