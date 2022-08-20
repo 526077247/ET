@@ -24,6 +24,11 @@ namespace ET
 			self.loginBtn.AddUIComponent<UIRedDotComponent, string>("","Test");
 			self.settingView = self.AddUIComponent<UILoopListView2>("Panel/GM/Setting");
 			self.settingView.InitListView(ServerConfigCategory.Instance.GetAll().Count, (a, b) => { return self.GetItemByIndex(a, b); });
+			self.account.SetOnEndEdit(() =>
+			{
+				if(!string.IsNullOrEmpty(self.account.GetText()))
+					GuidanceComponent.Instance.NoticeEvent("Enter_Account");
+			});
 		}
 	}
 	[UISystem]

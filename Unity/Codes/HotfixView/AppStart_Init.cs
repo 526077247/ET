@@ -63,6 +63,7 @@ namespace ET
 
             Game.Scene.AddComponent<SelectWatcherComponent>();
             
+            Game.Scene.AddComponent<UIRouterComponent>();
             Game.Scene.AddComponent<GuidanceComponent>();
             
             await UIManagerComponent.Instance.OpenWindow<UILoadingView>(UILoadingView.PrefabPath);

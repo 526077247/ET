@@ -1,5 +1,7 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using System;
+using System.Collections.Generic;
+
 namespace ET
 {
     [ComponentOf(typeof(Scene))]
@@ -15,5 +17,8 @@ namespace ET
         
         [BsonIgnore]
         public GuidanceConfig StepConfig => Config?.Steps[this.CurIndex];
+
+        [BsonIgnore]
+        public Dictionary<string, int> CacheValues;
     }
 }
