@@ -131,9 +131,12 @@ namespace ET
         {
             self.ActivatingComponent();
             {
-                if (I18NComponent.Instance.I18NTryGetText(self.__text_key, out var text) && self.keyParams != null)
-                    text = string.Format(text, self.keyParams);
-                self.unity_uitext.text = text;
+                if (self.__text_key != null)
+                {
+                    if (I18NComponent.Instance.I18NTryGetText(self.__text_key, out var text) && self.keyParams != null)
+                        text = string.Format(text, self.keyParams);
+                    self.unity_uitext.text = text;
+                }
             }
         }
 

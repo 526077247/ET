@@ -138,5 +138,10 @@ namespace ET
         {
             self.I18NEntity.Remove(entity.Id);
         }
+
+        public static int GetCurLanguage(this I18NComponent self)
+        {
+            return self.curLangType;
+        }
     }
 }

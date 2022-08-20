@@ -46,6 +46,7 @@ public class UIScriptController
         WidgetInterfaceList.Add(typeof(InputField), "UIInput");
         WidgetInterfaceList.Add(typeof(Slider), "UISlider");
         WidgetInterfaceList.Add(typeof(Dropdown), "UIDropdown");
+        WidgetInterfaceList.Add(typeof(Toggle), "UIToggle");
         WidgetInterfaceList.Add(typeof(Image), "UIImage");
         WidgetInterfaceList.Add(typeof(RawImage), "UIRawImage");
         WidgetInterfaceList.Add(typeof(Text), "UIText");
@@ -231,6 +232,15 @@ public class UIScriptController
                             addListenerBuilder.AppendFormat("\t\t\tself.{0}.SetOnClick(()=>{{self.OnClick{1}();}});", uisc.GetModuleName(), uisc.GetModuleName())
                                     .AppendLine();
                             tempBuilder.AppendFormat("\t\tpublic static void OnClick{0}(this {1} self)", uisc.GetModuleName(), name)
+                                    .AppendLine();
+                            tempBuilder.AppendLine("\t\t{").AppendLine();
+                            tempBuilder.AppendLine("\t\t}");
+                        }
+                        if (uiComponent.Key == typeof(Toggle) || uiComponent.Key == typeof(Dropdown))
+                        {
+                            addListenerBuilder.AppendFormat("\t\t\tself.{0}.SetOnValueChanged((val)=>{{self.SetOn{1}ValueChanged(val);}});", uisc.GetModuleName(), uisc.GetModuleName())
+                                    .AppendLine();
+                            tempBuilder.AppendFormat("\t\tpublic static void SetOn{0}ValueChanged(this {1} self, {2} val)", uisc.GetModuleName(), name, uiComponent.Key == typeof(Toggle)?"bool":"int")
                                     .AppendLine();
                             tempBuilder.AppendLine("\t\t{").AppendLine();
                             tempBuilder.AppendLine("\t\t}");

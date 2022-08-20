@@ -1,8 +1,10 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace ET
 {
     [FriendClass(typeof(GuidanceComponent))]
+    [FriendClass(typeof(UIWindow))]
     public static class GuidanceComponentSystem
     {
         public class AwakeSystem:AwakeSystem<GuidanceComponent>
@@ -10,6 +12,9 @@ namespace ET
             public override void Awake(GuidanceComponent self)
             {
                 GuidanceComponent.Instance = self;
+                self.CacheValues = new Dictionary<string, int>();
+                self.CurIndex = -1;
+                self.Group = -1;
                 self.CheckGroupStart();
             }
         }
@@ -20,18 +25,18 @@ namespace ET
         /// <param name="self"></param>
         public static void CheckGroupStart(this GuidanceComponent self)
         {
-            if(self.Group!=0) return;
+            if(self.Group>=0) return;
             for (int i = 0; i < GuidanceConfigCategory.Instance.GetAllGroupList().Count; i++)
             {
                 var item = GuidanceConfigCategory.Instance.GetAllGroupList()[i];
                 var val = 0;
                 if (item.Share != 0)
                 {
-                    val = PlayerPrefs.GetInt(CacheKeys.Guidance + "_" + item.Group, 0);
+                    val = self.GetKey(CacheKeys.Guidance + "_" + item.Group);
                 }
                 else if(!string.IsNullOrEmpty(GlobalComponent.Instance.Account))
                 {
-                    val = PlayerPrefs.GetInt(CacheKeys.Guidance+"_"+item.Group+"_"+GlobalComponent.Instance.Account,0);
+                    val = self.GetKey(CacheKeys.Guidance+"_"+item.Group+"_"+GlobalComponent.Instance.Account);
                 }
 
                 if (val == 0)
@@ -51,7 +56,7 @@ namespace ET
         public static void StartGuide(this GuidanceComponent self,int group)
         {
             if(self.Group==group) return;
-            if (self.Group != 0)
+            if (self.Group >= 0)
             {
                 if (self.Config.Grouporder < GuidanceConfigCategory.Instance.GetGroup(group).Grouporder)
                 {
@@ -83,10 +88,22 @@ namespace ET
         /// <param name="evt"></param>
         public static void NoticeEvent(this GuidanceComponent self, string evt)
         {
-            if (self.StepConfig != null && self.StepConfig.Event == evt)
+            if (self.CurIndex >=0 )
             {
-                self.OnStepOver(self.StepConfig.Id);
+                if (self.StepConfig.Event == evt)
+                {
+                    self.OnStepOver(self.StepConfig.Id);
+                    return;
+                }
+
+                if (self.StepConfig.Steptype == GuidanceStepType.UIRouter&&evt.StartsWith("Open_"))//路由进行中打开了新界面
+                {
+                    if(evt!="Open_UIGuidanceView")//打开引导界面忽略
+                        self.RunStep(self.CurIndex);
+                    return;
+                }
             }
+
         }
         
         /// <summary>
@@ -128,17 +145,17 @@ namespace ET
         /// <param name="id"></param>
         private static void OnStepOver(this GuidanceComponent self, int id)
         {
-            if (self.StepConfig != null && self.StepConfig.Id == id)
+            if (self.CurIndex >=0 && self.StepConfig.Id == id)
             {
                 if (self.StepConfig.KeyStep == 1)//关键步骤
                 {
-                    if (self.Config.Share != 0)
+                    if (self.Config.Share == 0)
                     {
-                        PlayerPrefs.SetInt(CacheKeys.Guidance+"_"+self.Config.Group+"_"+GlobalComponent.Instance.Account,1);
+                        self.SaveKey(CacheKeys.Guidance+"_"+self.Config.Group+"_"+GlobalComponent.Instance.Account,1);
                     }
                     else
                     {
-                        PlayerPrefs.SetInt(CacheKeys.Guidance+"_"+self.Config.Group,1);
+                        self.SaveKey(CacheKeys.Guidance+"_"+self.Config.Group,1);
                     }
                     PlayerPrefs.Save();
                 }
@@ -160,29 +177,46 @@ namespace ET
         /// <param name="index"></param>
         private static void RunStep(this GuidanceComponent self,int index)
         {
-            if (self.StepConfig != null && index!=self.CurIndex)
+            self.CurIndex = index;
+            if (self.StepConfig.Steptype == GuidanceStepType.UIRouter)
             {
-                self.CurIndex = index;
-                if (self.StepConfig.Steptype == GuidanceStepType.UIRouter)
+                var win = UIManagerComponent.Instance.GetTopWindow(UILayerNames.TopLayer,UILayerNames.TipLayer);
+                if (win != null)
                 {
-                    
-                }
-                else if (self.StepConfig.Steptype == GuidanceStepType.FocuGameObejct)
-                {
-                    var win = UIManagerComponent.Instance.GetWindow(self.StepConfig.Value1, 1);
-                    if (win != null)
+                    var config = UIRouterComponent.Instance.GetNextWay(win.Name, self.StepConfig.Value1);
+                    if (config != null)
                     {
                         EventSystem.Instance.Publish(new UIEventType.FocuGameObejct()
                         {
                             Win = win,
-                            Path = self.StepConfig.Value2,
-                            Type = int.Parse(self.StepConfig.Value3)
+                            Path = config.Path,
+                            Type = config.Type
                         });
                         return;
                     }
+                    else
+                    {
+                        Log.Info("没找到从{0}到{1}的路径",win.Name, self.StepConfig.Value1);
+                    }
                 }
-                EventSystem.Instance.Publish(new UIEventType.FocuGameObejct());
             }
+            else if (self.StepConfig.Steptype == GuidanceStepType.FocuGameObejct)
+            {
+                var win = UIManagerComponent.Instance.GetWindow(self.StepConfig.Value1, 1);
+                if (win != null)
+                {
+                    var type = GuidanceGameObejctType.Rect;
+                    int.TryParse(self.StepConfig.Value3, out type);
+                    EventSystem.Instance.Publish(new UIEventType.FocuGameObejct()
+                    {
+                        Win = win,
+                        Path = self.StepConfig.Value2,
+                        Type = type,
+                    });
+                    return;
+                }
+            }
+            EventSystem.Instance.Publish(new UIEventType.FocuGameObejct());
         }
 
         /// <summary>
@@ -193,8 +227,28 @@ namespace ET
         {
             Log.Info(self.Group + "  引导完成");
             self.CurIndex = -1;
-            self.Group = 0;
+            self.Group = -1;
             self.CheckGroupStart();
+            if (self.Group < 0)
+            {
+                EventSystem.Instance.Publish(new UIEventType.FocuGameObejct());
+            }
+        }
+
+        private static int GetKey(this GuidanceComponent self, string key)
+        {
+            if (!self.CacheValues.TryGetValue(key, out var res))
+            {
+                res = PlayerPrefs.GetInt(key, 0);
+            }
+            return res;
+        }
+        
+        private static void SaveKey(this GuidanceComponent self, string key,int val)
+        {
+            self.CacheValues[key] = val;
+            PlayerPrefs.SetInt(key,val);
+            PlayerPrefs.Save();
         }
     }
 }

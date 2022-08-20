@@ -7,6 +7,7 @@ namespace ET
 	{
 		public UIText text;
 		public UIButton GalBtn;
+		public UIButton SettingBtn;
 		public static string PrefabPath => "UI/UIHelp/Prefabs/UIHelpWin.prefab";
 	}
 }

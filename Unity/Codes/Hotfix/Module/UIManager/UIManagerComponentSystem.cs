@@ -73,18 +73,47 @@ namespace ET
         /// 获取最上层window
         /// </summary>
         /// <param name="self"></param>
+        /// <param name="ignore">忽略的层级</param>
         /// <returns></returns>
-        public static UIWindow GetTopWindow(this UIManagerComponent self)
+        public static UIWindow GetTopWindow(this UIManagerComponent self,params UILayerNames[] ignore)
         {
-            for (int i = (byte)UILayerNames.TopLayer; i >=0; i--)
+            using (HashSetComponent<UILayerNames> ignores = HashSetComponent<UILayerNames>.Create())
             {
-                var wins = self.window_stack[(UILayerNames) i];
-                if (wins.Count <= 0) continue;
-                var name = wins.First.Value;
+                for (int i = 0; i < ignore.Length; i++)
+                {
+                    ignores.Add(ignore[i]);   
+                }
+                for (int i = (byte)UILayerNames.TopLayer; i >=0; i--)
+                {
+                    var layer = (UILayerNames) i;
+                    if (!ignores.Contains(layer))
+                    {
+                        var win = self.GetTopWindow(layer);
+                        if (win != null) return win;
+                    }
+                }
+                return null;
+            }
+        }
+        /// <summary>
+        /// 获取最上层window
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="layer"></param>
+        /// <returns></returns>
+        public static UIWindow GetTopWindow(this UIManagerComponent self,UILayerNames layer)
+        {
+            var wins = self.window_stack[layer];
+            if (wins.Count <= 0) return null;
+            for (var node = wins.First; node!=null; node=node.Next)
+            {
+                var name = node.Value;
                 var win = self.GetWindow(name,1);
-                if (win != null) return win;
+                if (win != null) 
+                    return win;
             }
             return null;
+
         }
         /// <summary>
         /// 获取UI窗口
