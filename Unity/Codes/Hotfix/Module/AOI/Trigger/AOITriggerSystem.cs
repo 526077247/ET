@@ -142,7 +142,14 @@ namespace ET
         /// <returns></returns>
         public static Vector3 GetRealPos(this AOITrigger self)
         {
-            return self.GetParent<AOIUnitComponent>().Position + new Vector3(0,self.OffsetY,0);
+            if (self.OffsetY != 0)
+            {
+                return self.GetParent<AOIUnitComponent>().Position + new Vector3(0, self.OffsetY, 0);
+            }
+            else
+            {
+                return self.GetParent<AOIUnitComponent>().Position;
+            }
         }
         /// <summary>
         /// 获取偏移后的位置
@@ -152,7 +159,14 @@ namespace ET
         /// <returns></returns>
         public static Vector3 GetRealPos(this AOITrigger self, Vector3 pos)
         {
-            return pos + new Vector3(0,self.OffsetY,0);
+            if (self.OffsetY != 0)
+            {
+                return pos + new Vector3(0, self.OffsetY, 0);
+            }
+            else
+            {
+                return pos;
+            }
         }
         /// <summary>
         /// 获取偏移后的位置
@@ -233,7 +247,6 @@ namespace ET
                 using (var grids = self.GetNearbyGrid(count))
                 {
                     HashSetComponent<AOITrigger> temp1 = HashSetComponent<AOITrigger>.Create();
-                    HashSetComponent<AOITrigger> temp2 = HashSetComponent<AOITrigger>.Create();
                     for (int i = 0; i < grids.Count; i++)
                     {
                         var item = grids[i];
@@ -250,7 +263,7 @@ namespace ET
                                     for (int j = 0; j < colliders.Count; j++)
                                     {
                                         var collider = colliders[j];
-                                        if (collider == trigger) continue;
+                                        if (collider.Parent.Id == self.Id) continue;
                                         if (!temp1.Contains(collider) && trigger.IsInTrigger(collider,
                                                 trigger.GetRealPos(),
                                                 trigger.GetRealRot(), collider.GetRealPos(), collider.GetRealRot()))
@@ -270,13 +283,7 @@ namespace ET
                         trigger.OnTrigger(item, AOITriggerType.Enter);
                     }
 
-                    foreach (var item in temp2)
-                    {
-                        item.OnTrigger(trigger, AOITriggerType.Enter);
-                    }
-
                     temp1.Dispose();
-                    temp2.Dispose();
                 }
             }
         }
@@ -312,7 +319,6 @@ namespace ET
             {
                 using (var grids = self.GetNearbyGrid(count))
                 {
-                    HashSetComponent<AOITrigger> temp1 = HashSetComponent<AOITrigger>.Create();
                     HashSetComponent<AOITrigger> temp2 = HashSetComponent<AOITrigger>.Create();
                     for (int i = 0; i < grids.Count; i++)
                     {
@@ -350,18 +356,12 @@ namespace ET
                             }
                         }
                     }
-
-                    foreach (var item in temp1)
-                    {
-                        trigger.OnTrigger(item, AOITriggerType.Enter);
-                    }
-
+                    
                     foreach (var item in temp2)
                     {
                         item.OnTrigger(trigger, AOITriggerType.Enter);
                     }
-
-                    temp1.Dispose();
+                    
                     temp2.Dispose();
                 }
             }
@@ -586,7 +586,7 @@ namespace ET
                         for (int j = 0; j < colliders.Count; j++)
                         {
                             var collider = colliders[j];
-                            if (collider.Parent.Id == self.Parent.Id) continue;
+                            if (collider.Parent.Id == self.Id) continue;
                             if (trigger.IsInTrigger(collider,trigger.GetRealPos(),
                                     trigger.GetRealRot(),collider.GetRealPos(),collider.GetRealRot()))
                             {
@@ -922,6 +922,7 @@ namespace ET
                             Log.Warning("自动移除不成功");
                             continue;
                         }
+                        if (collider.Parent.Id == self.Parent.Id) continue;
                         pre.Add(collider);
                     }
                 }
@@ -937,6 +938,7 @@ namespace ET
                             Log.Warning("自动移除不成功");
                             continue;
                         }
+                        if (collider.Parent.Id == self.Parent.Id) continue;
                         after.Add(collider);
                     }
                 }
@@ -956,6 +958,7 @@ namespace ET
                             Log.Warning("自动移除不成功");
                             continue;
                         }
+                        if (collider.Parent.Id == self.Parent.Id) continue;
                         if (!pre.Contains(collider)&&collider.Selecter.Contains(unit.Type)&&self.IsInTrigger(collider,self.GetRealPos(),
                                 self.GetRealRot(),collider.GetRealPos(),collider.GetRealRot()))
                         {
@@ -976,6 +979,7 @@ namespace ET
                             Log.Warning("自动移除不成功");
                             continue;
                         }
+                        if (collider.Parent.Id == self.Parent.Id) continue;
                         if (!after.Contains(collider)&&collider.Selecter.Contains(unit.Type)&&self.IsInTrigger(collider,self.GetRealPos(),
                                 before,collider.GetRealPos(),collider.GetRealRot()))
                         {
@@ -995,7 +999,7 @@ namespace ET
                             Log.Warning("自动移除不成功");
                             continue;
                         }
-
+                        if (collider.Parent.Id == self.Parent.Id) continue;
                         if (!after.Contains(collider) && collider.Selecter.Contains(unit.Type) && self.IsInTrigger(
                                 collider, self.GetRealPos(),
                                 before, collider.GetRealPos(), collider.GetRealRot()))
@@ -1085,14 +1089,17 @@ namespace ET
         {
             if(!self.IsCollider) return;
             var unit = self.GetParent<AOIUnitComponent>();
-            HashSetComponent<AOITrigger> pre = HashSetComponent<AOITrigger>.Create(); //之前有的
-            HashSetComponent<AOITrigger> after = HashSetComponent<AOITrigger>.Create(); //现在有的
+            HashSetComponent<AOITrigger> pre; //之前有的
+            HashSetComponent<AOITrigger> after; //现在有的
             
             var nowPos = self.GetRealPos();
             var cell = unit.Cell;
             if (!changeCell&&self.FollowCell.Count==1&&cell.xMin+self.Radius<nowPos.x &&cell.xMax-self.Radius>nowPos.x
                 &&cell.yMin+self.Radius<nowPos.z &&cell.yMax-self.Radius>nowPos.z)//大多数情况,在本格子内移动
             {
+                if(cell.Triggers.Count<=0) return;
+                pre = HashSetComponent<AOITrigger>.Create(); //之前有的
+                after = HashSetComponent<AOITrigger>.Create(); //现在有的
                 for (int i =cell.Triggers.Count-1; i >=0; i--)
                 {
                     var collider = cell.Triggers[i];
@@ -1102,6 +1109,7 @@ namespace ET
                         Log.Warning("自动移除不成功");
                         continue;
                     }
+                    if (collider.Parent.Id == self.Parent.Id) continue;
                     if (!after.Contains(collider)&&collider.Selecter.Contains(unit.Type)&&self.IsInTrigger(collider,self.GetRealPos(beforePosition),
                             beforeRotation,collider.GetRealPos(),collider.GetRealRot()))
                     {
@@ -1118,6 +1126,8 @@ namespace ET
             }
             else
             {
+                pre = HashSetComponent<AOITrigger>.Create(); //之前有的
+                after = HashSetComponent<AOITrigger>.Create(); //现在有的
                 int count = (int) Mathf.Ceil(self.Radius / unit.Scene.gridLen);
                 if (count > 2) Log.Info("检测范围超过2格，触发半径：" + self.Radius);
                 DictionaryComponent<AOICell, int> triggers = DictionaryComponent<AOICell, int>.Create();
@@ -1158,7 +1168,7 @@ namespace ET
                                 Log.Warning("自动移除不成功");
                                 continue;
                             }
-
+                            if (collider.Parent.Id == self.Parent.Id) continue;
                             if (!pre.Contains(collider) && collider.Selecter.Contains(unit.Type) && self.IsInTrigger(
                                     collider, self.GetRealPos(),
                                     self.GetRealRot(), collider.GetRealPos(), collider.GetRealRot()))
@@ -1181,7 +1191,7 @@ namespace ET
                                 Log.Warning("自动移除不成功");
                                 continue;
                             }
-
+                            if (collider.Parent.Id == self.Parent.Id) continue;
                             if (!after.Contains(collider) && collider.Selecter.Contains(unit.Type) && self.IsInTrigger(
                                     collider, self.GetRealPos(beforePosition),
                                     beforeRotation, collider.GetRealPos(), collider.GetRealRot()))
@@ -1203,7 +1213,7 @@ namespace ET
                                 Log.Warning("自动移除不成功");
                                 continue;
                             }
-
+                            if (collider.Parent.Id == self.Parent.Id) continue;
                             if (!after.Contains(collider) && collider.Selecter.Contains(unit.Type) && self.IsInTrigger(
                                     collider, self.GetRealPos(beforePosition),
                                     beforeRotation, collider.GetRealPos(), collider.GetRealRot()))
@@ -1225,6 +1235,7 @@ namespace ET
 
                 }
                 triggers.Dispose();
+                #endregion
             }
 
             if (pre.Count > 0 || after.Count > 0)
@@ -1250,7 +1261,6 @@ namespace ET
                 }
                 pre.Dispose();
                 after.Dispose();
-                #endregion
 
                 //判断事件
                 foreach (var item in colliderDic)
@@ -1301,7 +1311,9 @@ namespace ET
                 return false;
             }
             // Log.Info("IsInTrigger");
-            var sqrDis = Vector3.SqrMagnitude(position1- position2);
+            var pos1 = trigger1.GetRealPos(position1);
+            var pos2 = trigger1.GetRealPos(position2);
+            var sqrDis = Vector3.SqrMagnitude(pos1- pos2);
             // Log.Info("dis"+dis+"pos1"+pos1+"pos2"+pos2+"trigger1.Radius"+trigger1.Radius+"trigger2.Radius"+trigger2.Radius);
             var dis = trigger1.Radius + trigger2.Radius;
             bool isSphereTrigger = dis*dis > sqrDis;
@@ -1313,22 +1325,22 @@ namespace ET
             if (!isSphereTrigger) return false;//外接球不相交
             if (trigger1.TriggerType == TriggerShapeType.Cube && trigger2.TriggerType == TriggerShapeType.Cube)//判断OBB触发
             {
-                return trigger1.IsInTrigger(trigger2, position1, rotation1, position2, rotation2);
+                return trigger1.IsInTrigger(trigger2, pos1, rotation1, pos2, rotation2);
             }
             else if(trigger1.TriggerType <= TriggerShapeType.Cube && trigger2.TriggerType <= TriggerShapeType.Cube)//判断OBB和球触发
             {
                 // Log.Info("判断OBB和球触发");
                 var triggerOBB = trigger1;
                 var triggerSphere = trigger2;
-                var posOBB = position1;
-                var posSp = position2;
+                var posOBB = pos1;
+                var posSp = pos2;
                 var rotOBB = rotation1;
                 if (trigger2.TriggerType == TriggerShapeType.Cube)
                 {
                     triggerOBB = trigger2;
                     triggerSphere = trigger1;
-                    posOBB = position2;
-                    posSp = position1;
+                    posOBB = pos2;
+                    posSp = pos1;
                     rotOBB = rotation2;
                 }
                 var obb = triggerOBB.GetComponent<OBBComponent>();
