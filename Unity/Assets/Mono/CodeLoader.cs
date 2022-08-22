@@ -31,6 +31,19 @@ namespace ET
 		private readonly Dictionary<string, Type> hotfixTypes = new Dictionary<string, Type>();
 		
 
+		public static string[] aotDllList = {
+			"Unity.ThirdParty.dll",
+			"Unity.Mono.dll",
+			"mscorlib.dll",
+			"System.dll",
+			"System.Core.dll", // 如果使用了Linq，需要这个
+			// "Newtonsoft.Json.dll",
+			// "protobuf-net.dll",
+			// "Google.Protobuf.dll",
+			// "MongoDB.Bson.dll",
+			// "DOTween.Modules.dll",
+			// "UniTask.dll",
+		};
 		/// <summary>
 		/// 为aot assembly加载原始metadata， 这个代码放aot或者热更新都行。
 		/// 一旦加载后，如果AOT泛型函数对应native实现不存在，则自动替换为解释模式执行
@@ -42,22 +55,8 @@ namespace ET
 
 			/// 注意，补充元数据是给AOT dll补充元数据，而不是给热更新dll补充元数据。
 			/// 热更新dll不缺元数据，不需要补充，如果调用LoadMetadataForAOTAssembly会返回错误
-
-
-			string[] aotDllList =
-			{
-				"Unity.ThirdParty.dll",
-				"Unity.Mono.dll",
-				"mscorlib.dll",
-				"System.dll",
-				"System.Core.dll", // 如果使用了Linq，需要这个
-				// "Newtonsoft.Json.dll",
-				// "protobuf-net.dll",
-				// "Google.Protobuf.dll",
-				// "MongoDB.Bson.dll",
-				// "DOTween.Modules.dll",
-				// "UniTask.dll",
-			};
+			
+			
 #if !UNITY_EDITOR
 			var ab = AddressablesManager.Instance.SyncLoadAssetBundle("code_aot_assets_all.bundle");
 #endif

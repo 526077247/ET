@@ -8,9 +8,7 @@ namespace ET
 {
     public static class BuildHelper
     {
-        private const string relativeDirPrefix = "../Release";
-
-        public static string BuildFolder = "../Release/{0}/StreamingAssets/";
+        public const string relativeDirPrefix = "../Release";
 
         static Dictionary<PlatformType, BuildTarget> buildmap = new Dictionary<PlatformType, BuildTarget>(PlatformTypeComparer.Instance)
         {
@@ -27,7 +25,7 @@ namespace ET
             { PlatformType.IOS , BuildTargetGroup.iOS },
             { PlatformType.MacOS , BuildTargetGroup.Standalone },
         };
-        private static void KeystoreSetting()
+        public static void KeystoreSetting()
         {
             PlayerSettings.Android.keystoreName = "ET.keystore";
             PlayerSettings.Android.keyaliasName = "et";

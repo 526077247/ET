@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using HybridCLR;
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.Compilation;
@@ -106,6 +107,90 @@ namespace ET
             }, new[]{Path.Combine(Define.BuildOutputDir, "Data.dll")}, CodeOptimization.Debug);
         }
 
+        [MenuItem("Tools/Build/BuildAOT _F9")]
+        public static void BuildAOT()
+        {
+            PlatformType activePlatform = PlatformType.None;
+#if UNITY_ANDROID
+			activePlatform = PlatformType.Android;
+#elif UNITY_IOS
+			activePlatform = PlatformType.IOS;
+#elif UNITY_STANDALONE_WIN
+            activePlatform = PlatformType.PC;
+#elif UNITY_STANDALONE_OSX
+			activePlatform = PlatformType.MacOS;
+#else
+			activePlatform = PlatformType.None;
+#endif
+            if(!HybridCLR.Setup())return;
+            
+            BuildTarget buildTarget = BuildTarget.StandaloneWindows;
+            string programName = "ET";
+            string exeName = programName;
+            string platform = "";
+            switch (activePlatform)
+            {
+                case PlatformType.PC:
+                    buildTarget = BuildTarget.StandaloneWindows64;
+                    exeName += ".exe";
+                    // IFixEditor.Patch();
+                    platform = "pc";
+                    break;
+                case PlatformType.Android:
+                    BuildHelper.KeystoreSetting();
+                    buildTarget = BuildTarget.Android;
+                    exeName += ".apk";
+                    // IFixEditor.CompileToAndroid();
+                    platform = "android";
+                    break;
+                case PlatformType.IOS:
+                    buildTarget = BuildTarget.iOS;
+                    // IFixEditor.CompileToIOS();
+                    platform = "ios";
+                    break;
+                case PlatformType.MacOS:
+                    buildTarget = BuildTarget.StandaloneOSX;
+                    // IFixEditor.Patch();
+                    platform = "pc";
+                    break;
+            }
+            
+            #region 防裁剪
+            FileHelper.CopyDirectory("Codes", "Assets/Codes/Temp");
+            AssetDatabase.Refresh();
+            #endregion
+                
+            // MethodBridgeHelper.MethodBridge_All();
+            AssetDatabase.Refresh();
+            string[] levels = {
+                "Assets/AssetsPackage/Scenes/InitScene/Init.unity",
+            };
+            UnityEngine.Debug.Log("开始EXE打包");
+            string relativeDirPrefix = "../Temp";
+            if (!Directory.Exists(relativeDirPrefix))
+            {
+                Directory.CreateDirectory(relativeDirPrefix);
+            }
+            BuildPipeline.BuildPlayer(levels, $"{relativeDirPrefix}/{exeName}", buildTarget, BuildOptions.None);
+            UnityEngine.Debug.Log("完成exe打包");
+                
+            #region 防裁剪
+            Directory.Delete("Assets/Codes/Temp",true);
+            File.Delete("Assets/Codes/Temp.meta");
+            AssetDatabase.Refresh();
+            #endregion
+
+            for (int i = 0; i < CodeLoader.aotDllList.Length; i++)
+            {
+                var assemblyName = CodeLoader.aotDllList[i];
+                File.Copy(Path.Combine(BuildConfig.GetAssembliesPostIl2CppStripDir(buildTarget), $"{assemblyName}"), Path.Combine(Define.AOTDir, $"{assemblyName}.bytes"), true);
+            }
+            
+            AssetDatabase.Refresh();
+            //反射获取当前Game视图，提示编译完成
+            ShowNotification("Build Code Success");
+        }
+        
         private static void BuildMuteAssembly(string assemblyName, string[] CodeDirectorys, string[] additionalReferences, CodeOptimization codeOptimization,bool isAuto = false)
         {
             List<string> scripts = new List<string>();
