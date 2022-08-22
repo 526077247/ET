@@ -6,10 +6,8 @@
     {
         protected override void Run(EventType.AOIRegisterUnit args)
         {
-            
-            AOIUnitComponent a = args.Receive;
             if (args.Units==null||args.Units.Count==0) return;
-            Unit ua = a.GetParent<Unit>();
+            Unit ua = args.Receive.GetParent<Unit>();
             if (ua.Type != UnitType.Player)
             {
                 return;
