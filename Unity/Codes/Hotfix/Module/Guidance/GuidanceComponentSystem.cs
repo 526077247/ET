@@ -34,9 +34,9 @@ namespace ET
                 {
                     val = self.GetKey(CacheKeys.Guidance + "_" + item.Group);
                 }
-                else if(!string.IsNullOrEmpty(GlobalComponent.Instance.Account))
+                else
                 {
-                    val = self.GetKey(CacheKeys.Guidance+"_"+item.Group+"_"+GlobalComponent.Instance.Account);
+                    val = self.GetKey(CacheKeys.Guidance+"_"+item.Group+"_"+PlayerComponent.Instance?.Account);
                 }
 
                 if (val == 0)
@@ -151,7 +151,7 @@ namespace ET
                 {
                     if (self.Config.Share == 0)
                     {
-                        self.SaveKey(CacheKeys.Guidance+"_"+self.Config.Group+"_"+GlobalComponent.Instance.Account,1);
+                        self.SaveKey(CacheKeys.Guidance+"_"+self.Config.Group+"_"+PlayerComponent.Instance?.Account,1);
                     }
                     else
                     {

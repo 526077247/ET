@@ -12,8 +12,6 @@ namespace ET
         
         public Transform Scene { get; set; }
 
-        public string Account { get; set; }
-        
         public bool ColliderDebug { get; set; }
     }
 }
