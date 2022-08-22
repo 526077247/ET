@@ -93,6 +93,7 @@ namespace ET
 				self.showLen = self.Text.GetCharacterCount();
 			}
 			self.Text.SetMaxVisibleCharacters(int.MaxValue);
+			await TimerComponent.Instance.WaitAsync(1);
 			self.isPlay = false;
 			self.token = new ETCancellationToken();
 			self.Arrow.SetActive(true);
@@ -129,8 +130,11 @@ namespace ET
 		}
 		public static void OnCancel(this UIMessageWindow self)
 		{
-			self.Text.SetMaxVisibleCharacters(int.MaxValue);
-			self.isPlay = false;
+			if (self.isPlay)
+			{
+				self.Text.SetMaxVisibleCharacters(int.MaxValue);
+				self.isPlay = false;
+			}
 			self.token?.Cancel();
 		}
 		public static void OnFastBtnClick()

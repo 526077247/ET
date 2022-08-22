@@ -20,7 +20,14 @@ namespace ET
         /// 区域范围缓存
         /// </summary>
         public Vector3[] _corners = new Vector3[4];
-
+        /// <summary>
+        /// 区域范围缓存
+        /// </summary>
+        public Vector3[] _corners1 = new Vector3[4];
+        /// <summary>
+        /// 区域范围缓存
+        /// </summary>
+        public Vector3[] _corners2 = new Vector3[4];
         /// <summary>
         /// 镂空区域半径
         /// </summary>

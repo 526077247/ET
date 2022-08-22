@@ -76,7 +76,7 @@ namespace ET
 
         public static void ReleaseAsset(this ResourcesComponent self,UnityEngine.Object pooledGo)
         {
-            self.AddressablesManager.ReleaseAsset(pooledGo);
+            self.AddressablesManager?.ReleaseAsset(pooledGo);
         }
             
     }

@@ -40,14 +40,9 @@ namespace ET
 			self.CurCanvas = self.GetGameObject().GetComponentInParent<Canvas>();
 
 			self.Mask.Target = obj;
-			OnEnableAsync(self,obj,type).Coroutine();
-		}
-
-		static async ETTask OnEnableAsync(UIGuidanceView self,GameObject obj,int type)
-		{
+			
 			self.CircleMask.SetActive(false);
 			self.RectMask.SetActive(false);
-			await TimerComponent.Instance.WaitAsync(1);
 			if (type == GuidanceGameObejctType.Rect)
 			{
 				self.RectMask.SetActive(true,obj.GetComponent<RectTransform>(),self.CurCanvas);
