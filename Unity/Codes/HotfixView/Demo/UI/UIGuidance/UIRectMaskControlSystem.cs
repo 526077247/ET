@@ -22,7 +22,7 @@ namespace ET
             public override void Update(UIRectMaskControl self)
             {
                 if (self.GetTarget() == null) return;
-
+                self.Refresh();
                 //从当前半径到目标半径差值显示收缩动画
                 float valueX = Mathf.SmoothDamp(self._currentOffsetX, self._targetOffsetX, ref self._shrinkVelocityX, self._shrinkTime);
                 float valueY = Mathf.SmoothDamp(self._currentOffsetY, self._targetOffsetY, ref self._shrinkVelocityY, self._shrinkTime);
@@ -100,9 +100,30 @@ namespace ET
         public static void SetCurTarget(this UIRectMaskControl self,RectTransform target)
         {
             self.SetTarget(target);
-
-            //获取高亮区域四个顶点的世界坐标
-            target.GetWorldCorners(self._corners);
+            self.Refresh();
+        }
+        
+        public static void Refresh(this UIRectMaskControl self)
+        {
+            var target = self.GetTarget();
+            //获取高亮区域的四个顶点的世界坐标
+            target.GetWorldCorners(self._corners2);
+            bool change = false;
+            for (int i = 0; i < self._corners2.Length; i++)
+            {
+                if ((self._corners1[i] - self._corners2[i]).sqrMagnitude > 0.01)
+                {
+                    change = true;
+                    break;
+                }
+            }
+            if(!change)
+                return;
+            ObjectHelper.Swap(ref self._corners1,ref self._corners2);
+            for (int i = 0; i < self._corners.Length; i++)
+            {
+                self._corners[i] = self._corners1[i];
+            }
             //计算高亮显示区域咋画布中的范围
             self._targetOffsetX = Vector2.Distance(WorldToCanvasPos(self.Canvas, self._corners[0]), WorldToCanvasPos(self.Canvas, self._corners[3])) / 2f;
             self._targetOffsetY = Vector2.Distance(WorldToCanvasPos(self.Canvas, self._corners[0]), WorldToCanvasPos(self.Canvas, self._corners[1])) / 2f;

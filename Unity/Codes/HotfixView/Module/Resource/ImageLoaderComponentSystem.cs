@@ -537,7 +537,7 @@ namespace ET
                     {
                         GameObject.Destroy(item.Value.asset);
                     }
-                ResourcesComponent.Instance.ReleaseAsset(value.asset);
+                ResourcesComponent.Instance?.ReleaseAsset(value.asset);
                 value.asset = null;
                 value.subasset = null;
                 value.ref_count = 0;
@@ -546,7 +546,7 @@ namespace ET
 
             self.m_cacheSingleSprite.ForEach((key, value) =>
                 {
-                    ResourcesComponent.Instance.ReleaseAsset(value.asset);
+                    ResourcesComponent.Instance?.ReleaseAsset(value.asset);
                     value.asset = null;
                     value.ref_count = 0;
                 }

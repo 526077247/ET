@@ -23,7 +23,7 @@ namespace ET
             public override void Update(UICircleMaskControl self)
             {
                 if (self.GetTarget() == null) return;
-
+                self.Refresh();
                 //从当前半径到目标半径差值显示收缩动画
                 float value = Mathf.SmoothDamp(self._currentRadius, self._radius, ref self._shrinkVelocity, self._shrinkTime);
                 if (!Mathf.Approximately(value, self._currentRadius))
@@ -88,12 +88,33 @@ namespace ET
             return position;
         }
 
-        public static void SetCurTarget(this UICircleMaskControl self,RectTransform target)
+        public static void SetCurTarget(this UICircleMaskControl self, RectTransform target)
         {
             self.SetTarget(target);
-
+            self.Refresh();
+        }
+        
+        public static void Refresh(this UICircleMaskControl self)
+        {
+            var target = self.GetTarget();
             //获取高亮区域的四个顶点的世界坐标
-            target.GetWorldCorners(self._corners);
+            target.GetWorldCorners(self._corners2);
+            bool change = false;
+            for (int i = 0; i < self._corners2.Length; i++)
+            {
+                if ((self._corners1[i] - self._corners2[i]).sqrMagnitude > 0.01)
+                {
+                    change = true;
+                    break;
+                }
+            }
+            if(!change)
+                return;
+            ObjectHelper.Swap(ref self._corners1,ref self._corners2);
+            for (int i = 0; i < self._corners.Length; i++)
+            {
+                self._corners[i] = self._corners1[i];
+            }
             
             //计算最终高亮显示区域的半径
             self._radius = Vector2.Distance(WorldToCanvasPos(self.Canvas, self._corners[0]), WorldToCanvasPos(self.Canvas, self._corners[1])) / 2f + 30f;
