@@ -300,7 +300,7 @@ namespace ET
 
             var merge_mode_union = 1;
             var needdownloadinfo = await self.CheckUpdateContent(merge_mode_union);
-            Log.Info("needdownloadinfo count: ", needdownloadinfo.Count);
+            Log.Info("needdownloadinfo count: "+ needdownloadinfo.Count);
             self.m_needdownloadinfo = SortDownloadInfo(needdownloadinfo);
 
             Log.Info("CheckResUpdate DownloadContent begin");
