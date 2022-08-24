@@ -1,4 +1,4 @@
-using AssetBundles;
+using YooAsset;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,7 +8,7 @@ namespace ET
     {
         public void GetAllConfigBytes(Dictionary<string, byte[]> output)
         {
-            Dictionary<string, TextAsset> keys = AddressablesManager.Instance.LoadAllTextAsset();
+            Dictionary<string, TextAsset> keys = YooAssetsMgr.Instance.LoadAllTextAsset();
 
             foreach (var kv in keys)
             {
@@ -20,7 +20,7 @@ namespace ET
 
         public byte[] GetOneConfigBytes(string configName)
         {
-            TextAsset v = AddressablesManager.Instance.LoadTextAsset(configName) as TextAsset;
+            TextAsset v = YooAssetsMgr.Instance.LoadTextAsset(configName) as TextAsset;
             return v.bytes;
         }
     }

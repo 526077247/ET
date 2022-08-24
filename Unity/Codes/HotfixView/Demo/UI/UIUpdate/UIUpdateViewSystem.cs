@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using UnityEngine.Events;
-using AssetBundles;
+using YooAsset;
 using System.Linq;
 
 namespace ET
@@ -34,25 +34,25 @@ namespace ET
     [FriendClass(typeof(UIUpdateView))]
     public static class UIUpdateViewSystem
     {
-
-        private static async ETTask UpdateFinishAndStartGame(this UIUpdateView self)
+        /// <summary>
+        /// 设置进度
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="value"></param>
+        static void SetProgress(this UIUpdateView self, float value)
         {
-            Game.Scene.RemoveAllComponent();
-            // 重启资源管理器
-            while (AddressablesManager.Instance.IsProsessRunning)
-            {
-                await TimerComponent.Instance.WaitAsync(1);
-            }
-            AddressablesManager.Instance.ClearAssetsCache();
-            AddressablesManager.Instance.ClearConfigCache();
-            //重新加载配置
-            AssetBundleConfig.Instance.SyncLoadGlobalAssetBundle();
-
-            //热修复
-            // AddressablesManager.Instance.StartInjectFix();
-            CodeLoader.Instance.ReStart();
+            if(value> self.last_progress)
+                self.last_progress = value;
+            self.m_slider.SetNormalizedValue(self.last_progress);
         }
-
+        /// <summary>
+        /// 提示窗
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="content"></param>
+        /// <param name="confirmBtnText"></param>
+        /// <param name="cancelBtnText"></param>
+        /// <returns></returns>
         async static ETTask<int> ShowMsgBoxView(this UIUpdateView self,string content, string confirmBtnText, string cancelBtnText)
         {
             ETTask<int> tcs = ETTask<int>.Create();
@@ -76,16 +76,19 @@ namespace ET
             await UIManagerComponent.Instance.CloseWindow<UIMsgBoxWin>();
             return result;
         }
+        /// <summary>
+        /// 开始检测
+        /// </summary>
+        /// <param name="self"></param>
         public static async ETTask StartCheckUpdate(this UIUpdateView self)
         {
-            //TODO 网络检查 
             await self.CheckIsInWhiteList();
 
             await self.CheckUpdateList();
 
             var Over = await self.CheckAppUpdate();
             if (Over) return;
-
+            
             var isUpdateDone = await self.CheckResUpdate();
             if (isUpdateDone)
             {
@@ -100,6 +103,12 @@ namespace ET
             }
         }
 
+        #region 更新流程
+        
+        /// <summary>
+        /// 白名单
+        /// </summary>
+        /// <param name="self"></param>
         async static ETTask CheckIsInWhiteList(this UIUpdateView self)
         {
             var url = ServerConfigComponent.Instance.GetWhiteListCdnUrl();
@@ -124,6 +133,10 @@ namespace ET
             }
         }
 
+        /// <summary>
+        /// 版本号信息
+        /// </summary>
+        /// <param name="self"></param>
         async static ETTask CheckUpdateList(this UIUpdateView self)
         {
             var url = ServerConfigComponent.Instance.GetUpdateListCdnUrl();
@@ -163,6 +176,11 @@ namespace ET
             }
         }
 
+        /// <summary>
+        /// 是否需要整包更新
+        /// </summary>
+        /// <param name="self"></param>
+        /// <returns></returns>
         async static ETTask<bool> CheckAppUpdate(this UIUpdateView self)
         {
             var app_channel = PlatformUtil.GetAppChannel();
@@ -172,15 +190,16 @@ namespace ET
                 Log.Info("CheckAppUpdate channel_app_update_list or app_ver is nil, so return");
                 return false;
             }
-            var maxVer = ServerConfigComponent.Instance.FindMaxUpdateAppVer(app_channel);
-            if (string.IsNullOrEmpty(maxVer))
+            self.StaticVersion = ServerConfigComponent.Instance.FindMaxUpdateAppVer(app_channel);
+            Log.Info("FindMaxUpdateAppVer =" + self.StaticVersion);
+            if (self.StaticVersion<0)
             {
                 Log.Info("CheckAppUpdate maxVer is nil");
                 return false;
             }
-            var app_ver = Application.version;
-            var flag = VersionCompare.Compare(app_ver, maxVer);
-            Log.Info(string.Format("CoCheckAppUpdate AppVer:{0} maxVer:{1}", app_ver, maxVer));
+            int app_ver = int.Parse(Application.version);
+            var flag = app_ver - self.StaticVersion;
+            Log.Info(string.Format("CoCheckAppUpdate AppVer:{0} maxVer:{1}", app_ver, self.StaticVersion));
             if (flag >= 0)
             {
                 Log.Info("CheckAppUpdate AppVer is Most Max Version, so return; flag = " + flag);
@@ -222,58 +241,71 @@ namespace ET
             }
             return false;
         }
-
-        //资源更新检查，并根据版本来修改资源cdn地址
+        
+        /// <summary>
+        /// 资源更新检查，并根据版本来修改资源cdn地址
+        /// </summary>
+        /// <param name="self"></param>
+        /// <returns></returns>
         public static async ETTask<bool> CheckResUpdate(this UIUpdateView self)
         {
             var app_channel = PlatformUtil.GetAppChannel();
-            var engine_ver = AssetBundleConfig.Instance.EngineVer;
-            var maxVer = ServerConfigComponent.Instance.FindMaxUpdateResVer(engine_ver, app_channel);
-            if (string.IsNullOrEmpty(maxVer))
+            var channel = YooAssetsMgr.Instance.Config.Channel;
+            self.StaticVersion = ServerConfigComponent.Instance.FindMaxUpdateResVer(channel, app_channel);
+            if (self.StaticVersion<0)
             {
-                Log.Info("CheckResUpdate No Max Ver EngineVer = " + engine_ver + " app_channel " + app_channel);
+                Log.Info("CheckResUpdate No Max Ver Channel = " + channel + " app_channel " + app_channel);
                 return false;
             }
+            // if (self.StaticVersion>= maxVer)
+            // {
+            //     Log.Info("CheckResUpdate ResVer is Most Max Version, so return;");
+            //     return false;
+            // }
 
-            var res_ver = AssetBundleConfig.Instance.ResVer;
-            var flag = VersionCompare.Compare(res_ver, maxVer);
-            Log.Info("CheckResUpdate ResVer:{0} maxVer:{1}", res_ver, maxVer);
-            if (flag >= 0)
+            // 编辑器下跳过。
+            // if (Define.IsEditor) return false;
+            if (YooAssets.PlayMode != YooAssets.EPlayMode.HostPlayMode)
             {
-                Log.Info("CheckResUpdate ResVer is Most Max Version, so return; flag = " + flag);
+                Log.Info("非网络运行模式");
                 return false;
             }
-
-            // 编辑器下不能测试热更，但可以测试下载。
-            if (Define.IsEditor) return false;
-
-            //找到最新版本，则设置当前资源存放的cdn地址
-            var url = ServerConfigComponent.Instance.GetUpdateCdnResUrlByVersion(maxVer);
-            self.m_rescdn_url = url;
-            Log.Info("CheckResUpdate res_cdn_url is " + url);
-            AssetBundleMgr.GetInstance().SetAddressableRemoteResCdnUrl(self.m_rescdn_url);
-
-            //等一会等addressables的Update回调执行完
-            await TimerComponent.Instance.WaitAsync(1);
-
-            //检查更新版本
-            Log.Info("begin  CheckCatalogUpdates");
-            var catalog = await self.CheckCatalogUpdates();
-            Log.Info("CheckResUpdate CataLog = " + catalog);
-
-            //1、先更新catalogs
-            if (!string.IsNullOrEmpty(catalog))
+            ETTask task = ETTask.Create(true);
+            // 更新补丁清单
+            Log.Info("更新补丁清单");
+            var operation = YooAssets.UpdateManifestAsync(self.StaticVersion, 30);
+            operation.Completed += (op) =>
             {
-                Log.Info("begin  UpdateCatalogs");
-                var res = await self.UpdateCatalogs(catalog);
-                if (!res) return false;
-                Log.Info("CoCheckResUpdate Update Catalog Success");
+                task.SetResult();
+            };
+            await task;
+            int btnState;
+            if(operation.Status != EOperationStatus.Succeed)
+            {
+                btnState = await self.ShowMsgBoxView("Update_Get_Fail", "Update_ReTry", self.force_update?"Btn_Exit":"Update_Skip");
+                if (btnState == self.BTN_CONFIRM)
+                {
+                    return await self.CheckResUpdate();
+                }
+                else if(self.force_update)
+                {
+                    GameUtility.Quit();
+                    return false;
+                }
             }
 
-            Log.Info("begin  GetDownloadSize");
+            Log.Info("创建补丁下载器.");
+            int downloadingMaxNum = 10;
+            int failedTryAgain = 3;
+            self.Downloader = YooAssets.CreatePatchDownloader(downloadingMaxNum, failedTryAgain);
+            if (self.Downloader.TotalDownloadCount == 0)
+            {
+                Log.Info("没有发现需要下载的资源");
+                return false;
+            }
+            
             //获取需要更新的大小
-            var size = await self.GetDownloadSize();
-
+            var size = self.Downloader.TotalDownloadBytes;
             //提示给用户
             Log.Info("downloadSize " + size);
             double size_mb = size / (1024f * 1024f);
@@ -281,7 +313,7 @@ namespace ET
             if (size_mb > 0 && size_mb < 0.01) size_mb = 0.01;
 
             var ct = I18NComponent.Instance.I18NGetParamText("Update_Info",size_mb.ToString("0.00"));
-            var btnState = await self.ShowMsgBoxView(ct, "Global_Btn_Confirm", "Btn_Exit");
+            btnState = await self.ShowMsgBoxView(ct, "Global_Btn_Confirm", self.force_update?"Btn_Exit":"Update_Skip");
             if (btnState == self.BTN_CANCEL)
             {
                 if (self.force_update)
@@ -297,201 +329,40 @@ namespace ET
             self.last_progress = 0;
             self.SetProgress(0);
             //2、更新资源
-
-            var merge_mode_union = 1;
-            var needdownloadinfo = await self.CheckUpdateContent(merge_mode_union);
-            Log.Info("needdownloadinfo count: "+ needdownloadinfo.Count);
-            self.m_needdownloadinfo = SortDownloadInfo(needdownloadinfo);
-
+            ETTask<bool> downloadTask = ETTask<bool>.Create(true);
+            self.Downloader.OnDownloadOverCallback += (a)=>{downloadTask.SetResult(a);};
+            self.Downloader.OnDownloadProgressCallback =(a,b,c,d)=>
+            {
+                self.SetProgress((float)d/c);
+            };
+            self.Downloader.BeginDownload();
             Log.Info("CheckResUpdate DownloadContent begin");
-            bool result = await self.DownloadContent();
+            bool result = await downloadTask;
             if (!result) return false;
             Log.Info("CheckResUpdate DownloadContent Success");
             return true;
         }
+        
+        /// <summary>
+        /// 更新完成
+        /// </summary>
+        /// <param name="self"></param>
+        private static async ETTask UpdateFinishAndStartGame(this UIUpdateView self)
+        {
+            PlayerPrefs.SetInt("STATIC_VERSION",self.StaticVersion);
+            PlayerPrefs.Save();
+            while (ResourcesComponent.Instance.IsProsessRunning())
+            {
+                await TimerComponent.Instance.WaitAsync(1);
+            }
+            ResourcesComponent.Instance.ClearAssetsCache();
+            Game.Scene.RemoveAllComponent();
+            YooAssetsMgr.Instance.ClearConfigCache();
+            //热修复
+            // AddressablesManager.Instance.StartInjectFix();
+            CodeLoader.Instance.ReStart();
+        }
+        #endregion
 
-        static List<DownLoadInfo> SortDownloadInfo(Dictionary<string, string> needdownloadinfo)
-        {
-            List<DownLoadInfo> temp = new List<DownLoadInfo>();
-            DownLoadInfo global_ab = null;
-            if (needdownloadinfo!=null)
-            {
-                foreach (var item in needdownloadinfo)
-                {
-                    string name = item.Key;
-                    string hash = item.Value;
-                    Log.Info("SortDownloadInfo check =" + name);
-                    if (name == "global_assets_all.bundle")
-                        global_ab = new DownLoadInfo { hash = hash, name = name };
-                    else
-                        temp.Add(new DownLoadInfo { hash = hash, name = name });
-                }
-            }
-            //版本资源最后
-            if (global_ab != null)
-                temp.Add(global_ab);
-            return temp;
-        }
-
-        async static ETTask<long> GetDownloadSize(this UIUpdateView self)
-        {
-            var size = await AddressablesManager.Instance.GetDownloadSizeAsync("default");
-            if (size<0)
-            {
-                Log.Info("CoGetDownloadSize Get Download Size Async Faild");
-                var btnState = await self.ShowMsgBoxView("Update_Get_Fail", "Update_ReTry", self.force_update?"Btn_Exit":"Update_Skip");
-                if (btnState == self.BTN_CONFIRM)
-                    return await self.GetDownloadSize();
-                else
-                {
-                    if (self.force_update)
-                        GameUtility.Quit();
-                    return 0;
-                }
-            }
-            return size;
-        }
-
-        //检查更新Catalog
-        async static ETTask<string> CheckCatalogUpdates(this UIUpdateView self)
-        {
-            var catlog = await AddressablesManager.Instance.CheckForCatalogUpdates();
-            if (!string.IsNullOrEmpty(catlog)) return catlog;
-            else
-            {
-                Log.Info("CheckCatalogUpdates Check CataLog Failed");
-                var btnState = await self.ShowMsgBoxView("Update_Get_Fail", "Update_ReTry", "Btn_Exit");
-                if (btnState == self.BTN_CONFIRM)
-                    return await self.CheckCatalogUpdates();
-                else
-                {
-                    if(self.force_update)
-                        GameUtility.Quit();
-                    return null;
-                }
-            }
-        }
-
-        //更新catalogs
-        async static ETTask<bool> UpdateCatalogs(this UIUpdateView self,string catalog)
-        {
-            //这里可能连不上，导致认为UpdateCatalogs成功
-            var res = await AddressablesManager.Instance.CheckForCatalogUpdates();
-            if (!string.IsNullOrEmpty(res))
-            {
-                var updateRes = await AddressablesManager.Instance.UpdateCatalogs(catalog);
-                if (updateRes) return true;
-                else
-                {
-                    Log.Info("CoUpdateCatalogs Update Catalog handler retry");
-                    return await self.UpdateCatalogs(catalog);
-                }
-            }
-            else
-            {
-                Log.Info("CoUpdateCatalogs Update Catalog Failed");
-                var btnState = await self.ShowMsgBoxView("Update_Get_Fail", "Update_ReTry", self.force_update?"Btn_Exit":"Update_Skip");
-                if (btnState == self.BTN_CONFIRM)
-                    return await self.UpdateCatalogs(catalog);
-                else
-                {
-                    if(self.force_update)
-                        GameUtility.Quit();
-                    return false;
-
-                }
-            }
-        }
-
-        async static ETTask<Dictionary<string,string>> CheckUpdateContent(this UIUpdateView self,int merge_mode_union)
-        {
-            var res = await AddressablesManager.Instance.CheckUpdateContent(new List<string>() { "default" }, merge_mode_union);
-            if (res!=null) return res;
-            else
-            {
-                Log.Info("CheckUpdateContent Failed");
-                var btnState = await self.ShowMsgBoxView("Update_Get_Fail", "Update_ReTry", self.force_update?"Btn_Exit":"Update_Skip");
-                if (btnState == self.BTN_CONFIRM)
-                    return await self.CheckUpdateContent(merge_mode_union);
-                else
-                {
-                    if(self.force_update)
-                        GameUtility.Quit();
-                    return null;
-                }
-            }
-        }
-        static void SetProgress(this UIUpdateView self, float value)
-        {
-            if(value> self.last_progress)
-                self.last_progress = value;
-            self.m_slider.SetNormalizedValue(self.last_progress);
-        }
-        async static ETTask<bool> DownloadContent(this UIUpdateView self)
-        {
-            var url = ServerConfigComponent.Instance.GetUpdateListCdnUrl();
-            var info = await HttpManager.Instance.HttpGetResult(url);
-            if (!string.IsNullOrEmpty(info))
-            {
-                await self.DownloadAllAssetBundle();
-                return true;
-            }
-            else
-            {
-                Log.Info("DownloadContent Begin DownloadDependenciesAsync failed");
-                var btnState = await self.ShowMsgBoxView("Update_Get_Fail", "Update_ReTry", self.force_update?"Btn_Exit":"Update_Skip");
-                if (btnState == self.BTN_CONFIRM)
-                    return await self.DownloadContent();
-                else
-                {
-                    if(self.force_update)
-                        GameUtility.Quit();
-                    return false;
-                }
-            }
-        }
-
-        async static ETTask DownloadAllAssetBundle(this UIUpdateView self)
-        {
-            var downloadTool = self.AddComponent<DownloadComponent>();
-            for (int i = 0; i < self.m_needdownloadinfo.Count; i++)
-            {
-                var url = string.Format("{0}/{1}", self.m_rescdn_url, self.m_needdownloadinfo[i].name);
-                var savePath = AssetBundleMgr.GetInstance().getCachedAssetBundlePath(self.m_needdownloadinfo[i].name) + ".temp";
-                downloadTool.AddDownloadUrl(url,savePath);
-            }
-            self.RefreshProgress(downloadTool).Coroutine();
-            var res = await downloadTool.DownloadAll();
-            if (!res)
-            {
-                var btnState = await self.ShowMsgBoxView("Update_Download_Fail", "Update_ReTry",
-                    self.force_update ? "Btn_Exit" : "Btn_Cancel");
-                if (btnState == self.BTN_CONFIRM)
-                {
-                    await self.DownloadAllAssetBundle();
-                }
-                else if (self.force_update)
-                {
-                    GameUtility.Quit();
-                }
-            }
-            else
-            {
-                for (int i = 0; i < self.m_needdownloadinfo.Count; i++)
-                {
-                    var downinfo = self.m_needdownloadinfo[i];
-                    AssetBundleMgr.GetInstance().CacheAssetBundle(downinfo.name, downinfo.hash);
-                }
-            }
-
-        }
-        static async ETTask RefreshProgress(this UIUpdateView self, DownloadComponent downloadTool)
-        {
-            while (self.m_needdownloadinfo.Count!= self.overCount)
-            {
-                self.SetProgress(downloadTool.GetProress());
-                await TimerComponent.Instance.WaitAsync(10);
-            }
-        }
     }
 }

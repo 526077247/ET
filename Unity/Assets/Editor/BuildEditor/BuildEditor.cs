@@ -52,7 +52,7 @@ namespace ET
 		private BuildAssetBundleOptions buildAssetBundleOptions = BuildAssetBundleOptions.None;
 		private ETBuildSettings buildSettings;
 
-		private Dictionary<string, string> config;
+		private BuildConfig config;
 		[MenuItem("Tools/打包工具")]
 		public static void ShowWindow()
 		{
@@ -102,11 +102,11 @@ namespace ET
 			if (this.config == null)
 			{
 				string jstr = File.ReadAllText("Assets/AssetsPackage/config.bytes");
-				config = LitJson.JsonMapper.ToObject<Dictionary<string, string>>(jstr);
+				config = JsonHelper.FromJson<BuildConfig>(jstr);
 			}
-			EditorGUILayout.LabelField("cdn地址：" + this.config["remote_cdn_url"]);
-			EditorGUILayout.LabelField("渠道标识：" + this.config["EngineVer"]);
-			EditorGUILayout.LabelField("资源版本：" + this.config["ResVer"]);
+			EditorGUILayout.LabelField("cdn地址：" + this.config.RemoteCdnUrl);
+			EditorGUILayout.LabelField("渠道标识：" + this.config.Channel);
+			EditorGUILayout.LabelField("资源版本：" + this.config.Resver);
 			if (GUILayout.Button("修改配置"))
 			{
 				System.Diagnostics.Process.Start("notepad.exe", "Assets/AssetsPackage/config.bytes");
@@ -114,16 +114,14 @@ namespace ET
 			if (GUILayout.Button("刷新配置"))
 			{
 				string jstr = File.ReadAllText("Assets/AssetsPackage/config.bytes");
-				config = LitJson.JsonMapper.ToObject<Dictionary<string, string>>(jstr);
+				config = JsonHelper.FromJson<BuildConfig>(jstr);
 			}
 			EditorGUILayout.LabelField("");
 			EditorGUILayout.LabelField("打包平台:");
 			this.platformType = (PlatformType)EditorGUILayout.EnumPopup(platformType);
             this.clearFolder = EditorGUILayout.Toggle("清理资源文件夹: ", clearFolder);
-            this.isBuildExe = EditorGUILayout.Toggle("是否打包EXE: ", this.isBuildExe);
-			// this.isInject = EditorGUILayout.Toggle("是否Inject(整包,无IFix标签) ", this.isInject);
-			//this.isContainAB = EditorGUILayout.Toggle("是否同将资源打进EXE: ", this.isContainAB);
-			this.buildType = (BuildType)EditorGUILayout.EnumPopup("BuildType: ", this.buildType);
+            this.isBuildExe = EditorGUILayout.Toggle("是否打包EXE(整包): ", this.isBuildExe);
+            this.buildType = (BuildType)EditorGUILayout.EnumPopup("BuildType: ", this.buildType);
 			//EditorGUILayout.LabelField("BuildAssetBundleOptions(可多选):");
 			//this.buildAssetBundleOptions = (BuildAssetBundleOptions)EditorGUILayout.EnumFlagsField(this.buildAssetBundleOptions);
 
@@ -161,7 +159,7 @@ namespace ET
                     }
                 }
 
-				if(!HybridCLR.Setup())return;
+				if(!HybridCLR.HybridCLR.Setup())return;
 				BuildHelper.Build(this.platformType, this.buildOptions, this.isBuildExe,this.clearFolder);
 			}
 

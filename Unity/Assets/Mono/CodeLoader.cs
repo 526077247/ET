@@ -1,11 +1,10 @@
-﻿using AssetBundles;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UnityEditor;
 using System.IO;
 using System.Reflection;
 using UnityEngine;
-using System.Linq;
+using YooAsset;
 
 namespace ET
 {
@@ -55,18 +54,21 @@ namespace ET
 
 			/// 注意，补充元数据是给AOT dll补充元数据，而不是给热更新dll补充元数据。
 			/// 热更新dll不缺元数据，不需要补充，如果调用LoadMetadataForAOTAssembly会返回错误
-			
-			
-#if !UNITY_EDITOR
-			var ab = AddressablesManager.Instance.SyncLoadAssetBundle("code_aot_assets_all.bundle");
-#endif
+
+			AssetBundle ab = null;
+			if (YooAssets.PlayMode != YooAssets.EPlayMode.EditorSimulateMode)
+				ab = YooAssetsMgr.Instance.SyncLoadAssetBundle("assets/assetspackage/code/aot.bundle");
+
 			foreach (var aotDllName in aotDllList)
 			{
-#if !UNITY_EDITOR
-				byte[] dllBytes = ((TextAsset)ab.LoadAsset($"{Define.AOTDir}{aotDllName}.bytes", typeof(TextAsset))).bytes;
-#else
-				byte[] dllBytes = (AssetDatabase.LoadAssetAtPath($"{Define.AOTDir}{aotDllName}.bytes", typeof(TextAsset)) as TextAsset).bytes;
+				byte[] dllBytes;
+				if (YooAssets.PlayMode != YooAssets.EPlayMode.EditorSimulateMode)
+					dllBytes = ((TextAsset)ab.LoadAsset($"{Define.AOTDir}{aotDllName}.bytes", typeof(TextAsset))).bytes;
+#if UNITY_EDITOR
+				else
+					dllBytes = (AssetDatabase.LoadAssetAtPath($"{Define.AOTDir}{aotDllName}.bytes", typeof(TextAsset)) as TextAsset).bytes;
 #endif
+
 				fixed (byte* ptr = dllBytes)
 				{
 					try
@@ -81,9 +83,9 @@ namespace ET
 					}
 				}
 			}
-#if !UNITY_EDITOR
-			ab.Unload(true);
-#endif
+			if (YooAssets.PlayMode != YooAssets.EPlayMode.EditorSimulateMode)
+				ab?.Unload(true);
+
 		}
 		private CodeLoader()
 		{
@@ -123,14 +125,25 @@ namespace ET
 				case CodeMode.Mono:
 				{
 					if(this.CodeMode==CodeMode.Wolong) LoadMetadataForAOTAssembly();
-#if !UNITY_EDITOR
-                    
-                    var ab = AddressablesManager.Instance.SyncLoadAssetBundle("code_hotfix_assets_all.bundle");
-                    byte[] assBytes = ((TextAsset)ab.LoadAsset($"{Define.HotfixDir}Code{AssetBundleConfig.Instance.ResVer}.dll.bytes", typeof(TextAsset))).bytes;
-                    byte[] pdbBytes = ((TextAsset)ab.LoadAsset($"{Define.HotfixDir}Code{AssetBundleConfig.Instance.ResVer}.pdb.bytes", typeof(TextAsset))).bytes;
-#else
-					byte[] assBytes = (AssetDatabase.LoadAssetAtPath($"{Define.HotfixDir}Code{AssetBundleConfig.Instance.ResVer}.dll.bytes", typeof(TextAsset)) as TextAsset).bytes;
-					byte[] pdbBytes = (AssetDatabase.LoadAssetAtPath($"{Define.HotfixDir}Code{AssetBundleConfig.Instance.ResVer}.pdb.bytes", typeof(TextAsset)) as TextAsset).bytes;
+					byte[] assBytes = null;
+					byte[] pdbBytes= null;
+					AssetBundle ab = null;
+
+					if (YooAssets.PlayMode != YooAssets.EPlayMode.EditorSimulateMode)
+					{
+						ab = YooAssetsMgr.Instance.SyncLoadAssetBundle("assets/assetspackage/code/hotfix.bundle");
+						assBytes = ((TextAsset) ab.LoadAsset($"{Define.HotfixDir}Code{YooAssetsMgr.Instance.Config.Resver}.dll.bytes", typeof (TextAsset))).bytes;
+						pdbBytes = ((TextAsset) ab.LoadAsset($"{Define.HotfixDir}Code{YooAssetsMgr.Instance.Config.Resver}.pdb.bytes", typeof (TextAsset))).bytes;
+					}
+#if UNITY_EDITOR
+					else
+					{
+						string jstr = File.ReadAllText("Assets/AssetsPackage/config.bytes");
+						var obj = JsonHelper.FromJson<BuildConfig>(jstr);
+						int version = obj.Resver;
+						assBytes = (AssetDatabase.LoadAssetAtPath($"{Define.HotfixDir}Code{version}.dll.bytes", typeof (TextAsset)) as TextAsset).bytes;
+						pdbBytes = (AssetDatabase.LoadAssetAtPath($"{Define.HotfixDir}Code{version}.pdb.bytes", typeof (TextAsset)) as TextAsset).bytes;
+					}
 #endif
 
 					assembly = Assembly.Load(assBytes, pdbBytes);
@@ -141,9 +154,9 @@ namespace ET
 					}
 					IStaticMethod start = new MonoStaticMethod(assembly, "ET.Entry", "Start");
 					start.Run();
-#if !UNITY_EDITOR
-					ab.Unload(true);
-#endif
+					if (YooAssets.PlayMode != YooAssets.EPlayMode.EditorSimulateMode)
+						ab?.Unload(true);
+
 					break;
 				}
 				case CodeMode.Reload:
@@ -205,6 +218,8 @@ namespace ET
 		public bool isReStart = false;
 		public void ReStart()
 		{
+			YooAssets.ForceUnloadAllAssets();
+			YooAssetsMgr.Instance.Init(YooAssets.PlayMode);
 			Log.Debug("ReStart");
 			isReStart = true;
 		}

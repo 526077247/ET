@@ -1,18 +1,17 @@
 # [English](https://github.com/526077247/ET/blob/master/README-EN.md) 
 
 # 和ET的区别
-1. 使用魔改版Addressables实现了资源热更新，包括一键标记等配套工具，多渠道安装包分包配置功能，统一下载入口等
-2. 使用了基于Addressables的资源管理系统替换了原有系统，包括对动态图集、Unity内置SpriteAtlas图集功能的支持
+1. 使用YooAssets实现了资源热更新，包括多渠道安装包分包配置功能
+2. 使用了基于YooAssets的资源管理系统替换了原有系统，包括对动态图集、Unity内置SpriteAtlas图集功能的支持
 3. 使用组件模式的UI框架替换掉了原有部分，包括红点系统、多语言系统、引导系统等，易于集成第三方插件
 4. 使用HybridCLR替换了ILRuntime，对C#语法支持更完备，BUG更少
-5. 接入BestHTTP提供更完善的下载支持，如后台下载
-6. 提供一个简单可扩展的对话框架
-7. 替换AOI框架，支持OBB、球形触发器和射线检测，并且双端使用AOI
-8. 提供一个简单可扩展的战斗框架，并且双端可单独使用
-9. 提供一个简单的Ghost系统，服务端无缝世界跨逻辑地图战斗
+5. 提供一个简单可扩展的对话框架
+6. 替换AOI框架，支持OBB、球形触发器和射线检测，并且双端使用AOI
+7. 提供一个简单可扩展的战斗框架，并且双端可单独使用
+8. 提供一个简单的Ghost系统，服务端无缝世界跨逻辑地图战斗
 
 # HybridCLR注意事项
-1. 目前Addressable打包在生成dll之前，所以暂时没做自动复制AOT的dll到打包目录，需要先打一次包再手动copy，只要不修改就无需手动copy，后续会优化
+1. 打增量包时AOT的dll是不能更改的，必须和打整包时的dll一致
 
 # UI框架使用教程
 1. 基于ET6组件式UI框架的使用 https://www.bilibili.com/video/BV1Ra411q7Ct
@@ -20,6 +19,7 @@
 
 # 演示视频
 1. 触发器演示视频 https://www.bilibili.com/video/BV1iY4y1t7Kj
+2. 服务端跨地图战斗 https://www.bilibili.com/video/BV1DB4y1B7qH
 
 # __讨论QQ群 : 474643097__  
 

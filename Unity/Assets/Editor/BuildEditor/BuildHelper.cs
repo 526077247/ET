@@ -3,7 +3,8 @@ using System.IO;
 using System.Text;
 using UnityEditor;
 using UnityEngine;
-using HybridCLR;
+using YooAsset.Editor;
+using YooAsset;
 namespace ET
 {
     public static class BuildHelper
@@ -35,7 +36,7 @@ namespace ET
 
         public static void Build(PlatformType type, BuildOptions buildOptions, bool isBuildExe,bool clearFolder)
         {
-            EditorUserSettings.SetConfigValue(AddressableTools.is_packing, "1");
+            // EditorUserSettings.SetConfigValue(AddressableTools.is_packing, "1");
             if (buildmap[type] == EditorUserBuildSettings.activeBuildTarget)
             {
                 //pack
@@ -62,28 +63,51 @@ namespace ET
                
             }
         }
-        public static void HandleProject()
+        private static void BuildInternal(BuildTarget buildTarget,bool isBuildExe)
         {
-            
-            //清除图集
-            //AltasHelper.ClearAllAtlas();
+            string jstr = File.ReadAllText("Assets/AssetsPackage/config.bytes");
+            var obj = JsonHelper.FromJson<BuildConfig>(jstr);
+            int buildVersion = obj.Resver;
+            Debug.Log($"开始构建 : {buildTarget}");
 
-            AASUtility.CleanPlayerContent();
+            // 命令行参数
+
+            // 构建参数
+            string defaultOutputRoot = AssetBundleBuilderHelper.GetDefaultOutputRoot();
+            BuildParameters buildParameters = new BuildParameters();
+            buildParameters.OutputRoot = defaultOutputRoot;
+            buildParameters.BuildTarget = buildTarget;
+            buildParameters.BuildPipeline = EBuildPipeline.ScriptableBuildPipeline;
+            buildParameters.SBPParameters = new BuildParameters.SBPBuildParameters();
+            buildParameters.BuildMode = isBuildExe?EBuildMode.ForceRebuild:EBuildMode.IncrementalBuild;
+            buildParameters.BuildVersion = buildVersion;
+            buildParameters.BuildinTags = "buildin";
+            buildParameters.VerifyBuildingResult = true;
+            buildParameters.EnableAddressable = true;
+            buildParameters.CopyBuildinTagFiles = true;
+            buildParameters.EncryptionServices = new GameEncryption();
+            buildParameters.CompressOption = ECompressOption.LZ4;
+    
+            // 执行构建
+            AssetBundleBuilder builder = new AssetBundleBuilder();
+            var buildResult = builder.Run(buildParameters);
+            if (buildResult.Success)
+                Debug.Log($"构建成功!");
+        }
+        public static void HandleAltas()
+        {
+            //清除图集
+            AltasHelper.ClearAllAtlas();
 
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
 
             //生成图集
-            // AltasHelper.GeneratingAtlas();
-
-            //Marked AssetsPackage Addressable
-            AddressableTools.RunCheckAssetBundle();
+            AltasHelper.GeneratingAtlas();
 
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
-
-            //Build Default Build Script
-            AddressableTools.BuildPlayerContent();
+            
 
         }
         static void BuildHandle(PlatformType type, BuildOptions buildOptions, bool isBuildExe,bool clearFolder)
@@ -122,13 +146,21 @@ namespace ET
             }
             //打程序集
             BuildAssemblieEditor.BuildCodeRelease();
+            //打AOT程序集
+            if (isBuildExe)
+            {
+                BuildAssemblieEditor.BuildAOT();
+            }
+            
             // if (isInject)
             // {
             //     //Inject
             //     IFixEditor.InjectAssemblys();
             // }
-            HandleProject();
-            //string fold = string.Format(BuildFolder, type);
+            //处理图集资源
+            // HandleAltas();
+            //打ab
+            BuildInternal(buildTarget, isBuildExe);
 
             if (clearFolder && Directory.Exists(relativeDirPrefix))
             {
@@ -142,12 +174,12 @@ namespace ET
 
             if (isBuildExe)
             {
+                // MethodBridgeHelper.MethodBridge_All();
                 #region 防裁剪
                 FileHelper.CopyDirectory("Codes", "Assets/Codes/Temp");
                 AssetDatabase.Refresh();
                 #endregion
                 
-                // MethodBridgeHelper.MethodBridge_All();
                 AssetDatabase.Refresh();
                 string[] levels = {
                     "Assets/AssetsPackage/Scenes/InitScene/Init.unity",
@@ -164,12 +196,12 @@ namespace ET
             }
             
             string jstr = File.ReadAllText("Assets/AssetsPackage/config.bytes");
-            var obj = LitJson.JsonMapper.ToObject<Dictionary<string, string>>(jstr);
-            string version = obj["ResVer"];
-            var settings = AASUtility.GetSettings();
-            string fold = Directory.GetParent(settings.RemoteCatalogBuildPath.GetValue(settings)).FullName;
+            var obj = JsonHelper.FromJson<BuildConfig>(jstr);
+
+            // var settings = AASUtility.GetSettings();
+            string fold = $"{AssetBundleBuilderHelper.GetDefaultOutputRoot()}/{buildTarget}/{obj.Resver}";
             
-            string targetPath = Path.Combine(relativeDirPrefix, $"{version}_{platform}");
+            string targetPath = Path.Combine(relativeDirPrefix, $"{obj.Channel}_{platform}");
             if (!Directory.Exists(targetPath)) Directory.CreateDirectory(targetPath);
             FileHelper.CleanDirectory(targetPath);
             FileHelper.CopyFiles(fold, targetPath);

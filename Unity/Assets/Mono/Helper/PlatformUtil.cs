@@ -17,32 +17,6 @@ namespace ET
                 return GameUtility.GetIntPlatform();
             }
         }
-
-        public static int GetIntPlatform()
-        {
-            return intPlatform;
-        }
-
-        public static string GetStrPlatform()
-        {
-            if (IsIphone())
-                return "ios";
-            else if (IsAndroid())
-                return "android";
-            else if (IsWindows())
-                return "pc";
-            else
-                return "";
-        }
-
-        public static string GetStrPlatformOnlyMobile()
-        {
-            if(IsIphone())
-                return "ios";
-            else
-                return "android";
-        }
-
         public static string GetStrPlatformIgnoreEditor()
         {
             if (IsIphone())
@@ -51,18 +25,14 @@ namespace ET
                 return "android";
             else if (IsWindows())
                 return "pc";
+#if UNITY_ANDROID
+            return "android";
+#elif UNITY_IOS
+            return "ios";
+#endif
             return "pc";
         }
-
-        public static bool IsEditor()
-        {
-            return intPlatform == (int)RuntimePlatform.WindowsEditor || intPlatform == (int)RuntimePlatform.OSXEditor;
-        }
-
-        public static bool IsWindowsEditor()
-        {
-            return intPlatform == (int)RuntimePlatform.WindowsEditor;
-        }
+        
         public static bool IsIphone()
         {
             return intPlatform == (int)RuntimePlatform.IPhonePlayer;
@@ -88,7 +58,13 @@ namespace ET
             if (IsAndroid()) return "googleplay";
             else if (IsIphone()) return "applestore";
             else if (IsWindows()) return "pc";
-            return "";
+#if UNITY_ANDROID
+            return "googleplay";
+#elif UNITY_IOS
+            return "applestore";
+#else 
+            return "pc";
+#endif
         }
     }
 }

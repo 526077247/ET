@@ -27,7 +27,7 @@ namespace ET
         public static void Init(this AOISceneViewComponent self)
         {
             #region 从Proto初始化场景物体信息
-            string[] protoPaths = {"GameAssets/Config/Map.bytes"};
+            string[] protoPaths = {"MapConfig/Map.bytes"};
             for (int i = 0; i < protoPaths.Length; i++)
             {
                 var jsonPath = protoPaths[i];

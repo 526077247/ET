@@ -18,7 +18,7 @@ namespace ET
 		public string m_update_list_cdn_url;
 		public string m_cdn_url;
 		public bool m_inWhiteList;
-		public Dictionary<string, Dictionary<string, Resver>> m_resUpdateList;
+		public Dictionary<string, Dictionary<int, Resver>> m_resUpdateList;
 		public Dictionary<string, AppConfig> m_appUpdateList;
 		
     }

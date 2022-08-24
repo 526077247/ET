@@ -109,7 +109,7 @@ namespace ET
         //格式为json格式
         //    {
         //        "res_list" : {
-        //                "100": {
+        //                "googleplay": {
         //                       "1.0.0": {"channel": ["all"], "update_tailnumber": ["all"]},
         //                 }
         //        },
@@ -149,18 +149,18 @@ namespace ET
             return null;
         }
         //找到可以更新的最大app版本号
-        public static  string FindMaxUpdateAppVer(this ServerConfigComponent self,string channel)
+        public static int FindMaxUpdateAppVer(this ServerConfigComponent self,string channel)
         {
-            if (self.m_appUpdateList == null) return null;
-            string last_ver = null;
+            if (self.m_appUpdateList == null) return -1;
+            int last_ver = -1;
             if (self.m_appUpdateList.TryGetValue(channel, out var data))
             {
                 foreach (var item in data.app_ver)
                 {
-                    if (last_ver == null) last_ver = item.Key;
+                    if (last_ver == -1) last_ver = item.Key;
                     else
                     {
-                        if(VersionCompare.Compare(item.Key, last_ver) > 0)
+                        if(item.Key > last_ver)
                         {
                             last_ver = item.Key;
                         }
@@ -171,18 +171,18 @@ namespace ET
         }
 
         //找到可以更新的最大资源版本号
-        public static  string FindMaxUpdateResVer(this ServerConfigComponent self,string engine_ver, string channel)
+        public static int FindMaxUpdateResVer(this ServerConfigComponent self,string appchannel, string channel)
         {
-            if (string.IsNullOrEmpty(engine_ver) || self.m_resUpdateList == null || 
-                !self.m_resUpdateList.TryGetValue(engine_ver, out var resVerList)) return null;
-            if (resVerList == null) return null;
-            var verList = new List<string>();
+            if (string.IsNullOrEmpty(appchannel) || self.m_resUpdateList == null || 
+                !self.m_resUpdateList.TryGetValue(appchannel, out var resVerList)) return -1;
+            if (resVerList == null) return -1;
+            var verList = new List<int>();
             foreach (var item in resVerList)
             {
                 verList.Add(item.Key);
             }
-            verList.Sort((a, b) => { return -VersionCompare.Compare(a, b); });
-            string last_ver = "";
+            verList.Sort((a, b) => { return b-a; });
+            int last_ver = -1;
             for (int i = 0; i < verList.Count; i++)
             {
                 var info = resVerList[verList[i]];

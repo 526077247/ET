@@ -2,8 +2,6 @@
 using System.IO;
 using System.Text.RegularExpressions;
 using UnityEditor;
-using UnityEditor.AddressableAssets;
-using UnityEditor.AddressableAssets.Build;
 using UnityEngine;
 
 /// <summary>
@@ -46,8 +44,6 @@ public class AssetImportMgr : AssetPostprocessor
             }
 
         }
-
-        HandleAssetsAddressable(importedAssets, deletedAssets, movedAssets, movedFromAssetPaths);
     }
 
     public void OnPostprocessModel()
@@ -149,92 +145,6 @@ public class AssetImportMgr : AssetPostprocessor
         }
     }
 
-    //有资源导入时
-    static void HandleAssetsAddressable(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
-    {
-        string is_packing = EditorUserSettings.GetConfigValue(AddressableTools.is_packing);
-        if(is_packing == "1")
-        {
-            return;
-        }
-
-        bool runAddressable = false;
-
-        foreach (string str in importedAssets)
-        {
-            //Debug.Log("Reimported Asset: " + str);
-            //   AddAssetToAddressable(str);
-            runAddressable |= IsAddressableAsset(str);
-            if (runAddressable)
-            {
-                //EditorMenu.RunCheckAssetBundleWithDiscreteImages();
-                //Logger.LogError("======aa========" + str);
-                return;
-            }
-        }
-
-        foreach (string str in deletedAssets)
-        {
-            //Debug.Log("Deleted Asset: " + str);
-        }
-
-
-        for (int i = 0; i < movedAssets.Length; i++)
-        {
-            //Debug.Log("Moved Asset: " + movedAssets[i] + " from: " + movedFromAssetPaths[i]);
-            runAddressable |= IsAddressableAsset(movedAssets[i]);
-            if (runAddressable)
-            {
-                //EditorMenu.RunCheckAssetBundleWithDiscreteImages();
-                //Logger.LogError("========aa1======" + movedAssets[i]);
-                return;
-            }
-        }
-        
-    }
-
-    static bool IsAddressableAsset(string assetPath)
-    {
-        if (!assetPath.Contains("Assets/" + AddressableTools.Assets_Package))
-        {
-            return false;
-        }
-
-        if (Directory.Exists(assetPath))
-        {
-            return false;
-        }
-        return true;
-    }
-
-    static void AddAssetToAddressable(string assetPath)
-    {
-        //只将Assets/AssetsPackage目录下的资源挂addressable
-        if (!assetPath.Contains("Assets/" + AddressableTools.Assets_Package))
-        {
-            return;
-        }
-
-        if(Directory.Exists(assetPath))
-        {
-            return;
-        }
-        
-        if (assetPath.Contains("Atlas"))//图集
-        {
-            string is_atlas_model = EditorUserSettings.GetConfigValue(AddressableTools.is_atlas_model);
-            if (is_atlas_model == "0")
-            {
-                AddressableTools.AddImportAssetToaddressable(assetPath);
-            }
-        }
-        else
-        {
-            AddressableTools.AddImportAssetToaddressable(assetPath);
-        }
-        
-    }
-
 
     [RuntimeInitializeOnLoadMethod]
     static void OnRuntimeMethodLoad()
@@ -248,67 +158,8 @@ public class AssetImportMgr : AssetPostprocessor
     {
        // EditorApplication.playModeStateChanged += OnEditorPlayModeChanged;
     }
+    
 
-    public static void OnEditorPlayModeChanged(PlayModeStateChange state)
-    {
-        if (state == PlayModeStateChange.ExitingEditMode)
-        {
-            AddressableEditor.RunCheckAssetBundle();
-
-            OnDataBuilderComplete();
-        }
-    }
-
-
-
-    public static void OnDataBuilderComplete()
-    {
-        var settings = AddressableAssetSettingsDefaultObject.Settings;
-        if (settings == null)
-            return;
-        if (settings.ActivePlayModeDataBuilder == null)
-        {
-            var err = "Active play mode build script is null.";
-            Debug.LogError(err);
-
-            if (BuildScript.buildCompleted != null)
-            {
-                var result = AddressableAssetBuildResult.CreateResult<AddressableAssetBuildResult>(null, 0, err);
-                BuildScript.buildCompleted(result);
-            }
-            return;
-        }
-
-        if (!settings.ActivePlayModeDataBuilder.CanBuildData<AddressablesPlayModeBuildResult>())
-        {
-            var err = string.Format("Active build script {0} cannot build AddressablesPlayModeBuildResult.", settings.ActivePlayModeDataBuilder);
-            Debug.LogError(err);
-            if (BuildScript.buildCompleted != null)
-            {
-
-                var result = AddressableAssetBuildResult.CreateResult<AddressableAssetBuildResult>(null, 0, err);
-                BuildScript.buildCompleted(result);
-            }
-
-            return;
-        }
-
-        var res = settings.ActivePlayModeDataBuilder.BuildData<AddressablesPlayModeBuildResult>(new AddressablesDataBuilderInput(settings));
-        if (!string.IsNullOrEmpty(res.Error))
-        {
-            Debug.LogError(res.Error);
-            EditorApplication.isPlaying = false;
-        }
-        else
-        {
-            if (BuildScript.buildCompleted != null)
-                BuildScript.buildCompleted(res);
-            //settings.DataBuilderCompleted(settings.ActivePlayModeDataBuilder, res);
-
-
-            if (settings.OnDataBuilderComplete != null)
-                settings.OnDataBuilderComplete(settings, settings.ActivePlayModeDataBuilder, res);
-        }
-    }
+    
 
 }

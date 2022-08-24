@@ -13,7 +13,7 @@ namespace ET
 				CodeLoader.Instance.LateUpdate += Game.LateUpdate;
 				CodeLoader.Instance.OnApplicationQuit += Game.Close;
 				
-				
+				MongoRegister.Init();
 				Game.EventSystem.Add(CodeLoader.Instance.GetHotfixTypes());
 
 				

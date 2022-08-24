@@ -3,11 +3,10 @@
     "rootNamespace": "",
     "references": [
         "Unity.TextMeshPro",
-        "Unity.Addressables",
-        "Unity.ResourceManager",
         "Unity.RenderPipelines.Universal.Runtime",
         "Unity.ThirdParty",
-        "Unity.RenderPipelines.Core.Runtime"
+        "Unity.RenderPipelines.Core.Runtime",
+        "YooAsset"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

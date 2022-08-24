@@ -1,8 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System;
-using System.Threading.Tasks;
-using AssetBundles;
 
 namespace ET
 {
@@ -96,7 +94,7 @@ namespace ET
             AudioClip ac = self.Get(name);
             if (ac == null)
             {
-                ac = await AddressablesManager.Instance.LoadAssetAsync<AudioClip>(name);
+                ac = await ResourcesComponent.Instance.LoadAsync<AudioClip>(name);
                 if (ac != null)
                 {
                     self.Add(name, ac);
@@ -153,7 +151,7 @@ namespace ET
             AudioClip clip = self.Get(name);
             if (clip == null)
             {
-                clip =await AddressablesManager.Instance.LoadAssetAsync<AudioClip>(name);
+                clip =await ResourcesComponent.Instance.LoadAsync<AudioClip>(name);
                 if (clip == null)
                 {
                     // Debug.Log("clip is null");

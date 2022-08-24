@@ -18,7 +18,7 @@ namespace ET
             if (path.Length != 0)
             {
                 var jsonStr = File.ReadAllText(path);
-                var data = LitJson.JsonMapper.ToObject<AssetsRoot>(jsonStr);
+                var data = JsonHelper.FromJson<AssetsRoot>(jsonStr);
                 EditorApplication.OpenScene("Assets/MapEditor/Map.unity");
                 for (int i = 0; i < data.Scenes.Count; i++)
                 {
@@ -110,7 +110,7 @@ namespace ET
                 if (File.Exists(path)) File.Delete(path);
                 AssetsRoot root = GetData();
                 // 保存场景数据
-                File.WriteAllText(path, LitJson.JsonMapper.ToJson(root));
+                File.WriteAllText(path, JsonHelper.ToJson(root));
                 // 刷新Project视图
                 AssetDatabase.Refresh();
                 Debug.Log("导出场景到Josn数据成功");

@@ -1,8 +1,8 @@
 {
     "_t": "UpdateConfig",
     "res_list": {
-        "100": {
-            "1.0.0": {
+        "googleplay": {
+            "1": {
                 "_t": "Resver",
                 "channel": [
                     "all"
@@ -11,8 +11,8 @@
                     "all"
                 ],
                 "force_update": 0
-            }
-        }
+            },
+        }    
     },
     "app_list": {}
 }

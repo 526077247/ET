@@ -30,8 +30,8 @@ namespace ET
         public static void BuildCodeAuto()
         {
             string jstr = File.ReadAllText("Assets/AssetsPackage/config.bytes");
-            var config = LitJson.JsonMapper.ToObject<Dictionary<string, string>>(jstr);
-            string assemblyName = "Code" + config["ResVer"];
+            var config = JsonHelper.FromJson<BuildConfig>(jstr);
+            string assemblyName = "Code" + config.Resver;
             BuildAssemblieEditor.BuildMuteAssembly(assemblyName, new []
             {
                 "Codes/Model/",
@@ -45,8 +45,8 @@ namespace ET
         public static void BuildCodeDebug()
         {
             string jstr = File.ReadAllText("Assets/AssetsPackage/config.bytes");
-            var config = LitJson.JsonMapper.ToObject<Dictionary<string, string>>(jstr);
-            string assemblyName = "Code" + config["ResVer"];
+            var config = JsonHelper.FromJson<BuildConfig>(jstr);
+            string assemblyName = "Code" + config.Resver;
             BuildAssemblieEditor.BuildMuteAssembly(assemblyName, new []
             {
                 "Codes/Model/",
@@ -63,15 +63,15 @@ namespace ET
         public static void BuildCodeRelease()
         {
             string jstr = File.ReadAllText("Assets/AssetsPackage/config.bytes");
-            var config = LitJson.JsonMapper.ToObject<Dictionary<string, string>>(jstr);
-            string assemblyName = "Code" + config["ResVer"];
+            var config = JsonHelper.FromJson<BuildConfig>(jstr);
+            string assemblyName = "Code" + config.Resver;
             BuildAssemblieEditor.BuildMuteAssembly(assemblyName, new []
             {
                 "Codes/Model/",
                 "Codes/ModelView/",
                 "Codes/Hotfix/",
                 "Codes/HotfixView/"
-            }, Array.Empty<string>(),HybridCLR.IsWolong? CodeOptimization.Debug:CodeOptimization.Release);
+            }, Array.Empty<string>(),HybridCLR.HybridCLR.IsWolong? CodeOptimization.Debug:CodeOptimization.Release);
 
             AfterCompiling(assemblyName);
 
@@ -107,9 +107,14 @@ namespace ET
             }, new[]{Path.Combine(Define.BuildOutputDir, "Data.dll")}, CodeOptimization.Debug);
         }
 
-        [MenuItem("Tools/Build/BuildAOT _F9")]
         public static void BuildAOT()
         {
+            if(!HybridCLR.HybridCLR.Setup())return;
+            #region 防裁剪
+            FileHelper.CopyDirectory("Codes", "Assets/Codes/Temp");
+            AssetDatabase.Refresh();
+            #endregion
+
             PlatformType activePlatform = PlatformType.None;
 #if UNITY_ANDROID
 			activePlatform = PlatformType.Android;
@@ -122,7 +127,6 @@ namespace ET
 #else
 			activePlatform = PlatformType.None;
 #endif
-            if(!HybridCLR.Setup())return;
             
             BuildTarget buildTarget = BuildTarget.StandaloneWindows;
             string programName = "ET";
@@ -154,11 +158,7 @@ namespace ET
                     platform = "pc";
                     break;
             }
-            
-            #region 防裁剪
-            FileHelper.CopyDirectory("Codes", "Assets/Codes/Temp");
-            AssetDatabase.Refresh();
-            #endregion
+
                 
             // MethodBridgeHelper.MethodBridge_All();
             AssetDatabase.Refresh();
@@ -173,20 +173,24 @@ namespace ET
             }
             BuildPipeline.BuildPlayer(levels, $"{relativeDirPrefix}/{exeName}", buildTarget, BuildOptions.None);
             UnityEngine.Debug.Log("完成exe打包");
-                
+            for (int i = 0; i < CodeLoader.aotDllList.Length; i++)
+            {
+                var assemblyName = CodeLoader.aotDllList[i];
+                File.Copy(Path.Combine(HybridCLR.BuildConfig.GetAssembliesPostIl2CppStripDir(buildTarget), $"{assemblyName}"), Path.Combine(Define.AOTDir, $"{assemblyName}.bytes"), true);
+            }
+            
             #region 防裁剪
             Directory.Delete("Assets/Codes/Temp",true);
             File.Delete("Assets/Codes/Temp.meta");
             AssetDatabase.Refresh();
             #endregion
-
-            for (int i = 0; i < CodeLoader.aotDllList.Length; i++)
-            {
-                var assemblyName = CodeLoader.aotDllList[i];
-                File.Copy(Path.Combine(BuildConfig.GetAssembliesPostIl2CppStripDir(buildTarget), $"{assemblyName}"), Path.Combine(Define.AOTDir, $"{assemblyName}.bytes"), true);
-            }
             
-            AssetDatabase.Refresh();
+        }
+
+        [MenuItem("Tools/Build/BuildAOT _F9")]
+        public static void BuildAOTCode()
+        {
+            BuildAOT();
             //反射获取当前Game视图，提示编译完成
             ShowNotification("Build Code Success");
         }

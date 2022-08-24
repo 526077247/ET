@@ -257,44 +257,6 @@ public class GameUtility
         }
     }
 
-    public static string SafeReadStreamAllText(string inFile)
-    {
-        try
-        {
-            //Debug.Log(string.Format("SafeReadAllText 111! path = {0} ", inFile));
-            if (string.IsNullOrEmpty(inFile))
-            {
-                return null;
-            }
-            //Debug.Log(string.Format("SafeReadAllText 222! path = {0} ", inFile));
-            if (!File.Exists(inFile))
-            {
-                return null;
-            }
-            ///Debug.Log(string.Format("SafeReadAllText 333! path = {0} ", inFile));
-            //File.SetAttributes(inFile, FileAttributes.Normal);
-            return File.ReadAllText(inFile);
-            //StringBuilder sb = new StringBuilder();
-            //using (FileStream fs = File.OpenRead(inFile))
-            //{
-            //    byte[] b = new byte[1024];
-            //    UTF8Encoding temp = new UTF8Encoding(true);
-            //    while(fs.Read(b,0,b.Length)>0)
-            //    {
-            //        sb.Append(temp.GetString(b));
-            //    }
-            //}
-            //return sb.ToString();
-        }
-        catch (System.Exception ex)
-        {
-            Debug.Log(string.Format("SafeReadAllText failed! path = {0} with err = {1}", inFile, ex.Message));
-            return null;
-        }
-    }
-
-
-
     public static void DeleteDirectory(string dirPath)
     {
         string[] files = Directory.GetFiles(dirPath);

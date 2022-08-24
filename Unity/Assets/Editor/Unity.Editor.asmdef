@@ -5,12 +5,10 @@
         "Unity.Mono",
         "Unity.TextMeshPro",
         "Unity.TextMeshPro.Editor",
-        "Unity.Addressables",
-        "Unity.Addressables.Editor",
         "Unity.ScriptableBuildPipeline",
         "Unity.ScriptableBuildPipeline.Editor",
-        "Unity.ResourceManager",
-        "Unity.ThirdParty"
+        "Unity.ThirdParty",
+        "YooAsset.Editor"
     ],
     "includePlatforms": [
         "Editor"

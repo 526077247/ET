@@ -1,6 +1,6 @@
-﻿using AssetBundles;
-using System;
-using System.IO;
+﻿using System;
+using System.Collections;
+using YooAsset;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
@@ -18,45 +18,57 @@ namespace ET
 	public class Init: MonoBehaviour
 	{
 		public CodeMode CodeMode = CodeMode.Mono;
-		
+
+		public YooAssets.EPlayMode PlayMode = YooAssets.EPlayMode.EditorSimulateMode;
+
+		private bool IsInit = false;
 		private void Awake()
+		{
+			StartCoroutine(AwakeAsync());
+		}
+		private IEnumerator AwakeAsync()
 		{
 #if !UNITY_EDITOR && !FORCE_UPDATE //编辑器模式下跳过更新
 			Define.Networked = Application.internetReachability != NetworkReachability.NotReachable;
 #endif
-			System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
-			//初始化App版本，解决覆盖安装问题
-			sw.Start();
-			InitAppVersion();
-			sw.Stop();
-			Debug.Log(string.Format("InitAppVersion use {0}ms", sw.ElapsedMilliseconds));
+			
+#if UNITY_EDITOR
+			// 编辑器下的模拟模式
+			if (PlayMode == YooAssets.EPlayMode.EditorSimulateMode)
+			{
+				YooAssetsMgr.Instance.Init(YooAssets.EPlayMode.EditorSimulateMode);
+				var createParameters = new YooAssets.EditorSimulateModeParameters();
+				createParameters.LocationServices = new AddressByPathLocationServices("Assets/AssetsPackage");
+				//createParameters.SimulatePatchManifestPath = GetPatchManifestPath();
+				yield return YooAssets.InitializeAsync(createParameters);
+			}
+			else
+#endif
+			// 单机运行模式
+			if (PlayMode == YooAssets.EPlayMode.OfflinePlayMode)
+			{
+				YooAssetsMgr.Instance.Init(YooAssets.EPlayMode.OfflinePlayMode);
+				var createParameters = new YooAssets.OfflinePlayModeParameters();
+				createParameters.LocationServices = new AddressByPathLocationServices("Assets/AssetsPackage");
+				yield return YooAssets.InitializeAsync(createParameters);
+			}
+			// 联机运行模式
+			else
+			{
+				YooAssetsMgr.Instance.Init(YooAssets.EPlayMode.HostPlayMode);
+				var createParameters = new YooAssets.HostPlayModeParameters();
+				createParameters.LocationServices = new AddressByPathLocationServices("Assets/AssetsPackage");
+				createParameters.DecryptionServices = new BundleDecryption();
+				createParameters.ClearCacheWhenDirty = true;
+				createParameters.DefaultHostServer = YooAssetsMgr.Instance.Config.RemoteCdnUrl+"/"+YooAssetsMgr.Instance.Config.Channel+"_"+PlatformUtil.GetStrPlatformIgnoreEditor();
+				createParameters.FallbackHostServer = YooAssetsMgr.Instance.Config.RemoteCdnUrl2+"/"+YooAssetsMgr.Instance.Config.Channel+"_"+PlatformUtil.GetStrPlatformIgnoreEditor();
+				createParameters.VerifyLevel = EVerifyLevel.High;
+				yield return YooAssets.InitializeAsync(createParameters);
 
-			//先初始化AssetBundleMgr, 必须在Addressable系统初始化之前
-			sw.Start();
-			AssetBundleMgr.GetInstance().InitBuildInAssetBundleHashInfo();
-			sw.Stop();
-			Debug.Log(string.Format("InitBuildInAssetBundleHashInfo use {0}ms", sw.ElapsedMilliseconds));
-			sw.Reset();
-
-			sw.Start();
-			AssetBundleConfig.Instance.SyncLoadGlobalAssetBundle();
-			sw.Stop();
-			Debug.Log(string.Format("SyncLoadGlobalAssetBundle use {0}ms", sw.ElapsedMilliseconds));
-			sw.Reset();
-
-			//先设置remote_cdn_url 
-			sw.Start();
-			AssetBundleMgr.GetInstance().SetAddressableRemoteResCdnUrl(AssetBundleConfig.Instance.remote_cdn_url);
-			sw.Stop();
-			Debug.Log(string.Format("SetAddressableRemoteResCdnUrl use {0}ms", sw.ElapsedMilliseconds));
-			sw.Reset();
-
-			//开始热修复
-			// sw.Start();
-			// AddressablesManager.Instance.StartInjectFix();
-			// sw.Stop();
-			// Debug.Log(string.Format("StartInjectFix use {0}ms", sw.ElapsedMilliseconds));
-			// sw.Reset();
+				// 先设置更新补丁清单
+				UpdateManifestOperation operation2 = YooAssets.WeaklyUpdateManifestAsync(YooAssetsMgr.Instance.staticVersion);
+				yield return operation2;
+			}
 
 			InitUnitySetting();
 			
@@ -75,8 +87,6 @@ namespace ET
 			SynchronizationContext.SetSynchronizationContext(ThreadSynchronizationContext.Instance);
 			
 			DontDestroyOnLoad(gameObject);
-			
-			LitJson.UnityTypeBindings.Register();
 
 			ETTask.ExceptionHandler += Log.Error;
 
@@ -87,24 +97,35 @@ namespace ET
 			CodeLoader.Instance.CodeMode = this.CodeMode;
 			Options.Instance.Develop = 1;
 			Options.Instance.LogLevel = 0;
+			IsInit = true;
+			CodeLoader.Instance.Start();
 		}
 
 		private void Start()
 		{
-			CodeLoader.Instance.Start();
+			
 		}
 
 		private void Update()
 		{
+			if (!IsInit) return;
 			CodeLoader.Instance.Update?.Invoke();
 			if (CodeLoader.Instance.isReStart)
 			{
-				Log.Debug("ReStart");
-				CodeLoader.Instance.OnApplicationQuit();
-				CodeLoader.Instance.Dispose();
-				CodeLoader.Instance.Start();
-				CodeLoader.Instance.isReStart = false;
+				StartCoroutine(ReStart());
 			}
+		}
+
+		public IEnumerator ReStart()
+		{
+			CodeLoader.Instance.isReStart = false;
+			// 先设置更新补丁清单
+			UpdateManifestOperation operation2 = YooAssets.WeaklyUpdateManifestAsync(YooAssetsMgr.Instance.staticVersion);
+			yield return operation2;
+			Log.Debug("ReStart");
+			CodeLoader.Instance.OnApplicationQuit();
+			CodeLoader.Instance.Dispose();
+			CodeLoader.Instance.Start();
 		}
 
 		private void LateUpdate()
@@ -125,30 +146,7 @@ namespace ET
 			//设置帧率
 			QualitySettings.vSyncCount = 0;
 			Application.targetFrameRate = 60;
-		}
-
-		void InitAppVersion()
-		{
-
-			string outputPath = Path.Combine(Application.persistentDataPath, "version.txt");
-			GameUtility.CheckFileAndCreateDirWhenNeeded(outputPath);
-			var persistentAppVersion = GameUtility.SafeReadAllText(outputPath);
-			if (persistentAppVersion == null)
-			{
-				GameUtility.SafeWriteAllText(outputPath, Application.version);
-				return;
-			}
-			Debug.Log(string.Format("app_ver = {0}, persistentAppVersion = {1}", Application.version, persistentAppVersion));
-
-			// 如果persistent目录版本app版本低，说明是大版本覆盖安装，清理过时的缓存
-			if (!string.IsNullOrEmpty(persistentAppVersion) && VersionCompare.Compare(persistentAppVersion, Application.version) < 0)
-			{
-				var path = AssetBundleUtility.GetPersistentDataPath();
-				GameUtility.SafeDeleteDir(path);
-				var path1 = AssetBundleUtility.GetCatalogDataPath();
-				GameUtility.SafeDeleteDir(path1);
-			}
-			GameUtility.SafeWriteAllText(outputPath, Application.version);
+			Application.runInBackground = true;
 		}
 	}
 }

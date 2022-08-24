@@ -1,5 +1,4 @@
-﻿using LitJson.Extensions;
-using UnityEngine;
+﻿using UnityEngine;
 using ProtoBuf;
 namespace ET
 {

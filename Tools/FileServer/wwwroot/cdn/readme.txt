@@ -1,1 +1,1 @@
-﻿将ET\Release\下打的cdn包 放到此文件夹下，文件夹名称和包内config.bytes里版本号平台一致
+﻿将ET\Release\下打的cdn包 覆盖此文件夹下，参考YooAssets教程v1.0和googleplay_android等效
