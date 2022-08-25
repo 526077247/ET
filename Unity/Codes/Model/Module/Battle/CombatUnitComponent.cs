@@ -5,7 +5,6 @@ using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson.Serialization.Options;
 namespace ET
 {
-    [ChildType(typeof(SkillAbility))]
     [ComponentOf(typeof(Unit))]
     public class CombatUnitComponent:Entity,IAwake,IAwake<List<int>>,IDestroy,ITransfer
     {

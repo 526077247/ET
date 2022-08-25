@@ -12,6 +12,7 @@ namespace ET
 		Loading, //加载中
 		LoadOver, //加载完成
     }
+	[ChildOf(typeof(UIManagerComponent))]
 	public class UIWindow : Entity,IAwake
 	{
 		/// <summary>

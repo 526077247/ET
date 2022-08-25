@@ -4,7 +4,8 @@ using UnityEngine;
 
 namespace ET
 {
-    [ChildType]
+
+    [ChildOf(typeof(UnitComponent))]
     public sealed class Unit: Entity, IAwake<int>,IAwake
     {
         public int ConfigId; //配置表id

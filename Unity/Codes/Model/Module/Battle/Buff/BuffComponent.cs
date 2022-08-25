@@ -3,7 +3,6 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace ET
 {
-    [ChildType(typeof(Buff))]
     [ComponentOf(typeof(CombatUnitComponent))]
     public class BuffComponent:Entity, IAwake, IDestroy,ITransfer
     {

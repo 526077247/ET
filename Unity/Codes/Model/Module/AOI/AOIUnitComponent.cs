@@ -10,7 +10,6 @@ namespace ET
     /// <summary>1
     /// 使用时注意 平面是x,z；竖直方向是y
     /// </summary>
-    [ChildType(typeof(AOITrigger))]
     [ComponentOf(typeof(Unit))]
     public class AOIUnitComponent:Entity,IAwake<Vector3,Quaternion,UnitType,int>,IAwake<Vector3,Quaternion,UnitType>,
             IAwake<Vector3,Quaternion,UnitType,int,bool>,IAwake<Vector3,Quaternion,UnitType,bool>,IDestroy

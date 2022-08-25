@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace ET
 {
-    [ChildType(typeof(UIWindow))]
     [ComponentOf(typeof(Scene))]
     public class UIManagerComponent : Entity,IAwake,IDestroy,ILoad,IUpdate,IInput
     {

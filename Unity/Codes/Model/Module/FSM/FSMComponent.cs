@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace ET
 {
-    [ChildType]
     [ComponentOf]
     public class FSMComponent:Entity,IAwake,IDestroy
     {

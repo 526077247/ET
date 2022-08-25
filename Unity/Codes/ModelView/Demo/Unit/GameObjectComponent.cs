@@ -4,7 +4,7 @@ using UnityEngine;
 namespace ET
 {
     [ComponentOf]
-    [ChildType(typeof(GameObjectComponent))]
+    [ChildOf]
     public class GameObjectComponent: Entity, IAwake,IAwake<GameObject>,IAwake<GameObject,Action>, IDestroy
     {
         public GameObject GameObject { get; set; }

@@ -3,6 +3,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace ET
 {
+    [ChildOf(typeof(CombatUnitComponent))]
     public class SkillAbility:Entity,IAwake<int>,IDestroy,ITransfer
     {
         public int ConfigId;

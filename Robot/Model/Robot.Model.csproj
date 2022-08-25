@@ -25,12 +25,6 @@
         <Compile Include="..\..\Server\Model\Base\MongoHelper.cs">
           <Link>Base\MongoHelper.cs</Link>
         </Compile>
-        <Compile Include="..\..\Server\Model\Base\MongoRegister.cs">
-          <Link>Base\MongoRegister.cs</Link>
-        </Compile>
-        <Compile Include="..\..\Server\Model\Base\StructBsonSerialize.cs">
-          <Link>Base\StructBsonSerialize.cs</Link>
-        </Compile>
         <Compile Include="..\..\Server\Model\Config\ConfigLoader.cs">
           <Link>Config\ConfigLoader.cs</Link>
         </Compile>

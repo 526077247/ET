@@ -13,6 +13,7 @@ namespace ET
     /// <summary>
     /// 球形触发器
     /// </summary>
+    [ChildOf(typeof(AOIUnitComponent))]
     public class AOITrigger:Entity,IAwake<float,Action<AOIUnitComponent, AOITriggerType>>,IAwake<float>,IDestroy
     {
         public float Radius;

@@ -13,7 +13,7 @@ namespace ET
         public static readonly string UI = "UI";
     }
 
-    
+    [ChildOf(typeof(UILayersComponent))]
     public class UILayer : Entity,IAwake<UILayerDefine, GameObject>,IDestroy
     {
         public UILayerNames Name;

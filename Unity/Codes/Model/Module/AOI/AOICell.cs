@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace ET
 {
+    [ChildOf(typeof(AOISceneComponent))]
     public class AOICell: Entity,IAwake,IDestroy
     {
         public int xMax;//实际地图范围

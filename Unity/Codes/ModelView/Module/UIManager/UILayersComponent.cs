@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace ET
 {
-	[ChildType(typeof(UILayer))]
+
 	[ComponentOf(typeof(UIManagerComponent))]
 	public class UILayersComponent : Entity,IAwake,IDestroy
     {
