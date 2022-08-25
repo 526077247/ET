@@ -59,20 +59,19 @@ namespace ET
 			asset.sections = new Readme.Section[2];
 
 			Readme.Section s1 = new Readme.Section();
-			s1.heading = "ET && Addressables && UIFramework && AOI && etc.";
+			s1.heading = "ETPro";
 
 			Readme.Section s2 = new Readme.Section();
 			s2.heading = "QA";
-			s2.text = ">项目对应的引擎版本是多少？\n2020.3.33f1\n\n" +
-					">和ET的区别?\n1.使用魔改版Addressables实现了资源热更新，包括一键标记等配套工具，多渠道安装包分包配置功能，统一下载入口等\n"+
-					"2.使用了基于Addressables的资源管理系统替换了原有系统，包括对Unity内置SpriteAtlas图集功能的支持\n"+
+			s2.text = ">框架对应的引擎版本是多少？\n2020.3.33f1\n\n" +
+					">和ET的区别?\n1.使用YooAssets实现了资源热更新，包括多渠道安装包分包配置功能\n"+
+					"2.使用了基于YooAssets的资源管理系统替换了原有系统，包括对动态图集、Unity内置SpriteAtlas图集功能的支持\n"+
 					"3.使用组件模式的UI框架替换掉了原有部分，包括红点系统、多语言系统、引导系统等，易于集成第三方插件\n"+
 					"4.使用HybridCLR替换了ILRuntime，对C#语法支持更完备，BUG更少\n"+
-					"5.接入BestHTTP提供更完善的下载支持，如后台下载\n"+
-					"6.提供一个简单可扩展的对话框架\n"+
-					"7.替换AOI框架，支持OBB、球形触发器和射线检测，并且双端使用AOI\n"+
-					"8.提供一个简单可扩展的战斗框架，并且双端可单独使用\n"+
-					"9.提供一个简单的Ghost系统，服务端无缝世界跨逻辑地图战斗\n\n"+
+					"5.提供一个简单可扩展的对话框架\n"+
+					"6.替换AOI框架，支持OBB、球形触发器和射线检测，并且双端使用AOI\n"+
+					"7.提供一个简单可扩展的战斗框架，并且双端可单独使用\n"+
+					"8.提供一个简单的Ghost系统，服务端无缝世界跨逻辑地图战斗\n\n"+
 					">如何快速启动游戏？\n" +
 					"1.菜单Assets->打开C#项目\n" +
 					"2.打开根目录下的Client-Server.sln，然后右键全部生成\n" +
