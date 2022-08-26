@@ -100,3 +100,5 @@ Unity/HybridCLRData/HotFixDlls
 Unity/Unity.Codes.csproj
 Unity/Sandbox
 Unity/Bundles
+Unity/YooAsset.csproj
+Unity/YooAsset.Editor.csproj
