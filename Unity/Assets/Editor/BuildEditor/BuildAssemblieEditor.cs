@@ -179,16 +179,27 @@ namespace ET
 
             UnityEngine.Debug.Log("开始EXE打包");
             
-            if (!Directory.Exists(relativeDirPrefix))
+            if (Directory.Exists(relativeDirPrefix))
             {
-                Directory.CreateDirectory(relativeDirPrefix);
+                Directory.Delete(relativeDirPrefix,true);
             }
+            Directory.CreateDirectory(relativeDirPrefix);
             BuildPipeline.BuildPlayer(buildPlayerOptions);
             UnityEngine.Debug.Log("完成exe打包");
-            for (int i = 0; i < CodeLoader.aotDllList.Length; i++)
+            try
             {
-                var assemblyName = CodeLoader.aotDllList[i];
-                File.Copy(Path.Combine(HybridCLR.BuildConfig.GetAssembliesPostIl2CppStripDir(buildTarget), $"{assemblyName}"), Path.Combine(Define.AOTDir, $"{assemblyName}.bytes"), true);
+                for (int i = 0; i < CodeLoader.aotDllList.Length; i++)
+                {
+                    var assemblyName = CodeLoader.aotDllList[i];
+                    File.Copy(
+                        Path.Combine(HybridCLR.BuildConfig.GetAssembliesPostIl2CppStripDir(buildTarget),
+                            $"{assemblyName}"), Path.Combine(Define.AOTDir, $"{assemblyName}.bytes"), true);
+                }
+            }
+            catch (Exception ex)
+            {
+                //檢查是否已開啟IL2CPP
+                Debug.LogError(ex);
             }
             
             #region 防裁剪
