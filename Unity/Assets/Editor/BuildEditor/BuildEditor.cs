@@ -104,8 +104,8 @@ namespace ET
 				string jstr = File.ReadAllText("Assets/AssetsPackage/config.bytes");
 				config = LitJson.JsonMapper.ToObject<Dictionary<string, string>>(jstr);
 			}
-			EditorGUILayout.LabelField("cdn地址：" + this.config["remote_cdn_url"]);
-			EditorGUILayout.LabelField("渠道标识：" + this.config["EngineVer"]);
+			EditorGUILayout.LabelField("cdn地址：" + this.config["RemoteCdnUrl"]);
+			EditorGUILayout.LabelField("渠道标识：" + this.config["Channel"]);
 			EditorGUILayout.LabelField("资源版本：" + this.config["ResVer"]);
 			if (GUILayout.Button("修改配置"))
 			{

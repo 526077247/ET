@@ -9,8 +9,8 @@ namespace AssetBundles
 {
     public class Config
     {
-        public string remote_cdn_url;
-        public string EngineVer;
+        public string RemoteCdnUrl;
+        public string Channel;
         public string ResVer;
     }
     public class AssetBundleConfig
@@ -76,14 +76,14 @@ namespace AssetBundles
         private void ReadConfigInfo(string text)
         {
             var config = LitJson.JsonMapper.ToObject<Config>(text);
-            if (!string.IsNullOrEmpty(config.remote_cdn_url))
+            if (!string.IsNullOrEmpty(config.RemoteCdnUrl))
             {
-                this.remote_cdn_url = config.remote_cdn_url;
+                this.remote_cdn_url = config.RemoteCdnUrl;
             }
 
-            if (!string.IsNullOrEmpty(config.EngineVer))
+            if (!string.IsNullOrEmpty(config.Channel))
             {
-                this.EngineVer = config.EngineVer;
+                this.EngineVer = config.Channel;
             }
 
             if (!string.IsNullOrEmpty(config.ResVer))

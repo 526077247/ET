@@ -1,5 +1,5 @@
 {
-	"EngineVer" : "100",
+	"Channel" : "googleplay",
 	"ResVer" : "1.0.0",
-	"remote_cdn_url" : "http://127.0.0.1:8081/cdn"
+	"RemoteCdnUrl" : "http://127.0.0.1:8081/cdn"
 }
