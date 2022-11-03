@@ -1,5 +1,7 @@
 # [English](https://github.com/526077247/ET/blob/master/README-EN.md) 
 
+# 此仓库后续不再更新，最新版本参考 https://github.com/526077247/ETPro
+
 # 和ET的区别
 1. 使用魔改版Addressables实现了资源热更新，包括一键标记等配套工具，多渠道安装包分包配置功能，统一下载入口等
 2. 使用了基于Addressables的资源管理系统替换了原有系统，包括对动态图集、Unity内置SpriteAtlas图集功能的支持
